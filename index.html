@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Aman — Costi Andrei</title>
-<meta name="description" content="Costi Andrei — Developer, Editor, Iași."/>
+<meta name="description" content="Costi Andrei - Developer, Editor, Iași."/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Mono:wght@300;400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet"/>
@@ -688,6 +688,92 @@ body.loaded .hero-img img{transform:scale(1.06);}
   color:var(--fg3);
 }
 
+
+/* ══════════════════════════════
+   DREAMS — floating bottom section
+══════════════════════════════ */
+#dreams{
+  position:relative;
+  padding:0 var(--px);
+  margin-top:clamp(40px,7vw,80px);
+  margin-bottom:clamp(-60px,-4vw,-30px);
+  z-index:3;
+}
+.dream-card{
+  position:relative;
+  display:grid;
+  grid-template-columns:minmax(220px, 380px) 1fr;
+  background:linear-gradient(135deg, rgba(18,17,15,.96), rgba(8,8,7,.98));
+  border:1px solid rgba(201,169,110,.18);
+  border-radius:28px;
+  overflow:hidden;
+  box-shadow:0 30px 80px rgba(0,0,0,.35);
+}
+.dream-card::before{
+  content:'';
+  position:absolute;inset:auto auto 0 0;
+  width:42%;height:1px;
+  background:linear-gradient(to right, var(--acc), transparent);
+  opacity:.6;
+}
+.dream-photo{
+  min-height:340px;
+  position:relative;
+  overflow:hidden;
+}
+.dream-photo img{
+  object-position:center top;
+  transition:transform 1.2s var(--ease);
+}
+.dream-card:hover .dream-photo img{transform:scale(1.05);}
+.dream-photo::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to top, rgba(8,8,7,.15), rgba(8,8,7,.05));
+}
+.dream-badge{
+  position:absolute;
+  left:20px;bottom:20px;z-index:2;
+  font-family:var(--mono);font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--bg);background:var(--fg);
+  padding:9px 14px;border-radius:999px;
+}
+.dream-copy{
+  position:relative;
+  padding:clamp(30px,5vw,62px);
+  display:flex;flex-direction:column;justify-content:center;
+}
+.dream-label{
+  font-family:var(--mono);font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--acc);margin-bottom:18px;
+  display:flex;align-items:center;gap:12px;
+}
+.dream-label::before{
+  content:'';display:block;width:18px;height:1px;background:var(--acc);
+}
+.dream-title{
+  font-family:var(--display);
+  font-size:clamp(2.3rem,5vw,5rem);
+  font-weight:400;line-height:1.02;letter-spacing:-.02em;
+  margin-bottom:18px;
+}
+.dream-title i{font-style:italic;color:var(--acc);}
+.dream-copy p{
+  max-width:620px;
+  font-size:clamp(.92rem,1.2vw,1rem);
+  color:var(--fg2);line-height:1.9;
+}
+.dream-stats{
+  display:flex;flex-wrap:wrap;gap:10px;
+  margin-top:24px;
+}
+.dream-pill{
+  border:1px solid var(--line);
+  padding:8px 14px;border-radius:999px;
+  font-family:var(--mono);font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--fg2);
+  background:rgba(237,233,224,.02);
+}
+
 /* ══════════════════════════════
    CONTACT
 ══════════════════════════════ */
@@ -782,6 +868,8 @@ body.ro span[data-ro]{display:inline;}
   .gal-col:nth-child(2){margin-top:clamp(20px,3vw,36px);}
   .svc-top,.ms-wrap{flex-direction:column;gap:20px;}
   .ms-wrap{grid-template-columns:1fr;gap:36px;}
+  .dream-card{grid-template-columns:1fr;}
+  .dream-photo{min-height:300px;}
   .ms-left{position:static;}
   .svc-top p,.gal-sub{text-align:left;max-width:100%;}
   .hero-content{grid-template-columns:1fr;}
@@ -797,6 +885,8 @@ body.ro span[data-ro]{display:inline;}
   .gal-col:nth-child(3){display:flex;}
   .svc-item{grid-template-columns:40px 1fr;}
   .svc-arr{display:none;}
+  #dreams{margin-bottom:-30px;}
+  .dream-copy{padding:26px 20px 30px;}
 }
 </style>
 </head>
@@ -924,10 +1014,9 @@ body.ro span[data-ro]{display:inline;}
     <p data-ro>Destul de matur să livrez. Destul de tânăr să nu complicăm.</p>
     <div class="about-chips">
       <span class="chip">Web Dev</span>
-      <span class="chip">Video Edit</span>
-      <span class="chip">Sales</span>
-      <span class="chip">Photography</span>
-      <span class="chip">Iași, RO</span>
+      <span class="chip">Video Editor</span>
+      <span class="chip">Photo editor</span>
+      <span class="chip"> 📍Iași, RO</span>
     </div>
   </div>
 </section>
@@ -1036,6 +1125,64 @@ body.ro span[data-ro]{display:inline;}
   </div>
 </section>
 
+
+
+<!-- DREAMS -->
+<section id="dreams">
+  <div class="dream-card rv-scale">
+    
+    <div class="dream-photo">
+      <img src="assets/img/photo6.jpeg" alt="Young Aman sitting on a bench" loading="lazy"/>
+      <span class="dream-badge">
+        <span data-en>It all started here.</span>
+        <span data-ro>Totul a început aici.</span>
+      </span>
+    </div>
+
+    <div class="dream-copy">
+      
+      <p class="dream-label">
+        <span data-en>Vision</span>
+        <span data-ro>Viziune</span>
+      </p>
+
+      <h2 class="dream-title">
+        <span data-en>Started small.<br/><b>Dreamed big.</b></span>
+        <span data-ro>Am început mic.<br/><b>Am visat măreț.</b></span>
+      </h2>
+
+      <p>
+        <span data-en>
+          It began with a simple mindset - aim higher, push harder, and never stop building.  
+          What once felt like a distant dream slowly started becoming something real.
+        </span>
+        <span data-ro>
+          Totul a început cu o mentalitate simplă — să țintesc mai sus, să muncesc mai mult și să nu mă opresc niciodată din construit.  
+          Ce părea cândva doar un vis îndepărtat începe să devină realitate.
+        </span>
+      </p>
+
+      <div class="dream-stats">
+        <span class="dream-pill">
+          <span data-en>Started young</span>
+          <span data-ro>Început de mic</span>
+        </span>
+
+        <span class="dream-pill">
+          <span data-en>Built with purpose</span>
+          <span data-ro>Construit cu scop</span>
+        </span>
+
+        <span class="dream-pill">
+          <span data-en>Still evolving</span>
+          <span data-ro>În continuă evoluție</span>
+        </span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- CONTACT -->
 <section id="contact">
   <div class="ct-inner">
@@ -1045,7 +1192,7 @@ body.ro span[data-ro]{display:inline;}
       <span data-ro>Hai să vorbim<br/><i>pe Instagram.</i></span>
     </h2>
     <p class="ct-desc rv d2">
-      <span data-en>For projects, collabs or questions — my DMs are open.</span>
+      <span data-en>For projects, collabs or questions - my DMs are open.</span>
       <span data-ro>Pentru proiecte, colaborări sau întrebări — DM-urile sunt deschise.</span>
     </p>
     <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" class="ct-ig rv d3">
