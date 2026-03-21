@@ -645,115 +645,81 @@ body.loaded .hero-img img{transform:scale(1.07);}
 #trail-canvas{position:fixed;inset:0;pointer-events:none;z-index:8800;}
 
 /* CONTACT — cinematic */
-#contact{
-  position:relative;
-  min-height:100svh;
-  display:flex;align-items:center;justify-content:center;
-  overflow:hidden;
-  background:var(--bg);
-  padding:clamp(80px,12vh,140px) var(--px);
-}
-/* animated noise bg */
-#contact::before{
-  content:'';position:absolute;inset:0;
-  background:
-    radial-gradient(ellipse 80% 60% at 50% 50%, rgba(45,122,79,.04) 0%, transparent 70%);
-  pointer-events:none;z-index:0;
-}
-/* big orbiting ring */
-.ct-ring{
-  position:absolute;
-  width:clamp(300px,60vw,700px);
-  height:clamp(300px,60vw,700px);
-  border-radius:50%;
-  border:1px solid rgba(45,122,79,.07);
-  top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  animation:ct-spin 18s linear infinite;
-  pointer-events:none;z-index:0;
-}
-.ct-ring:nth-child(2){
-  width:clamp(200px,40vw,480px);
-  height:clamp(200px,40vw,480px);
-  border-color:rgba(45,122,79,.05);
-  animation:ct-spin 11s linear infinite reverse;
-}
-.ct-ring::after{
-  content:'';
-  position:absolute;top:-3px;left:50%;
-  width:6px;height:6px;
-  background:var(--acc);
-  border-radius:50%;
-  box-shadow:0 0 12px 3px rgba(45,122,79,.4);
-  transform:translateX(-50%);
-}
-@keyframes ct-spin{from{transform:translate(-50%,-50%) rotate(0);}to{transform:translate(-50%,-50%) rotate(360deg);}}
-
-.ct-inner{
-  position:relative;z-index:1;
-  display:flex;flex-direction:column;align-items:center;
-  gap:clamp(20px,3vw,36px);
-  max-width:680px;margin:0 auto;text-align:center;
-}
-.ct-label{
-  font-family:var(--mono);font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;
-  color:var(--acc);display:flex;align-items:center;gap:14px;
-}
-.ct-label::before,.ct-label::after{content:'';display:block;width:14px;height:1px;background:var(--acc);}
-.ct-title{
-  font-family:var(--display);
-  font-size:clamp(3.2rem,7vw,7.5rem);
-  font-weight:400;line-height:.95;letter-spacing:-.02em;
-}
-.ct-title i{font-style:italic;color:var(--acc-bright);}
-.ct-desc{
-  font-size:clamp(.88rem,1.3vw,1rem);font-weight:300;
-  color:var(--fg2);line-height:1.9;max-width:420px;
-}
-/* the main CTA button — splits on hover */
-.ct-ig{
-  position:relative;
-  display:inline-flex;align-items:center;gap:16px;
-  background:transparent;
-  color:var(--fg);
-  font-family:var(--display);font-size:clamp(1.1rem,2.2vw,1.6rem);font-weight:400;letter-spacing:.02em;
-  padding:clamp(16px,2.5vw,22px) clamp(36px,5vw,64px);
-  border:1px solid rgba(45,122,79,.35);
-  overflow:hidden;
-  transition:color .4s,border-color .4s,gap .4s;
-}
-.ct-ig::before{
-  content:'';position:absolute;inset:0;
-  background:var(--acc);
-  transform:scaleX(0);transform-origin:left;
-  transition:transform .55s var(--ease2);
-  z-index:0;
-}
+/* ── CONTACT TERMINAL ── */
+#contact{position:relative;min-height:100svh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--bg);padding:clamp(80px,10vh,120px) var(--px);}
+#contact::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 50%,rgba(45,122,79,.06) 0%,transparent 70%);pointer-events:none;z-index:0;}
+#contact::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:1;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(45,122,79,.015) 2px,rgba(45,122,79,.015) 4px);}
+.ct-terminal{position:relative;z-index:2;width:100%;max-width:720px;margin:0 auto;}
+.ct-terminal-header{display:flex;align-items:center;gap:8px;background:rgba(45,122,79,.1);border:1px solid rgba(45,122,79,.22);border-bottom:none;padding:10px 16px;}
+.ct-dot{width:12px;height:12px;border-radius:50%;}
+.ct-dot:nth-child(1){background:#ff5f57;}
+.ct-dot:nth-child(2){background:#febc2e;}
+.ct-dot:nth-child(3){background:#28c840;}
+.ct-terminal-title{font-family:var(--mono);font-size:.5rem;letter-spacing:.12em;color:rgba(45,122,79,.55);margin-left:8px;}
+.ct-terminal-body{border:1px solid rgba(45,122,79,.22);background:rgba(5,8,7,.96);padding:clamp(22px,4vw,38px);min-height:320px;font-family:var(--mono);}
+.ct-line{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;opacity:0;transform:translateY(6px);transition:opacity .4s var(--ease),transform .4s var(--ease);}
+.ct-line.show{opacity:1;transform:none;}
+.ct-prompt{color:var(--acc);font-size:.6rem;letter-spacing:.06em;flex-shrink:0;padding-top:1px;}
+.ct-text{font-size:.6rem;letter-spacing:.06em;color:var(--fg2);line-height:1.75;}
+.ct-text.green{color:var(--acc-bright);}
+.ct-text.white{color:var(--fg);}
+.ct-text.dim{color:var(--fg3);}
+.ct-text a{color:var(--acc-bright);border-bottom:1px solid rgba(63,168,107,.3);transition:border-color .25s;}
+.ct-text a:hover{border-color:var(--acc-bright);}
+.ct-cursor{display:inline-block;width:7px;height:13px;background:var(--acc);vertical-align:middle;animation:blink-cur .8s step-end infinite;margin-left:2px;}
+@keyframes blink-cur{0%,100%{opacity:1;}50%{opacity:0;}}
+.ct-badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:var(--acc);border:1px solid rgba(45,122,79,.28);padding:4px 12px;margin-top:14px;background:rgba(45,122,79,.05);}
+.ct-badge::before{content:'';display:block;width:6px;height:6px;border-radius:50%;background:#28c840;animation:pulse 2s infinite;}
+.ct-actions{display:flex;align-items:center;gap:14px;margin-top:18px;flex-wrap:wrap;}
+.ct-ig{position:relative;display:inline-flex;align-items:center;gap:12px;background:var(--acc);color:var(--bg);font-family:var(--mono);font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;padding:13px 26px;overflow:hidden;transition:background .3s,gap .35s,transform .3s;}
+.ct-ig::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,.1);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease);}
 .ct-ig:hover::before{transform:scaleX(1);}
-.ct-ig:hover{color:var(--bg);border-color:var(--acc);gap:24px;}
-.ct-ig span,.ct-ig svg{position:relative;z-index:1;}
-.ct-ig svg{flex-shrink:0;transition:transform .4s var(--ease3);}
-.ct-ig:hover svg{transform:rotate(-12deg) scale(1.15);}
-
-/* secondary contacts row */
-.ct-links-row{
-  display:flex;align-items:center;gap:clamp(16px,3vw,32px);
-  flex-wrap:wrap;justify-content:center;
-}
-.ct-email{
-  font-family:var(--mono);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--fg3);
-  position:relative;padding-bottom:3px;
-}
-.ct-email::after{
-  content:'';position:absolute;bottom:0;left:0;width:0;height:1px;
-  background:var(--acc);transition:width .4s var(--ease);
-}
+.ct-ig:hover{background:var(--acc-bright);gap:18px;transform:translateX(-3px);}
+.ct-ig svg,.ct-ig span{position:relative;z-index:1;}
+.ct-email{font-family:var(--mono);font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg3);position:relative;padding-bottom:2px;}
+.ct-email::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1px;background:var(--acc);transition:width .4s var(--ease);}
 .ct-email:hover{color:var(--fg);}
 .ct-email:hover::after{width:100%;}
 
-/* FOOTER */
-footer{background:var(--bg);border-top:1px solid var(--line);padding:clamp(24px,3.5vw,40px) var(--px);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;}
+/* ── FAQ ── */
+#faq{padding:clamp(64px,9vw,100px) var(--px);background:var(--bg2);}
+.faq-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:clamp(28px,5vw,52px);flex-wrap:wrap;gap:14px;}
+.faq-header h2{font-family:var(--display);font-size:clamp(2.4rem,5vw,5rem);font-weight:400;line-height:1.05;letter-spacing:-.01em;}
+.faq-header h2 i{font-style:italic;color:var(--acc);}
+.faq-header p{font-family:var(--mono);font-size:.54rem;letter-spacing:.1em;color:var(--fg3);max-width:220px;line-height:1.8;text-align:right;}
+.faq-list{border-top:1px solid var(--line);}
+.faq-item{border-bottom:1px solid var(--line);overflow:hidden;}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:clamp(16px,2.8vw,26px) 0;cursor:none;gap:18px;transition:padding-left .4s var(--ease);}
+.faq-q:hover{padding-left:clamp(6px,1vw,12px);}
+.faq-q-text{font-family:var(--display);font-size:clamp(.95rem,1.8vw,1.4rem);font-weight:400;letter-spacing:-.01em;transition:color .25s;}
+.faq-item.open .faq-q-text{color:var(--acc);}
+.faq-icon{font-family:var(--mono);font-size:1.1rem;color:var(--fg3);flex-shrink:0;transition:transform .4s var(--ease),color .25s;line-height:1;}
+.faq-item.open .faq-icon{transform:rotate(45deg);color:var(--acc);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .5s var(--ease),padding .4s var(--ease);}
+.faq-item.open .faq-a{max-height:300px;padding-bottom:clamp(14px,2.5vw,22px);}
+.faq-a p{font-size:clamp(.84rem,1.2vw,.94rem);font-weight:300;color:var(--fg2);line-height:1.85;max-width:620px;}
+.faq-a p a{color:var(--acc);border-bottom:1px solid rgba(45,122,79,.3);}
+
+/* ── FOOTER PREMIUM ── */
+footer{background:var(--bg);border-top:1px solid var(--line);padding:clamp(40px,6vw,70px) var(--px) clamp(24px,4vw,40px);}
+.ft-top{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:clamp(28px,5vw,68px);margin-bottom:clamp(28px,5vw,48px);padding-bottom:clamp(28px,5vw,48px);border-bottom:1px solid var(--line);}
+.ft-logo{font-family:var(--display);font-size:1.3rem;font-weight:400;letter-spacing:.04em;display:block;margin-bottom:11px;}
+.ft-logo i{font-style:italic;color:var(--acc);}
+.ft-brand p{font-family:var(--mono);font-size:.52rem;letter-spacing:.08em;color:var(--fg3);line-height:1.9;max-width:230px;}
+.ft-col-title{font-family:var(--mono);font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--acc);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.ft-col-title::before{content:'';display:block;width:11px;height:1px;background:var(--acc);}
+.ft-links{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.ft-links a{font-family:var(--mono);font-size:.52rem;letter-spacing:.1em;color:var(--fg3);transition:color .25s;display:flex;align-items:center;gap:7px;}
+.ft-links a::before{content:'→';font-size:.48rem;opacity:0;transition:opacity .25s,transform .25s var(--ease);transform:translateX(-5px);}
+.ft-links a:hover{color:var(--fg);}
+.ft-links a:hover::before{opacity:1;transform:translateX(0);}
+.ft-bottom{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.ft-copy{font-family:var(--mono);font-size:.48rem;letter-spacing:.1em;color:var(--fg3);}
+.ft-social{display:flex;gap:10px;}
+.ft-social a{font-family:var(--mono);font-size:.48rem;letter-spacing:.1em;text-transform:uppercase;color:var(--fg3);border:1px solid var(--line);padding:5px 11px;transition:all .25s;}
+.ft-social a:hover{border-color:var(--acc);color:var(--acc);}
+.ft-status{display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:.48rem;letter-spacing:.1em;color:var(--acc);}
+.ft-status-dot{width:5px;height:5px;border-radius:50%;background:#28c840;animation:pulse 2.4s infinite;}
 
 
 
@@ -884,7 +850,9 @@ body.ro span[data-ro]{display:inline;}
   .hero-right{align-items:flex-start;min-width:unset;}
   .hero-desc{text-align:left;}
   .hero-cta{align-items:flex-start;}
-  footer{justify-content:center;text-align:center;}
+  .ft-top{grid-template-columns:1fr;gap:28px;}
+  footer{text-align:center;}
+  .faq-header p{text-align:left;max-width:100%;}
   .reviews-grid{grid-template-columns:1fr;}
 
   /* PRICING MOBILE */
@@ -983,6 +951,7 @@ body.ro span[data-ro]{display:inline;}
     <li><a href="#gallery"><span data-en>Gallery</span><span data-ro>Galerie</span></a></li>
     <li><a href="#reviews"><span data-en>Reviews</span><span data-ro>Recenzii</span></a></li>
     <li><a href="#contact">Contact</a></li>
+    <li><a href="#faq">FAQ</a></li>
   </ul>
   <div class="n-right">
     <button class="lang" id="lang">
@@ -1551,35 +1520,121 @@ body.ro span[data-ro]{display:inline;}
   </div>
 </section>
 
-<!-- CONTACT -->
+<!-- CONTACT — Terminal -->
 <section id="contact">
-  <div class="ct-ring"></div>
-  <div class="ct-ring"></div>
-  <div class="ct-inner">
-    <p class="ct-label rv"><span data-en>Let's work</span><span data-ro>Hai să lucrăm</span></p>
-    <h2 class="ct-title rv d1">
-      <span data-en>Got a project<br/>in <i>mind?</i></span>
-      <span data-ro>Ai un proiect<br/>în <i>minte?</i></span>
-    </h2>
-    <p class="ct-desc rv d2">
-      <span data-en>I'm open for projects, collabs and new ideas. Fastest way — Instagram DM.</span>
-      <span data-ro>Sunt deschis pentru proiecte, colaborări și idei noi. Cel mai rapid — Instagram DM.</span>
-    </p>
-    <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" class="ct-ig rv d3">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
-      <span>@costi1andrei</span>
-    </a>
-    <div class="ct-links-row rv d4">
-      <a href="mailto:zenmail.andrei@gmail.com" class="ct-email">zenmail.andrei@gmail.com</a>
+  <div class="ct-terminal rv">
+    <div class="ct-terminal-header">
+      <div class="ct-dot"></div>
+      <div class="ct-dot"></div>
+      <div class="ct-dot"></div>
+      <span class="ct-terminal-title">costi@aman:~/contact — bash</span>
+    </div>
+    <div class="ct-terminal-body" id="ct-body">
+      <!-- lines typed by JS -->
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- FAQ -->
+<section id="faq">
+  <div class="faq-header">
+    <h2 class="rv">
+      <span data-en>Frequent<br/><i>questions.</i></span>
+      <span data-ro>Întrebări<br/><i>frecvente.</i></span>
+    </h2>
+    <p class="rv d1">
+      <span data-en>Everything you need to know before we start.</span>
+      <span data-ro>Tot ce trebuie să știi înainte să începem.</span>
+    </p>
+  </div>
+  <div class="faq-list rv d2">
+
+    <div class="faq-item">
+      <div class="faq-q">
+        <span class="faq-q-text"><span data-en>How fast do you deliver?</span><span data-ro>Cât de repede livrezi?</span></span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a"><p><span data-en>Websites in 3–7 days. Videos in 24–48h. Photos same day or next day. I work fast without cutting corners.</span><span data-ro>Site-uri în 3–7 zile. Videoclipuri în 24–48h. Poze în aceeași zi sau a doua zi. Lucrez rapid fără să tai colțuri.</span></p></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">
+        <span class="faq-q-text"><span data-en>How do we communicate during the project?</span><span data-ro>Cum comunicăm pe parcursul proiectului?</span></span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a"><p><span data-en>Mainly Instagram DM. I respond in under 2 hours during the day. No ghosting, no delays — I keep you updated at every step.</span><span data-ro>În principal pe Instagram DM. Răspund în mai puțin de 2 ore în timpul zilei. Fără dispărut, fără întârzieri — te țin la curent la fiecare pas.</span></p></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">
+        <span class="faq-q-text"><span data-en>Do you offer revisions?</span><span data-ro>Oferi revizii?</span></span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a"><p><span data-en>Yes. All projects include at least 1 round of revisions. If something isn't right, we fix it — no extra charge for reasonable changes.</span><span data-ro>Da. Toate proiectele includ cel puțin 1 rundă de revizii. Dacă ceva nu e bine, îl corectăm — fără cost suplimentar pentru modificări rezonabile.</span></p></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">
+        <span class="faq-q-text"><span data-en>How do I pay?</span><span data-ro>Cum plătesc?</span></span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a"><p><span data-en>Bank transfer or PayPal. 50% upfront, 50% on delivery. For smaller projects (under €20) it's full payment upfront.</span><span data-ro>Transfer bancar sau PayPal. 50% în avans, 50% la livrare. Pentru proiecte mici (sub 20€) plata integrală în avans.</span></p></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">
+        <span class="faq-q-text"><span data-en>Can you work with clients outside Romania?</span><span data-ro>Lucrezi și cu clienți din afara României?</span></span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a"><p><span data-en>Absolutely. I work remotely with clients from anywhere. Communication is in Romanian or English — whichever you prefer.</span><span data-ro>Absolut. Lucrez remote cu clienți de oriunde. Comunicarea se face în română sau engleză — la alegerea ta.</span></p></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER PREMIUM -->
 <footer>
-  <p class="ft-logo">Aman <i>/ Costi Andrei</i></p>
-  <small>© 2026 · Iași, Romania</small>
-  <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" class="ft-ig">@costi1andrei</a>
+  <div class="ft-top">
+    <div class="ft-brand">
+      <a href="#hero" class="ft-logo">Aman <i>/ Costi Andrei</i></a>
+      <p><span data-en>Developer, Editor & Creator based in Iași, Romania. Building real things for real people since 2023.</span><span data-ro>Developer, Editor & Creator din Iași, România. Construiesc lucruri reale pentru oameni reali din 2023.</span></p>
+      <div class="ft-status" style="margin-top:14px;">
+        <span class="ft-status-dot"></span>
+        <span data-en>Available for new projects</span>
+        <span data-ro>Disponibil pentru proiecte noi</span>
+      </div>
+    </div>
+    <div>
+      <p class="ft-col-title"><span data-en>Navigation</span><span data-ro>Navigare</span></p>
+      <ul class="ft-links">
+        <li><a href="#about"><span data-en>About</span><span data-ro>Despre</span></a></li>
+        <li><a href="#services"><span data-en>Services</span><span data-ro>Servicii</span></a></li>
+        <li><a href="#pricing"><span data-en>Pricing</span><span data-ro>Prețuri</span></a></li>
+        <li><a href="#gallery"><span data-en>Gallery</span><span data-ro>Galerie</span></a></li>
+        <li><a href="#reviews"><span data-en>Reviews</span><span data-ro>Recenzii</span></a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="ft-col-title"><span data-en>Contact</span><span data-ro>Contact</span></p>
+      <ul class="ft-links">
+        <li><a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener">@costi1andrei</a></li>
+        <li><a href="mailto:zenmail.andrei@gmail.com">zenmail.andrei@gmail.com</a></li>
+        <li><a href="#contact"><span data-en>Start a project</span><span data-ro>Începe un proiect</span></a></li>
+      </ul>
+      <p class="ft-col-title" style="margin-top:22px;"><span data-en>Response time</span><span data-ro>Timp de răspuns</span></p>
+      <ul class="ft-links">
+        <li><a href="#contact" style="pointer-events:none;cursor:default;">⚡ &lt; 2h <span data-en>on Instagram</span><span data-ro>pe Instagram</span></a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="ft-bottom">
+    <span class="ft-copy">© 2026 Costi Andrei · Iași, Romania · All rights reserved</span>
+    <div class="ft-social">
+      <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener">Instagram</a>
+      <a href="mailto:zenmail.andrei@gmail.com">Email</a>
+    </div>
+  </div>
 </footer>
 
 <script>
@@ -1859,6 +1914,83 @@ document.querySelectorAll('.rv,.rv-left,.rv-right,.rv-scale').forEach(el=>{if(!e
 /* ── ACTIVE NAV ── */
 const secs=document.querySelectorAll('section[id]'),nas=document.querySelectorAll('.n-links a');
 window.addEventListener('scroll',()=>{let cur='';secs.forEach(s=>{if(scrollY>=s.offsetTop-90)cur=s.id;});nas.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+cur));},{passive:true});
+
+/* ── TERMINAL CONTACT ── */
+(function(){
+  const body = document.getElementById('ct-body');
+  if(!body) return;
+  const isRo = ()=>document.body.classList.contains('ro');
+
+  const lines = [
+    {prompt:'aman@contact:~$', text:'whoami', cls:'dim', delay:0},
+    {prompt:'>', text:'<span class="white">Costi Andrei</span> — Developer · Editor · Creator', cls:'', delay:600},
+    {prompt:'aman@contact:~$', text:'cat availability.txt', cls:'dim', delay:1200},
+    {prompt:'>', text:'<span class="green">● OPEN</span> for new projects · 2026', cls:'', delay:1800},
+    {prompt:'aman@contact:~$', text:'cat response_time.txt', cls:'dim', delay:2400},
+    {prompt:'>', text:'⚡ Responds in <span class="green">&lt; 2 hours</span> on Instagram DM', cls:'', delay:3000},
+    {prompt:'aman@contact:~$', text:'cat services.txt', cls:'dim', delay:3600},
+    {prompt:'>', text:'Web Dev · Video Editing · Photo & Image Editing', cls:'', delay:4200},
+    {prompt:'aman@contact:~$', text:'./start_project.sh', cls:'dim', delay:4800},
+    {prompt:'>', text:'<span class="green">Initializing...</span> Redirecting to Instagram DM', cls:'', delay:5400},
+    {prompt:'>', text:'<span class="dim">──────────────────────────────────────</span>', cls:'', delay:5800},
+    {prompt:'$', text:'_ACTIONS_', cls:'', delay:6200},
+  ];
+
+  function makeLine(prompt, text, cls){
+    const div = document.createElement('div');
+    div.className = 'ct-line';
+    div.innerHTML = `<span class="ct-prompt">${prompt}</span><span class="ct-text ${cls}">${text}</span>`;
+    return div;
+  }
+
+  const observer = new IntersectionObserver(entries=>{
+    if(!entries[0].isIntersecting) return;
+    observer.disconnect();
+    lines.forEach(({prompt, text, cls, delay})=>{
+      setTimeout(()=>{
+        if(text === '_ACTIONS_'){
+          // inject CTA
+          const div = document.createElement('div');
+          div.className = 'ct-line';
+          div.innerHTML = `<span class="ct-prompt">$</span><span class="ct-text">
+            <span class="ct-badge">⚡ Responds in &lt; 2h</span><br/>
+            <div class="ct-actions">
+              <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" class="ct-ig">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+                <span>@costi1andrei</span>
+              </a>
+              <a href="mailto:zenmail.andrei@gmail.com" class="ct-email">zenmail.andrei@gmail.com</a>
+            </div>
+          </span>`;
+          body.appendChild(div);
+          setTimeout(()=>div.classList.add('show'), 50);
+          // cursor blink at end
+          const cur = document.createElement('div');
+          cur.className = 'ct-line show';
+          cur.innerHTML = `<span class="ct-prompt">$</span><span class="ct-text"><span class="ct-cursor"></span></span>`;
+          body.appendChild(cur);
+        } else {
+          const el = makeLine(prompt, text, cls);
+          body.appendChild(el);
+          setTimeout(()=>el.classList.add('show'), 50);
+          // scroll terminal
+          body.scrollTop = body.scrollHeight;
+        }
+      }, delay);
+    });
+  },{threshold:.15});
+  const sec = document.getElementById('contact');
+  if(sec) observer.observe(sec);
+})();
+
+/* ── FAQ ACCORDION ── */
+document.querySelectorAll('.faq-item').forEach(item=>{
+  item.querySelector('.faq-q').addEventListener('click',()=>{
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+    if(!isOpen) item.classList.add('open');
+  });
+});
 
 /* ── LIVE CLOCK — Iași ── */
 function updateClock(){
