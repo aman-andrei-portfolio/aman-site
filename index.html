@@ -9,38 +9,24 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Mono:wght@300;400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet"/>
 <style>
-/* ══════════════════════════════
-   TOKENS
-══════════════════════════════ */
 :root{
   --bg:#080807;
   --fg:#ede9e0;
   --fg2:rgba(237,233,224,.42);
   --fg3:rgba(237,233,224,.18);
-  --acc:#c9a96e;   /* warm gold */
+  --acc:#c9a96e;
   --acc2:rgba(201,169,110,.15);
   --line:rgba(237,233,224,.09);
   --display:'Playfair Display',Georgia,serif;
   --body:'Jost',sans-serif;
   --mono:'DM Mono',monospace;
   --ease:cubic-bezier(.23,1,.32,1);
+  --ease2:cubic-bezier(.16,1,.3,1);
   --px:clamp(20px,5vw,72px);
 }
-
-/* ══════════════════════════════
-   RESET
-══════════════════════════════ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;font-size:16px;}
-body{
-  background:var(--bg);
-  color:var(--fg);
-  font-family:var(--body);
-  font-weight:300;
-  line-height:1.6;
-  overflow-x:hidden;
-  cursor:none;
-}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-weight:300;line-height:1.6;overflow-x:hidden;cursor:none;}
 img{display:block;width:100%;height:100%;object-fit:cover;}
 a{color:inherit;text-decoration:none;}
 button{background:none;border:none;font-family:inherit;cursor:none;}
@@ -48,816 +34,402 @@ button{background:none;border:none;font-family:inherit;cursor:none;}
 ::-webkit-scrollbar{width:2px;}
 ::-webkit-scrollbar-thumb{background:var(--line);}
 
-/* ══════════════════════════════
-   GRAIN
-══════════════════════════════ */
-body::after{
-  content:'';
-  position:fixed;inset:0;
-  pointer-events:none;
-  z-index:9990;
-  opacity:.35;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
-}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;opacity:.35;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");}
 
-/* ══════════════════════════════
-   LOADER
-══════════════════════════════ */
-#loader{
-  position:fixed;inset:0;z-index:9999;
-  background:var(--bg);
-  display:flex;align-items:center;justify-content:center;
-  overflow:hidden;
-}
-#loader.out{
-  animation:loaderOut .9s var(--ease) forwards;
-}
-@keyframes loaderOut{
-  0%{clip-path:polygon(0 0,100% 0,100% 100%,0 100%);}
-  100%{clip-path:polygon(0 0,100% 0,100% 0%,0 0%);}
-}
+/* LOADER */
+#loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;overflow:hidden;}
+#loader.out{animation:loaderOut .9s var(--ease) forwards;}
+@keyframes loaderOut{0%{clip-path:polygon(0 0,100% 0,100% 100%,0 100%);}100%{clip-path:polygon(0 0,100% 0,100% 0%,0 0%);}}
 .ld-inner{display:flex;flex-direction:column;align-items:center;gap:28px;}
-.ld-name{
-  font-family:var(--display);
-  font-size:clamp(3.5rem,10vw,9rem);
-  font-weight:400;
-  letter-spacing:.02em;
-  line-height:1;
-  overflow:hidden;
-}
-.ld-name .wrd{
-  display:inline-block;
-  transform:translateY(100%);
-  transition:transform .9s var(--ease);
-}
+.ld-name{font-family:var(--display);font-size:clamp(3.5rem,10vw,9rem);font-weight:400;letter-spacing:.02em;line-height:1;overflow:hidden;}
+.ld-name .wrd{display:inline-block;transform:translateY(100%);transition:transform .9s var(--ease);}
 .ld-name .wrd.up{transform:translateY(0);}
 .ld-name i{font-style:italic;color:var(--acc);}
-.ld-bar{
-  width:clamp(100px,18vw,200px);
-  height:1px;
-  background:var(--line);
-  position:relative;
-  overflow:hidden;
-}
-.ld-bar::after{
-  content:'';
-  position:absolute;inset:0;
-  background:var(--acc);
-  transform:scaleX(0);
-  transform-origin:left;
-  transition:transform 1.4s var(--ease);
-}
+.ld-bar{width:clamp(100px,18vw,200px);height:1px;background:var(--line);position:relative;overflow:hidden;}
+.ld-bar::after{content:'';position:absolute;inset:0;background:var(--acc);transform:scaleX(0);transform-origin:left;transition:transform 1.4s var(--ease);}
 .ld-bar.go::after{transform:scaleX(1);}
-.ld-pct{
-  font-family:var(--mono);
-  font-size:.6rem;
-  letter-spacing:.2em;
-  color:var(--fg3);
-  min-width:3ch;
-  text-align:center;
-}
+.ld-pct{font-family:var(--mono);font-size:.6rem;letter-spacing:.2em;color:var(--fg3);min-width:3ch;text-align:center;}
 
-/* ══════════════════════════════
-   CURSOR
-══════════════════════════════ */
-#cur-dot{
-  position:fixed;top:0;left:0;
-  width:8px;height:8px;
-  background:var(--acc);
-  border-radius:50%;
-  pointer-events:none;
-  z-index:8900;
-  transform:translate(-50%,-50%);
-  transition:transform .1s,width .3s,height .3s,opacity .3s;
-}
-#cur-ring{
-  position:fixed;top:0;left:0;
-  width:38px;height:38px;
-  border:1px solid rgba(201,169,110,.3);
-  border-radius:50%;
-  pointer-events:none;
-  z-index:8899;
-  transform:translate(-50%,-50%);
-  transition:width .3s,height .3s,border-color .3s;
-}
-body.hov #cur-dot{width:48px;height:48px;opacity:.08;}
-body.hov #cur-ring{width:48px;height:48px;border-color:transparent;}
+/* CURSOR */
+#cur-dot{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--acc);border-radius:50%;pointer-events:none;z-index:8900;transform:translate(-50%,-50%);transition:width .35s var(--ease2),height .35s var(--ease2),opacity .3s,background .3s;}
+#cur-ring{position:fixed;top:0;left:0;width:38px;height:38px;border:1px solid rgba(201,169,110,.3);border-radius:50%;pointer-events:none;z-index:8899;transform:translate(-50%,-50%);transition:width .45s var(--ease2),height .45s var(--ease2),border-color .3s;}
+#cur-label{position:fixed;top:0;left:0;font-family:var(--mono);font-size:.48rem;letter-spacing:.16em;text-transform:uppercase;color:var(--acc);pointer-events:none;z-index:8901;transform:translate(-50%,-50%);opacity:0;transition:opacity .3s;white-space:nowrap;text-align:center;}
+body.hov #cur-dot{width:52px;height:52px;opacity:.06;}
+body.hov #cur-ring{width:52px;height:52px;border-color:transparent;}
+body.cur-price #cur-dot{width:60px;height:60px;opacity:0;}
+body.cur-price #cur-ring{width:60px;height:60px;border-color:var(--acc);border-width:1.5px;}
+body.cur-price #cur-label{opacity:1;}
 
-/* ══════════════════════════════
-   NAV
-══════════════════════════════ */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:800;
-  height:66px;
-  padding:0 var(--px);
-  display:flex;align-items:center;justify-content:space-between;
-  transition:background .5s,border-color .5s;
-  border-bottom:1px solid transparent;
-}
-nav.stuck{
-  background:rgba(8,8,7,.9);
-  backdrop-filter:blur(24px);
-  -webkit-backdrop-filter:blur(24px);
-  border-color:var(--line);
-}
-.n-logo{
-  font-family:var(--display);
-  font-size:1.15rem;
-  font-weight:400;
-  letter-spacing:.05em;
-}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:800;height:66px;padding:0 var(--px);display:flex;align-items:center;justify-content:space-between;transition:background .5s,border-color .5s;border-bottom:1px solid transparent;}
+nav.stuck{background:rgba(8,8,7,.92);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border-color:var(--line);}
+.n-logo{font-family:var(--display);font-size:1.15rem;font-weight:400;letter-spacing:.05em;}
 .n-logo i{font-style:italic;color:var(--acc);}
-.n-links{display:flex;gap:32px;list-style:none;}
-.n-links a{
-  font-family:var(--mono);font-size:.6rem;
-  letter-spacing:.16em;text-transform:uppercase;
-  color:var(--fg2);
-  position:relative;
-  transition:color .25s;
-}
-.n-links a::before{
-  content:'';
-  position:absolute;bottom:-4px;left:0;
-  width:0;height:1px;
-  background:var(--acc);
-  transition:width .35s var(--ease);
-}
+.n-links{display:flex;gap:28px;list-style:none;}
+.n-links a{font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg2);position:relative;transition:color .25s;}
+.n-links a::before{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--acc);transition:width .35s var(--ease);}
 .n-links a:hover,.n-links a.on{color:var(--fg);}
 .n-links a:hover::before,.n-links a.on::before{width:100%;}
 .n-right{display:flex;align-items:center;gap:14px;}
-.lang{
-  font-family:var(--mono);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--fg3);
-  border:1px solid var(--line);
-  padding:5px 13px;border-radius:2px;
-  transition:all .25s;
-}
-.lang:hover{color:var(--fg);border-color:rgba(237,233,224,.3);}
+
+/* LANG BUTTON — bigger, flagged */
+.lang{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--fg);border:1px solid rgba(237,233,224,.28);padding:7px 16px;border-radius:4px;transition:all .3s;display:flex;align-items:center;gap:8px;background:rgba(237,233,224,.05);}
+.lang:hover{color:var(--fg);border-color:var(--acc);background:rgba(201,169,110,.1);}
+.lang .flag{font-size:1rem;line-height:1;}
+.lang .lang-text{font-size:.58rem;letter-spacing:.16em;font-weight:400;}
+
 .ham{display:none;flex-direction:column;gap:5px;padding:4px;}
 .ham span{display:block;width:22px;height:1px;background:var(--fg);transition:all .35s;}
 .ham.o span:nth-child(1){transform:rotate(45deg) translate(4px,4px);}
 .ham.o span:nth-child(2){opacity:0;}
 
-/* ══════════════════════════════
-   MOBILE NAV
-══════════════════════════════ */
-#mnav{
-  display:none;position:fixed;inset:0;
-  background:var(--bg);z-index:790;
-  flex-direction:column;align-items:center;justify-content:center;gap:24px;
-  opacity:0;transition:opacity .4s var(--ease);
-}
+/* MOBILE NAV */
+#mnav{display:none;position:fixed;inset:0;background:var(--bg);z-index:790;flex-direction:column;align-items:center;justify-content:center;gap:20px;opacity:0;transition:opacity .4s var(--ease);}
 #mnav.o{display:flex;opacity:1;}
-#mnav a{
-  font-family:var(--display);
-  font-size:clamp(2.4rem,9vw,4rem);
-  font-weight:400;
-  color:var(--fg2);
-  transition:color .2s,letter-spacing .4s;
-}
+#mnav a{font-family:var(--display);font-size:clamp(2rem,8vw,3.5rem);font-weight:400;color:var(--fg2);transition:color .2s;}
 #mnav a:hover{color:var(--fg);}
 
-/* ══════════════════════════════
-   REVEAL
-══════════════════════════════ */
-.rv{opacity:0;transform:translateY(32px);transition:opacity 1.1s var(--ease),transform 1.1s var(--ease);}
+/* REVEAL */
+.rv{opacity:0;transform:translateY(36px);transition:opacity 1.2s var(--ease),transform 1.2s var(--ease);}
 .rv.in{opacity:1;transform:none;}
-.d1{transition-delay:.1s;}.d2{transition-delay:.22s;}
-.d3{transition-delay:.34s;}.d4{transition-delay:.48s;}
-.rv-left{opacity:0;transform:translateX(-32px);transition:opacity 1.1s var(--ease),transform 1.1s var(--ease);}
+.d1{transition-delay:.1s;}.d2{transition-delay:.24s;}.d3{transition-delay:.38s;}.d4{transition-delay:.52s;}
+.rv-left{opacity:0;transform:translateX(-36px);transition:opacity 1.2s var(--ease),transform 1.2s var(--ease);}
 .rv-left.in{opacity:1;transform:none;}
-.rv-right{opacity:0;transform:translateX(32px);transition:opacity 1.1s var(--ease),transform 1.1s var(--ease);}
+.rv-right{opacity:0;transform:translateX(36px);transition:opacity 1.2s var(--ease),transform 1.2s var(--ease);}
 .rv-right.in{opacity:1;transform:none;}
-.rv-scale{opacity:0;transform:scale(.96);transition:opacity 1.2s var(--ease),transform 1.2s var(--ease);}
+.rv-scale{opacity:0;transform:scale(.95);transition:opacity 1.3s var(--ease),transform 1.3s var(--ease);}
 .rv-scale.in{opacity:1;transform:scale(1);}
 
-/* ══════════════════════════════
-   HERO — diagonal split
-══════════════════════════════ */
-#hero{
-  min-height:100svh;
-  position:relative;
-  overflow:hidden;
-  display:flex;flex-direction:column;
-  justify-content:flex-end;
-  padding:0 var(--px) clamp(40px,6vh,72px);
-}
-
-/* full bleed photo bg */
-.hero-img{
-  position:absolute;inset:0;
-  z-index:0;
-}
-.hero-img img{
-  object-position:top center;
-  transition:transform 8s ease;
-}
-body.loaded .hero-img img{transform:scale(1.06);}
-
-/* dark overlay */
-.hero-img::after{
-  content:'';
-  position:absolute;inset:0;
-  background:
-    linear-gradient(to top, rgba(8,8,7,.96) 0%, rgba(8,8,7,.55) 45%, rgba(8,8,7,.15) 100%),
-    linear-gradient(to right, rgba(8,8,7,.3) 0%, transparent 60%);
-}
-
-/* diagonal golden line across hero */
-.hero-line{
-  position:absolute;
-  top:0;bottom:0;
-  left:42%;
-  width:1px;
-  background:linear-gradient(to bottom, transparent 0%, var(--acc) 30%, var(--acc) 70%, transparent 100%);
-  opacity:.12;
-  z-index:1;
-  transform:skewX(-6deg);
-}
-
-.hero-content{
-  position:relative;z-index:2;
-  display:grid;
-  grid-template-columns:1fr auto;
-  align-items:flex-end;
-  gap:clamp(24px,5vw,80px);
-}
-
-.hero-left{}
-
-.hero-tag{
-  font-family:var(--mono);font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;
-  color:var(--acc);
-  margin-bottom:clamp(14px,2.5vh,24px);
-  display:flex;align-items:center;gap:12px;
-}
+/* HERO */
+#hero{min-height:100svh;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;padding:0 var(--px) clamp(40px,6vh,72px);}
+.hero-img{position:absolute;inset:0;z-index:0;}
+.hero-img img{object-position:top center;transition:transform 9s ease;}
+body.loaded .hero-img img{transform:scale(1.07);}
+.hero-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to top, rgba(8,8,7,.97) 0%, rgba(8,8,7,.55) 45%, rgba(8,8,7,.15) 100%),linear-gradient(to right, rgba(8,8,7,.3) 0%, transparent 60%);}
+.hero-line{position:absolute;top:0;bottom:0;left:42%;width:1px;background:linear-gradient(to bottom, transparent 0%, var(--acc) 30%, var(--acc) 70%, transparent 100%);opacity:.12;z-index:1;transform:skewX(-6deg);}
+.hero-content{position:relative;z-index:2;display:grid;grid-template-columns:1fr auto;align-items:flex-end;gap:clamp(24px,5vw,80px);}
+.hero-tag{font-family:var(--mono);font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--acc);margin-bottom:clamp(14px,2.5vh,24px);display:flex;align-items:center;gap:12px;}
 .hero-tag::before{content:'';display:block;width:20px;height:1px;background:var(--acc);}
-
-.hero-title{
-  font-family:var(--display);
-  font-size:clamp(4.5rem,11vw,13rem);
-  font-weight:400;
-  line-height:.88;
-  letter-spacing:-.01em;
-}
+.hero-title{font-family:var(--display);font-size:clamp(4.5rem,11vw,13rem);font-weight:400;line-height:.88;letter-spacing:-.01em;}
 .hero-title .line{overflow:hidden;display:block;}
-.hero-title .word{
-  display:inline-block;
-  transform:translateY(110%);
-  transition:transform 1.1s var(--ease);
-}
+.hero-title .word{display:inline-block;transform:translateY(110%);transition:transform 1.2s var(--ease);}
 .hero-title .word.up{transform:translateY(0);}
 .hero-title i{font-style:italic;color:var(--acc);}
-
-.hero-right{
-  display:flex;flex-direction:column;align-items:flex-end;gap:clamp(20px,3vh,36px);
-  padding-bottom:8px;
-  min-width:clamp(160px,22vw,280px);
-}
-
-.hero-desc{
-  font-family:var(--body);font-size:clamp(.88rem,1.2vw,.98rem);
-  font-weight:300;color:var(--fg2);line-height:1.8;
-  text-align:right;
-}
-
-.hero-cta{
-  display:flex;flex-direction:column;align-items:flex-end;gap:14px;
-}
-.btn-gold{
-  font-family:var(--mono);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;
-  background:var(--acc);color:var(--bg);
-  padding:13px 28px;
-  transition:background .25s,color .25s,transform .3s;
-  white-space:nowrap;
-}
-.btn-gold:hover{background:var(--fg);transform:translateX(-4px);}
-.btn-line{
-  font-family:var(--mono);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--fg2);
-  border-bottom:1px solid var(--line);padding-bottom:2px;
-  transition:color .25s,border-color .25s;
-  white-space:nowrap;
-}
+.hero-right{display:flex;flex-direction:column;align-items:flex-end;gap:clamp(20px,3vh,36px);padding-bottom:8px;min-width:clamp(160px,22vw,280px);}
+.hero-desc{font-family:var(--body);font-size:clamp(.88rem,1.2vw,.98rem);font-weight:300;color:var(--fg2);line-height:1.85;text-align:right;}
+.hero-cta{display:flex;flex-direction:column;align-items:flex-end;gap:14px;}
+.btn-gold{font-family:var(--mono);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;background:var(--acc);color:var(--bg);padding:13px 28px;transition:background .25s,color .25s,transform .35s var(--ease2);white-space:nowrap;}
+.btn-gold:hover{background:var(--fg);transform:translateX(-6px);}
+.btn-line{font-family:var(--mono);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--fg2);border-bottom:1px solid var(--line);padding-bottom:2px;transition:color .25s,border-color .25s;white-space:nowrap;}
 .btn-line:hover{color:var(--fg);border-color:var(--fg2);}
-
-.hero-bottom{
-  position:relative;z-index:2;
-  display:flex;align-items:center;justify-content:space-between;
-  border-top:1px solid var(--line);
-  padding-top:20px;
-  margin-top:clamp(28px,4vh,48px);
-  flex-wrap:wrap;gap:12px;
-}
-.hero-stat{
-  font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--fg3);
-  display:flex;align-items:center;gap:8px;
-}
-.pulse{
-  width:6px;height:6px;border-radius:50%;
-  background:#4eff8a;
-  animation:pulse 2.4s ease-in-out infinite;
-}
-@keyframes pulse{
-  0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(78,255,138,.5);}
-  50%{opacity:.6;box-shadow:0 0 0 8px rgba(78,255,138,0);}
-}
-.hero-scroll{
-  font-family:var(--mono);font-size:.56rem;letter-spacing:.18em;
-  text-transform:uppercase;color:var(--fg3);
-  display:flex;align-items:center;gap:10px;
-}
-.scroll-tick{
-  width:1px;height:28px;background:var(--line);
-  animation:stk 2.2s ease-in-out infinite;
-}
+.hero-bottom{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:20px;margin-top:clamp(28px,4vh,48px);flex-wrap:wrap;gap:12px;}
+.hero-stat{font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg3);display:flex;align-items:center;gap:8px;}
+.pulse{width:6px;height:6px;border-radius:50%;background:#4eff8a;animation:pulse 2.4s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(78,255,138,.5);}50%{opacity:.6;box-shadow:0 0 0 8px rgba(78,255,138,0);}}
+.hero-scroll{font-family:var(--mono);font-size:.56rem;letter-spacing:.18em;text-transform:uppercase;color:var(--fg3);display:flex;align-items:center;gap:10px;}
+.scroll-tick{width:1px;height:28px;background:var(--line);animation:stk 2.2s ease-in-out infinite;}
 @keyframes stk{0%,100%{opacity:.2;transform:scaleY(.4);}55%{opacity:1;transform:scaleY(1);}}
 
-/* ══════════════════════════════
-   MARQUEE
-══════════════════════════════ */
-.mq{
-  overflow:hidden;
-  border-top:1px solid var(--line);
-  border-bottom:1px solid var(--line);
-  padding:14px 0;
-}
-.mq-track{
-  display:flex;
-  width:max-content;
-  animation:mq 22s linear infinite;
-}
+/* MARQUEE */
+.mq{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0;}
+.mq-track{display:flex;width:max-content;animation:mq 22s linear infinite;}
 .mq-track:hover{animation-play-state:paused;}
 @keyframes mq{from{transform:translateX(0);}to{transform:translateX(-50%);}}
-.mq-item{
-  font-family:var(--display);font-style:italic;
-  font-size:clamp(.95rem,2vw,1.4rem);
-  font-weight:400;
-  color:var(--fg3);
-  white-space:nowrap;
-  padding:0 clamp(18px,3vw,44px);
-}
+.mq-item{font-family:var(--display);font-style:italic;font-size:clamp(.95rem,2vw,1.4rem);font-weight:400;color:var(--fg3);white-space:nowrap;padding:0 clamp(18px,3vw,44px);}
 .mq-item span{color:var(--acc);font-style:normal;margin-right:clamp(18px,3vw,44px);}
 
-/* ══════════════════════════════
-   ABOUT — 50/50 split
-══════════════════════════════ */
-#about{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  min-height:clamp(500px,80vh,900px);
-  position:relative;
-}
-
-.about-img{
-  position:relative;
-  overflow:hidden;
-}
-.about-img img{
-  object-position:top center;
-  transition:transform 1s var(--ease);
-}
-.about-img:hover img{transform:scale(1.04);}
-/* dark tint over image */
-.about-img::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(to right, rgba(8,8,7,.18) 0%, rgba(8,8,7,.55) 100%);
-}
-/* born tag */
-.born-tag{
-  position:absolute;
-  bottom:clamp(20px,4vw,44px);
-  left:clamp(16px,3vw,32px);
-  z-index:2;
-  background:var(--bg);
-  padding:12px 18px;
-  font-family:var(--mono);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--fg2);line-height:1.9;
-  border-left:2px solid var(--acc);
-}
+/* ABOUT */
+#about{display:grid;grid-template-columns:1fr 1fr;min-height:clamp(500px,80vh,900px);position:relative;}
+.about-img{position:relative;overflow:hidden;}
+.about-img img{object-position:top center;transition:transform 1.1s var(--ease);}
+.about-img:hover img{transform:scale(1.05);}
+.about-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to right, rgba(8,8,7,.18) 0%, rgba(8,8,7,.55) 100%);}
+.born-tag{position:absolute;bottom:clamp(20px,4vw,44px);left:clamp(16px,3vw,32px);z-index:2;background:var(--bg);padding:12px 18px;font-family:var(--mono);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--fg2);line-height:1.9;border-left:2px solid var(--acc);}
 .born-tag strong{display:block;font-family:var(--display);font-size:.95rem;font-weight:400;letter-spacing:.02em;color:var(--fg);}
-
-.about-text{
-  background:#0e0d0b;
-  display:flex;flex-direction:column;justify-content:center;
-  padding:clamp(48px,7vw,96px) clamp(28px,5vw,72px);
-  position:relative;
-}
-/* subtle gold vertical rule */
-.about-text::before{
-  content:'';
-  position:absolute;left:0;top:15%;bottom:15%;
-  width:1px;background:linear-gradient(to bottom, transparent, var(--acc), transparent);
-  opacity:.25;
-}
-
-.about-label{
-  font-family:var(--mono);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;
-  color:var(--acc);margin-bottom:clamp(16px,2.5vw,28px);
-  display:flex;align-items:center;gap:12px;
-}
+.about-text{background:#0e0d0b;display:flex;flex-direction:column;justify-content:center;padding:clamp(48px,7vw,96px) clamp(28px,5vw,72px);position:relative;}
+.about-text::before{content:'';position:absolute;left:0;top:15%;bottom:15%;width:1px;background:linear-gradient(to bottom, transparent, var(--acc), transparent);opacity:.25;}
+.about-label{font-family:var(--mono);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--acc);margin-bottom:clamp(16px,2.5vw,28px);display:flex;align-items:center;gap:12px;}
 .about-label::before{content:'';display:block;width:16px;height:1px;background:var(--acc);}
-
-.about-text h2{
-  font-family:var(--display);
-  font-size:clamp(2.2rem,4.5vw,4.5rem);
-  font-weight:400;line-height:1.1;letter-spacing:-.01em;
-  margin-bottom:clamp(20px,3vw,36px);
-}
+.about-text h2{font-family:var(--display);font-size:clamp(2.2rem,4.5vw,4.5rem);font-weight:400;line-height:1.1;letter-spacing:-.01em;margin-bottom:clamp(20px,3vw,36px);}
 .about-text h2 i{font-style:italic;color:var(--acc);}
-
-.about-text p{
-  font-size:clamp(.9rem,1.3vw,1rem);font-weight:300;
-  color:var(--fg2);line-height:1.85;margin-bottom:16px;
-}
+.about-text p{font-size:clamp(.9rem,1.3vw,1rem);font-weight:300;color:var(--fg2);line-height:1.85;margin-bottom:16px;}
 .about-text p:last-of-type{margin-bottom:0;}
 .about-text p strong{color:var(--fg);font-weight:400;}
-
-.about-chips{
-  display:flex;flex-wrap:wrap;gap:8px;
-  margin-top:clamp(20px,3vw,32px);
-}
-.chip{
-  font-family:var(--mono);font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;
-  border:1px solid var(--line);color:var(--fg2);
-  padding:5px 14px;
-  transition:border-color .25s,color .25s;
-}
+.about-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:clamp(20px,3vw,32px);}
+.chip{font-family:var(--mono);font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--line);color:var(--fg2);padding:5px 14px;transition:border-color .25s,color .25s;}
 .chip:hover{border-color:var(--acc);color:var(--acc);}
 
-/* ══════════════════════════════
-   GALLERY — overlapping stagger
-══════════════════════════════ */
-#gallery{
-  padding:clamp(64px,9vw,120px) var(--px);
-  background:var(--bg);
-  position:relative;
-  overflow:hidden;
-}
-/* background number */
-#gallery::before{
-  content:'02';
-  position:absolute;right:-2vw;bottom:-4vw;
-  font-family:var(--display);font-size:clamp(10rem,22vw,28rem);
-  font-weight:700;font-style:italic;
-  color:rgba(237,233,224,.025);
-  pointer-events:none;line-height:1;
-}
+/* SERVICES */
+#services{padding:clamp(64px,9vw,120px) var(--px);background:#0a0908;position:relative;overflow:hidden;}
+#services::before{content:'02';position:absolute;left:-2vw;bottom:-4vw;font-family:var(--display);font-size:clamp(10rem,22vw,28rem);font-weight:700;font-style:italic;color:rgba(237,233,224,.022);pointer-events:none;line-height:1;}
+.svc-top{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:clamp(40px,6vw,72px);flex-wrap:wrap;gap:20px;}
+.svc-top h2{font-family:var(--display);font-size:clamp(2.4rem,5vw,5rem);font-weight:400;line-height:1.05;letter-spacing:-.01em;}
+.svc-top h2 i{font-style:italic;color:var(--acc);}
+.svc-top p{font-size:clamp(.85rem,1.2vw,.95rem);font-weight:300;color:var(--fg2);max-width:260px;line-height:1.75;text-align:right;}
+.svc-items{border-top:1px solid var(--line);}
+.svc-item{display:grid;grid-template-columns:clamp(40px,6vw,72px) 1fr clamp(28px,4vw,48px);align-items:center;gap:clamp(16px,3vw,40px);padding:clamp(22px,3.5vw,40px) 0;border-bottom:1px solid var(--line);transition:padding-left .45s var(--ease);position:relative;overflow:hidden;}
+.svc-item::after{content:'';position:absolute;bottom:0;left:0;height:1px;width:0;background:var(--acc);transition:width .5s var(--ease);}
+.svc-item:hover{padding-left:clamp(8px,1.5vw,20px);}
+.svc-item:hover::after{width:100%;}
+.svc-n{font-family:var(--display);font-style:italic;font-size:clamp(1.6rem,3vw,2.8rem);font-weight:400;color:var(--fg3);transition:color .3s;}
+.svc-item:hover .svc-n{color:var(--acc);}
+.svc-body h3{font-family:var(--display);font-size:clamp(1.5rem,3vw,2.6rem);font-weight:400;letter-spacing:-.01em;line-height:1.1;margin-bottom:8px;transition:color .3s;}
+.svc-body h3 i{font-style:italic;}
+.svc-body p{font-size:clamp(.82rem,1.2vw,.92rem);font-weight:300;color:var(--fg2);line-height:1.75;}
+.svc-arr{font-size:1.5rem;color:var(--fg3);transition:transform .4s var(--ease),color .3s;justify-self:end;}
+.svc-item:hover .svc-arr{transform:translate(4px,-4px);color:var(--acc);}
 
-.gal-header{
-  display:flex;align-items:flex-end;justify-content:space-between;
-  margin-bottom:clamp(36px,5vw,64px);flex-wrap:wrap;gap:20px;
+/* PRICING */
+#pricing{padding:clamp(64px,9vw,120px) var(--px);background:var(--bg);position:relative;overflow:hidden;}
+#pricing::before{content:'03';position:absolute;right:-2vw;top:-2vw;font-family:var(--display);font-size:clamp(10rem,22vw,28rem);font-weight:700;font-style:italic;color:rgba(237,233,224,.022);pointer-events:none;line-height:1;}
+.pr-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:clamp(32px,5vw,56px);flex-wrap:wrap;gap:20px;}
+.pr-header h2{font-family:var(--display);font-size:clamp(2.4rem,5vw,5rem);font-weight:400;line-height:1.05;letter-spacing:-.01em;}
+.pr-header h2 i{font-style:italic;color:var(--acc);}
+.pr-header p{font-size:clamp(.85rem,1.2vw,.95rem);font-weight:300;color:var(--fg2);max-width:300px;line-height:1.75;text-align:right;}
+
+/* tab switcher */
+.pr-tabs{display:flex;gap:0;border:1px solid var(--line);width:fit-content;margin-bottom:clamp(28px,4vw,48px);}
+.pr-tab{font-family:var(--mono);font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--fg3);padding:10px 24px;border:none;background:transparent;cursor:none;transition:color .25s,background .25s;}
+.pr-tab+.pr-tab{border-left:1px solid var(--line);}
+.pr-tab.active{color:var(--bg);background:var(--acc);}
+.pr-tab:hover:not(.active){color:var(--fg);}
+
+/* panels */
+.pr-panel{display:none;}
+.pr-panel.active{display:block;}
+
+/* ── SERVICE COLUMNS ── */
+.pr-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1px,0.2vw,2px);}
+.pr-col{background:rgba(237,233,224,.02);border:1px solid var(--line);overflow:hidden;}
+
+.pr-col-head{
+  padding:clamp(18px,2.5vw,28px) clamp(18px,2.5vw,28px) clamp(14px,2vw,20px);
+  border-bottom:1px solid var(--line);
+  background:rgba(201,169,110,.04);
 }
-.gal-header h2{
-  font-family:var(--display);
-  font-size:clamp(2.4rem,5vw,5rem);
-  font-weight:400;line-height:1.05;letter-spacing:-.01em;
+.pr-col-label{font-family:var(--mono);font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;color:var(--acc);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.pr-col-label::before{content:'';display:block;width:12px;height:1px;background:var(--acc);}
+.pr-col-title{font-family:var(--display);font-size:clamp(1.4rem,2.5vw,2rem);font-weight:400;line-height:1.05;}
+.pr-col-title i{font-style:italic;color:var(--acc);}
+.pr-col-sub{font-family:var(--mono);font-size:.52rem;letter-spacing:.08em;color:var(--fg3);margin-top:5px;}
+
+.pr-col-items{padding:0;}
+.pr-item{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:clamp(14px,2vw,20px) clamp(18px,2.5vw,28px);
+  border-bottom:1px solid var(--line);
+  transition:background .3s,padding-left .4s var(--ease);
+  position:relative;overflow:hidden;cursor:none;
 }
+.pr-item:last-child{border-bottom:none;}
+.pr-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--acc);transform:scaleY(0);transition:transform .35s var(--ease);}
+.pr-item:hover{background:rgba(201,169,110,.04);padding-left:calc(clamp(18px,2.5vw,28px) + 8px);}
+.pr-item:hover::before{transform:scaleY(1);}
+
+.pr-item-info{flex:1;min-width:0;}
+.pr-item-name{font-family:var(--display);font-size:clamp(.95rem,1.6vw,1.25rem);font-weight:400;line-height:1.1;white-space:nowrap;}
+.pr-item-name i{font-style:italic;color:var(--acc);}
+.pr-item-desc{font-family:var(--mono);font-size:.48rem;letter-spacing:.08em;color:var(--fg3);margin-top:3px;line-height:1.5;}
+.pr-item-badge{display:inline-block;font-family:var(--mono);font-size:.42rem;letter-spacing:.14em;text-transform:uppercase;color:var(--bg);background:var(--acc);padding:2px 7px;margin-top:5px;}
+
+.pr-item-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;}
+.pr-item-price{font-family:var(--display);font-size:clamp(1.4rem,2.8vw,2.2rem);font-weight:400;line-height:1;letter-spacing:-.02em;color:var(--fg);transition:color .25s;}
+.pr-item:hover .pr-item-price{color:var(--acc);}
+.pr-item-price sup{font-family:var(--mono);font-size:.52rem;color:var(--fg3);vertical-align:super;margin-right:1px;}
+.pr-item-ron{font-family:var(--mono);font-size:.46rem;letter-spacing:.08em;color:var(--fg3);text-align:right;}
+.pr-item-cta{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--mono);font-size:.46rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--fg3);border:1px solid var(--line);padding:5px 10px;
+  transition:all .3s;white-space:nowrap;cursor:none;
+}
+.pr-item:hover .pr-item-cta{border-color:var(--acc);color:var(--acc);}
+
+/* ── PACKAGES ── */
+.pr-packs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(10px,1.8vw,20px);}
+.pr-pack{
+  border:1px solid var(--line);
+  position:relative;overflow:hidden;
+  transition:border-color .4s,background .4s,transform .5s var(--ease2);
+  cursor:none;
+}
+.pr-pack::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(to right,transparent,var(--acc),transparent);transform:scaleX(0);transition:transform .5s var(--ease);}
+.pr-pack:hover{border-color:rgba(201,169,110,.4);background:rgba(201,169,110,.04);transform:translateY(-5px);}
+.pr-pack:hover::after{transform:scaleX(1);}
+.pr-pack.hot{border-color:rgba(201,169,110,.28);background:rgba(201,169,110,.05);}
+.pr-pack.hot::after{transform:scaleX(.4);}
+
+.pr-pack-head{padding:clamp(18px,2.5vw,28px);border-bottom:1px solid var(--line);background:rgba(201,169,110,.03);}
+.pr-pack-badge{font-family:var(--mono);font-size:.44rem;letter-spacing:.18em;text-transform:uppercase;color:var(--bg);background:var(--acc);padding:3px 9px;display:inline-block;margin-bottom:10px;}
+.pr-pack-name{font-family:var(--display);font-size:clamp(1.2rem,2.2vw,1.8rem);font-weight:400;}
+.pr-pack-name i{font-style:italic;color:var(--acc);}
+
+.pr-pack-body{padding:clamp(16px,2vw,24px) clamp(18px,2.5vw,28px);}
+.pr-pack-includes{list-style:none;margin-bottom:clamp(14px,2vw,20px);}
+.pr-pack-includes li{font-family:var(--mono);font-size:.54rem;letter-spacing:.06em;color:var(--fg2);line-height:1;padding:7px 0;border-bottom:1px solid rgba(237,233,224,.05);display:flex;align-items:center;gap:8px;}
+.pr-pack-includes li:last-child{border:none;}
+.pr-pack-includes li::before{content:'✦';color:var(--acc);font-size:.38rem;flex-shrink:0;}
+.pr-pack-price-row{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:14px;}
+.pr-pack-price{font-family:var(--display);font-size:clamp(2rem,4vw,3.2rem);font-weight:400;letter-spacing:-.02em;line-height:1;color:var(--fg);}
+.pr-pack-price sup{font-family:var(--mono);font-size:.55rem;color:var(--fg3);vertical-align:super;}
+.pr-pack-ron{font-family:var(--mono);font-size:.5rem;letter-spacing:.08em;color:var(--fg3);padding-bottom:4px;}
+.pr-pack-cta{
+  width:100%;font-family:var(--mono);font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;
+  padding:12px 16px;border:1px solid var(--acc);color:var(--acc);background:transparent;
+  transition:background .3s,color .3s;display:flex;align-items:center;justify-content:center;gap:8px;cursor:none;
+}
+.pr-pack-cta:hover,.pr-pack.hot .pr-pack-cta{background:var(--acc);color:var(--bg);}
+.pr-pack.hot .pr-pack-cta:hover{background:var(--fg);border-color:var(--fg);}
+
+/* subscription strip */
+.pr-sub-strip{
+  margin-top:clamp(16px,2vw,24px);
+  border:1px solid rgba(201,169,110,.2);
+  padding:clamp(18px,2.5vw,30px) clamp(20px,3vw,36px);
+  background:rgba(201,169,110,.03);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;
+}
+.pr-sub-info{}
+.pr-sub-tag{font-family:var(--mono);font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--acc);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.pr-sub-tag::before{content:'';display:block;width:12px;height:1px;background:var(--acc);}
+.pr-sub-title{font-family:var(--display);font-size:clamp(1.1rem,2.2vw,1.8rem);font-weight:400;}
+.pr-sub-title i{font-style:italic;color:var(--acc);}
+.pr-sub-desc{font-family:var(--mono);font-size:.52rem;letter-spacing:.06em;color:var(--fg3);margin-top:5px;}
+.pr-sub-right{display:flex;align-items:center;gap:clamp(14px,2.5vw,28px);flex-shrink:0;}
+.pr-sub-price{text-align:right;}
+.pr-sub-amount{font-family:var(--display);font-size:clamp(1.8rem,3.5vw,3rem);font-weight:400;letter-spacing:-.02em;line-height:1;}
+.pr-sub-amount sup{font-family:var(--mono);font-size:.55rem;color:var(--fg3);vertical-align:super;}
+.pr-sub-ron{font-family:var(--mono);font-size:.48rem;letter-spacing:.08em;color:var(--fg3);margin-top:3px;}
+.pr-sub-cta{
+  font-family:var(--mono);font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;
+  padding:12px 22px;border:1px solid var(--acc);color:var(--acc);background:transparent;
+  display:flex;align-items:center;gap:8px;transition:background .3s,color .3s;white-space:nowrap;cursor:none;
+}
+.pr-sub-cta:hover{background:var(--acc);color:var(--bg);}
+
+.pr-note{margin-top:clamp(24px,3vw,36px);text-align:center;font-family:var(--mono);font-size:.56rem;letter-spacing:.12em;color:var(--fg3);}
+.pr-note a{color:var(--acc);border-bottom:1px solid rgba(201,169,110,.3);transition:border-color .25s;}
+.pr-note a:hover{border-color:var(--acc);}
+
+/* GALLERY */
+#gallery{padding:clamp(64px,9vw,120px) var(--px);background:#0a0908;position:relative;overflow:hidden;}
+#gallery::before{content:'04';position:absolute;right:-2vw;bottom:-4vw;font-family:var(--display);font-size:clamp(10rem,22vw,28rem);font-weight:700;font-style:italic;color:rgba(237,233,224,.025);pointer-events:none;line-height:1;}
+.gal-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:clamp(36px,5vw,64px);flex-wrap:wrap;gap:20px;}
+.gal-header h2{font-family:var(--display);font-size:clamp(2.4rem,5vw,5rem);font-weight:400;line-height:1.05;letter-spacing:-.01em;}
 .gal-header h2 i{font-style:italic;color:var(--acc);}
-.gal-sub{
-  font-family:var(--body);font-size:clamp(.85rem,1.2vw,.95rem);
-  font-weight:300;color:var(--fg2);
-  max-width:280px;line-height:1.75;text-align:right;
-}
-
-/* staggered 3-column gallery */
-.gal-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:clamp(8px,1.5vw,18px);
-  align-items:start;
-}
+.gal-sub{font-family:var(--body);font-size:clamp(.85rem,1.2vw,.95rem);font-weight:300;color:var(--fg2);max-width:280px;line-height:1.75;text-align:right;}
+.gal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(8px,1.5vw,18px);align-items:start;}
 .gal-col{display:flex;flex-direction:column;gap:clamp(8px,1.5vw,18px);}
 .gal-col:nth-child(2){margin-top:clamp(28px,4vw,56px);}
 .gal-col:nth-child(3){margin-top:clamp(14px,2vw,28px);}
-
-.gp{
-  position:relative;overflow:hidden;
-  cursor:none;
-}
-.gp img{
-  aspect-ratio:auto;
-  display:block;
-  transition:transform .9s var(--ease);
-}
+.gp{position:relative;overflow:hidden;cursor:none;}
+.gp img{aspect-ratio:auto;display:block;transition:transform .9s var(--ease);}
 .gp:nth-child(odd) img{aspect-ratio:3/4;}
 .gp:nth-child(even) img{aspect-ratio:4/5;}
 .gp:hover img{transform:scale(1.07);}
-.gp-cap{
-  position:absolute;inset:0;
-  display:flex;align-items:flex-end;
-  padding:18px;
-  background:linear-gradient(transparent 40%, rgba(8,8,7,.75) 100%);
-  opacity:0;
-  transition:opacity .4s;
-}
+.gp-cap{position:absolute;inset:0;display:flex;align-items:flex-end;padding:18px;background:linear-gradient(transparent 40%, rgba(8,8,7,.75) 100%);opacity:0;transition:opacity .4s;}
 .gp:hover .gp-cap{opacity:1;}
-.gp-cap span{
-  font-family:var(--mono);font-size:.56rem;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--fg);
-}
-
-.gal-footer{
-  margin-top:clamp(28px,4vw,48px);
-  display:flex;align-items:center;justify-content:flex-end;
-  gap:14px;
-}
-.ig-btn{
-  display:inline-flex;align-items:center;gap:10px;
-  font-family:var(--mono);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--fg2);
-  border:1px solid var(--line);
-  padding:10px 20px;
-  transition:all .25s;
-}
+.gp-cap span{font-family:var(--mono);font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg);}
+.gal-footer{margin-top:clamp(28px,4vw,48px);display:flex;align-items:center;justify-content:flex-end;gap:14px;}
+.ig-btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--fg2);border:1px solid var(--line);padding:10px 20px;transition:all .25s;}
 .ig-btn:hover{border-color:var(--acc);color:var(--acc);}
 
-/* ══════════════════════════════
-   SERVICES
-══════════════════════════════ */
-#services{
-  padding:clamp(64px,9vw,120px) var(--px);
-  background:#0a0908;
-  position:relative;overflow:hidden;
-}
-#services::before{
-  content:'03';
-  position:absolute;left:-2vw;bottom:-4vw;
-  font-family:var(--display);font-size:clamp(10rem,22vw,28rem);
-  font-weight:700;font-style:italic;
-  color:rgba(237,233,224,.022);
-  pointer-events:none;line-height:1;
-}
+/* REVIEWS */
+#reviews{padding:clamp(64px,9vw,120px) var(--px);background:var(--bg);position:relative;overflow:hidden;}
+#reviews::before{content:'05';position:absolute;left:-2vw;bottom:-4vw;font-family:var(--display);font-size:clamp(10rem,22vw,28rem);font-weight:700;font-style:italic;color:rgba(237,233,224,.022);pointer-events:none;line-height:1;}
+.rv-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:clamp(36px,5vw,64px);flex-wrap:wrap;gap:20px;}
+.rv-header h2{font-family:var(--display);font-size:clamp(2.4rem,5vw,5rem);font-weight:400;line-height:1.05;letter-spacing:-.01em;}
+.rv-header h2 i{font-style:italic;color:var(--acc);}
+.rv-header p{font-size:clamp(.85rem,1.2vw,.95rem);font-weight:300;color:var(--fg2);max-width:260px;line-height:1.75;text-align:right;}
+.reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(12px,2vw,24px);}
+.review-card{border:1px solid var(--line);padding:clamp(24px,3vw,36px);background:rgba(237,233,224,.02);position:relative;transition:border-color .4s,background .4s,transform .5s var(--ease2);}
+.review-card:hover{border-color:rgba(201,169,110,.25);background:rgba(201,169,110,.03);transform:translateY(-4px);}
+.review-top{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+.review-avatar{width:52px;height:52px;border-radius:50%;overflow:hidden;flex-shrink:0;position:relative;}
+.review-avatar img{width:100%;height:100%;object-fit:cover;filter:blur(9px) brightness(.65);transform:scale(1.12);transition:filter .4s,transform .4s;}
+.review-card:hover .review-avatar img{filter:blur(11px) brightness(.55);transform:scale(1.18);}
+.review-avatar::after{content:'🔒';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.65rem;background:rgba(8,8,7,.25);border-radius:50%;}
+.review-name{font-family:var(--display);font-size:1rem;font-weight:400;color:var(--fg);letter-spacing:.01em;margin-bottom:2px;}
+.review-role{font-family:var(--mono);font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg3);}
+.review-stars{display:flex;gap:3px;margin-bottom:14px;}
+.review-stars span{color:var(--acc);font-size:.72rem;}
+.review-text{font-size:clamp(.88rem,1.2vw,.95rem);font-weight:300;color:var(--fg2);line-height:1.85;font-style:italic;position:relative;}
+.review-text::before{content:'"';font-family:var(--display);font-size:3.2rem;color:rgba(201,169,110,.12);position:absolute;top:-14px;left:-8px;line-height:1;pointer-events:none;}
+.review-service{margin-top:16px;padding-top:14px;border-top:1px solid var(--line);font-family:var(--mono);font-size:.5rem;letter-spacing:.16em;text-transform:uppercase;color:var(--fg3);display:flex;align-items:center;gap:8px;}
+.review-service::before{content:'✦';color:var(--acc);font-size:.4rem;}
+.privacy-note{margin-top:clamp(20px,3vw,32px);text-align:center;font-family:var(--mono);font-size:.54rem;letter-spacing:.12em;color:var(--fg3);display:flex;align-items:center;justify-content:center;gap:12px;}
+.privacy-note::before,.privacy-note::after{content:'';display:block;width:28px;height:1px;background:var(--line);}
 
-.svc-top{
-  display:flex;align-items:flex-end;justify-content:space-between;
-  margin-bottom:clamp(40px,6vw,72px);flex-wrap:wrap;gap:20px;
-}
-.svc-top h2{
-  font-family:var(--display);
-  font-size:clamp(2.4rem,5vw,5rem);
-  font-weight:400;line-height:1.05;letter-spacing:-.01em;
-}
-.svc-top h2 i{font-style:italic;color:var(--acc);}
-.svc-top p{font-size:clamp(.85rem,1.2vw,.95rem);font-weight:300;color:var(--fg2);max-width:260px;line-height:1.75;text-align:right;}
-
-.svc-items{border-top:1px solid var(--line);}
-.svc-item{
-  display:grid;
-  grid-template-columns:clamp(40px,6vw,72px) 1fr clamp(28px,4vw,48px);
-  align-items:center;
-  gap:clamp(16px,3vw,40px);
-  padding:clamp(22px,3.5vw,40px) 0;
-  border-bottom:1px solid var(--line);
-  transition:padding-left .45s var(--ease);
-  position:relative;overflow:hidden;
-}
-.svc-item::after{
-  content:'';
-  position:absolute;bottom:0;left:0;
-  height:1px;width:0;
-  background:var(--acc);
-  transition:width .45s var(--ease);
-}
-.svc-item:hover{padding-left:clamp(8px,1.5vw,20px);}
-.svc-item:hover::after{width:100%;}
-.svc-n{
-  font-family:var(--display);font-style:italic;
-  font-size:clamp(1.6rem,3vw,2.8rem);
-  font-weight:400;color:var(--fg3);
-  transition:color .3s;
-}
-.svc-item:hover .svc-n{color:var(--acc);}
-.svc-body h3{
-  font-family:var(--display);
-  font-size:clamp(1.5rem,3vw,2.6rem);
-  font-weight:400;letter-spacing:-.01em;line-height:1.1;
-  margin-bottom:8px;transition:color .3s;
-}
-.svc-body h3 i{font-style:italic;}
-.svc-body p{font-size:clamp(.82rem,1.2vw,.92rem);font-weight:300;color:var(--fg2);line-height:1.75;}
-.svc-arr{
-  font-size:1.5rem;color:var(--fg3);
-  transition:transform .4s var(--ease),color .3s;
-  justify-self:end;
-}
-.svc-item:hover .svc-arr{transform:translate(4px,-4px);color:var(--acc);}
-
-/* ══════════════════════════════
-   MINDSET
-══════════════════════════════ */
-#mindset{
-  padding:clamp(64px,9vw,120px) var(--px);
-  background:var(--bg);
-  position:relative;overflow:hidden;
-}
-.ms-wrap{
-  display:grid;
-  grid-template-columns:1fr 1.8fr;
-  gap:clamp(40px,7vw,100px);
-  align-items:start;
-}
+/* MINDSET */
+#mindset{padding:clamp(64px,9vw,120px) var(--px);background:#0a0908;position:relative;overflow:hidden;}
+.ms-wrap{display:grid;grid-template-columns:1fr 1.8fr;gap:clamp(40px,7vw,100px);align-items:start;}
 .ms-left{position:sticky;top:100px;}
-.ms-left h2{
-  font-family:var(--display);
-  font-size:clamp(2.4rem,5vw,5rem);
-  font-weight:400;line-height:1.05;letter-spacing:-.01em;
-  margin-bottom:20px;
-}
+.ms-left h2{font-family:var(--display);font-size:clamp(2.4rem,5vw,5rem);font-weight:400;line-height:1.05;letter-spacing:-.01em;margin-bottom:20px;}
 .ms-left h2 i{font-style:italic;color:var(--acc);}
 .ms-left p{font-size:.85rem;font-weight:300;color:var(--fg2);font-family:var(--mono);letter-spacing:.06em;line-height:1.8;}
-
 .ms-quotes{display:flex;flex-direction:column;}
-.ms-q{
-  padding:clamp(28px,4vw,48px) 0;
-  border-bottom:1px solid var(--line);
-}
+.ms-q{padding:clamp(28px,4vw,48px) 0;border-bottom:1px solid var(--line);}
 .ms-q:first-child{border-top:1px solid var(--line);}
-.ms-q blockquote{
-  font-family:var(--display);font-style:italic;
-  font-size:clamp(1.4rem,2.8vw,2.4rem);
-  font-weight:400;line-height:1.4;letter-spacing:-.01em;
-  color:var(--fg);
-  margin-bottom:14px;
-  transition:color .3s;
-}
+.ms-q blockquote{font-family:var(--display);font-style:italic;font-size:clamp(1.4rem,2.8vw,2.4rem);font-weight:400;line-height:1.4;letter-spacing:-.01em;color:var(--fg);margin-bottom:14px;transition:color .3s;}
 .ms-q:hover blockquote{color:var(--acc);}
-.ms-q small{
-  font-family:var(--mono);font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--fg3);
-}
+.ms-q small{font-family:var(--mono);font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:var(--fg3);}
 
-
-/* ══════════════════════════════
-   DREAMS — floating bottom section
-══════════════════════════════ */
-#dreams{
-  position:relative;
-  padding:0 var(--px);
-  margin-top:clamp(40px,7vw,80px);
-  margin-bottom:clamp(-60px,-4vw,-30px);
-  z-index:3;
-}
-.dream-card{
-  position:relative;
-  display:grid;
-  grid-template-columns:minmax(220px, 380px) 1fr;
-  background:linear-gradient(135deg, rgba(18,17,15,.96), rgba(8,8,7,.98));
-  border:1px solid rgba(201,169,110,.18);
-  border-radius:28px;
-  overflow:hidden;
-  box-shadow:0 30px 80px rgba(0,0,0,.35);
-}
-.dream-card::before{
-  content:'';
-  position:absolute;inset:auto auto 0 0;
-  width:42%;height:1px;
-  background:linear-gradient(to right, var(--acc), transparent);
-  opacity:.6;
-}
-.dream-photo{
-  min-height:340px;
-  position:relative;
-  overflow:hidden;
-}
-.dream-photo img{
-  object-position:center top;
-  transition:transform 1.2s var(--ease);
-}
+/* DREAMS */
+#dreams{position:relative;padding:0 var(--px);margin-top:clamp(40px,7vw,80px);margin-bottom:clamp(-60px,-4vw,-30px);z-index:3;}
+.dream-card{position:relative;display:grid;grid-template-columns:minmax(220px,380px) 1fr;background:linear-gradient(135deg, rgba(18,17,15,.96), rgba(8,8,7,.98));border:1px solid rgba(201,169,110,.18);border-radius:28px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.35);}
+.dream-card::before{content:'';position:absolute;inset:auto auto 0 0;width:42%;height:1px;background:linear-gradient(to right, var(--acc), transparent);opacity:.6;}
+.dream-photo{min-height:340px;position:relative;overflow:hidden;}
+.dream-photo img{object-position:center top;transition:transform 1.2s var(--ease);}
 .dream-card:hover .dream-photo img{transform:scale(1.05);}
-.dream-photo::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(to top, rgba(8,8,7,.15), rgba(8,8,7,.05));
-}
-.dream-badge{
-  position:absolute;
-  left:20px;bottom:20px;z-index:2;
-  font-family:var(--mono);font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--bg);background:var(--fg);
-  padding:9px 14px;border-radius:999px;
-}
-.dream-copy{
-  position:relative;
-  padding:clamp(30px,5vw,62px);
-  display:flex;flex-direction:column;justify-content:center;
-}
-.dream-label{
-  font-family:var(--mono);font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;
-  color:var(--acc);margin-bottom:18px;
-  display:flex;align-items:center;gap:12px;
-}
-.dream-label::before{
-  content:'';display:block;width:18px;height:1px;background:var(--acc);
-}
-.dream-title{
-  font-family:var(--display);
-  font-size:clamp(2.3rem,5vw,5rem);
-  font-weight:400;line-height:1.02;letter-spacing:-.02em;
-  margin-bottom:18px;
-}
+.dream-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(to top, rgba(8,8,7,.15), rgba(8,8,7,.05));}
+.dream-badge{position:absolute;left:20px;bottom:20px;z-index:2;font-family:var(--mono);font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:var(--bg);background:var(--fg);padding:9px 14px;border-radius:999px;}
+.dream-copy{position:relative;padding:clamp(30px,5vw,62px);display:flex;flex-direction:column;justify-content:center;}
+.dream-label{font-family:var(--mono);font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--acc);margin-bottom:18px;display:flex;align-items:center;gap:12px;}
+.dream-label::before{content:'';display:block;width:18px;height:1px;background:var(--acc);}
+.dream-title{font-family:var(--display);font-size:clamp(2.3rem,5vw,5rem);font-weight:400;line-height:1.02;letter-spacing:-.02em;margin-bottom:18px;}
 .dream-title i{font-style:italic;color:var(--acc);}
-.dream-copy p{
-  max-width:620px;
-  font-size:clamp(.92rem,1.2vw,1rem);
-  color:var(--fg2);line-height:1.9;
-}
-.dream-stats{
-  display:flex;flex-wrap:wrap;gap:10px;
-  margin-top:24px;
-}
-.dream-pill{
-  border:1px solid var(--line);
-  padding:8px 14px;border-radius:999px;
-  font-family:var(--mono);font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--fg2);
-  background:rgba(237,233,224,.02);
-}
+.dream-copy p{max-width:620px;font-size:clamp(.92rem,1.2vw,1rem);color:var(--fg2);line-height:1.9;}
+.dream-stats{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px;}
+.dream-pill{border:1px solid var(--line);padding:8px 14px;border-radius:999px;font-family:var(--mono);font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg2);background:rgba(237,233,224,.02);}
 
-/* ══════════════════════════════
-   CONTACT
-══════════════════════════════ */
-#contact{
-  padding:clamp(64px,9vw,120px) var(--px);
-  background:#0a0908;
-  text-align:center;
-  position:relative;overflow:hidden;
-}
-#contact::before{
-  content:'"';
-  position:absolute;left:50%;top:50%;
-  transform:translate(-50%,-50%);
-  font-family:var(--display);font-style:italic;
-  font-size:clamp(18rem,40vw,52rem);
-  font-weight:400;line-height:1;
-  color:rgba(237,233,224,.018);
-  pointer-events:none;
-}
-.ct-inner{
-  position:relative;z-index:1;
-  display:flex;flex-direction:column;align-items:center;gap:clamp(24px,3.5vw,40px);
-  max-width:640px;margin:0 auto;
-}
-.ct-label{
-  font-family:var(--mono);font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;
-  color:var(--acc);display:flex;align-items:center;gap:12px;
-}
+/* CONTACT */
+#contact{padding:clamp(64px,9vw,120px) var(--px);background:var(--bg);text-align:center;position:relative;overflow:hidden;}
+#contact::before{content:'"';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:var(--display);font-style:italic;font-size:clamp(18rem,40vw,52rem);font-weight:400;line-height:1;color:rgba(237,233,224,.018);pointer-events:none;}
+.ct-inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:clamp(24px,3.5vw,40px);max-width:640px;margin:0 auto;}
+.ct-label{font-family:var(--mono);font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--acc);display:flex;align-items:center;gap:12px;}
 .ct-label::before,.ct-label::after{content:'';display:block;width:16px;height:1px;background:var(--acc);}
-.ct-title{
-  font-family:var(--display);
-  font-size:clamp(2.8rem,6vw,6rem);
-  font-weight:400;line-height:1.05;letter-spacing:-.01em;
-}
+.ct-title{font-family:var(--display);font-size:clamp(2.8rem,6vw,6rem);font-weight:400;line-height:1.05;letter-spacing:-.01em;}
 .ct-title i{font-style:italic;color:var(--acc);}
 .ct-desc{font-size:clamp(.88rem,1.3vw,.98rem);font-weight:300;color:var(--fg2);line-height:1.85;}
-.ct-ig{
-  display:inline-flex;align-items:center;gap:16px;
-  background:var(--acc);color:var(--bg);
-  font-family:var(--display);font-size:clamp(1.1rem,2vw,1.5rem);font-weight:400;letter-spacing:.02em;
-  padding:clamp(14px,2.2vw,20px) clamp(28px,4vw,52px);
-  transition:background .3s,color .3s,gap .35s,transform .3s;
-}
+.ct-ig{display:inline-flex;align-items:center;gap:16px;background:var(--acc);color:var(--bg);font-family:var(--display);font-size:clamp(1.1rem,2vw,1.5rem);font-weight:400;letter-spacing:.02em;padding:clamp(14px,2.2vw,20px) clamp(28px,4vw,52px);transition:background .3s,color .3s,gap .35s,transform .3s;}
 .ct-ig:hover{background:var(--fg);gap:22px;transform:translateY(-2px);}
 .ct-ig svg{flex-shrink:0;transition:transform .3s;}
 .ct-ig:hover svg{transform:rotate(-8deg) scale(1.1);}
-.ct-email{
-  font-family:var(--mono);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--fg3);border-bottom:1px solid var(--line);padding-bottom:2px;
-  transition:color .25s,border-color .25s;
-}
+.ct-email{font-family:var(--mono);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--fg3);border-bottom:1px solid var(--line);padding-bottom:2px;transition:color .25s,border-color .25s;}
 .ct-email:hover{color:var(--fg);border-color:var(--fg2);}
 
-/* ══════════════════════════════
-   FOOTER
-══════════════════════════════ */
-footer{
-  background:var(--bg);
-  border-top:1px solid var(--line);
-  padding:clamp(24px,3.5vw,40px) var(--px);
-  display:flex;align-items:center;justify-content:space-between;
-  flex-wrap:wrap;gap:14px;
-}
+/* FOOTER */
+footer{background:var(--bg);border-top:1px solid var(--line);padding:clamp(24px,3.5vw,40px) var(--px);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;}
 .ft-logo{font-family:var(--display);font-size:1.1rem;font-weight:400;letter-spacing:.04em;}
 .ft-logo i{font-style:italic;color:var(--acc);}
 footer small{font-family:var(--mono);font-size:.56rem;letter-spacing:.1em;color:var(--fg3);}
 .ft-ig{font-family:var(--mono);font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:var(--fg3);transition:color .2s;}
 .ft-ig:hover{color:var(--acc);}
 
-/* ══════════════════════════════
-   LANG
-══════════════════════════════ */
+/* LANG */
 [data-ro]{display:none;}
 body.ro [data-en]{display:none;}
 body.ro [data-ro]{display:block;}
 body.ro span[data-en]{display:none;}
 body.ro span[data-ro]{display:inline;}
 
-/* ══════════════════════════════
-   RESPONSIVE
-══════════════════════════════ */
+/* RESPONSIVE */
 @media(max-width:900px){
   body{cursor:auto;}
-  #cur-dot,#cur-ring{display:none;}
+  #cur-dot,#cur-ring,#cur-label{display:none;}
   .n-links{display:none;}
   .ham{display:flex;}
   #about{grid-template-columns:1fr;min-height:auto;}
@@ -866,17 +438,25 @@ body.ro span[data-ro]{display:inline;}
   .gal-grid{grid-template-columns:repeat(2,1fr);}
   .gal-col:nth-child(3){display:none;}
   .gal-col:nth-child(2){margin-top:clamp(20px,3vw,36px);}
-  .svc-top,.ms-wrap{flex-direction:column;gap:20px;}
   .ms-wrap{grid-template-columns:1fr;gap:36px;}
   .dream-card{grid-template-columns:1fr;}
   .dream-photo{min-height:300px;}
   .ms-left{position:static;}
-  .svc-top p,.gal-sub{text-align:left;max-width:100%;}
+  .svc-top p,.gal-sub,.pr-header p,.rv-header p{text-align:left;max-width:100%;}
   .hero-content{grid-template-columns:1fr;}
   .hero-right{align-items:flex-start;min-width:unset;}
   .hero-desc{text-align:left;}
   .hero-cta{align-items:flex-start;}
   footer{justify-content:center;text-align:center;}
+  .pr-packs{grid-template-columns:1fr;}
+  .pr-tabs{width:100%;}
+  .pr-row{grid-template-columns:1fr auto;}
+  .pr-row-cta{display:none;}
+  .reviews-grid{grid-template-columns:1fr;}
+}
+@media(min-width:901px) and (max-width:1100px){
+  .pr-packs{grid-template-columns:repeat(2,1fr);}
+  .reviews-grid{grid-template-columns:repeat(2,1fr);}
 }
 @media(max-width:560px){
   .hero-title{font-size:clamp(3.5rem,16vw,6rem);}
@@ -906,43 +486,48 @@ body.ro span[data-ro]{display:inline;}
 <!-- CURSOR -->
 <div id="cur-dot"></div>
 <div id="cur-ring"></div>
+<div id="cur-label">
+  <span data-en>Message me</span><span data-ro>Scrie-mi</span>
+</div>
 
 <!-- NAV -->
 <nav id="nav">
   <a href="#hero" class="n-logo">Aman <i>/ Costi Andrei</i></a>
   <ul class="n-links">
     <li><a href="#about"><span data-en>About</span><span data-ro>Despre</span></a></li>
-    <li><a href="#gallery"><span data-en>Gallery</span><span data-ro>Galerie</span></a></li>
     <li><a href="#services"><span data-en>Services</span><span data-ro>Servicii</span></a></li>
-    <li><a href="#mindset">Mindset</a></li>
+    <li><a href="#pricing"><span data-en>Pricing</span><span data-ro>Prețuri</span></a></li>
+    <li><a href="#gallery"><span data-en>Gallery</span><span data-ro>Galerie</span></a></li>
+    <li><a href="#reviews"><span data-en>Reviews</span><span data-ro>Recenzii</span></a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
   <div class="n-right">
-    <button class="lang" id="lang">RO</button>
+    <button class="lang" id="lang">
+      <span class="flag" id="lang-flag">🇷🇴</span>
+      <span class="lang-text" id="lang-text">RO</span>
+    </button>
     <button class="ham" id="ham"><span></span><span></span></button>
   </div>
 </nav>
 
 <div id="mnav">
   <a href="#about" onclick="cm()"><span data-en>About</span><span data-ro>Despre</span></a>
-  <a href="#gallery" onclick="cm()"><span data-en>Gallery</span><span data-ro>Galerie</span></a>
   <a href="#services" onclick="cm()"><span data-en>Services</span><span data-ro>Servicii</span></a>
-  <a href="#mindset" onclick="cm()">Mindset</a>
+  <a href="#pricing" onclick="cm()"><span data-en>Pricing</span><span data-ro>Prețuri</span></a>
+  <a href="#gallery" onclick="cm()"><span data-en>Gallery</span><span data-ro>Galerie</span></a>
+  <a href="#reviews" onclick="cm()"><span data-en>Reviews</span><span data-ro>Recenzii</span></a>
   <a href="#contact" onclick="cm()">Contact</a>
 </div>
 
 <!-- HERO -->
 <section id="hero">
-  <div class="hero-img">
-    <img src="assets/img/photo1.jpeg" alt="Costi Andrei"/>
-  </div>
+  <div class="hero-img"><img src="assets/img/photo1.jpeg" alt="Costi Andrei"/></div>
   <div class="hero-line" aria-hidden="true"></div>
-
   <div class="hero-content">
     <div class="hero-left">
       <p class="hero-tag rv">
-        <span data-en>Iași · Romania · Developer</span>
-        <span data-ro>Iași · România · Developer</span>
+        <span data-en>Iași · Romania · Developer & Editor</span>
+        <span data-ro>Iași · România · Developer & Editor</span>
       </p>
       <h1 class="hero-title">
         <span class="line"><span class="word" id="hw1">Costi</span></span>
@@ -951,20 +536,19 @@ body.ro span[data-ro]{display:inline;}
     </div>
     <div class="hero-right rv d2">
       <p class="hero-desc">
-        <span data-en>Developer. Editor.<br/>17 years old and already<br/>building the real thing.</span>
-        <span data-ro>Developer. Editor.<br/>17 ani și deja<br/>construiesc lucruri reale.</span>
+        <span data-en>Developer. Editor. Closer.<br/>17 years old — building things<br/>that actually matter.</span>
+        <span data-ro>Developer. Editor. Vânzător.<br/>17 ani — construiesc lucruri<br/>care chiar contează.</span>
       </p>
       <div class="hero-cta">
-        <a href="#services" class="btn-gold"><span data-en>What I do</span><span data-ro>Ce fac</span></a>
-        <a href="#contact" class="btn-line"><span data-en>Get in touch</span><span data-ro>Scrie-mi</span></a>
+        <a href="#pricing" class="btn-gold"><span data-en>See my services</span><span data-ro>Vezi serviciile</span></a>
+        <a href="#contact" class="btn-line"><span data-en>Let's talk</span><span data-ro>Hai să vorbim</span></a>
       </div>
     </div>
   </div>
-
   <div class="hero-bottom rv d3">
     <div class="hero-stat">
       <span class="pulse"></span>
-      <span data-en>Available · 2025</span>
+      <span data-en>Open for work · 2025</span>
       <span data-ro>Disponibil · 2025</span>
     </div>
     <div class="hero-scroll">
@@ -979,20 +563,20 @@ body.ro span[data-ro]{display:inline;}
   <div class="mq-track">
     <span class="mq-item">Web Development<span> ✦ </span></span>
     <span class="mq-item">Video Editing<span> ✦ </span></span>
-    <span class="mq-item">Selling Services<span> ✦ </span></span>
+    <span class="mq-item">Sales & Closing<span> ✦ </span></span>
     <span class="mq-item">Photography<span> ✦ </span></span>
     <span class="mq-item">Web Development<span> ✦ </span></span>
     <span class="mq-item">Video Editing<span> ✦ </span></span>
-    <span class="mq-item">Selling Services<span> ✦ </span></span>
+    <span class="mq-item">Sales & Closing<span> ✦ </span></span>
     <span class="mq-item">Photography<span> ✦ </span></span>
     <span class="mq-item">Web Development<span> ✦ </span></span>
     <span class="mq-item">Video Editing<span> ✦ </span></span>
-    <span class="mq-item">Selling Services<span> ✦ </span></span>
+    <span class="mq-item">Sales & Closing<span> ✦ </span></span>
     <span class="mq-item">Photography<span> ✦ </span></span>
   </div>
 </div>
 
-<!-- ABOUT — 50/50 split -->
+<!-- ABOUT -->
 <section id="about">
   <div class="about-img rv-left">
     <img src="assets/img/photo3.jpeg" alt="Costi Andrei"/>
@@ -1005,20 +589,318 @@ body.ro span[data-ro]{display:inline;}
   <div class="about-text rv-right">
     <p class="about-label"><span data-en>01 — About</span><span data-ro>01 — Despre mine</span></p>
     <h2>
-      <span data-en>Still young<br/>enough to have<br/><i>no limits.</i></span>
-      <span data-ro>Destul de tânăr<br/>să n-am<br/><i>limite.</i></span>
+      <span data-en>Built different.<br/>Thinking in<br/><i>decades.</i></span>
+      <span data-ro>Construit altfel.<br/>Gândesc în<br/><i>decenii.</i></span>
     </h2>
-    <p data-en>I'm <strong>Costi</strong>, known as Aman. 17 years old, from Iași. I code, I edit, I sell — and I've been doing it since before it made sense to.</p>
-    <p data-ro>Sunt <strong>Costi</strong>, cunoscut ca Aman. 17 ani, din Iași. Codez, editez, vând — și o fac de când nu prea avea sens.</p>
-    <p data-en>Old enough to deliver. Young enough to not overthink it.</p>
-    <p data-ro>Destul de matur să livrez. Destul de tânăr să nu complicăm.</p>
+    <p data-en>I'm <strong>Costi</strong> — known as Aman. 17 years old, from Iași. I build websites, cut videos, and close deals. Not because I have to — because I chose to start early.</p>
+    <p data-ro>Sunt <strong>Costi</strong> — cunoscut ca Aman. 17 ani, din Iași. Construiesc site-uri, editez video și închid vânzări. Nu pentru că trebuie — ci pentru că am ales să încep devreme.</p>
+    <p data-en>Most people my age are still figuring out what they want. I already know what I'm building — and I'm in the middle of building it.</p>
+    <p data-ro>Majoritatea de vârsta mea încă se gândesc ce vor. Eu știu deja ce construiesc — și sunt în mijlocul procesului.</p>
     <div class="about-chips">
       <span class="chip">Web Dev</span>
       <span class="chip">Video Editor</span>
-      <span class="chip">Photo editor</span>
-      <span class="chip"> 📍Iași, RO</span>
+      <span class="chip">Sales</span>
+      <span class="chip">📍 Iași, RO</span>
     </div>
   </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="svc-top">
+    <h2 class="rv">
+      <span data-en>Three crafts.<br/><i>One person.</i></span>
+      <span data-ro>Trei domenii.<br/><i>O persoană.</i></span>
+    </h2>
+    <p class="rv d1">
+      <span data-en>No filler. Each skill is something I've spent real time on.</span>
+      <span data-ro>Fără umplutură. Fiecare abilitate e ceva pe care am investit timp real.</span>
+    </p>
+  </div>
+  <div class="svc-items rv d2">
+    <div class="svc-item">
+      <span class="svc-n">01</span>
+      <div class="svc-body">
+        <h3><span data-en>Web <i>Development</i></span><span data-ro>Web <i>Development</i></span></h3>
+        <p data-en>Clean, fast, conversion-focused. Landing pages, portfolios, full-stack builds — designed to perform.</p>
+        <p data-ro>Curat, rapid, orientat spre conversie. Landing pages, portofolii, build-uri complete — concepute să performeze.</p>
+      </div>
+      <span class="svc-arr">↗</span>
+    </div>
+    <div class="svc-item">
+      <span class="svc-n">02</span>
+      <div class="svc-body">
+        <h3><span data-en>Video <i>Editing</i></span><span data-ro>Video <i>Editing</i></span></h3>
+        <p data-en>Reels, promos, branded content. Sharp cuts, intentional pacing — visuals that don't just look good, they work.</p>
+        <p data-ro>Reels, promoții, branded content. Tăieturi precise, ritm intenționat — vizualuri care nu arată doar bine, ci și funcționează.</p>
+      </div>
+      <span class="svc-arr">↗</span>
+    </div>
+    <div class="svc-item">
+      <span class="svc-n">03</span>
+      <div class="svc-body">
+        <h3><span data-en>Sales <i>& Closing</i></span><span data-ro>Vânzare <i>& Closing</i></span></h3>
+        <p data-en>I know how to sell — and how to close. Product, service, idea. From first contact to signed deal.</p>
+        <p data-ro>Știu să vând — și să închid. Produs, serviciu, idee. De la primul contact până la deal semnat.</p>
+      </div>
+      <span class="svc-arr">↗</span>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="pr-header">
+    <h2 class="rv">
+      <span data-en>Simple,<br/><i>honest prices.</i></span>
+      <span data-ro>Prețuri<br/><i>clare.</i></span>
+    </h2>
+    <p class="rv d1">
+      <span data-en>No hidden fees. Pick what fits, message me to start.</span>
+      <span data-ro>Fără costuri ascunse. Alege ce ți se potrivește, scrie-mi să începem.</span>
+    </p>
+  </div>
+
+  <div class="pr-tabs rv d1">
+    <button class="pr-tab active" data-tab="single"><span data-en>Services</span><span data-ro>Servicii</span></button>
+    <button class="pr-tab" data-tab="packs"><span data-en>Packages</span><span data-ro>Pachete</span></button>
+  </div>
+
+  <!-- PANEL: services -->
+  <div class="pr-panel active rv d2" id="panel-single">
+    <div class="pr-cols">
+
+      <!-- WEB DEV -->
+      <div class="pr-col">
+        <div class="pr-col-head">
+          <p class="pr-col-label"><span data-en>Web Development</span><span data-ro>Web Development</span></p>
+          <div class="pr-col-title">Web <i>Dev</i></div>
+          <div class="pr-col-sub"><span data-en>Sites that load fast & look sharp</span><span data-ro>Site-uri rapide și bine făcute</span></div>
+        </div>
+        <div class="pr-col-items">
+          <div class="pr-item">
+            <div class="pr-item-info">
+              <div class="pr-item-name">Landing <i>Page</i></div>
+              <div class="pr-item-desc"><span data-en>1 page · mobile-first · 3–5 day delivery</span><span data-ro>1 pagină · mobile-first · 3–5 zile</span></div>
+            </div>
+            <div class="pr-item-right">
+              <div class="pr-item-price"><sup>€</sup>49</div>
+              <div class="pr-item-ron">≈ 245 RON</div>
+              <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" class="pr-item-cta">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+                <span data-en>Order</span><span data-ro>Comandă</span>
+              </a>
+            </div>
+          </div>
+          <div class="pr-item">
+            <div class="pr-item-info">
+              <div class="pr-item-name">Simple <i>Site</i></div>
+              <div class="pr-item-desc"><span data-en>3–4 pages · portfolio or small biz</span><span data-ro>3–4 pagini · portofoliu sau business mic</span></div>
+            </div>
+            <div class="pr-item-right">
+              <div class="pr-item-price"><sup>€</sup>79</div>
+              <div class="pr-item-ron">≈ 395 RON</div>
+              <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" class="pr-item-cta">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+                <span data-en>Order</span><span data-ro>Comandă</span>
+              </a>
+            </div>
+          </div>
+          <div class="pr-item">
+            <div class="pr-item-info">
+              <div class="pr-item-name">Business <i>Site</i></div>
+              <div class="pr-item-desc"><span data-en>5+ pages · full build · revisions incl.</span><span data-ro>5+ pagini · build complet · revizii incluse</span></div>
+              <span class="pr-item-badge"><span data-en>Best value</span><span data-ro>Cel mai bun raport</span></span>
+            </div>
+            <div class="pr-item-right">
+              <div class="pr-item-price"><sup>€</sup>99</div>
+              <div class="pr-item-ron">≈ 495 RON</div>
+              <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" class="pr-item-cta">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+                <span data-en>Order</span><span data-ro>Comandă</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIDEO EDITING -->
+      <div class="pr-col">
+        <div class="pr-col-head">
+          <p class="pr-col-label"><span data-en>Video Editing</span><span data-ro>Video Editing</span></p>
+          <div class="pr-col-title">Video <i>Edit</i></div>
+          <div class="pr-col-sub"><span data-en>Reels, promos & branded content</span><span data-ro>Reels, promoții, conținut branded</span></div>
+        </div>
+        <div class="pr-col-items">
+          <div class="pr-item">
+            <div class="pr-item-info">
+              <div class="pr-item-name">Short <i>Video</i></div>
+              <div class="pr-item-desc"><span data-en>Reel, story, clip · up to 60 sec</span><span data-ro>Reel, story, clip · până la 60 sec</span></div>
+            </div>
+            <div class="pr-item-right">
+              <div class="pr-item-price"><sup>€</sup>5</div>
+              <div class="pr-item-ron">≈ 25 RON</div>
+              <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" class="pr-item-cta">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+                <span data-en>Order</span><span data-ro>Comandă</span>
+              </a>
+            </div>
+          </div>
+          <div class="pr-item">
+            <div class="pr-item-info">
+              <div class="pr-item-name">Standard <i>Video</i></div>
+              <div class="pr-item-desc"><span data-en>Promo, branded · up to 3 min · color grading</span><span data-ro>Promo, branded · până la 3 min · color grading</span></div>
+            </div>
+            <div class="pr-item-right">
+              <div class="pr-item-price"><sup>€</sup>9</div>
+              <div class="pr-item-ron">≈ 45 RON</div>
+              <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" class="pr-item-cta">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+                <span data-en>Order</span><span data-ro>Comandă</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHOTO EDITING -->
+      <div class="pr-col">
+        <div class="pr-col-head">
+          <p class="pr-col-label"><span data-en>Photo & Image Editing</span><span data-ro>Photo & Image Editing</span></p>
+          <div class="pr-col-title">Photo <i>Edit</i></div>
+          <div class="pr-col-sub"><span data-en>Retouch, color, cleanup</span><span data-ro>Retuș, culoare, curățare</span></div>
+        </div>
+        <div class="pr-col-items">
+          <div class="pr-item">
+            <div class="pr-item-info">
+              <div class="pr-item-name">1 <i>Photo</i></div>
+              <div class="pr-item-desc"><span data-en>Retouch · color grade · object removal</span><span data-ro>Retuș · color grade · eliminare obiecte</span></div>
+            </div>
+            <div class="pr-item-right">
+              <div class="pr-item-price"><sup>€</sup>2</div>
+              <div class="pr-item-ron">≈ 10 RON</div>
+              <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" class="pr-item-cta">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+                <span data-en>Order</span><span data-ro>Comandă</span>
+              </a>
+            </div>
+          </div>
+          <div class="pr-item">
+            <div class="pr-item-info">
+              <div class="pr-item-name">10 <i>Photos</i></div>
+              <div class="pr-item-desc"><span data-en>Bulk edit · consistent look · fast delivery</span><span data-ro>Editare în lot · aspect uniform · livrare rapidă</span></div>
+              <span class="pr-item-badge"><span data-en>Save 25%</span><span data-ro>Economisești 25%</span></span>
+            </div>
+            <div class="pr-item-right">
+              <div class="pr-item-price"><sup>€</sup>15</div>
+              <div class="pr-item-ron">≈ 75 RON</div>
+              <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" class="pr-item-cta">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+                <span data-en>Order</span><span data-ro>Comandă</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /pr-cols -->
+  </div>
+
+  <!-- PANEL: packages -->
+  <div class="pr-panel rv d2" id="panel-packs">
+    <div class="pr-packs-grid">
+
+      <div class="pr-pack">
+        <div class="pr-pack-head">
+          <span class="pr-pack-badge">Mini</span>
+          <div class="pr-pack-name">Mini <i>Pack</i></div>
+        </div>
+        <div class="pr-pack-body">
+          <ul class="pr-pack-includes">
+            <li><span data-en>2 short videos</span><span data-ro>2 videoclipuri scurte</span></li>
+            <li><span data-en>3 photos edited</span><span data-ro>3 poze editate</span></li>
+          </ul>
+          <div class="pr-pack-price-row">
+            <div class="pr-pack-price"><sup>€</sup>15</div>
+            <div class="pr-pack-ron">≈ 75 RON</div>
+          </div>
+          <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" class="pr-pack-cta">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+            <span data-en>Get it</span><span data-ro>Vreau</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="pr-pack hot">
+        <div class="pr-pack-head">
+          <span class="pr-pack-badge">★ <span data-en>Most popular</span><span data-ro>Cel mai ales</span></span>
+          <div class="pr-pack-name">Starter <i>Pack</i></div>
+        </div>
+        <div class="pr-pack-body">
+          <ul class="pr-pack-includes">
+            <li><span data-en>5 short videos</span><span data-ro>5 videoclipuri scurte</span></li>
+            <li><span data-en>5 photos edited</span><span data-ro>5 poze editate</span></li>
+            <li><span data-en>Consistent style across all</span><span data-ro>Stil uniform pe tot</span></li>
+          </ul>
+          <div class="pr-pack-price-row">
+            <div class="pr-pack-price"><sup>€</sup>39</div>
+            <div class="pr-pack-ron">≈ 195 RON</div>
+          </div>
+          <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" class="pr-pack-cta">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+            <span data-en>Get it</span><span data-ro>Vreau</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="pr-pack">
+        <div class="pr-pack-head">
+          <span class="pr-pack-badge">Business</span>
+          <div class="pr-pack-name">Business <i>Basic</i></div>
+        </div>
+        <div class="pr-pack-body">
+          <ul class="pr-pack-includes">
+            <li><span data-en>Full website</span><span data-ro>Site complet</span></li>
+            <li><span data-en>3 short videos</span><span data-ro>3 videoclipuri</span></li>
+            <li><span data-en>5 photos edited</span><span data-ro>5 poze editate</span></li>
+          </ul>
+          <div class="pr-pack-price-row">
+            <div class="pr-pack-price"><sup>€</sup>89</div>
+            <div class="pr-pack-ron">≈ 445 RON</div>
+          </div>
+          <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" class="pr-pack-cta">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+            <span data-en>Get it</span><span data-ro>Vreau</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SUBSCRIPTION -->
+    <div class="pr-sub-strip rv">
+      <div class="pr-sub-info">
+        <p class="pr-sub-tag"><span data-en>Monthly subscription</span><span data-ro>Abonament lunar</span></p>
+        <p class="pr-sub-title"><span data-en>5 videos + 5 photos — <i>every month.</i></span><span data-ro>5 videoclipuri + 5 poze — <i>în fiecare lună.</i></span></p>
+        <p class="pr-sub-desc"><span data-en>Consistent content, always ready. Cancel anytime.</span><span data-ro>Conținut constant, mereu gata. Oprești oricând.</span></p>
+      </div>
+      <div class="pr-sub-right">
+        <div class="pr-sub-price">
+          <div class="pr-sub-amount"><sup>€</sup>39–49</div>
+          <div class="pr-sub-ron">≈ 195–245 RON / lună</div>
+        </div>
+        <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" class="pr-sub-cta">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+          <span data-en>Subscribe</span><span data-ro>Abonează-te</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <p class="pr-note rv d3">
+    <span data-en>Not sure what you need? <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener">Message me</a> and we'll figure it out.</span>
+    <span data-ro>Nu știi exact ce ai nevoie? <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener">Scrie-mi</a> și găsim împreună.</span>
+  </p>
 </section>
 
 <!-- GALLERY -->
@@ -1054,47 +936,69 @@ body.ro span[data-ro]{display:inline;}
   </div>
 </section>
 
-<!-- SERVICES -->
-<section id="services">
-  <div class="svc-top">
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="rv-header">
     <h2 class="rv">
-      <span data-en>Three things<br/><i>I do well.</i></span>
-      <span data-ro>Trei lucruri pe care<br/><i>le fac bine.</i></span>
+      <span data-en>What clients<br/><i>say.</i></span>
+      <span data-ro>Ce spun<br/><i>clienții.</i></span>
     </h2>
     <p class="rv d1">
-      <span data-en>No long list. Three areas, done properly.</span>
-      <span data-ro>Fără listă lungă. Trei domenii, făcute cum trebuie.</span>
+      <span data-en>Real people. Identities blurred for privacy.</span>
+      <span data-ro>Oameni reali. Identitățile ascunse pentru confidențialitate.</span>
     </p>
   </div>
-  <div class="svc-items rv d2">
-    <div class="svc-item">
-      <span class="svc-n">01</span>
-      <div class="svc-body">
-        <h3><span data-en>Web <i>Development</i></span><span data-ro>Web <i>Development</i></span></h3>
-        <p data-en>Clean, fast websites. Landing pages, portfolios, full builds.</p>
-        <p data-ro>Site-uri curate și rapide. Landing pages, portofolii, build-uri complete.</p>
+  <div class="reviews-grid">
+    <div class="review-card rv d1">
+      <div class="review-top">
+        <div class="review-avatar"><img src="assets/img/photo2.jpeg" alt=""/></div>
+        <div class="review-info">
+          <p class="review-name">A. M.</p>
+          <p class="review-role"><span data-en>Business Owner · Iași</span><span data-ro>Antreprenor · Iași</span></p>
+        </div>
       </div>
-      <span class="svc-arr">↗</span>
+      <div class="review-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+      <p class="review-text">
+        <span data-en>Delivered the landing page in 4 days. Clean, fast, exactly what I described. Didn't need to ask twice for anything.</span>
+        <span data-ro>A livrat landing page-ul în 4 zile. Curat, rapid, exact ce am descris. N-a trebuit să cer nimic de două ori.</span>
+      </p>
+      <p class="review-service"><span data-en>Web Development</span><span data-ro>Web Development</span></p>
     </div>
-    <div class="svc-item">
-      <span class="svc-n">02</span>
-      <div class="svc-body">
-        <h3><span data-en>Video <i>Editing</i></span><span data-ro>Video <i>Editing</i></span></h3>
-        <p data-en>Reels, promo, content. Sharp cuts, good pacing, visuals that stick.</p>
-        <p data-ro>Reels, promo, content. Tăieturi precise, ritm bun, vizualuri memorabile.</p>
+    <div class="review-card rv d2">
+      <div class="review-top">
+        <div class="review-avatar"><img src="assets/img/photo4.jpeg" alt=""/></div>
+        <div class="review-info">
+          <p class="review-name">R. C.</p>
+          <p class="review-role"><span data-en>Content Creator · Cluj</span><span data-ro>Creator de conținut · Cluj</span></p>
+        </div>
       </div>
-      <span class="svc-arr">↗</span>
+      <div class="review-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+      <p class="review-text">
+        <span data-en>My reels went from 2k to 40k average views. The pacing, the cuts — everything changed. Seriously underpriced for the quality.</span>
+        <span data-ro>Reels-urile mele au trecut de la 2k la 40k vizualizări medii. Ritmul, tăieturile — totul s-a schimbat. Serios sub prețul pe care îl merită.</span>
+      </p>
+      <p class="review-service"><span data-en>Video Editing</span><span data-ro>Video Editing</span></p>
     </div>
-    <div class="svc-item">
-      <span class="svc-n">03</span>
-      <div class="svc-body">
-        <h3><span data-en>Selling <i>Services</i></span><span data-ro>Vânzare <i>Servicii</i></span></h3>
-        <p data-en>I know how to close. Product, service or idea — end to end.</p>
-        <p data-ro>Știu să închid o vânzare. Produs, serviciu sau idee — de la cap la coadă.</p>
+    <div class="review-card rv d3">
+      <div class="review-top">
+        <div class="review-avatar"><img src="assets/img/photo5.jpeg" alt=""/></div>
+        <div class="review-info">
+          <p class="review-name">D. P.</p>
+          <p class="review-role"><span data-en>Startup Founder · București</span><span data-ro>Fondator Startup · București</span></p>
+        </div>
       </div>
-      <span class="svc-arr">↗</span>
+      <div class="review-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+      <p class="review-text">
+        <span data-en>Wrote our entire outreach script from scratch. Closed 3 new clients the first week we used it. Clear thinker, fast executor.</span>
+        <span data-ro>A scris tot scriptul nostru de outreach de la zero. Am închis 3 clienți noi în prima săptămână. Gândire clară, execuție rapidă.</span>
+      </p>
+      <p class="review-service"><span data-en>Sales & Closing</span><span data-ro>Vânzare & Closing</span></p>
     </div>
   </div>
+  <p class="privacy-note rv d4">
+    <span data-en>🔒 Identities blurred — shared with client permission</span>
+    <span data-ro>🔒 Identități ascunse — publicate cu acordul clienților</span>
+  </p>
 </section>
 
 <!-- MINDSET -->
@@ -1107,78 +1011,46 @@ body.ro span[data-ro]{display:inline;}
     </div>
     <div class="ms-quotes">
       <div class="ms-q rv d1">
-        <blockquote data-en>"Good work speaks for itself. I let mine do the talking."</blockquote>
-        <blockquote data-ro>"Munca bună vorbește singură. O las pe a mea să o facă."</blockquote>
+        <blockquote data-en>"The work is the argument. I let the results speak."</blockquote>
+        <blockquote data-ro>"Munca este argumentul. Las rezultatele să vorbească."</blockquote>
         <small data-en>On quality</small><small data-ro>Despre calitate</small>
       </div>
       <div class="ms-q rv d2">
-        <blockquote data-en>"I never stopped until it worked."</blockquote>
-        <blockquote data-ro>"Nu m-am oprit niciodată până nu a funcționat."</blockquote>
-        <small data-en>On learning</small><small data-ro>Despre învățare</small>
+        <blockquote data-en>"I didn't wait until I was ready. I got ready by doing."</blockquote>
+        <blockquote data-ro>"N-am așteptat să fiu pregătit. M-am pregătit făcând."</blockquote>
+        <small data-en>On starting early</small><small data-ro>Despre debut timpuriu</small>
       </div>
       <div class="ms-q rv d3">
-        <blockquote data-en>"Fast. Honest. No ghosting after the job is done."</blockquote>
-        <blockquote data-ro>"Rapid. Onest. Nu dispar după ce termin."</blockquote>
+        <blockquote data-en>"Fast, honest, accountable. I don't disappear after delivery."</blockquote>
+        <blockquote data-ro>"Rapid, onest, responsabil. Nu dispar după livrare."</blockquote>
         <small data-en>On working together</small><small data-ro>Despre colaborare</small>
       </div>
     </div>
   </div>
 </section>
 
-
-
 <!-- DREAMS -->
 <section id="dreams">
   <div class="dream-card rv-scale">
-    
     <div class="dream-photo">
-      <img src="assets/img/photo6.jpeg" alt="Young Aman sitting on a bench" loading="lazy"/>
-      <span class="dream-badge">
-        <span data-en>..</span>
-        <span data-ro>..</span>
-      </span>
+      <img src="assets/img/photo6.jpeg" alt="Costi Andrei" loading="lazy"/>
+      <span class="dream-badge"><span data-en>Vision</span><span data-ro>Viziune</span></span>
     </div>
-
     <div class="dream-copy">
-      
-      <p class="dream-label">
-        <span data-en>Vision</span>
-        <span data-ro>Viziune</span>
-      </p>
-
+      <p class="dream-label"><span data-en>The long game</span><span data-ro>Jocul lung</span></p>
       <h2 class="dream-title">
-        <span data-en>Started small.<br/><b>Dreamed big.</b></span>
-        <span data-ro>Am început mic.<br/><b>Am visat măreț.</b></span>
+        <span data-en>Started small.<br/><i>Thinking big.</i></span>
+        <span data-ro>Am început mic.<br/><i>Gândesc mare.</i></span>
       </h2>
-
       <p>
-        <span data-en>
-          It began with a simple mindset - aim higher, push harder, and never stop building.  
-          What once felt like a distant dream slowly started becoming something real.
-        </span>
-        <span data-ro>
-          Totul a început cu o mentalitate simplă — să țintesc mai sus, să muncesc mai mult și să nu mă opresc niciodată din construit.  
-          Ce părea cândva doar un vis îndepărtat începe să devină realitate.
-        </span>
+        <span data-en>It started with a single mindset — build before you're ready, ship before it's perfect, and never stop iterating. What began as curiosity is now a business. And this is just the beginning.</span>
+        <span data-ro>A început cu o singură mentalitate — construiește înainte să fii pregătit, livrează înainte să fie perfect și nu te opri niciodată din iterat. Ce a început ca o curiozitate este acum un business. Și acesta e doar începutul.</span>
       </p>
-
       <div class="dream-stats">
-        <span class="dream-pill">
-          <span data-en>Started young</span>
-          <span data-ro>Început de mic</span>
-        </span>
-
-        <span class="dream-pill">
-          <span data-en>Built with purpose</span>
-          <span data-ro>Construit cu scop</span>
-        </span>
-
-        <span class="dream-pill">
-          <span data-en>Still evolving</span>
-          <span data-ro>În continuă evoluție</span>
-        </span>
+        <span class="dream-pill"><span data-en>Started at 15</span><span data-ro>Început la 15 ani</span></span>
+        <span class="dream-pill"><span data-en>Built with purpose</span><span data-ro>Construit cu scop</span></span>
+        <span class="dream-pill"><span data-en>Still evolving</span><span data-ro>În continuă evoluție</span></span>
       </div>
-
     </div>
   </div>
 </section>
@@ -1186,14 +1058,14 @@ body.ro span[data-ro]{display:inline;}
 <!-- CONTACT -->
 <section id="contact">
   <div class="ct-inner">
-    <p class="ct-label rv"><span data-en>05 — Contact</span><span data-ro>05 — Contact</span></p>
+    <p class="ct-label rv"><span data-en>07 — Contact</span><span data-ro>07 — Contact</span></p>
     <h2 class="ct-title rv d1">
-      <span data-en>Let's talk<br/><i>on Instagram.</i></span>
-      <span data-ro>Hai să vorbim<br/><i>pe Instagram.</i></span>
+      <span data-en>Let's build<br/><i>something real.</i></span>
+      <span data-ro>Hai să construim<br/><i>ceva real.</i></span>
     </h2>
     <p class="ct-desc rv d2">
-      <span data-en>For projects, collabs or questions - my DMs are open.</span>
-      <span data-ro>Pentru proiecte, colaborări sau întrebări — DM-urile sunt deschise.</span>
+      <span data-en>Projects, collabs, questions — DMs are open. Instagram is the fastest way to reach me.</span>
+      <span data-ro>Proiecte, colaborări, întrebări — DM-urile sunt deschise. Instagram e cel mai rapid mod să ajungi la mine.</span>
     </p>
     <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" class="ct-ig rv d3">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
@@ -1211,106 +1083,85 @@ body.ro span[data-ro]{display:inline;}
 </footer>
 
 <script>
+/* ── PRICING TABS ── */
+document.querySelectorAll('.pr-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.pr-tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.pr-panel').forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('panel-'+tab.dataset.tab).classList.add('active');
+  });
+});
+/* add hover effect to pricing rows for cursor */
+document.querySelectorAll('.pr-row,.pr-pack').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('cur-price'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('cur-price'));
+});
+
 /* ── LOADER ── */
 (function(){
-  const lw1=document.getElementById('lw1');
-  const lw2=document.getElementById('lw2');
-  const lbar=document.getElementById('lbar');
-  const lpct=document.getElementById('lpct');
-  const loader=document.getElementById('loader');
-
-  setTimeout(()=>lw1.classList.add('up'), 120);
-  setTimeout(()=>{ lw2.classList.add('up'); lbar.classList.add('go'); }, 280);
-
+  const lw1=document.getElementById('lw1'),lw2=document.getElementById('lw2'),lbar=document.getElementById('lbar'),lpct=document.getElementById('lpct'),loader=document.getElementById('loader');
+  setTimeout(()=>lw1.classList.add('up'),120);
+  setTimeout(()=>{lw2.classList.add('up');lbar.classList.add('go');},280);
   let n=0;
   const iv=setInterval(()=>{
-    n += Math.random()*12 + 4;
-    if(n>=100){
-      n=100; clearInterval(iv);
-      lpct.textContent='100%';
-      setTimeout(()=>{
-        loader.classList.add('out');
-        document.body.classList.add('loaded');
-        setTimeout(()=>{
-          loader.style.display='none';
-          // hero title reveal
-          setTimeout(()=>document.getElementById('hw1').classList.add('up'), 80);
-          setTimeout(()=>document.getElementById('hw2').classList.add('up'), 220);
-          // other hero elements
-          document.querySelectorAll('#hero .rv').forEach((el,i)=>{
-            setTimeout(()=>el.classList.add('in'), 300 + i*120);
-          });
+    n+=Math.random()*12+4;
+    if(n>=100){n=100;clearInterval(iv);lpct.textContent='100%';
+      setTimeout(()=>{loader.classList.add('out');document.body.classList.add('loaded');
+        setTimeout(()=>{loader.style.display='none';
+          setTimeout(()=>document.getElementById('hw1').classList.add('up'),80);
+          setTimeout(()=>document.getElementById('hw2').classList.add('up'),220);
+          document.querySelectorAll('#hero .rv').forEach((el,i)=>setTimeout(()=>el.classList.add('in'),300+i*120));
           document.querySelector('.mq').classList.add('in');
-        }, 920);
-      }, 320);
-    } else {
-      lpct.textContent = Math.floor(n)+'%';
-    }
-  }, 80);
+        },920);
+      },320);
+    }else lpct.textContent=Math.floor(n)+'%';
+  },80);
 })();
 
 /* ── CURSOR ── */
-const cdot = document.getElementById('cur-dot');
-const cring = document.getElementById('cur-ring');
-let mx=0, my=0, rx=0, ry=0;
-document.addEventListener('mousemove', e=>{ mx=e.clientX; my=e.clientY; });
+const cdot=document.getElementById('cur-dot'),cring=document.getElementById('cur-ring'),clabel=document.getElementById('cur-label');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
 (function tick(){
-  cdot.style.left=mx+'px'; cdot.style.top=my+'px';
-  rx += (mx-rx)*.1; ry += (my-ry)*.1;
-  cring.style.left=rx+'px'; cring.style.top=ry+'px';
+  cdot.style.left=mx+'px';cdot.style.top=my+'px';
+  clabel.style.left=mx+'px';clabel.style.top=(my+36)+'px';
+  rx+=(mx-rx)*.1;ry+=(my-ry)*.1;
+  cring.style.left=rx+'px';cring.style.top=ry+'px';
   requestAnimationFrame(tick);
 })();
 document.querySelectorAll('a,button,.svc-item,.gp,.about-img').forEach(el=>{
-  el.addEventListener('mouseenter', ()=>document.body.classList.add('hov'));
-  el.addEventListener('mouseleave', ()=>document.body.classList.remove('hov'));
+  el.addEventListener('mouseenter',()=>document.body.classList.add('hov'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('hov'));
+});
+document.querySelectorAll('.pr-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{document.body.classList.add('cur-price');document.body.classList.remove('hov');});
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('cur-price'));
 });
 
 /* ── NAV ── */
-const nav = document.getElementById('nav');
-window.addEventListener('scroll', ()=>nav.classList.toggle('stuck', scrollY>60), {passive:true});
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('stuck',scrollY>60),{passive:true});
 
 /* ── LANG ── */
-document.getElementById('lang').addEventListener('click', function(){
-  const ro = document.body.classList.toggle('ro');
-  this.textContent = ro ? 'EN' : 'RO';
+document.getElementById('lang').addEventListener('click',function(){
+  const ro=document.body.classList.toggle('ro');
+  document.getElementById('lang-flag').textContent=ro?'🇬🇧':'🇷🇴';
+  document.getElementById('lang-text').textContent=ro?'EN':'RO';
 });
 
 /* ── MOBILE MENU ── */
-const ham = document.getElementById('ham');
-const mnav = document.getElementById('mnav');
-ham.addEventListener('click', ()=>{
-  ham.classList.toggle('o');
-  mnav.classList.toggle('o');
-  document.body.style.overflow = mnav.classList.contains('o') ? 'hidden' : '';
-});
-function cm(){
-  ham.classList.remove('o');
-  mnav.classList.remove('o');
-  document.body.style.overflow = '';
-}
+const ham=document.getElementById('ham'),mnav=document.getElementById('mnav');
+ham.addEventListener('click',()=>{ham.classList.toggle('o');mnav.classList.toggle('o');document.body.style.overflow=mnav.classList.contains('o')?'hidden':'';});
+function cm(){ham.classList.remove('o');mnav.classList.remove('o');document.body.style.overflow='';}
 
 /* ── SCROLL REVEAL ── */
-const io = new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      e.target.classList.add('in');
-      io.unobserve(e.target);
-    }
-  });
-}, {threshold:.06, rootMargin:'0px 0px -30px 0px'});
-
-document.querySelectorAll('.rv,.rv-left,.rv-right,.rv-scale').forEach(el=>{
-  if(!el.closest('#hero') && !el.closest('.mq')) io.observe(el);
-});
+const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.06,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.rv,.rv-left,.rv-right,.rv-scale').forEach(el=>{if(!el.closest('#hero')&&!el.closest('.mq'))io.observe(el);});
 
 /* ── ACTIVE NAV ── */
-const secs = document.querySelectorAll('section[id]');
-const nas = document.querySelectorAll('.n-links a');
-window.addEventListener('scroll', ()=>{
-  let cur='';
-  secs.forEach(s=>{ if(scrollY >= s.offsetTop-90) cur=s.id; });
-  nas.forEach(a=>a.classList.toggle('on', a.getAttribute('href')==='#'+cur));
-}, {passive:true});
+const secs=document.querySelectorAll('section[id]'),nas=document.querySelectorAll('.n-links a');
+window.addEventListener('scroll',()=>{let cur='';secs.forEach(s=>{if(scrollY>=s.offsetTop-90)cur=s.id;});nas.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+cur));},{passive:true});
 </script>
 </body>
 </html>
