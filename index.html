@@ -3,8 +3,72 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Aman — Costi Andrei</title>
-<meta name="description" content="Costi Andrei - Developer, Editor, Iași."/>
+
+<!-- SEO Primary -->
+<title>Costi Andrei (Aman) — Web Developer & Video Editor din Iași</title>
+<meta name="description" content="Costi Andrei, cunoscut ca Aman — web developer, video editor și photo editor din Iași, România. Landing pages, reels, editare foto. Prețuri clare, livrare rapidă."/>
+<meta name="keywords" content="web developer iași, video editor iași, editare foto, landing page romania, freelancer iași, costi andrei, aman"/>
+<meta name="author" content="Costi Andrei"/>
+<meta name="robots" content="index, follow"/>
+<link rel="canonical" href="https://aman.dev/"/>
+
+<!-- Open Graph / Social Media -->
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://aman.dev/"/>
+<meta property="og:title" content="Costi Andrei (Aman) — Web Developer & Video Editor, Iași"/>
+<meta property="og:description" content="Web development, video editing și editare foto. 18 ani, Iași. Livrare rapidă, prețuri clare, fără costuri ascunse."/>
+<meta property="og:image" content="assets/img/photo1.jpeg"/>
+<meta property="og:locale" content="ro_RO"/>
+<meta property="og:site_name" content="Aman / Costi Andrei"/>
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Costi Andrei (Aman) — Web Developer & Video Editor, Iași"/>
+<meta name="twitter:description" content="Web development, video editing și editare foto. Iași, România."/>
+<meta name="twitter:image" content="assets/img/photo1.jpeg"/>
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Costi Andrei",
+  "alternateName": "Aman",
+  "url": "https://aman.dev",
+  "image": "assets/img/photo1.jpeg",
+  "description": "Web developer, video editor și photo editor freelancer din Iași, România.",
+  "jobTitle": "Web Developer & Video Editor",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Iași",
+    "addressCountry": "RO"
+  },
+  "sameAs": [
+    "https://www.instagram.com/costi1andrei/"
+  ],
+  "offers": [
+    {
+      "@type": "Offer",
+      "name": "Landing Page",
+      "price": "49",
+      "priceCurrency": "EUR"
+    },
+    {
+      "@type": "Offer",
+      "name": "Video Editing",
+      "price": "5",
+      "priceCurrency": "EUR"
+    },
+    {
+      "@type": "Offer",
+      "name": "Photo Editing",
+      "price": "2",
+      "priceCurrency": "EUR"
+    }
+  ]
+}
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Mono:wght@300;400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet"/>
@@ -34,7 +98,12 @@ html{scroll-behavior:smooth;font-size:16px;overflow-x:hidden;width:100%;}
 body{background:var(--bg);color:var(--fg);font-family:var(--body);font-weight:300;line-height:1.6;overflow-x:hidden;cursor:none;width:100%;max-width:100vw;}
 img{display:block;width:100%;height:100%;object-fit:cover;}
 a{color:inherit;text-decoration:none;}
-button{background:none;border:none;font-family:inherit;cursor:none;}
+button{background:none;border:none;font-family:inherit;cursor:pointer;}
+/* cursor:none only when custom cursor is active (non-touch) */
+@media (pointer: fine) {
+  body:not(.touch-device) a,
+  body:not(.touch-device) button { cursor: none; }
+}
 ::selection{background:var(--acc);color:var(--bg);}
 ::-webkit-scrollbar{width:2px;}
 ::-webkit-scrollbar-thumb{background:var(--line);}
@@ -334,87 +403,87 @@ body.loaded .hero-img img{transform:scale(1.07);}
 .pr-header h2{font-family:var(--display);font-size:clamp(2.4rem,5vw,5rem);font-weight:400;line-height:1.05;letter-spacing:-.01em;}
 .pr-header h2 i{font-style:italic;color:var(--acc);}
 .pr-header p{font-size:clamp(.85rem,1.2vw,.95rem);font-weight:300;color:var(--fg2);max-width:300px;line-height:1.75;text-align:right;}
-
-/* tab switcher */
 .pr-tabs{display:flex;gap:0;border:1px solid var(--line);width:fit-content;margin-bottom:clamp(28px,4vw,48px);}
-.pr-tab{font-family:var(--mono);font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--fg3);padding:10px 24px;border:none;background:transparent;cursor:none;transition:color .25s,background .25s;}
+.pr-tab{font-family:var(--mono);font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--fg3);padding:10px 24px;border:none;background:transparent;cursor:pointer;transition:color .25s,background .25s;}
 .pr-tab+.pr-tab{border-left:1px solid var(--line);}
 .pr-tab.active{color:var(--bg);background:var(--acc);}
 .pr-tab:hover:not(.active){color:var(--fg);}
-
-/* panels */
 .pr-panel{display:none;}
 .pr-panel.active{display:block;}
 
-/* ── SERVICE COLUMNS ── */
-.pr-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1px,0.2vw,2px);}
-.pr-col{background:rgba(237,233,224,.02);border:1px solid var(--line);overflow:hidden;}
+/* ── SERVICE CARDS ── */
+.pr-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(12px,2vw,24px);}
+.pr-card{background:rgba(237,233,224,.02);border:1px solid var(--line);overflow:hidden;display:flex;flex-direction:column;transition:border-color .4s,transform .4s var(--ease2);}
+.pr-card:hover{border-color:rgba(45,122,79,.35);transform:translateY(-4px);}
+.pr-card-top{padding:clamp(22px,3vw,36px) clamp(22px,3vw,36px) clamp(16px,2vw,22px);border-bottom:1px solid var(--line);background:rgba(45,122,79,.03);}
+.pr-card-icon{font-size:1.6rem;margin-bottom:14px;display:block;}
+.pr-card-label{font-family:var(--mono);font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;color:var(--acc);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.pr-card-label::before{content:'';display:block;width:12px;height:1px;background:var(--acc);}
+.pr-card-title{font-family:var(--display);font-size:clamp(1.5rem,2.8vw,2.2rem);font-weight:400;line-height:1.05;}
+.pr-card-title i{font-style:italic;color:var(--acc);}
+.pr-card-desc{font-family:var(--mono);font-size:.52rem;letter-spacing:.06em;color:var(--fg3);margin-top:6px;line-height:1.6;}
+.pr-card-includes{padding:clamp(16px,2vw,24px) clamp(22px,3vw,36px);border-bottom:1px solid var(--line);flex:1;}
+.pr-card-includes-label{font-family:var(--mono);font-size:.46rem;letter-spacing:.16em;text-transform:uppercase;color:var(--fg3);margin-bottom:10px;}
+.pr-card-features{list-style:none;display:flex;flex-direction:column;gap:7px;}
+.pr-card-features li{font-family:var(--mono);font-size:.54rem;letter-spacing:.05em;color:var(--fg2);display:flex;align-items:flex-start;gap:9px;line-height:1.4;}
+.pr-card-features li::before{content:'✦';color:var(--acc);font-size:.38rem;flex-shrink:0;margin-top:2px;}
+.pr-card-options{padding:clamp(16px,2vw,22px) clamp(22px,3vw,36px);display:flex;flex-direction:column;gap:8px;}
+.pr-option{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border:1px solid var(--line);cursor:pointer;transition:border-color .25s,background .25s,padding-left .3s var(--ease);position:relative;overflow:hidden;background:none;width:100%;text-align:left;}
+.pr-option::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--acc);transform:scaleY(0);transition:transform .3s var(--ease);}
+.pr-option:hover{border-color:rgba(45,122,79,.4);background:rgba(45,122,79,.04);padding-left:18px;}
+.pr-option:hover::before{transform:scaleY(1);}
+.pr-option-name{font-family:var(--display);font-size:clamp(.9rem,1.4vw,1.1rem);font-weight:400;line-height:1.1;}
+.pr-option-name i{font-style:italic;}
+.pr-option-sub{font-family:var(--mono);font-size:.46rem;letter-spacing:.07em;color:var(--fg3);margin-top:2px;}
+.pr-option-badge{display:inline-block;font-family:var(--mono);font-size:.4rem;letter-spacing:.14em;text-transform:uppercase;color:var(--bg);background:var(--acc);padding:2px 7px;margin-top:4px;}
+.pr-option-right{display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex-shrink:0;}
+.pr-option-price{font-family:var(--display);font-size:clamp(1.3rem,2.2vw,1.8rem);font-weight:400;line-height:1;color:var(--fg);transition:color .25s;}
+.pr-option:hover .pr-option-price{color:var(--acc);}
+.pr-option-price sup{font-family:var(--mono);font-size:.48rem;color:var(--fg3);vertical-align:super;}
+.pr-option-ron{font-family:var(--mono);font-size:.43rem;letter-spacing:.07em;color:var(--fg3);}
 
-.pr-col-head{
-  padding:clamp(18px,2.5vw,28px) clamp(18px,2.5vw,28px) clamp(14px,2vw,20px);
-  border-bottom:1px solid var(--line);
-  background:rgba(45,122,79,.04);
-}
-.pr-col-label{font-family:var(--mono);font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;color:var(--acc);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
-.pr-col-label::before{content:'';display:block;width:12px;height:1px;background:var(--acc);}
-.pr-col-title{font-family:var(--display);font-size:clamp(1.4rem,2.5vw,2rem);font-weight:400;line-height:1.05;}
-.pr-col-title i{font-style:italic;color:var(--acc);}
-.pr-col-sub{font-family:var(--mono);font-size:.52rem;letter-spacing:.08em;color:var(--fg3);margin-top:5px;}
-
-.pr-col-items{padding:0;}
-.pr-item{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  padding:clamp(14px,2vw,20px) clamp(18px,2.5vw,28px);
-  border-bottom:1px solid var(--line);
-  transition:background .3s,padding-left .4s var(--ease);
-  position:relative;overflow:hidden;cursor:none;
-}
-.pr-item:last-child{border-bottom:none;}
-.pr-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--acc);transform:scaleY(0);transition:transform .35s var(--ease);}
-.pr-item:hover{background:rgba(45,122,79,.04);padding-left:calc(clamp(18px,2.5vw,28px) + 8px);}
-.pr-item:hover::before{transform:scaleY(1);}
-
-.pr-item-info{flex:1;min-width:0;}
-.pr-item-name{font-family:var(--display);font-size:clamp(.95rem,1.6vw,1.25rem);font-weight:400;line-height:1.1;white-space:nowrap;}
-.pr-item-name i{font-style:italic;color:var(--acc);}
-.pr-item-desc{font-family:var(--mono);font-size:.48rem;letter-spacing:.08em;color:var(--fg3);margin-top:3px;line-height:1.5;}
-.pr-item-badge{display:inline-block;font-family:var(--mono);font-size:.42rem;letter-spacing:.14em;text-transform:uppercase;color:var(--bg);background:var(--acc);padding:2px 7px;margin-top:5px;}
-
-.pr-item-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;}
-.pr-item-price{font-family:var(--display);font-size:clamp(1.4rem,2.8vw,2.2rem);font-weight:400;line-height:1;letter-spacing:-.02em;color:var(--fg);transition:color .25s;}
-.pr-item:hover .pr-item-price{color:var(--acc);}
-.pr-item-price sup{font-family:var(--mono);font-size:.52rem;color:var(--fg3);vertical-align:super;margin-right:1px;}
-.pr-item-ron{font-family:var(--mono);font-size:.46rem;letter-spacing:.08em;color:var(--fg3);text-align:right;}
-.pr-item-cta{
-  display:inline-flex;align-items:center;gap:6px;
-  font-family:var(--mono);font-size:.46rem;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--fg3);border:1px solid var(--line);padding:5px 10px;
-  transition:all .3s;white-space:nowrap;cursor:none;
-}
-.pr-item:hover .pr-item-cta{border-color:var(--acc);color:var(--acc);}
+/* ── ORDER MODAL ── */
+#order-modal{position:fixed;inset:0;z-index:99990;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .35s var(--ease);}
+#order-modal.open{opacity:1;pointer-events:all;}
+.om-backdrop{position:absolute;inset:0;background:rgba(5,8,7,.88);backdrop-filter:blur(12px);cursor:pointer;}
+.om-card{position:relative;z-index:1;width:100%;max-width:520px;background:var(--bg2);border:1px solid rgba(45,122,79,.25);padding:clamp(28px,4vw,48px);transform:translateY(20px) scale(.97);transition:transform .4s var(--ease2);}
+#order-modal.open .om-card{transform:translateY(0) scale(1);}
+.om-close{position:absolute;top:16px;right:16px;font-family:var(--mono);font-size:.48rem;letter-spacing:.12em;color:var(--fg3);border:1px solid var(--line);padding:5px 10px;cursor:pointer;background:none;transition:all .25s;}
+.om-close:hover{color:var(--fg);border-color:var(--fg);}
+.om-label{font-family:var(--mono);font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;color:var(--acc);margin-bottom:10px;display:flex;align-items:center;gap:10px;}
+.om-label::before{content:'';display:block;width:14px;height:1px;background:var(--acc);}
+.om-title{font-family:var(--display);font-size:clamp(1.6rem,3vw,2.4rem);font-weight:400;line-height:1.1;margin-bottom:6px;}
+.om-title i{font-style:italic;color:var(--acc);}
+.om-sub{font-family:var(--mono);font-size:.52rem;letter-spacing:.06em;color:var(--fg3);margin-bottom:clamp(20px,3vw,30px);}
+.om-summary{border:1px solid var(--line);padding:16px 20px;margin-bottom:20px;background:rgba(45,122,79,.03);}
+.om-summary-row{display:flex;justify-content:space-between;align-items:center;gap:12px;}
+.om-summary-name{font-family:var(--display);font-size:1.05rem;font-weight:400;}
+.om-summary-price{font-family:var(--display);font-size:1.5rem;font-weight:400;color:var(--acc);}
+.om-summary-desc{font-family:var(--mono);font-size:.48rem;letter-spacing:.07em;color:var(--fg3);margin-top:5px;}
+.om-steps{display:flex;flex-direction:column;gap:10px;margin-bottom:24px;}
+.om-step{display:flex;align-items:flex-start;gap:12px;}
+.om-step-n{width:22px;height:22px;border-radius:50%;background:rgba(45,122,79,.12);border:1px solid rgba(45,122,79,.3);font-family:var(--mono);font-size:.46rem;display:flex;align-items:center;justify-content:center;color:var(--acc);flex-shrink:0;margin-top:1px;}
+.om-step-text{font-family:var(--mono);font-size:.52rem;letter-spacing:.06em;color:var(--fg2);line-height:1.6;}
+.om-step-text strong{color:var(--fg);font-weight:400;}
+.om-actions{display:flex;flex-direction:column;gap:10px;}
+.om-btn-ig{display:flex;align-items:center;justify-content:center;gap:12px;background:var(--acc);color:var(--bg);font-family:var(--display);font-size:1.05rem;font-weight:400;letter-spacing:.02em;padding:16px 24px;transition:background .25s,transform .3s var(--ease2);text-decoration:none;}
+.om-btn-ig:hover{background:var(--acc-bright);transform:translateY(-2px);}
+.om-btn-email{display:flex;align-items:center;justify-content:center;gap:10px;border:1px solid var(--line);color:var(--fg2);font-family:var(--mono);font-size:.54rem;letter-spacing:.12em;text-transform:uppercase;padding:12px 20px;transition:border-color .25s,color .25s;text-decoration:none;}
+.om-btn-email:hover{border-color:var(--acc);color:var(--acc);}
+.om-note{text-align:center;font-family:var(--mono);font-size:.48rem;letter-spacing:.1em;color:var(--fg3);margin-top:12px;}
 
 /* ── PACKAGES ── */
 .pr-packs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(10px,1.8vw,20px);}
-.pr-pack{
-  border:1px solid var(--line);
-  position:relative;overflow:hidden;
-  transition:border-color .4s,background .4s,transform .5s var(--ease2);
-  cursor:none;
-}
+.pr-pack{border:1px solid var(--line);position:relative;overflow:hidden;transition:border-color .4s,background .4s,transform .5s var(--ease2);cursor:pointer;}
 .pr-pack::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(to right,transparent,var(--acc),transparent);transform:scaleX(0);transition:transform .5s var(--ease);}
 .pr-pack:hover{border-color:rgba(45,122,79,.4);background:rgba(45,122,79,.04);transform:translateY(-5px);}
 .pr-pack:hover::after{transform:scaleX(1);}
 .pr-pack.hot{border-color:rgba(45,122,79,.28);background:rgba(45,122,79,.05);}
 .pr-pack.hot::after{transform:scaleX(.4);}
-
 .pr-pack-head{padding:clamp(18px,2.5vw,28px);border-bottom:1px solid var(--line);background:rgba(45,122,79,.03);}
 .pr-pack-badge{font-family:var(--mono);font-size:.44rem;letter-spacing:.18em;text-transform:uppercase;color:var(--bg);background:var(--acc);padding:3px 9px;display:inline-block;margin-bottom:10px;}
 .pr-pack-name{font-family:var(--display);font-size:clamp(1.2rem,2.2vw,1.8rem);font-weight:400;}
 .pr-pack-name i{font-style:italic;color:var(--acc);}
-
 .pr-pack-body{padding:clamp(16px,2vw,24px) clamp(18px,2.5vw,28px);}
 .pr-pack-includes{list-style:none;margin-bottom:clamp(14px,2vw,20px);}
 .pr-pack-includes li{font-family:var(--mono);font-size:.54rem;letter-spacing:.06em;color:var(--fg2);line-height:1;padding:7px 0;border-bottom:1px solid rgba(237,233,224,.05);display:flex;align-items:center;gap:8px;}
@@ -424,22 +493,10 @@ body.loaded .hero-img img{transform:scale(1.07);}
 .pr-pack-price{font-family:var(--display);font-size:clamp(2rem,4vw,3.2rem);font-weight:400;letter-spacing:-.02em;line-height:1;color:var(--fg);}
 .pr-pack-price sup{font-family:var(--mono);font-size:.55rem;color:var(--fg3);vertical-align:super;}
 .pr-pack-ron{font-family:var(--mono);font-size:.5rem;letter-spacing:.08em;color:var(--fg3);padding-bottom:4px;}
-.pr-pack-cta{
-  width:100%;font-family:var(--mono);font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;
-  padding:12px 16px;border:1px solid var(--acc);color:var(--acc);background:transparent;
-  transition:background .3s,color .3s;display:flex;align-items:center;justify-content:center;gap:8px;cursor:none;
-}
+.pr-pack-cta{width:100%;font-family:var(--mono);font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;padding:12px 16px;border:1px solid var(--acc);color:var(--acc);background:transparent;transition:background .3s,color .3s;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;}
 .pr-pack-cta:hover,.pr-pack.hot .pr-pack-cta{background:var(--acc);color:var(--bg);}
 .pr-pack.hot .pr-pack-cta:hover{background:var(--fg);border-color:var(--fg);}
-
-/* subscription strip */
-.pr-sub-strip{
-  margin-top:clamp(16px,2vw,24px);
-  border:1px solid rgba(45,122,79,.2);
-  padding:clamp(18px,2.5vw,30px) clamp(20px,3vw,36px);
-  background:rgba(45,122,79,.03);
-  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;
-}
+.pr-sub-strip{margin-top:clamp(16px,2vw,24px);border:1px solid rgba(45,122,79,.2);padding:clamp(18px,2.5vw,30px) clamp(20px,3vw,36px);background:rgba(45,122,79,.03);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;}
 .pr-sub-info{}
 .pr-sub-tag{font-family:var(--mono);font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--acc);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
 .pr-sub-tag::before{content:'';display:block;width:12px;height:1px;background:var(--acc);}
@@ -451,13 +508,8 @@ body.loaded .hero-img img{transform:scale(1.07);}
 .pr-sub-amount{font-family:var(--display);font-size:clamp(1.8rem,3.5vw,3rem);font-weight:400;letter-spacing:-.02em;line-height:1;}
 .pr-sub-amount sup{font-family:var(--mono);font-size:.55rem;color:var(--fg3);vertical-align:super;}
 .pr-sub-ron{font-family:var(--mono);font-size:.48rem;letter-spacing:.08em;color:var(--fg3);margin-top:3px;}
-.pr-sub-cta{
-  font-family:var(--mono);font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;
-  padding:12px 22px;border:1px solid var(--acc);color:var(--acc);background:transparent;
-  display:flex;align-items:center;gap:8px;transition:background .3s,color .3s;white-space:nowrap;cursor:none;
-}
+.pr-sub-cta{font-family:var(--mono);font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;padding:12px 22px;border:1px solid var(--acc);color:var(--acc);background:transparent;display:flex;align-items:center;gap:8px;transition:background .3s,color .3s;white-space:nowrap;cursor:pointer;}
 .pr-sub-cta:hover{background:var(--acc);color:var(--bg);}
-
 .pr-note{margin-top:clamp(24px,3vw,36px);text-align:center;font-family:var(--mono);font-size:.56rem;letter-spacing:.12em;color:var(--fg3);}
 .pr-note a{color:var(--acc);border-bottom:1px solid rgba(45,122,79,.3);transition:border-color .25s;}
 .pr-note a:hover{border-color:var(--acc);}
@@ -498,9 +550,12 @@ body.loaded .hero-img img{transform:scale(1.07);}
 .review-card:hover{border-color:rgba(45,122,79,.3);background:rgba(45,122,79,.04);transform:translateY(-5px);}
 .review-top{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
 .review-avatar{width:52px;height:52px;border-radius:50%;overflow:hidden;flex-shrink:0;position:relative;}
+.review-avatar--initials{background:rgba(45,122,79,0.06);border:1px solid rgba(45,122,79,0.2);display:flex;align-items:center;justify-content:center;}
+.review-avatar--initials svg{width:52px;height:52px;}
 .review-avatar img{width:100%;height:100%;object-fit:cover;filter:blur(9px) brightness(.65);transform:scale(1.12);transition:filter .4s,transform .4s;}
 .review-card:hover .review-avatar img{filter:blur(11px) brightness(.55);transform:scale(1.18);}
 .review-avatar::after{content:'🔒';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.65rem;background:rgba(5,8,7,.25);border-radius:50%;}
+.review-avatar--initials::after{display:none;}
 .review-name{font-family:var(--display);font-size:1rem;font-weight:400;color:var(--fg);letter-spacing:.01em;margin-bottom:2px;}
 .review-role{font-family:var(--mono);font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg3);}
 .review-stars{display:flex;gap:3px;margin-bottom:14px;}
@@ -948,17 +1003,12 @@ body.ro span[data-ro]{display:inline;}
   /* PRICING MOBILE */
   .pr-tabs{width:100%;}
   .pr-tab{flex:1;text-align:center;}
-  .pr-cols{grid-template-columns:1fr;gap:12px;}
-  .pr-col{border-radius:0;}
-  .pr-col-head{padding:18px 20px 14px;}
-  .pr-col-title{font-size:1.6rem;}
-  .pr-item{padding:14px 20px;gap:10px;}
-  .pr-item-name{font-size:1rem;}
-  .pr-item-price{font-size:1.8rem;}
-  .pr-item-cta{padding:6px 12px;}
+  .pr-cards{grid-template-columns:1fr;gap:12px;}
   .pr-packs-grid{grid-template-columns:1fr;}
   .pr-sub-strip{flex-direction:column;align-items:flex-start;}
   .pr-sub-right{width:100%;justify-content:space-between;}
+  .om-card{padding:28px 20px;}
+  .om-title{font-size:1.5rem;}
 }
 @media(min-width:901px) and (max-width:1100px){
   .pr-cols{grid-template-columns:1fr;}
@@ -1044,11 +1094,11 @@ body.ro span[data-ro]{display:inline;}
     <li><a href="#faq">FAQ</a></li>
   </ul>
   <div class="n-right">
-    <button class="lang" id="lang">
+    <button class="lang" id="lang" aria-label="Schimbă limba / Change language">
       <span class="flag" id="lang-flag">🇷🇴</span>
       <span class="lang-text" id="lang-text">RO</span>
     </button>
-    <button class="ham" id="ham"><span></span><span></span></button>
+    <button class="ham" id="ham" aria-label="Deschide meniu" aria-expanded="false" aria-controls="mnav"><span></span><span></span></button>
   </div>
 </nav>
 
@@ -1063,7 +1113,7 @@ body.ro span[data-ro]{display:inline;}
 
 <!-- HERO -->
 <section id="hero">
-  <div class="hero-img"><img src="assets/img/photo1.jpeg" alt="Costi Andrei"/></div>
+  <div class="hero-img"><img src="assets/img/photo1.jpeg" alt="Costi Andrei — web developer și video editor din Iași" width="1920" height="1080" fetchpriority="high"/></div>
   <canvas id="hero-canvas"></canvas>
   <div class="hero-line" aria-hidden="true"></div>
   <div class="hero-content">
@@ -1130,7 +1180,7 @@ body.ro span[data-ro]{display:inline;}
 <!-- ABOUT -->
 <section id="about">
   <div class="about-img rv-left">
-    <img src="assets/img/photo3.jpeg" alt="Costi Andrei"/>
+    <img src="assets/img/photo3.jpeg" alt="Costi Andrei — portret, Iași" width="800" height="1000" loading="lazy"/>
     <div class="born-tag">
       <span data-en>Born</span><span data-ro>Născut</span>
       <strong>24 April 2008</strong>
@@ -1199,6 +1249,54 @@ body.ro span[data-ro]{display:inline;}
   </div>
 </section>
 
+<!-- ORDER MODAL -->
+<div id="order-modal" role="dialog" aria-modal="true" aria-labelledby="om-title-text">
+  <div class="om-backdrop" id="om-backdrop"></div>
+  <div class="om-card">
+    <button class="om-close" id="om-close" aria-label="Închide">✕ <span data-en>close</span><span data-ro>închide</span></button>
+    <p class="om-label"><span data-en>Ready to start?</span><span data-ro>Gata să începi?</span></p>
+    <h2 class="om-title" id="om-title-text"><span data-en>Your <i>order</i></span><span data-ro>Comanda <i>ta</i></span></h2>
+    <p class="om-sub" data-en>Here's what happens next — it takes 60 seconds.</p>
+    <p class="om-sub" data-ro>Iată ce urmează — durează 60 de secunde.</p>
+
+    <div class="om-summary">
+      <div class="om-summary-row">
+        <span class="om-summary-name" id="om-service-name">Landing Page</span>
+        <span class="om-summary-price" id="om-service-price">€49</span>
+      </div>
+      <p class="om-summary-desc" id="om-service-desc">1 pagină · mobile-first · 3–5 zile</p>
+    </div>
+
+    <div class="om-steps">
+      <div class="om-step">
+        <div class="om-step-n">1</div>
+        <p class="om-step-text"><strong data-en>Tap the button below</strong><strong data-ro>Apasă butonul de mai jos</strong> — <span data-en>it opens Instagram with a pre-filled message.</span><span data-ro>deschide Instagram cu mesajul deja scris.</span></p>
+      </div>
+      <div class="om-step">
+        <div class="om-step-n">2</div>
+        <p class="om-step-text"><strong data-en>I reply in under 2h</strong><strong data-ro>Răspund în sub 2h</strong> — <span data-en>we confirm details and you pay 50% upfront.</span><span data-ro>confirmăm detaliile și plătești 50% în avans.</span></p>
+      </div>
+      <div class="om-step">
+        <div class="om-step-n">3</div>
+        <p class="om-step-text"><strong data-en>I deliver, you review</strong><strong data-ro>Livrez, tu verifici</strong> — <span data-en>1 revision round included. Pay the rest on delivery.</span><span data-ro>1 rundă de revizii inclusă. Restul la livrare.</span></p>
+      </div>
+    </div>
+
+    <div class="om-actions">
+      <a class="om-btn-ig" id="om-ig-link" href="https://ig.me/m/costi1andrei" target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+        <span data-en>Message me on Instagram</span><span data-ro>Scrie-mi pe Instagram</span>
+      </a>
+      <a class="om-btn-email" id="om-email-link" href="mailto:zenmail.andrei@gmail.com" target="_blank" rel="noopener">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+        <span data-en>Or send an email</span><span data-ro>Sau trimite un email</span>
+      </a>
+    </div>
+    <p class="om-note" data-en>🔒 No account needed · No card · Just a message</p>
+    <p class="om-note" data-ro>🔒 Fără cont · Fără card · Doar un mesaj</p>
+  </div>
+</div>
+
 <!-- PRICING -->
 <section id="pricing">
   <div class="pr-header">
@@ -1207,8 +1305,8 @@ body.ro span[data-ro]{display:inline;}
       <span data-ro>Prețuri<br/><i>clare.</i></span>
     </h2>
     <p class="rv d1">
-      <span data-en>No hidden fees. Pick what fits, message me to start.</span>
-      <span data-ro>Fără costuri ascunse. Alege ce ți se potrivește, scrie-mi să începem.</span>
+      <span data-en>No hidden fees. Pick what fits — one click to start.</span>
+      <span data-ro>Fără costuri ascunse. Alege, apasă, gata.</span>
     </p>
   </div>
 
@@ -1219,142 +1317,144 @@ body.ro span[data-ro]{display:inline;}
 
   <!-- PANEL: services -->
   <div class="pr-panel active rv d2" id="panel-single">
-    <div class="pr-cols">
+    <div class="pr-cards">
 
-      <!-- WEB DEV -->
-      <div class="pr-col">
-        <div class="pr-col-head">
-          <p class="pr-col-label"><span data-en>Web Development</span><span data-ro>Web Development</span></p>
-          <div class="pr-col-title">Web <i>Dev</i></div>
-          <div class="pr-col-sub"><span data-en>Sites that load fast & look sharp</span><span data-ro>Site-uri rapide și bine făcute</span></div>
+      <!-- WEB DEV CARD -->
+      <div class="pr-card">
+        <div class="pr-card-top">
+          <span class="pr-card-icon">🌐</span>
+          <p class="pr-card-label"><span data-en>Web Development</span><span data-ro>Web Development</span></p>
+          <div class="pr-card-title">Web <i>Dev</i></div>
+          <div class="pr-card-desc"><span data-en>Sites that load fast & convert.</span><span data-ro>Site-uri rapide care convertesc.</span></div>
         </div>
-        <div class="pr-col-items">
-          <div class="pr-item">
-            <div class="pr-item-info">
-              <div class="pr-item-name">Landing <i>Page</i></div>
-              <div class="pr-item-desc"><span data-en>1 page · mobile-first · 3–5 day delivery</span><span data-ro>1 pagină · mobile-first · 3–5 zile</span></div>
+        <div class="pr-card-includes">
+          <p class="pr-card-includes-label"><span data-en>Every project includes</span><span data-ro>Fiecare proiect include</span></p>
+          <ul class="pr-card-features">
+            <li><span data-en>Mobile-first responsive design</span><span data-ro>Design responsive mobile-first</span></li>
+            <li><span data-en>Fast load · clean code</span><span data-ro>Încărcare rapidă · cod curat</span></li>
+            <li><span data-en>1 revision round included</span><span data-ro>1 rundă de revizii inclusă</span></li>
+            <li><span data-en>Delivery in 3–7 days</span><span data-ro>Livrare în 3–7 zile</span></li>
+          </ul>
+        </div>
+        <div class="pr-card-options">
+          <button class="pr-option" onclick="openOrder('Landing Page','€49','1 page · mobile-first · 3–5 day delivery','49')">
+            <div class="pr-option-left">
+              <div class="pr-option-name">Landing <i>Page</i></div>
+              <div class="pr-option-sub"><span data-en>1 page · 3–5 days</span><span data-ro>1 pagină · 3–5 zile</span></div>
             </div>
-            <div class="pr-item-right">
-              <div class="pr-item-price"><sup>€</sup>49</div>
-              <div class="pr-item-ron">≈ 245 RON</div>
-              <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" class="pr-item-cta">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
-                <span data-en>Order</span><span data-ro>Comandă</span>
-              </a>
+            <div class="pr-option-right">
+              <div class="pr-option-price"><sup>€</sup>49</div>
+              <div class="pr-option-ron">≈ 245 RON</div>
             </div>
-          </div>
-          <div class="pr-item">
-            <div class="pr-item-info">
-              <div class="pr-item-name">Simple <i>Site</i></div>
-              <div class="pr-item-desc"><span data-en>3–4 pages · portfolio or small biz</span><span data-ro>3–4 pagini · portofoliu sau business mic</span></div>
+          </button>
+          <button class="pr-option" onclick="openOrder('Simple Site','€79','3–4 pages · portfolio or small business','79')">
+            <div class="pr-option-left">
+              <div class="pr-option-name">Simple <i>Site</i></div>
+              <div class="pr-option-sub"><span data-en>3–4 pages · portfolio or small biz</span><span data-ro>3–4 pagini · portofoliu sau business mic</span></div>
             </div>
-            <div class="pr-item-right">
-              <div class="pr-item-price"><sup>€</sup>79</div>
-              <div class="pr-item-ron">≈ 395 RON</div>
-              <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" class="pr-item-cta">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
-                <span data-en>Order</span><span data-ro>Comandă</span>
-              </a>
+            <div class="pr-option-right">
+              <div class="pr-option-price"><sup>€</sup>79</div>
+              <div class="pr-option-ron">≈ 395 RON</div>
             </div>
-          </div>
-          <div class="pr-item">
-            <div class="pr-item-info">
-              <div class="pr-item-name">Business <i>Site</i></div>
-              <div class="pr-item-desc"><span data-en>5+ pages · full build · revisions incl.</span><span data-ro>5+ pagini · build complet · revizii incluse</span></div>
-              <span class="pr-item-badge"><span data-en>Best value</span><span data-ro>Cel mai bun raport</span></span>
+          </button>
+          <button class="pr-option" onclick="openOrder('Business Site','€99','5+ pages · full build · revisions included','99')">
+            <div class="pr-option-left">
+              <div class="pr-option-name">Business <i>Site</i></div>
+              <div class="pr-option-sub"><span data-en>5+ pages · full build</span><span data-ro>5+ pagini · build complet</span></div>
+              <div class="pr-option-badge"><span data-en>Best value</span><span data-ro>Cel mai bun raport</span></div>
             </div>
-            <div class="pr-item-right">
-              <div class="pr-item-price"><sup>€</sup>99</div>
-              <div class="pr-item-ron">≈ 495 RON</div>
-              <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" class="pr-item-cta">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
-                <span data-en>Order</span><span data-ro>Comandă</span>
-              </a>
+            <div class="pr-option-right">
+              <div class="pr-option-price"><sup>€</sup>99</div>
+              <div class="pr-option-ron">≈ 495 RON</div>
             </div>
-          </div>
+          </button>
         </div>
       </div>
 
-      <!-- VIDEO EDITING -->
-      <div class="pr-col">
-        <div class="pr-col-head">
-          <p class="pr-col-label"><span data-en>Video Editing</span><span data-ro>Video Editing</span></p>
-          <div class="pr-col-title">Video <i>Edit</i></div>
-          <div class="pr-col-sub"><span data-en>Reels, promos & branded content</span><span data-ro>Reels, promoții, conținut branded</span></div>
+      <!-- VIDEO CARD -->
+      <div class="pr-card">
+        <div class="pr-card-top">
+          <span class="pr-card-icon">🎬</span>
+          <p class="pr-card-label"><span data-en>Video Editing</span><span data-ro>Video Editing</span></p>
+          <div class="pr-card-title">Video <i>Edit</i></div>
+          <div class="pr-card-desc"><span data-en>Reels, promos & branded content.</span><span data-ro>Reels, promoții, conținut branded.</span></div>
         </div>
-        <div class="pr-col-items">
-          <div class="pr-item">
-            <div class="pr-item-info">
-              <div class="pr-item-name">Short <i>Video</i></div>
-              <div class="pr-item-desc"><span data-en>Reel, story, clip · up to 60 sec</span><span data-ro>Reel, story, clip · până la 60 sec</span></div>
-            </div>
-            <div class="pr-item-right">
-              <div class="pr-item-price"><sup>€</sup>5</div>
-              <div class="pr-item-ron">≈ 25 RON</div>
-              <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" class="pr-item-cta">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
-                <span data-en>Order</span><span data-ro>Comandă</span>
-              </a>
-            </div>
-          </div>
-          <div class="pr-item">
-            <div class="pr-item-info">
-              <div class="pr-item-name">Standard <i>Video</i></div>
-              <div class="pr-item-desc"><span data-en>Promo, branded · up to 3 min · color grading</span><span data-ro>Promo, branded · până la 3 min · color grading</span></div>
-            </div>
-            <div class="pr-item-right">
-              <div class="pr-item-price"><sup>€</sup>9</div>
-              <div class="pr-item-ron">≈ 45 RON</div>
-              <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" class="pr-item-cta">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
-                <span data-en>Order</span><span data-ro>Comandă</span>
-              </a>
-            </div>
-          </div>
+        <div class="pr-card-includes">
+          <p class="pr-card-includes-label"><span data-en>Every video includes</span><span data-ro>Fiecare video include</span></p>
+          <ul class="pr-card-features">
+            <li><span data-en>Color grading & audio sync</span><span data-ro>Color grading & sincronizare audio</span></li>
+            <li><span data-en>Captions / subtitles on request</span><span data-ro>Subtitrări la cerere</span></li>
+            <li><span data-en>Delivery in 24–48h</span><span data-ro>Livrare în 24–48h</span></li>
+            <li><span data-en>Formats: 9:16, 16:9, 1:1</span><span data-ro>Formate: 9:16, 16:9, 1:1</span></li>
+          </ul>
         </div>
-      </div>
-
-      <!-- PHOTO EDITING -->
-      <div class="pr-col">
-        <div class="pr-col-head">
-          <p class="pr-col-label"><span data-en>Photo & Image Editing</span><span data-ro>Photo & Image Editing</span></p>
-          <div class="pr-col-title">Photo <i>Edit</i></div>
-          <div class="pr-col-sub"><span data-en>Retouch, color, cleanup</span><span data-ro>Retuș, culoare, curățare</span></div>
-        </div>
-        <div class="pr-col-items">
-          <div class="pr-item">
-            <div class="pr-item-info">
-              <div class="pr-item-name">1 <i>Photo</i></div>
-              <div class="pr-item-desc"><span data-en>Retouch · color grade · object removal</span><span data-ro>Retuș · color grade · eliminare obiecte</span></div>
+        <div class="pr-card-options">
+          <button class="pr-option" onclick="openOrder('Short Video','€5','Reel, story or clip · up to 60 seconds','5')">
+            <div class="pr-option-left">
+              <div class="pr-option-name">Short <i>Video</i></div>
+              <div class="pr-option-sub"><span data-en>Reel, story, clip · up to 60 sec</span><span data-ro>Reel, story, clip · până la 60 sec</span></div>
             </div>
-            <div class="pr-item-right">
-              <div class="pr-item-price"><sup>€</sup>2</div>
-              <div class="pr-item-ron">≈ 10 RON</div>
-              <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" class="pr-item-cta">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
-                <span data-en>Order</span><span data-ro>Comandă</span>
-              </a>
+            <div class="pr-option-right">
+              <div class="pr-option-price"><sup>€</sup>5</div>
+              <div class="pr-option-ron">≈ 25 RON</div>
             </div>
-          </div>
-          <div class="pr-item">
-            <div class="pr-item-info">
-              <div class="pr-item-name">10 <i>Photos</i></div>
-              <div class="pr-item-desc"><span data-en>Bulk edit · consistent look · fast delivery</span><span data-ro>Editare în lot · aspect uniform · livrare rapidă</span></div>
-              <span class="pr-item-badge"><span data-en>Save 25%</span><span data-ro>Economisești 25%</span></span>
+          </button>
+          <button class="pr-option" onclick="openOrder('Standard Video','€9','Promo or branded video · up to 3 minutes · color grading','9')">
+            <div class="pr-option-left">
+              <div class="pr-option-name">Standard <i>Video</i></div>
+              <div class="pr-option-sub"><span data-en>Promo · up to 3 min · color grading</span><span data-ro>Promo · până la 3 min · color grading</span></div>
             </div>
-            <div class="pr-item-right">
-              <div class="pr-item-price"><sup>€</sup>15</div>
-              <div class="pr-item-ron">≈ 75 RON</div>
-              <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" class="pr-item-cta">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
-                <span data-en>Order</span><span data-ro>Comandă</span>
-              </a>
+            <div class="pr-option-right">
+              <div class="pr-option-price"><sup>€</sup>9</div>
+              <div class="pr-option-ron">≈ 45 RON</div>
             </div>
-          </div>
+          </button>
         </div>
       </div>
 
-    </div><!-- /pr-cols -->
+      <!-- PHOTO CARD -->
+      <div class="pr-card">
+        <div class="pr-card-top">
+          <span class="pr-card-icon">📸</span>
+          <p class="pr-card-label"><span data-en>Photo Editing</span><span data-ro>Photo Editing</span></p>
+          <div class="pr-card-title">Photo <i>Edit</i></div>
+          <div class="pr-card-desc"><span data-en>Retouch, color, cleanup. Fast.</span><span data-ro>Retuș, culoare, curățare. Rapid.</span></div>
+        </div>
+        <div class="pr-card-includes">
+          <p class="pr-card-includes-label"><span data-en>Every edit includes</span><span data-ro>Fiecare editare include</span></p>
+          <ul class="pr-card-features">
+            <li><span data-en>Color grading & skin retouch</span><span data-ro>Color grading & retuș ten</span></li>
+            <li><span data-en>Object / background removal</span><span data-ro>Eliminare obiecte / fundal</span></li>
+            <li><span data-en>Same-day delivery</span><span data-ro>Livrare în aceeași zi</span></li>
+            <li><span data-en>JPG + PNG export</span><span data-ro>Export JPG + PNG</span></li>
+          </ul>
+        </div>
+        <div class="pr-card-options">
+          <button class="pr-option" onclick="openOrder('1 Photo Edit','€2','Retouch · color grade · object removal','2')">
+            <div class="pr-option-left">
+              <div class="pr-option-name">1 <i>Photo</i></div>
+              <div class="pr-option-sub"><span data-en>Retouch · color · object removal</span><span data-ro>Retuș · culoare · eliminare obiecte</span></div>
+            </div>
+            <div class="pr-option-right">
+              <div class="pr-option-price"><sup>€</sup>2</div>
+              <div class="pr-option-ron">≈ 10 RON</div>
+            </div>
+          </button>
+          <button class="pr-option" onclick="openOrder('10 Photos Pack','€15','Bulk edit · consistent look · fast delivery','15')">
+            <div class="pr-option-left">
+              <div class="pr-option-name">10 <i>Photos</i></div>
+              <div class="pr-option-sub"><span data-en>Bulk edit · consistent look</span><span data-ro>Editare în lot · aspect uniform</span></div>
+              <div class="pr-option-badge"><span data-en>Save 25%</span><span data-ro>Economisești 25%</span></div>
+            </div>
+            <div class="pr-option-right">
+              <div class="pr-option-price"><sup>€</sup>15</div>
+              <div class="pr-option-ron">≈ 75 RON</div>
+            </div>
+          </button>
+        </div>
+      </div>
+
+    </div><!-- /pr-cards -->
   </div>
 
   <!-- PANEL: packages -->
@@ -1375,10 +1475,10 @@ body.ro span[data-ro]{display:inline;}
             <div class="pr-pack-price"><sup>€</sup>15</div>
             <div class="pr-pack-ron">≈ 75 RON</div>
           </div>
-          <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" class="pr-pack-cta">
+          <button class="pr-pack-cta" onclick="openOrder('Mini Pack','€15','2 short videos + 3 photos edited','15')">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
             <span data-en>Get it</span><span data-ro>Vreau</span>
-          </a>
+          </button>
         </div>
       </div>
 
@@ -1397,10 +1497,10 @@ body.ro span[data-ro]{display:inline;}
             <div class="pr-pack-price"><sup>€</sup>39</div>
             <div class="pr-pack-ron">≈ 195 RON</div>
           </div>
-          <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" class="pr-pack-cta">
+          <button class="pr-pack-cta" onclick="openOrder('Starter Pack','€39','5 short videos + 5 photos edited · consistent style','39')">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
             <span data-en>Get it</span><span data-ro>Vreau</span>
-          </a>
+          </button>
         </div>
       </div>
 
@@ -1419,10 +1519,10 @@ body.ro span[data-ro]{display:inline;}
             <div class="pr-pack-price"><sup>€</sup>89</div>
             <div class="pr-pack-ron">≈ 445 RON</div>
           </div>
-          <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" class="pr-pack-cta">
+          <button class="pr-pack-cta" onclick="openOrder('Business Basic','€89','Full website + 3 videos + 5 photos edited','89')">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
             <span data-en>Get it</span><span data-ro>Vreau</span>
-          </a>
+          </button>
         </div>
       </div>
 
@@ -1440,17 +1540,17 @@ body.ro span[data-ro]{display:inline;}
           <div class="pr-sub-amount"><sup>€</sup>39–49</div>
           <div class="pr-sub-ron">≈ 195–245 RON / lună</div>
         </div>
-        <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" class="pr-sub-cta">
+        <button class="pr-sub-cta" onclick="openOrder('Monthly Subscription','€39–49/mo','5 videos + 5 photos every month · cancel anytime','39')">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
           <span data-en>Subscribe</span><span data-ro>Abonează-te</span>
-        </a>
+        </button>
       </div>
     </div>
   </div>
 
   <p class="pr-note rv d3">
-    <span data-en>Not sure what you need? <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener">Message me</a> and we'll figure it out.</span>
-    <span data-ro>Nu știi exact ce ai nevoie? <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener">Scrie-mi</a> și găsim împreună.</span>
+    <span data-en>Not sure what you need? <a href="https://ig.me/m/costi1andrei" target="_blank" rel="noopener">Message me</a> and we'll figure it out.</span>
+    <span data-ro>Nu știi exact ce ai nevoie? <a href="https://ig.me/m/costi1andrei" target="_blank" rel="noopener">Scrie-mi</a> și găsim împreună.</span>
   </p>
 </section>
 
@@ -1468,15 +1568,15 @@ body.ro span[data-ro]{display:inline;}
   </div>
   <div class="gal-grid rv-scale">
     <div class="gal-col">
-      <div class="gp"><img src="assets/img/photo2.jpeg" alt="" loading="lazy" style="object-position:center 10%;"/><div class="gp-cap"><span data-en>On the move</span><span data-ro>Pe drum</span></div></div>
-      <div class="gp"><img src="assets/img/photo5.jpeg" alt="" loading="lazy"/><div class="gp-cap"><span data-en>All black</span><span data-ro>Tot negru</span></div></div>
+      <div class="gp"><img src="assets/img/photo2.jpeg" alt="Costi Andrei în mișcare — fotografie de stradă" loading="lazy" style="object-position:center 10%;"/><div class="gp-cap"><span data-en>On the move</span><span data-ro>Pe drum</span></div></div>
+      <div class="gp"><img src="assets/img/photo5.jpeg" alt="Portret Costi Andrei — look all black" loading="lazy"/><div class="gp-cap"><span data-en>All black</span><span data-ro>Tot negru</span></div></div>
     </div>
     <div class="gal-col">
-      <div class="gp"><img src="assets/img/photo3.jpeg" alt="" loading="lazy"/><div class="gp-cap"><span data-en>Somewhere nice</span><span data-ro>Undeva frumos</span></div></div>
-      <div class="gp"><img src="assets/img/photo1.jpeg" alt="" loading="lazy"/><div class="gp-cap"><span data-en>By the sea</span><span data-ro>La mare</span></div></div>
+      <div class="gp"><img src="assets/img/photo3.jpeg" alt="Costi Andrei — locație exterioară" loading="lazy"/><div class="gp-cap"><span data-en>Somewhere nice</span><span data-ro>Undeva frumos</span></div></div>
+      <div class="gp"><img src="assets/img/photo1.jpeg" alt="Costi Andrei la mare" loading="lazy"/><div class="gp-cap"><span data-en>By the sea</span><span data-ro>La mare</span></div></div>
     </div>
     <div class="gal-col">
-      <div class="gp"><img src="assets/img/photo4.jpeg" alt="" loading="lazy"/><div class="gp-cap"><span data-en>Train thoughts</span><span data-ro>Gânduri în tren</span></div></div>
+      <div class="gp"><img src="assets/img/photo4.jpeg" alt="Vedere din tren — peisaj românesc" loading="lazy"/><div class="gp-cap"><span data-en>Train thoughts</span><span data-ro>Gânduri în tren</span></div></div>
     </div>
   </div>
   <div class="gal-footer rv">
@@ -1502,7 +1602,12 @@ body.ro span[data-ro]{display:inline;}
   <div class="reviews-grid">
     <div class="review-card rv d1">
       <div class="review-top">
-        <div class="review-avatar"><img src="assets/img/photo2.jpeg" alt=""/></div>
+        <div class="review-avatar review-avatar--initials" aria-hidden="true">
+          <svg viewBox="0 0 52 52" width="52" height="52" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="26" cy="26" r="26" fill="rgba(45,122,79,0.12)"/>
+            <text x="26" y="32" text-anchor="middle" font-family="Playfair Display,Georgia,serif" font-size="18" font-style="italic" fill="rgba(45,122,79,0.75)">A.M</text>
+          </svg>
+        </div>
         <div class="review-info">
           <p class="review-name">A. M.</p>
           <p class="review-role"><span data-en>Business Owner · Iași</span><span data-ro>Antreprenor · Iași</span></p>
@@ -1517,7 +1622,12 @@ body.ro span[data-ro]{display:inline;}
     </div>
     <div class="review-card rv d2">
       <div class="review-top">
-        <div class="review-avatar"><img src="assets/img/photo4.jpeg" alt=""/></div>
+        <div class="review-avatar review-avatar--initials" aria-hidden="true">
+          <svg viewBox="0 0 52 52" width="52" height="52" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="26" cy="26" r="26" fill="rgba(45,122,79,0.08)"/>
+            <text x="26" y="32" text-anchor="middle" font-family="Playfair Display,Georgia,serif" font-size="18" font-style="italic" fill="rgba(45,122,79,0.6)">R.C</text>
+          </svg>
+        </div>
         <div class="review-info">
           <p class="review-name">R. C.</p>
           <p class="review-role"><span data-en>Content Creator · Cluj</span><span data-ro>Creator de conținut · Cluj</span></p>
@@ -1532,7 +1642,12 @@ body.ro span[data-ro]{display:inline;}
     </div>
     <div class="review-card rv d3">
       <div class="review-top">
-        <div class="review-avatar"><img src="assets/img/photo5.jpeg" alt=""/></div>
+        <div class="review-avatar review-avatar--initials" aria-hidden="true">
+          <svg viewBox="0 0 52 52" width="52" height="52" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="26" cy="26" r="26" fill="rgba(45,122,79,0.1)"/>
+            <text x="26" y="32" text-anchor="middle" font-family="Playfair Display,Georgia,serif" font-size="18" font-style="italic" fill="rgba(45,122,79,0.7)">D.P</text>
+          </svg>
+        </div>
         <div class="review-info">
           <p class="review-name">D. P.</p>
           <p class="review-role"><span data-en>Startup Founder · București</span><span data-ro>Fondator Startup · București</span></p>
@@ -1583,7 +1698,7 @@ body.ro span[data-ro]{display:inline;}
 <!-- DREAMS -->
 <section id="dreams">
   <div class="dream-bg" id="dream-bg">
-    <img src="assets/img/photo6.jpeg" alt="Costi Andrei"/>
+    <img src="assets/img/photo6.jpeg" alt="Costi Andrei — fotografie de copilărie, punct de start"/>
   </div>
   <div class="dream-vignette"></div>
   <div class="dream-content" id="dream-content">
@@ -1765,10 +1880,33 @@ document.querySelectorAll('.pr-tab').forEach(tab=>{
     document.getElementById('panel-'+tab.dataset.tab).classList.add('active');
   });
 });
-document.querySelectorAll('.pr-row,.pr-pack').forEach(el=>{
-  el.addEventListener('mouseenter',()=>document.body.classList.add('cur-price'));
-  el.addEventListener('mouseleave',()=>document.body.classList.remove('cur-price'));
-});
+
+/* ── ORDER MODAL ── */
+function openOrder(name, price, desc, amount){
+  const modal = document.getElementById('order-modal');
+  document.getElementById('om-service-name').textContent = name;
+  document.getElementById('om-service-price').textContent = price;
+  document.getElementById('om-service-desc').textContent = desc;
+  // Pre-fill IG DM link with context
+  const isRo = document.body.classList.contains('ro');
+  const msg = isRo
+    ? `Bună! Vreau să comand: ${name} (${price}). Când putem începe?`
+    : `Hey! I want to order: ${name} (${price}). When can we start?`;
+  document.getElementById('om-ig-link').href = `https://ig.me/m/costi1andrei`;
+  // Email with subject pre-filled
+  const subject = encodeURIComponent(`Order: ${name} – ${price}`);
+  const body = encodeURIComponent(`Hi Costi,\n\nI want to order: ${name} (${price}).\n\n${desc}\n\nWhen can we start?`);
+  document.getElementById('om-email-link').href = `mailto:zenmail.andrei@gmail.com?subject=${subject}&body=${body}`;
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+document.getElementById('om-close').addEventListener('click', closeOrder);
+document.getElementById('om-backdrop').addEventListener('click', closeOrder);
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeOrder(); });
+function closeOrder(){
+  document.getElementById('order-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
 
 /* ── INTERACTIVE LOADER ── */
 (function(){
@@ -1873,7 +2011,7 @@ document.querySelectorAll('.pr-row,.pr-pack').forEach(el=>{
         setTimeout(()=>{
           loader.classList.add('out');
           document.body.classList.add('loaded');
-          if(typeof SFX!=='undefined') setTimeout(()=>SFX.play('intro'),200);
+          // sounds removed
           setTimeout(()=>{
             cancelAnimationFrame(raf);
             loader.style.display='none';
@@ -1896,6 +2034,13 @@ document.querySelectorAll('.pr-row,.pr-pack').forEach(el=>{
 
 /* ── CURSOR ── */
 const cdot=document.getElementById('cur-dot'),cring=document.getElementById('cur-ring'),clabel=document.getElementById('cur-label');
+// Disable custom cursor on touch devices
+if('ontouchstart' in window || navigator.maxTouchPoints > 0){
+  document.body.classList.add('touch-device');
+  if(cdot) cdot.style.display='none';
+  if(cring) cring.style.display='none';
+  if(clabel) clabel.style.display='none';
+} else {
 let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
 (function tick(){
@@ -1913,6 +2058,7 @@ document.querySelectorAll('.pr-card,.pr-item,.pr-col,.pr-pack').forEach(el=>{
   el.addEventListener('mouseenter',()=>{document.body.classList.add('cur-price');document.body.classList.remove('hov');});
   el.addEventListener('mouseleave',()=>document.body.classList.remove('cur-price'));
 });
+}
 
 /* ── MAGNETIC BUTTONS ── */
 document.querySelectorAll('.btn-gold,.ct-ig').forEach(btn=>{
@@ -2023,8 +2169,14 @@ document.getElementById('lang').addEventListener('click',function(){
 
 /* ── MOBILE MENU ── */
 const ham=document.getElementById('ham'),mnav=document.getElementById('mnav');
-ham.addEventListener('click',()=>{ham.classList.toggle('o');mnav.classList.toggle('o');document.body.style.overflow=mnav.classList.contains('o')?'hidden':'';});
-function cm(){ham.classList.remove('o');mnav.classList.remove('o');document.body.style.overflow='';}
+ham.addEventListener('click',()=>{
+  const open=ham.classList.toggle('o');
+  mnav.classList.toggle('o');
+  ham.setAttribute('aria-expanded', open ? 'true' : 'false');
+  ham.setAttribute('aria-label', open ? 'Închide meniu' : 'Deschide meniu');
+  document.body.style.overflow=open?'hidden':'';
+});
+function cm(){ham.classList.remove('o');mnav.classList.remove('o');ham.setAttribute('aria-expanded','false');ham.setAttribute('aria-label','Deschide meniu');document.body.style.overflow='';}
 
 /* ── SCROLL REVEAL ── */
 const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.04,rootMargin:'0px 0px -20px 0px'});
@@ -2033,87 +2185,6 @@ document.querySelectorAll('.rv,.rv-left,.rv-right,.rv-scale').forEach(el=>{if(!e
 /* ── ACTIVE NAV ── */
 const secs=document.querySelectorAll('section[id]'),nas=document.querySelectorAll('.n-links a');
 window.addEventListener('scroll',()=>{let cur='';secs.forEach(s=>{if(scrollY>=s.offsetTop-90)cur=s.id;});nas.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+cur));},{passive:true});
-
-/* ── SOUND ENGINE ── */
-const SFX = (function(){
-  let ctx = null;
-  function getCtx(){
-    if(!ctx) ctx = new (window.AudioContext||window.webkitAudioContext)();
-    return ctx;
-  }
-  function play(type){
-    try{
-      const ac = getCtx();
-      const g = ac.createGain();
-      g.connect(ac.destination);
-      if(type==='click'){
-        // sharp click — button hover
-        g.gain.setValueAtTime(.07, ac.currentTime);
-        g.gain.exponentialRampToValueAtTime(.001, ac.currentTime+.08);
-        const o = ac.createOscillator();
-        o.type='sine'; o.frequency.setValueAtTime(900,ac.currentTime);
-        o.frequency.exponentialRampToValueAtTime(400,ac.currentTime+.08);
-        o.connect(g); o.start(); o.stop(ac.currentTime+.08);
-      } else if(type==='whoosh'){
-        // scroll whoosh
-        const buf=ac.createBuffer(1,ac.sampleRate*.15,ac.sampleRate);
-        const d=buf.getChannelData(0);
-        for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,2);
-        const src=ac.createBufferSource(); src.buffer=buf;
-        const f=ac.createBiquadFilter(); f.type='bandpass'; f.frequency.value=800; f.Q.value=.5;
-        g.gain.setValueAtTime(.04,ac.currentTime);
-        src.connect(f); f.connect(g); src.start();
-      } else if(type==='shutter'){
-        // camera shutter
-        const buf=ac.createBuffer(1,ac.sampleRate*.06,ac.sampleRate);
-        const d=buf.getChannelData(0);
-        for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*(i<500?i/500:1)*Math.exp(-i/(ac.sampleRate*.015));
-        const src=ac.createBufferSource(); src.buffer=buf;
-        g.gain.setValueAtTime(.1,ac.currentTime);
-        src.connect(g); src.start();
-      } else if(type==='pop'){
-        // FAQ pop
-        g.gain.setValueAtTime(.06,ac.currentTime);
-        g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+.12);
-        const o=ac.createOscillator();
-        o.type='sine'; o.frequency.setValueAtTime(600,ac.currentTime);
-        o.frequency.exponentialRampToValueAtTime(200,ac.currentTime+.12);
-        o.connect(g); o.start(); o.stop(ac.currentTime+.12);
-      } else if(type==='intro'){
-        // loader intro — gentle tone
-        const o=ac.createOscillator();
-        o.type='sine'; o.frequency.setValueAtTime(220,ac.currentTime);
-        o.frequency.linearRampToValueAtTime(440,ac.currentTime+.6);
-        g.gain.setValueAtTime(0,ac.currentTime);
-        g.gain.linearRampToValueAtTime(.06,ac.currentTime+.2);
-        g.gain.linearRampToValueAtTime(0,ac.currentTime+.7);
-        o.connect(g); o.start(); o.stop(ac.currentTime+.7);
-      }
-    }catch(e){}
-  }
-  return {play};
-})();
-
-/* Attach sounds to elements */
-// Button hover → click sound
-document.querySelectorAll('.btn-gold,.btn-primary,.ct-main-btn,.ct-ig,.pr-cta,.pr-pack-cta,.ig-btn,.pr-tab').forEach(el=>{
-  el.addEventListener('mouseenter',()=>SFX.play('click'));
-});
-// Gallery hover → shutter
-document.querySelectorAll('.gp').forEach(el=>{
-  el.addEventListener('mouseenter',()=>SFX.play('shutter'));
-});
-// FAQ open → pop
-document.querySelectorAll('.faq-q').forEach(el=>{
-  el.addEventListener('click',()=>SFX.play('pop'));
-});
-// Scroll section change → whoosh
-let lastSection = '';
-window.addEventListener('scroll',()=>{
-  let cur='';
-  document.querySelectorAll('section[id]').forEach(s=>{if(scrollY>=s.offsetTop-200)cur=s.id;});
-  if(cur && cur!==lastSection){lastSection=cur;SFX.play('whoosh');}
-},{passive:true});
 
 /* ── FAQ ACCORDION ── */
 document.querySelectorAll('.faq-item').forEach(item=>{
@@ -2137,7 +2208,7 @@ function updateClock(){
 updateClock();
 setInterval(updateClock,1000);
 
-/* ── WEATHER WIDGET ── */
+/* ── WEATHER WIDGET — Open-Meteo ── */
 (function(){
   const widget=document.getElementById('weather-widget');
   const toggle=document.getElementById('wx-toggle');
@@ -2146,46 +2217,50 @@ setInterval(updateClock,1000);
   const input=document.getElementById('wx-input');
   if(!widget) return;
 
-  const ICONS={
-    'Clear':'☀️','Clouds':'☁️','Rain':'🌧️','Drizzle':'🌦️',
-    'Thunderstorm':'⛈️','Snow':'❄️','Mist':'🌫️','Fog':'🌫️',
-    'Haze':'🌫️','Smoke':'🌫️','Dust':'🌪️','Sand':'🌪️',
-    'Ash':'🌋','Squall':'💨','Tornado':'🌪️'
+  const WX_CODES={
+    0:'☀️ Cer senin',1:'🌤️ Cer parțial acoperit',2:'⛅ Parțial noros',3:'☁️ Noros',
+    45:'🌫️ Ceață',48:'🌫️ Ceață cu chiciură',
+    51:'🌦️ Burniță ușoară',53:'🌦️ Burniță moderată',55:'🌧️ Burniță intensă',
+    61:'🌧️ Ploaie ușoară',63:'🌧️ Ploaie moderată',65:'🌧️ Ploaie intensă',
+    71:'❄️ Ninsoare ușoară',73:'❄️ Ninsoare moderată',75:'❄️ Ninsoare intensă',
+    77:'🌨️ Granule de zăpadă',
+    80:'🌦️ Averse ușoare',81:'🌧️ Averse moderate',82:'⛈️ Averse violente',
+    85:'🌨️ Averse de zăpadă',86:'🌨️ Averse de zăpadă intensă',
+    95:'⛈️ Furtună',96:'⛈️ Furtună cu grindină',99:'⛈️ Furtună cu grindină mare'
   };
 
+  async function geocode(city){
+    const r=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=ro&format=json`);
+    const d=await r.json();
+    if(!d.results||!d.results.length) throw new Error('Oraș negăsit');
+    return d.results[0];
+  }
+
   async function fetchWeather(city){
-    document.getElementById('wx-desc').textContent='loading...';
+    document.getElementById('wx-desc').textContent='se încarcă...';
     document.getElementById('wx-temp').textContent='—°';
     try{
-      const r=await fetch(`https://wttr.in/${encodeURIComponent(city)}?format=j1`);
+      const geo=await geocode(city);
+      const {latitude,longitude,name,country}=geo;
+      const url=`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,weather_code&wind_speed_unit=kmh&timezone=auto`;
+      const r=await fetch(url);
       const d=await r.json();
-      const cur=d.current_condition[0];
-      const desc=cur.weatherDesc[0].value;
-      const temp=cur.temp_C;
-      const feels=cur.FeelsLikeC;
-      const hum=cur.humidity;
-      const wind=cur.windspeedKmph;
-      const nearArea=d.nearest_area[0];
-      const cityName=nearArea.areaName[0].value+', '+nearArea.country[0].value;
-      // pick icon
-      let icon='🌡️';
-      for(const[k,v] of Object.entries(ICONS)){
-        if(desc.toLowerCase().includes(k.toLowerCase())){icon=v;break;}
-      }
-      document.getElementById('wx-city-name').textContent=cityName;
+      const cur=d.current;
+      const wxText=WX_CODES[cur.weather_code]||'🌡️ Necunoscut';
+      const [icon,...descParts]=wxText.split(' ');
+      document.getElementById('wx-city-name').textContent=`${name}, ${country}`;
       document.getElementById('wx-icon').textContent=icon;
-      document.getElementById('wx-temp').textContent=temp+'°C';
-      document.getElementById('wx-desc').textContent=desc;
-      document.getElementById('wx-hum').textContent=hum+'%';
-      document.getElementById('wx-wind').textContent=wind+' km/h';
-      document.getElementById('wx-feels').textContent=feels+'°C';
+      document.getElementById('wx-temp').textContent=Math.round(cur.temperature_2m)+'°C';
+      document.getElementById('wx-desc').textContent=descParts.join(' ');
+      document.getElementById('wx-hum').textContent=cur.relative_humidity_2m+'%';
+      document.getElementById('wx-wind').textContent=Math.round(cur.wind_speed_10m)+' km/h';
+      document.getElementById('wx-feels').textContent=Math.round(cur.apparent_temperature)+'°C';
     }catch(e){
-      document.getElementById('wx-desc').textContent='unavailable';
+      document.getElementById('wx-desc').textContent='indisponibil';
     }
   }
 
   fetchWeather('Iasi,Romania');
-
   toggle.addEventListener('click',()=>widget.classList.toggle('show'));
   closeBtn.addEventListener('click',()=>widget.classList.remove('show'));
   searchBtn.addEventListener('click',()=>{if(input.value.trim())fetchWeather(input.value.trim());});
