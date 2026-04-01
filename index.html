@@ -283,6 +283,11 @@ body.cur-mindset{--cur-color:#888;--cur-ring-color:rgba(136,136,136,.3);}
 }
 .gp:nth-child(odd) img{aspect-ratio:3/4;}
 .gp:nth-child(even) img{aspect-ratio:4/5;}
+.gp-feature img{object-position:center 18%;}
+.gp-tall img{object-position:center 18%;}
+.gp-wide img{object-position:center 16%;}
+.gp-motion img{object-position:center 12%;}
+.gp-detail img{object-position:center 52%;}
 .gp:hover img{transform:scale(1.08);}
 .gp-cap{position:absolute;inset:0;display:flex;align-items:flex-end;padding:18px;background:linear-gradient(transparent 40%, rgba(5,8,7,.8) 100%);opacity:0;transition:opacity .4s;}
 .gp:hover .gp-cap{opacity:1;}
@@ -1175,6 +1180,8 @@ footer{background:var(--bg);border-top:3px solid var(--acc);padding:clamp(40px,6
 .ft-social a{font-family:var(--mono);font-size:.48rem;letter-spacing:.1em;text-transform:uppercase;color:var(--fg3);border:1px solid var(--line);padding:5px 11px;transition:all .25s;}
 .ft-social a:hover{border-color:var(--acc);color:var(--acc);}
 .ft-status{display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:.48rem;letter-spacing:.1em;color:var(--acc);}
+.ft-status--spaced{margin-top:14px;}
+.ft-col-title--spaced{margin-top:22px;}
 .ft-status-dot{width:5px;height:5px;border-radius:50%;background:#28c840;animation:pulse 2.4s infinite;}
 
 
@@ -5862,11 +5869,11 @@ footer{
 </nav>
 
 <div id="mnav">
-  <a href="#hero" onclick="cm()"><span data-en>About</span><span data-ro>Despre</span></a>
-  <a href="#services" onclick="cm()"><span data-en>Services</span><span data-ro>Servicii</span></a>
-  <a href="#pricing" onclick="cm()"><span data-en>Pricing</span><span data-ro>Prețuri</span></a>
-  <a href="#gallery" onclick="cm()"><span data-en>Gallery</span><span data-ro>Galerie</span></a>
-  <a href="#reviews" onclick="cm()"><span data-en>Reviews</span><span data-ro>Recenzii</span></a>
+  <a href="#hero" class="mnav-link"><span data-en>About</span><span data-ro>Despre</span></a>
+  <a href="#services" class="mnav-link"><span data-en>Services</span><span data-ro>Servicii</span></a>
+  <a href="#pricing" class="mnav-link"><span data-en>Pricing</span><span data-ro>Prețuri</span></a>
+  <a href="#gallery" class="mnav-link"><span data-en>Gallery</span><span data-ro>Galerie</span></a>
+  <a href="#reviews" class="mnav-link"><span data-en>Reviews</span><span data-ro>Recenzii</span></a>
 </div>
 
 <!-- HERO -->
@@ -6032,7 +6039,7 @@ footer{
           </ul>
         </div>
         <div class="pr-card-options">
-          <button class="pr-option" onclick="openOrder('Landing Page||Pagină de prezentare','€49','1 page · mobile-first · 3–5 day delivery||1 pagină · optimizată pentru mobil · livrare în 3–5 zile','49')">
+          <button class="pr-option" data-order-name="Landing Page||Pagină de prezentare" data-order-price="€49" data-order-desc="1 page · mobile-first · 3–5 day delivery||1 pagină · optimizată pentru mobil · livrare în 3–5 zile" data-order-amount="49">
             <div class="pr-option-left">
               <div class="pr-option-name"><span data-en>Landing <i>Page</i></span><span data-ro>Pagină de <i>prezentare</i></span></div>
               <div class="pr-option-sub"><span data-en>1 page · 3–5 days</span><span data-ro>1 pagină · 3–5 zile</span></div>
@@ -6042,7 +6049,7 @@ footer{
               <div class="pr-option-ron">≈ 245 RON</div>
             </div>
           </button>
-          <button class="pr-option" onclick="openOrder('Simple Site||Site simplu','€79','3–4 pages · portfolio or small business||3–4 pagini · portofoliu sau business mic','79')">
+          <button class="pr-option" data-order-name="Simple Site||Site simplu" data-order-price="€79" data-order-desc="3–4 pages · portfolio or small business||3–4 pagini · portofoliu sau business mic" data-order-amount="79">
             <div class="pr-option-left">
               <div class="pr-option-name"><span data-en>Simple <i>Site</i></span><span data-ro>Site <i>simplu</i></span></div>
               <div class="pr-option-sub"><span data-en>3–4 pages · portfolio or small biz</span><span data-ro>3–4 pagini · portofoliu sau afacere mică</span></div>
@@ -6052,7 +6059,7 @@ footer{
               <div class="pr-option-ron">≈ 395 RON</div>
             </div>
           </button>
-          <button class="pr-option" onclick="openOrder('Business Site||Site pentru business','€99','5+ pages · full build · revisions included||5+ pagini · site complet · revizii incluse','99')">
+          <button class="pr-option" data-order-name="Business Site||Site pentru business" data-order-price="€99" data-order-desc="5+ pages · full build · revisions included||5+ pagini · site complet · revizii incluse" data-order-amount="99">
             <div class="pr-option-left">
               <div class="pr-option-name"><span data-en>Business <i>Site</i></span><span data-ro>Site pentru <i>afaceri</i></span></div>
               <div class="pr-option-sub"><span data-en>5+ pages · full build</span><span data-ro>5+ pagini · site complet</span></div>
@@ -6084,7 +6091,7 @@ footer{
           </ul>
         </div>
         <div class="pr-card-options">
-          <button class="pr-option" onclick="openOrder('Short Video||Video scurt','€5','Reel, story or clip · up to 60 seconds||Reel, story sau clip · până la 60 secunde','5')">
+          <button class="pr-option" data-order-name="Short Video||Video scurt" data-order-price="€5" data-order-desc="Reel, story or clip · up to 60 seconds||Reel, story sau clip · până la 60 secunde" data-order-amount="5">
             <div class="pr-option-left">
               <div class="pr-option-name"><span data-en>Short <i>Video</i></span><span data-ro>Video <i>scurt</i></span></div>
               <div class="pr-option-sub"><span data-en>Reel, story, clip · up to 60 sec</span><span data-ro>Reel, story sau clip · până la 60 sec</span></div>
@@ -6094,7 +6101,7 @@ footer{
               <div class="pr-option-ron">≈ 25 RON</div>
             </div>
           </button>
-          <button class="pr-option" onclick="openOrder('Standard Video||Video standard','€9','Promo or branded video · up to 3 minutes · color grading||Promo sau video pentru brand · până la 3 minute · corecții de culoare','9')">
+          <button class="pr-option" data-order-name="Standard Video||Video standard" data-order-price="€9" data-order-desc="Promo or branded video · up to 3 minutes · color grading||Promo sau video pentru brand · până la 3 minute · corecții de culoare" data-order-amount="9">
             <div class="pr-option-left">
               <div class="pr-option-name"><span data-en>Standard <i>Video</i></span><span data-ro>Video <i>standard</i></span></div>
               <div class="pr-option-sub"><span data-en>Promo · up to 3 min · color grading</span><span data-ro>Promo · până la 3 min · corecții de culoare</span></div>
@@ -6125,7 +6132,7 @@ footer{
           </ul>
         </div>
         <div class="pr-card-options">
-          <button class="pr-option" onclick="openOrder('1 Photo Edit||1 editare foto','€2','Retouch · color grade · object removal||Retuș · corecții de culoare · eliminare obiecte','2')">
+          <button class="pr-option" data-order-name="1 Photo Edit||1 editare foto" data-order-price="€2" data-order-desc="Retouch · color grade · object removal||Retuș · corecții de culoare · eliminare obiecte" data-order-amount="2">
             <div class="pr-option-left">
               <div class="pr-option-name"><span data-en>1 <i>Photo</i></span><span data-ro>1 <i>fotografie</i></span></div>
               <div class="pr-option-sub"><span data-en>Retouch · color · object removal</span><span data-ro>Retuș · culoare · eliminare obiecte</span></div>
@@ -6135,7 +6142,7 @@ footer{
               <div class="pr-option-ron">≈ 10 RON</div>
             </div>
           </button>
-          <button class="pr-option" onclick="openOrder('10 Photos Pack||Pachet 10 fotografii','€15','Bulk edit · consistent look · fast delivery||Editare în lot · aspect uniform · livrare rapidă','15')">
+          <button class="pr-option" data-order-name="10 Photos Pack||Pachet 10 fotografii" data-order-price="€15" data-order-desc="Bulk edit · consistent look · fast delivery||Editare în lot · aspect uniform · livrare rapidă" data-order-amount="15">
             <div class="pr-option-left">
               <div class="pr-option-name"><span data-en>10 <i>Photos</i></span><span data-ro>10 <i>fotografii</i></span></div>
               <div class="pr-option-sub"><span data-en>Bulk edit · consistent look</span><span data-ro>Editare în lot · aspect uniform</span></div>
@@ -6170,7 +6177,7 @@ footer{
             <div class="pr-pack-price"><sup>€</sup>15</div>
             <div class="pr-pack-ron">≈ 75 RON</div>
           </div>
-          <button class="pr-pack-cta" onclick="openOrder('Mini Pack||Pachet Mini','€15','2 short videos + 3 photos edited||2 videoclipuri scurte + 3 poze editate','15')">
+          <button class="pr-pack-cta" data-order-name="Mini Pack||Pachet Mini" data-order-price="€15" data-order-desc="2 short videos + 3 photos edited||2 videoclipuri scurte + 3 poze editate" data-order-amount="15">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
             <span data-en>Choose</span><span data-ro>Alege</span>
           </button>
@@ -6192,7 +6199,7 @@ footer{
             <div class="pr-pack-price"><sup>€</sup>39</div>
             <div class="pr-pack-ron">≈ 195 RON</div>
           </div>
-          <button class="pr-pack-cta" onclick="openOrder('Starter Pack||Pachet Starter','€39','5 short videos + 5 photos edited · consistent style||5 videoclipuri scurte + 5 poze editate · stil uniform','39')">
+          <button class="pr-pack-cta" data-order-name="Starter Pack||Pachet Starter" data-order-price="€39" data-order-desc="5 short videos + 5 photos edited · consistent style||5 videoclipuri scurte + 5 poze editate · stil uniform" data-order-amount="39">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
             <span data-en>Choose</span><span data-ro>Alege</span>
           </button>
@@ -6214,7 +6221,7 @@ footer{
             <div class="pr-pack-price"><sup>€</sup>89</div>
             <div class="pr-pack-ron">≈ 445 RON</div>
           </div>
-          <button class="pr-pack-cta" onclick="openOrder('Business Basic||Business Basic','€89','Full website + 3 videos + 5 photos edited||Site complet + 3 videoclipuri + 5 poze editate','89')">
+          <button class="pr-pack-cta" data-order-name="Business Basic||Business Basic" data-order-price="€89" data-order-desc="Full website + 3 videos + 5 photos edited||Site complet + 3 videoclipuri + 5 poze editate" data-order-amount="89">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
             <span data-en>Choose</span><span data-ro>Alege</span>
           </button>
@@ -6235,7 +6242,7 @@ footer{
           <div class="pr-sub-amount"><sup>€</sup>39–49</div>
           <div class="pr-sub-ron">≈ 195–245 RON / lună</div>
         </div>
-        <button class="pr-sub-cta" onclick="openOrder('Monthly Subscription||Abonament lunar','€39–49/mo||€39–49/lună','5 videos + 5 photos every month · cancel anytime||5 videoclipuri + 5 poze în fiecare lună · oprești oricând','39')">
+        <button class="pr-sub-cta" data-order-name="Monthly Subscription||Abonament lunar" data-order-price="€39–49/mo||€39–49/lună" data-order-desc="5 videos + 5 photos every month · cancel anytime||5 videoclipuri + 5 poze în fiecare lună · oprești oricând" data-order-amount="39">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
           <span data-en>Subscribe</span><span data-ro>Abonează-te</span>
         </button>
@@ -6263,23 +6270,23 @@ footer{
   </div>
   <div class="gal-grid rv-scale">
     <div class="gp gp-feature">
-      <img src="assets/img/photo3.jpeg" alt="Costi Andrei, portret editorial" loading="lazy" style="object-position:center 18%;"/>
+      <img src="assets/img/photo3.jpeg" alt="Costi Andrei, portret editorial" loading="lazy"/>
       <div class="gp-cap"><span data-en>Editorial portrait</span><span data-ro>Portret editorial</span></div>
     </div>
     <div class="gp gp-tall">
-      <img src="assets/img/photo5.jpeg" alt="Costi Andrei, portret în negru" loading="lazy" style="object-position:center 18%;"/>
+      <img src="assets/img/photo5.jpeg" alt="Costi Andrei, portret în negru" loading="lazy"/>
       <div class="gp-cap"><span data-en>Black outfit</span><span data-ro>Ținută neagră</span></div>
     </div>
     <div class="gp gp-wide">
-      <img src="assets/img/photo1.jpeg" alt="Costi Andrei la mare" loading="lazy" style="object-position:center 16%;"/>
+      <img src="assets/img/photo1.jpeg" alt="Costi Andrei la mare" loading="lazy"/>
       <div class="gp-cap"><span data-en>By the sea</span><span data-ro>La mare</span></div>
     </div>
     <div class="gp gp-motion">
-      <img src="assets/img/photo2.jpeg" alt="Costi Andrei în mișcare, fotografie de stradă" loading="lazy" style="object-position:center 12%;"/>
+      <img src="assets/img/photo2.jpeg" alt="Costi Andrei în mișcare, fotografie de stradă" loading="lazy"/>
       <div class="gp-cap"><span data-en>On the move</span><span data-ro>Pe drum</span></div>
     </div>
     <div class="gp gp-detail">
-      <img src="assets/img/photo4.jpeg" alt="Vedere din tren, peisaj românesc" loading="lazy" style="object-position:center 52%;"/>
+      <img src="assets/img/photo4.jpeg" alt="Vedere din tren, peisaj românesc" loading="lazy"/>
       <div class="gp-cap"><span data-en>Train thoughts</span><span data-ro>Gânduri în tren</span></div>
     </div>
   </div>
@@ -6553,7 +6560,7 @@ footer{
     <div class="ft-brand">
       <a href="#hero" class="ft-logo">Aman <i>/ Costi Andrei</i></a>
       <p><span data-en>Web developer, video editor and photo editor based in Iași, Romania.</span><span data-ro>Dezvoltator web, editor video și editor foto din Iași, România.</span></p>
-      <div class="ft-status" style="margin-top:14px;">
+      <div class="ft-status ft-status--spaced">
         <span class="ft-status-dot"></span>
         <span data-en>Available for new projects</span>
         <span data-ro>Disponibil pentru proiecte noi</span>
@@ -6577,7 +6584,7 @@ footer{
         <li><a href="mailto:zenmail.andrei@gmail.com">zenmail.andrei@gmail.com</a></li>
         <li><a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer"><span data-en>Start a project</span><span data-ro>Începe un proiect</span></a></li>
       </ul>
-      <p class="ft-col-title" style="margin-top:22px;"><span data-en>Response time</span><span data-ro>Timp de răspuns</span></p>
+      <p class="ft-col-title ft-col-title--spaced"><span data-en>Response time</span><span data-ro>Timp de răspuns</span></p>
       <ul class="ft-links">
         <li><span>⚡ &lt; 2h <span data-en>on Instagram</span><span data-ro>pe Instagram</span></span></li>
       </ul>
@@ -6844,6 +6851,19 @@ ham.addEventListener('click',()=>{
   document.body.style.overflow=open?'hidden':'';
 });
 function cm(){ham.classList.remove('o');mnav.classList.remove('o');ham.setAttribute('aria-expanded','false');ham.setAttribute('aria-label','Deschide meniu');document.body.style.overflow='';}
+document.querySelectorAll('.mnav-link').forEach(link=>{
+  link.addEventListener('click', cm);
+});
+document.querySelectorAll('[data-order-name]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    openOrder(
+      btn.dataset.orderName || '',
+      btn.dataset.orderPrice || '',
+      btn.dataset.orderDesc || '',
+      btn.dataset.orderAmount || ''
+    );
+  });
+});
 
 /* ── SCROLL REVEAL ── */
 const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.04,rootMargin:'0px 0px -20px 0px'});
