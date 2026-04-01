@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ro">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 <!-- SEO Primary -->
-<title>Costi Andrei (Aman) — Web Developer & Video Editor din Iași</title>
-<meta name="description" content="Costi Andrei, cunoscut ca Aman — web developer, video editor și photo editor din Iași, România. Landing pages, reels, editare foto. Prețuri clare, livrare rapidă."/>
+<title>Costi Andrei (Aman) - Dezvoltator web și editor video din Iași</title>
+<meta name="description" content="Costi Andrei, cunoscut ca Aman, dezvoltator web, editor video și editor foto din Iași, România. Site-uri de prezentare, videoclipuri scurte și editare foto. Prețuri clare și livrare rapidă."/>
 <meta name="keywords" content="web developer iași, video editor iași, editare foto, landing page romania, freelancer iași, costi andrei, aman"/>
 <meta name="author" content="Costi Andrei"/>
 <meta name="robots" content="index, follow"/>
@@ -16,7 +16,7 @@
 <!-- Open Graph / Social Media -->
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://costi1andrei.site/"/>
-<meta property="og:title" content="Costi Andrei (Aman) — Web Developer & Video Editor, Iași"/>
+<meta property="og:title" content="Costi Andrei (Aman) - Dezvoltator web și editor video, Iași"/>
 <meta property="og:description" content="Web development, video editing și editare foto. 18 ani, Iași. Livrare rapidă, prețuri clare, fără costuri ascunse."/>
 <meta property="og:image" content="assets/img/photo1.jpeg"/>
 <meta property="og:locale" content="ro_RO"/>
@@ -24,7 +24,7 @@
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:title" content="Costi Andrei (Aman) — Web Developer & Video Editor, Iași"/>
+<meta name="twitter:title" content="Costi Andrei (Aman) - Dezvoltator web și editor video, Iași"/>
 <meta name="twitter:description" content="Web development, video editing și editare foto. Iași, România."/>
 <meta name="twitter:image" content="assets/img/photo1.jpeg"/>
 
@@ -37,8 +37,8 @@
   "alternateName": "Aman",
   "url": "https://costi1andrei.site",
   "image": "assets/img/photo1.jpeg",
-  "description": "Web developer, video editor și photo editor freelancer din Iași, România.",
-  "jobTitle": "Web Developer & Video Editor",
+  "description": "Dezvoltator web, editor video și editor foto freelancer din Iași, România.",
+  "jobTitle": "Dezvoltator web și editor video",
   "address": {
     "@type": "PostalAddress",
     "addressLocality": "Iași",
@@ -399,7 +399,7 @@ nav.stuck{background:#050807;border-color:rgba(237,233,224,.14);}
 .mq-track:hover{animation-play-state:paused;}
 @keyframes mq{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 .mq-item{font-family:var(--display);font-style:italic;font-size:clamp(.95rem,2vw,1.4rem);font-weight:400;color:var(--fg3);white-space:nowrap;padding:0 clamp(18px,3vw,44px);}
-.mq-item span{color:var(--acc);font-style:normal;margin-right:clamp(18px,3vw,44px);}
+.mq-item .mq-sep{color:var(--acc);font-style:normal;margin-right:clamp(18px,3vw,44px);}
 
 /* ABOUT */
 #about{display:grid;grid-template-columns:1fr 1fr;min-height:clamp(500px,80vh,900px);position:relative;}
@@ -630,61 +630,68 @@ nav.stuck{background:#050807;border-color:rgba(237,233,224,.14);}
 /* DREAMS — cinematic parallax */
 #dreams{
   position:relative;
-  height:100svh;
+  min-height:auto;
+  padding:clamp(56px,8vh,96px) var(--px);
+  background:linear-gradient(180deg, rgba(255,255,255,.96) 0%, rgba(245,236,224,.98) 100%);
+}
+.dream-shell{
+  width:min(100%,1180px);
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:minmax(320px, .92fr) minmax(0, 1.08fr);
+  align-items:center;
+  gap:clamp(24px,4vw,46px);
+}
+.dream-media{
+  position:relative;
+  min-height:clamp(420px,66vh,680px);
+  border-radius:30px;
   overflow:hidden;
-  display:flex;align-items:center;justify-content:center;
-  margin:0;padding:0;
-  z-index:1;
+  box-shadow:0 28px 60px rgba(55,36,17,.12);
 }
-.dream-bg{
-  position:absolute;inset:-10%;
-  z-index:0;
-  will-change:transform;
-}
-.dream-bg img{
-  width:100%;height:100%;
+.dream-media img{
+  width:100%;
+  height:100%;
   object-fit:cover;
   object-position:center top;
-  filter:brightness(.38) saturate(.7);
-  transition:filter 1.2s;
+  filter:grayscale(100%) sepia(.12) brightness(.88) contrast(1.03);
 }
-#dreams:hover .dream-bg img{filter:brightness(.45) saturate(.8);}
-.dream-vignette{
-  position:absolute;inset:0;z-index:1;
-  background:
-    radial-gradient(ellipse at center, transparent 20%, rgba(5,8,7,.7) 100%),
-    linear-gradient(to top, rgba(5,8,7,.95) 0%, transparent 40%),
-    linear-gradient(to bottom, rgba(5,8,7,.6) 0%, transparent 30%);
-}
-.dream-content{
-  position:relative;z-index:2;
-  text-align:center;
-  padding:0 var(--px);
-  max-width:900px;
-  will-change:transform;
+.dream-media::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg, rgba(255,255,255,.12) 0%, rgba(20,16,11,.16) 100%);
 }
 .dream-year{
+  position:absolute;
+  left:26px;
+  bottom:18px;
+  z-index:1;
   font-family:var(--display);
-  font-size:clamp(8rem,22vw,20rem);
-  font-weight:700;font-style:italic;
-  line-height:.85;
+  font-size:clamp(4.6rem,10vw,8rem);
+  font-weight:600;
+  font-style:italic;
+  line-height:.88;
   color:transparent;
-  -webkit-text-stroke:1px rgba(45,122,79,.25);
+  -webkit-text-stroke:1px rgba(183,138,82,.5);
   letter-spacing:-.04em;
-  display:block;
-  transform:translateY(0);
-  transition:transform .1s linear;
   pointer-events:none;
   user-select:none;
 }
-.dream-inner{
-  margin-top:-clamp(20px,4vw,40px);
+.dream-copy{
   position:relative;
+  padding:clamp(28px,4vw,44px);
+  border-radius:30px;
+  background:rgba(255,252,247,.82);
+  border:1px solid rgba(23,19,16,.08);
+  box-shadow:0 24px 60px rgba(55,36,17,.08);
+  backdrop-filter:blur(16px);
+  text-align:left;
 }
 .dream-over-label{
   font-family:var(--mono);font-size:.52rem;letter-spacing:.28em;text-transform:uppercase;
   color:var(--acc);margin-bottom:clamp(16px,3vh,28px);
-  display:flex;align-items:center;justify-content:center;gap:14px;
+  display:flex;align-items:center;justify-content:flex-start;gap:14px;
   opacity:0;transform:translateY(20px);
   transition:opacity 1s var(--ease),transform 1s var(--ease);
 }
@@ -692,9 +699,12 @@ nav.stuck{background:#050807;border-color:rgba(237,233,224,.14);}
 #dreams.in-view .dream-over-label{opacity:1;transform:none;}
 .dream-over-title{
   font-family:var(--display);
-  font-size:clamp(2.8rem,7vw,7rem);
-  font-weight:400;line-height:1;letter-spacing:-.02em;
+  font-size:clamp(2.8rem,5.3vw,5.8rem);
+  font-weight:400;line-height:.98;letter-spacing:-.02em;
   color:var(--fg);
+  max-width:8ch;
+  margin:0;
+  text-align:left;
   overflow:hidden;
   opacity:0;transform:translateY(40px);
   transition:opacity 1.2s var(--ease),transform 1.2s var(--ease);
@@ -705,14 +715,14 @@ nav.stuck{background:#050807;border-color:rgba(237,233,224,.14);}
 .dream-over-body{
   font-size:clamp(.9rem,1.4vw,1.05rem);font-weight:300;
   color:var(--fg2);line-height:1.9;
-  max-width:560px;margin:clamp(16px,3vh,28px) auto 0;
+  max-width:58ch;margin:clamp(16px,3vh,28px) 0 0;
   opacity:0;transform:translateY(20px);
   transition:opacity 1s var(--ease),transform 1s var(--ease);
   transition-delay:.3s;
 }
 #dreams.in-view .dream-over-body{opacity:1;transform:none;}
 .dream-pills-row{
-  display:flex;flex-wrap:wrap;gap:10px;justify-content:center;
+  display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-start;
   margin-top:clamp(20px,3vh,32px);
   opacity:0;transform:translateY(16px);
   transition:opacity 1s var(--ease),transform 1s var(--ease);
@@ -1032,9 +1042,10 @@ body.ro span[data-ro]{display:inline;}
   .gal-col:nth-child(3){display:none;}
   .gal-col:nth-child(2){margin-top:clamp(20px,3vw,36px);}
   .ms-wrap{grid-template-columns:1fr;gap:36px;}
-  .dream-content{padding:0 20px;}
-  .dream-year{font-size:clamp(6rem,18vw,12rem);}
-  .dream-photo{min-height:300px;}
+  #dreams{padding:28px 20px 34px;}
+  .dream-shell{grid-template-columns:1fr;gap:18px;}
+  .dream-media{min-height:340px;}
+  .dream-copy{padding:24px 22px;}
   .ms-left{position:static;}
   .svc-top p,.gal-sub,.pr-header p,.rv-header p{text-align:left;max-width:100%;}
   .hero-content{grid-template-columns:1fr;}
@@ -1068,8 +1079,17 @@ body.ro span[data-ro]{display:inline;}
   .gal-col:nth-child(3){display:flex;}
   .svc-item{grid-template-columns:40px 1fr;}
   .svc-arr{display:none;}
-  .dream-content{padding:0 16px;}
-  .dream-year{-webkit-text-stroke-width:.5px;}
+  #dreams{padding:22px 16px 28px;}
+  .dream-media{min-height:300px;border-radius:22px;}
+  .dream-copy{padding:22px 18px;border-radius:22px;}
+  .dream-year{
+    left:18px;
+    bottom:14px;
+    font-size:clamp(3.8rem,18vw,6.2rem);
+    -webkit-text-stroke-width:.5px;
+  }
+  .dream-over-title{max-width:9ch;line-height:1.02;}
+  .dream-pills-row{gap:8px;}
   .pr-item{flex-wrap:nowrap;}
   .pr-item-desc{display:none;}
   .pr-item-right{flex-direction:row;align-items:center;gap:10px;}
@@ -5139,9 +5159,103 @@ footer{
     flex:1 1 0;
   }
 }
+
+/* ---------- HERO ABOUT OVERRIDE ---------- */
+#hero.hero-about{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  min-height:100svh;
+}
+#hero.hero-about .about-img,
+#hero.hero-about .about-text{
+  min-height:100svh;
+}
+#hero.hero-about .about-img img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center 18%;
+}
+#hero.hero-about .about-text{
+  padding-top:clamp(110px,14vh,150px);
+  padding-bottom:clamp(56px,8vh,96px);
+}
+#hero.hero-about .about-label{
+  margin-bottom:clamp(18px,3vh,30px);
+}
+#hero.hero-about .hero-about-title{
+  font-family:var(--display);
+  font-size:clamp(3rem,6vw,6rem);
+  font-weight:400;
+  line-height:.98;
+  letter-spacing:-.03em;
+  margin-bottom:clamp(20px,3vw,34px);
+}
+#hero.hero-about .hero-about-title i{
+  font-style:italic;
+  color:var(--acc);
+}
+#hero.hero-about .word-reveal{
+  max-width:36ch;
+}
+.hero-about-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:clamp(24px,3vw,34px);
+}
+#hero.hero-about .hero-about-actions .btn-line{
+  border-color:rgba(255,255,255,.24);
+  color:var(--fg2);
+}
+#hero.hero-about .hero-about-actions .btn-line:hover{
+  color:var(--fg);
+  border-color:var(--fg);
+}
+#hero.hero-about .about-chips{
+  margin-top:clamp(22px,3vw,34px);
+}
+
+@media(max-width:1028px){
+  #hero.hero-about{
+    grid-template-columns:1fr;
+    min-height:auto;
+  }
+  #hero.hero-about .about-img{
+    min-height:360px;
+    aspect-ratio:4/3;
+  }
+  #hero.hero-about .about-text{
+    min-height:auto;
+    padding-top:clamp(52px,8vw,78px);
+  }
+}
+
+@media(max-width:700px){
+  #hero.hero-about .about-img{
+    min-height:320px;
+  }
+  #hero.hero-about .about-text{
+    padding:36px 20px 42px;
+  }
+  #hero.hero-about .hero-about-title{
+    font-size:clamp(2.5rem,11vw,4.4rem);
+  }
+  .hero-about-actions{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  .hero-about-actions .btn-gold,
+  .hero-about-actions .btn-line{
+    width:100%;
+    min-width:0;
+    min-height:48px;
+    justify-content:center;
+  }
+}
 </style>
 </head>
-<body>
+<body class="ro">
 <div id="scroll-bar"></div>
 <div id="page-transition">
   <div class="pt-col"></div><div class="pt-col"></div><div class="pt-col"></div><div class="pt-col"></div><div class="pt-col"></div>
@@ -5169,7 +5283,7 @@ footer{
         <span class="nld-mono-label">studio</span>
       </div>
       <div class="nld-monolith nld-monolith-right">
-        <span class="nld-mono-label">visuals</span>
+        <span class="nld-mono-label">vizual</span>
       </div>
     </div>
   </div>
@@ -5200,20 +5314,20 @@ footer{
     <div class="wx-city-row">
       <span class="wx-city" id="wx-city-name">Iași</span>
     </div>
-    <button class="wx-close" id="wx-close">✕ close</button>
+    <button class="wx-close" id="wx-close">✕ <span data-en>close</span><span data-ro>închide</span></button>
   </div>
   <div class="wx-main">
     <span class="wx-icon" id="wx-icon">⏳</span>
-    <span class="wx-temp" id="wx-temp">—°</span>
+    <span class="wx-temp" id="wx-temp">...</span>
   </div>
-  <div class="wx-desc" id="wx-desc">loading...</div>
+  <div class="wx-desc" id="wx-desc"><span data-en>loading...</span><span data-ro>se încarcă...</span></div>
   <div class="wx-details">
-    <div class="wx-detail"><span data-en>Humidity</span><span data-ro>Umiditate</span>: <span id="wx-hum">—</span></div>
-    <div class="wx-detail"><span data-en>Wind</span><span data-ro>Vânt</span>: <span id="wx-wind">—</span></div>
-    <div class="wx-detail"><span data-en>Feels</span><span data-ro>Simțit</span>: <span id="wx-feels">—</span></div>
+    <div class="wx-detail"><span data-en>Humidity</span><span data-ro>Umiditate</span>: <span id="wx-hum">...</span></div>
+    <div class="wx-detail"><span data-en>Wind</span><span data-ro>Vânt</span>: <span id="wx-wind">...</span></div>
+    <div class="wx-detail"><span data-en>Feels</span><span data-ro>Resimțită</span>: <span id="wx-feels">...</span></div>
   </div>
   <div class="wx-search">
-    <input class="wx-input" id="wx-input" type="text" placeholder="Search city..." autocomplete="off"/>
+    <input class="wx-input" id="wx-input" type="text" placeholder="Caută oraș..." autocomplete="off"/>
     <button class="wx-search-btn" id="wx-search-btn">→</button>
   </div>
 </div>
@@ -5222,7 +5336,7 @@ footer{
 <nav id="nav">
   <a href="#hero" class="n-logo">Aman <i>/ Costi Andrei</i></a>
   <ul class="n-links">
-    <li><a href="#about"><span data-en>About</span><span data-ro>Despre</span></a></li>
+    <li><a href="#hero"><span data-en>About</span><span data-ro>Despre</span></a></li>
     <li><a href="#services"><span data-en>Services</span><span data-ro>Servicii</span></a></li>
     <li><a href="#pricing"><span data-en>Pricing</span><span data-ro>Prețuri</span></a></li>
     <li><a href="#gallery"><span data-en>Gallery</span><span data-ro>Galerie</span></a></li>
@@ -5231,15 +5345,15 @@ footer{
   </ul>
   <div class="n-right">
     <button class="lang" id="lang" aria-label="Schimbă limba / Change language">
-      <span class="flag" id="lang-flag">🇷🇴</span>
-      <span class="lang-text" id="lang-text">RO</span>
+      <span class="flag" id="lang-flag">🇬🇧</span>
+      <span class="lang-text" id="lang-text">EN</span>
     </button>
     <button class="ham" id="ham" aria-label="Deschide meniu" aria-expanded="false" aria-controls="mnav"><span></span><span></span></button>
   </div>
 </nav>
 
 <div id="mnav">
-  <a href="#about" onclick="cm()"><span data-en>About</span><span data-ro>Despre</span></a>
+  <a href="#hero" onclick="cm()"><span data-en>About</span><span data-ro>Despre</span></a>
   <a href="#services" onclick="cm()"><span data-en>Services</span><span data-ro>Servicii</span></a>
   <a href="#pricing" onclick="cm()"><span data-en>Pricing</span><span data-ro>Prețuri</span></a>
   <a href="#gallery" onclick="cm()"><span data-en>Gallery</span><span data-ro>Galerie</span></a>
@@ -5247,123 +5361,32 @@ footer{
 </div>
 
 <!-- HERO -->
-<section id="hero">
-  <div class="hero-bg-grid" aria-hidden="true"></div>
-  <canvas id="hero-canvas"></canvas>
-  <div class="hero-line" aria-hidden="true"></div>
-  <div class="hero-content">
-    <div class="hero-left">
-      <p class="hero-tag rv">
-        <span data-en>Signature digital presence</span>
-        <span data-ro>Prezență digitală premium</span>
-      </p>
-      <h1 class="hero-title">
-        <span class="line"><span class="word" id="hw1"><span data-en>Less noise.</span><span data-ro>Mai puțin zgomot.</span></span></span>
-        <span class="line"><span class="word" id="hw2"><span data-en><i>More presence.</i></span><span data-ro><i>Mai multă prezență.</i></span></span></span>
-      </h1>
-      <p class="hero-intro rv d1">
-        <span data-en>I design pages, edits and visuals that feel more expensive, easier to trust and much harder to forget.</span>
-        <span data-ro>Creez pagini, editări și visuals care par mai scumpe, inspiră mai multă încredere și se uită mult mai greu.</span>
-      </p>
-      <div class="hero-strip rv d2">
-        <span class="hero-strip-item"><span data-en>Web · Edit · Visuals</span><span data-ro>Web · Edit · Visuals</span></span>
-        <span class="hero-strip-item">Iași, RO</span>
-        <span class="hero-strip-item"><span data-en>from €49</span><span data-ro>de la €49</span></span>
-      </div>
-      <div class="hero-cta rv d3">
-        <a href="#pricing" class="btn-gold"><span data-en>See pricing</span><span data-ro>Vezi prețurile</span></a>
-        <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" class="btn-line"><span data-en>Start a project</span><span data-ro>Începe un proiect</span></a>
-      </div>
-    </div>
-    <div class="hero-showcase rv-scale d1">
-      <div class="hero-showcase-main hero-stage">
-        <div class="hero-orbit-shell" aria-hidden="true">
-          <div class="hero-orbit-blur"></div>
-          <div class="hero-orbit-ring hero-orbit-ring-a"></div>
-          <div class="hero-orbit-ring hero-orbit-ring-b"></div>
-          <div class="hero-orbit-ring hero-orbit-ring-c"></div>
-          <div class="hero-orbit-ribbon hero-orbit-ribbon-top">
-            <span data-en>signature websites · visuals · edits</span>
-            <span data-ro>site-uri premium · visuals · editări</span>
-          </div>
-          <div class="hero-orbit-ribbon hero-orbit-ribbon-bottom">
-            <span data-en>cleaner hierarchy · premium finish · stronger trust</span>
-            <span data-ro>ierarhie clară · finish premium · mai multă încredere</span>
-          </div>
-          <div class="hero-orbit-core">
-            <div class="hero-orbit-core-inner">
-              <span class="hero-orbit-mark">A</span>
-              <p><span data-en>Quiet luxury for your online presence.</span><span data-ro>Luxury discret pentru prezența ta online.</span></p>
-            </div>
-          </div>
-          <span class="hero-orbit-dot hero-orbit-dot-a"></span>
-          <span class="hero-orbit-dot hero-orbit-dot-b"></span>
-          <span class="hero-orbit-dot hero-orbit-dot-c"></span>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="hero-bottom rv d3">
-    <div class="hero-live">
-      <div class="hero-stat hero-line-stat">
-        <span class="pulse"></span>
-        <span data-en>Available for selected projects</span>
-        <span data-ro>Disponibil pentru proiecte selectate</span>
-      </div>
-      <div id="hero-clock" class="hero-line-stat">
-        <span class="clock-dot"></span>
-        <span id="clock-time">00:00:00</span>
-        <span class="clock-city">Iași, RO</span>
-      </div>
-      <div class="hero-line-stat hero-reply">
-        <span data-en>&lt; 2h average reply</span>
-        <span data-ro>&lt; 2h răspuns mediu</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- MARQUEE -->
-<div class="mq" aria-hidden="true">
-  <div class="mq-track">
-    <span class="mq-item">Web Development<span> ✦ </span></span>
-    <span class="mq-item">Video Editing<span> ✦ </span></span>
-    <span class="mq-item">Photo & Video<span> ✦ </span></span>
-    <span class="mq-item">Photography<span> ✦ </span></span>
-    <span class="mq-item">Web Development<span> ✦ </span></span>
-    <span class="mq-item">Video Editing<span> ✦ </span></span>
-    <span class="mq-item">Photo & Video<span> ✦ </span></span>
-    <span class="mq-item">Photography<span> ✦ </span></span>
-    <span class="mq-item">Web Development<span> ✦ </span></span>
-    <span class="mq-item">Video Editing<span> ✦ </span></span>
-    <span class="mq-item">Photo & Video<span> ✦ </span></span>
-    <span class="mq-item">Photography<span> ✦ </span></span>
-  </div>
-</div>
-
-<!-- ABOUT -->
-<section id="about">
+<section id="hero" class="hero-about">
   <div class="about-img rv-left">
-    <img src="assets/img/photo3.jpeg" alt="Costi Andrei — portret, Iași" width="800" height="1000" loading="lazy"/>
+    <img src="assets/img/photo3.jpeg" alt="Costi Andrei, portret din Iași" width="800" height="1000" loading="eager"/>
     <div class="born-tag">
       <span data-en>Based in</span><span data-ro>Locație</span>
       <strong>Iași, RO</strong>
     </div>
   </div>
   <div class="about-text rv-right">
-    <p class="about-label"><span data-en>01 — About</span><span data-ro>01 — Despre mine</span></p>
-    <h2>
-      <span data-en>Built different.<br/>Thinking in<br/><i>decades.</i></span>
-      <span data-ro>Construit altfel.<br/>Gândesc în<br/><i>decenii.</i></span>
-    </h2>
-    <p class="word-reveal" data-en>I'm <strong>Costi</strong> — known as Aman. 18 years old, from Iași. I build websites, cut videos, and edit photos. Not because I have to — because I chose to start early.</p>
-    <p class="word-reveal" data-ro>Sunt <strong>Costi</strong> — cunoscut ca Aman. 18 ani, din Iași. Construiesc site-uri, editez video și editez poze. Nu pentru că trebuie — ci pentru că am ales să încep devreme.</p>
-    <p class="word-reveal" data-en>Most people my age are still figuring out what they want. I already know what I'm building — and I'm in the middle of building it.</p>
-    <p class="word-reveal" data-ro>Majoritatea de vârsta mea încă se gândesc ce vor. Eu știu deja ce construiesc — și sunt în mijlocul procesului.</p>
+    <p class="about-label"><span data-en>01 - About</span><span data-ro>01 - Despre mine</span></p>
+    <h1 class="hero-about-title">
+      <span data-en>Clean work.<br/>Long-term<br/><i>thinking.</i></span>
+      <span data-ro>Lucrez clar.<br/>Gândesc pe termen<br/><i>lung.</i></span>
+    </h1>
+    <p class="word-reveal" data-en>I'm <strong>Costi</strong>, also known as Aman. I'm 18, based in Iași, and I build websites, edit videos and retouch photos.</p>
+    <p class="word-reveal" data-ro>Sunt <strong>Costi</strong>, cunoscut și ca Aman. Am 18 ani, sunt din Iași și fac site-uri, editez videoclipuri și retușez fotografii.</p>
+    <p class="word-reveal" data-en>I like work that looks clean, moves fast and makes sense for the person paying for it.</p>
+    <p class="word-reveal" data-ro>Îmi place munca bine făcută, clară și utilă pentru omul care plătește pentru ea.</p>
+    <div class="hero-about-actions rv d2">
+      <a href="#pricing" class="btn-gold"><span data-en>See pricing</span><span data-ro>Vezi prețurile</span></a>
+      <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" class="btn-line"><span data-en>Start a project</span><span data-ro>Începe un proiect</span></a>
+    </div>
     <div class="about-chips">
-      <span class="chip">Web Dev</span>
-      <span class="chip">Video Editor</span>
-      <span class="chip">Photo Edit</span>
+      <span class="chip"><span data-en>Web</span><span data-ro>Web</span></span>
+      <span class="chip"><span data-en>Video</span><span data-ro>Video</span></span>
+      <span class="chip"><span data-en>Photo</span><span data-ro>Foto</span></span>
       <span class="chip">📍 Iași, RO</span>
     </div>
   </div>
@@ -5373,39 +5396,39 @@ footer{
 <section id="services">
   <div class="svc-top">
     <h2 class="rv">
-      <span data-en>Three crafts.<br/><i>One person.</i></span>
-      <span data-ro>Trei domenii.<br/><i>O persoană.</i></span>
+      <span data-en>What I do.<br/><i>Simple and clear.</i></span>
+      <span data-ro>Cu ce te pot ajuta.<br/><i>Simplu și clar.</i></span>
     </h2>
     <p class="rv d1">
-      <span data-en>No filler. Each skill is something I've spent real time on.</span>
-      <span data-ro>Fără umplutură. Fiecare abilitate e ceva pe care am investit timp real.</span>
+      <span data-en>These are the services I work on constantly and can deliver quickly.</span>
+      <span data-ro>Acestea sunt serviciile pe care lucrez constant și le pot livra rapid.</span>
     </p>
   </div>
   <div class="svc-items rv d2">
     <div class="svc-item">
       <span class="svc-n">01</span>
       <div class="svc-body">
-        <h3><span data-en>Web <i>Development</i></span><span data-ro>Web <i>Development</i></span></h3>
-        <p data-en>Clean, fast, conversion-focused. Landing pages, portfolios, full-stack builds — designed to perform.</p>
-        <p data-ro>Curat, rapid, orientat spre conversie. Landing pages, portofolii, build-uri complete — concepute să performeze.</p>
+        <h3><span data-en>Web <i>Development</i></span><span data-ro>Dezvoltare <i>Web</i></span></h3>
+        <p data-en>Clean, fast and easy to use. Landing pages, portfolios and complete presentation sites.</p>
+        <p data-ro>Curat, rapid și ușor de folosit. Pagini de prezentare, portofolii și site-uri complete.</p>
       </div>
       <span class="svc-arr">↗</span>
     </div>
     <div class="svc-item">
       <span class="svc-n">02</span>
       <div class="svc-body">
-        <h3><span data-en>Video <i>Editing</i></span><span data-ro>Video <i>Editing</i></span></h3>
-        <p data-en>Reels, promos, branded content. Sharp cuts, intentional pacing — visuals that don't just look good, they work.</p>
-        <p data-ro>Reels, promoții, branded content. Tăieturi precise, ritm intenționat — vizualuri care nu arată doar bine, ci și funcționează.</p>
+        <h3><span data-en>Video <i>Editing</i></span><span data-ro>Editare <i>Video</i></span></h3>
+        <p data-en>Reels, promos and branded content. Montages with good rhythm, clean cuts and a clear direction.</p>
+        <p data-ro>Reels, promo-uri și conținut pentru branduri. Montaj cu ritm bun, tăieturi curate și o direcție clară.</p>
       </div>
       <span class="svc-arr">↗</span>
     </div>
     <div class="svc-item">
       <span class="svc-n">03</span>
       <div class="svc-body">
-        <h3><span data-en>Photo <i>& Video</i></span><span data-ro>Photo <i>& Video</i></span></h3>
-        <p data-en>Retouching, color grading, background removal. Photos that look clean and professional — fast.</p>
-        <p data-ro>Retuș, color grading, eliminare fundal. Poze care arată curat și profesional — livrate rapid.</p>
+        <h3><span data-en>Photo <i>& Video</i></span><span data-ro>Foto <i>& Video</i></span></h3>
+        <p data-en>Retouching, color work and background cleanup. Photos that look clean and professional.</p>
+        <p data-ro>Retuș, corecții de culoare și curățare de fundal. Fotografii care arată curat și profesionist.</p>
       </div>
       <span class="svc-arr">↗</span>
     </div>
@@ -5419,29 +5442,29 @@ footer{
     <button class="om-close" id="om-close" aria-label="Închide">✕ <span data-en>close</span><span data-ro>închide</span></button>
     <p class="om-label"><span data-en>Ready to start?</span><span data-ro>Gata să începi?</span></p>
     <h2 class="om-title" id="om-title-text"><span data-en>Your <i>order</i></span><span data-ro>Comanda <i>ta</i></span></h2>
-    <p class="om-sub" data-en>Here's what happens next — it takes 60 seconds.</p>
-    <p class="om-sub" data-ro>Iată ce urmează — durează 60 de secunde.</p>
+    <p class="om-sub" data-en>Here's what happens next. It takes about 60 seconds.</p>
+    <p class="om-sub" data-ro>Iată ce urmează. Durează aproximativ 60 de secunde.</p>
 
     <div class="om-summary">
       <div class="om-summary-row">
-        <span class="om-summary-name" id="om-service-name">Landing Page</span>
+        <span class="om-summary-name" id="om-service-name">Pagină de prezentare</span>
         <span class="om-summary-price" id="om-service-price">€49</span>
       </div>
-      <p class="om-summary-desc" id="om-service-desc">1 pagină · mobile-first · 3–5 zile</p>
+      <p class="om-summary-desc" id="om-service-desc">1 pagină · optimizată pentru mobil · 3–5 zile</p>
     </div>
 
     <div class="om-steps">
       <div class="om-step">
         <div class="om-step-n">1</div>
-        <p class="om-step-text"><strong data-en>Tap the button below</strong><strong data-ro>Apasă butonul de mai jos</strong> — <span data-en>it opens Instagram with a pre-filled message.</span><span data-ro>deschide Instagram cu mesajul deja scris.</span></p>
+        <p class="om-step-text"><strong data-en>Tap the button below</strong><strong data-ro>Apasă butonul de mai jos</strong>. <span data-en>It opens Instagram with a ready-made message.</span><span data-ro>Se deschide Instagram cu un mesaj deja pregătit.</span></p>
       </div>
       <div class="om-step">
         <div class="om-step-n">2</div>
-        <p class="om-step-text"><strong data-en>I reply in under 2h</strong><strong data-ro>Răspund în sub 2h</strong> — <span data-en>we confirm details and you pay 50% upfront.</span><span data-ro>confirmăm detaliile și plătești 50% în avans.</span></p>
+        <p class="om-step-text"><strong data-en>I reply in under 2h</strong><strong data-ro>Răspund în mai puțin de 2 ore</strong>. <span data-en>We confirm the details and you pay 50% upfront.</span><span data-ro>Stabilim detaliile și plătești 50% în avans.</span></p>
       </div>
       <div class="om-step">
         <div class="om-step-n">3</div>
-        <p class="om-step-text"><strong data-en>I deliver, you review</strong><strong data-ro>Livrez, tu verifici</strong> — <span data-en>1 revision round included. Pay the rest on delivery.</span><span data-ro>1 rundă de revizii inclusă. Restul la livrare.</span></p>
+        <p class="om-step-text"><strong data-en>I deliver, you review</strong><strong data-ro>Livrez, apoi verifici</strong>. <span data-en>One revision round is included. The rest is paid on delivery.</span><span data-ro>Ai inclusă o rundă de revizii. Restul se plătește la livrare.</span></p>
       </div>
     </div>
 
@@ -5464,12 +5487,12 @@ footer{
 <section id="pricing">
   <div class="pr-header">
     <h2 class="rv">
-      <span data-en>Simple,<br/><i>honest prices.</i></span>
-      <span data-ro>Prețuri<br/><i>clare.</i></span>
+      <span data-en>Simple,<br/><i>clear prices.</i></span>
+      <span data-ro>Prețuri<br/><i>simple și clare.</i></span>
     </h2>
     <p class="rv d1">
-      <span data-en>No hidden fees. Pick what fits — one click to start.</span>
-      <span data-ro>Fără costuri ascunse. Alege, apasă, gata.</span>
+      <span data-en>No hidden fees. Choose what fits and we can start right away.</span>
+      <span data-ro>Fără costuri ascunse. Alegi ce ți se potrivește și putem începe imediat.</span>
     </p>
   </div>
 
@@ -5486,23 +5509,23 @@ footer{
       <div class="pr-card">
         <div class="pr-card-top">
           <span class="pr-card-icon">🌐</span>
-          <p class="pr-card-label"><span data-en>Web Development</span><span data-ro>Web Development</span></p>
-          <div class="pr-card-title">Web <i>Dev</i></div>
+          <p class="pr-card-label"><span data-en>Web Development</span><span data-ro>Dezvoltare Web</span></p>
+          <div class="pr-card-title"><span data-en>Web <i>Dev</i></span><span data-ro>Site <i>Web</i></span></div>
           <div class="pr-card-desc"><span data-en>Sites that load fast & convert.</span><span data-ro>Site-uri rapide care convertesc.</span></div>
         </div>
         <div class="pr-card-includes">
           <p class="pr-card-includes-label"><span data-en>Every project includes</span><span data-ro>Fiecare proiect include</span></p>
           <ul class="pr-card-features">
-            <li><span data-en>Mobile-first responsive design</span><span data-ro>Design responsive mobile-first</span></li>
+            <li><span data-en>Mobile-first responsive design</span><span data-ro>Design responsive, optimizat pentru mobil</span></li>
             <li><span data-en>Fast load · clean code</span><span data-ro>Încărcare rapidă · cod curat</span></li>
             <li><span data-en>1 revision round included</span><span data-ro>1 rundă de revizii inclusă</span></li>
             <li><span data-en>Delivery in 3–7 days</span><span data-ro>Livrare în 3–7 zile</span></li>
           </ul>
         </div>
         <div class="pr-card-options">
-          <button class="pr-option" onclick="openOrder('Landing Page','€49','1 page · mobile-first · 3–5 day delivery','49')">
+          <button class="pr-option" onclick="openOrder('Landing Page||Pagină de prezentare','€49','1 page · mobile-first · 3–5 day delivery||1 pagină · optimizată pentru mobil · livrare în 3–5 zile','49')">
             <div class="pr-option-left">
-              <div class="pr-option-name">Landing <i>Page</i></div>
+              <div class="pr-option-name"><span data-en>Landing <i>Page</i></span><span data-ro>Pagină de <i>prezentare</i></span></div>
               <div class="pr-option-sub"><span data-en>1 page · 3–5 days</span><span data-ro>1 pagină · 3–5 zile</span></div>
             </div>
             <div class="pr-option-right">
@@ -5510,21 +5533,21 @@ footer{
               <div class="pr-option-ron">≈ 245 RON</div>
             </div>
           </button>
-          <button class="pr-option" onclick="openOrder('Simple Site','€79','3–4 pages · portfolio or small business','79')">
+          <button class="pr-option" onclick="openOrder('Simple Site||Site simplu','€79','3–4 pages · portfolio or small business||3–4 pagini · portofoliu sau business mic','79')">
             <div class="pr-option-left">
-              <div class="pr-option-name">Simple <i>Site</i></div>
-              <div class="pr-option-sub"><span data-en>3–4 pages · portfolio or small biz</span><span data-ro>3–4 pagini · portofoliu sau business mic</span></div>
+              <div class="pr-option-name"><span data-en>Simple <i>Site</i></span><span data-ro>Site <i>simplu</i></span></div>
+              <div class="pr-option-sub"><span data-en>3–4 pages · portfolio or small biz</span><span data-ro>3–4 pagini · portofoliu sau afacere mică</span></div>
             </div>
             <div class="pr-option-right">
               <div class="pr-option-price"><sup>€</sup>79</div>
               <div class="pr-option-ron">≈ 395 RON</div>
             </div>
           </button>
-          <button class="pr-option" onclick="openOrder('Business Site','€99','5+ pages · full build · revisions included','99')">
+          <button class="pr-option" onclick="openOrder('Business Site||Site pentru business','€99','5+ pages · full build · revisions included||5+ pagini · site complet · revizii incluse','99')">
             <div class="pr-option-left">
-              <div class="pr-option-name">Business <i>Site</i></div>
-              <div class="pr-option-sub"><span data-en>5+ pages · full build</span><span data-ro>5+ pagini · build complet</span></div>
-              <div class="pr-option-badge"><span data-en>Best value</span><span data-ro>Cel mai bun raport</span></div>
+              <div class="pr-option-name"><span data-en>Business <i>Site</i></span><span data-ro>Site pentru <i>afaceri</i></span></div>
+              <div class="pr-option-sub"><span data-en>5+ pages · full build</span><span data-ro>5+ pagini · site complet</span></div>
+              <div class="pr-option-badge"><span data-en>Best value</span><span data-ro>Cea mai bună opțiune</span></div>
             </div>
             <div class="pr-option-right">
               <div class="pr-option-price"><sup>€</sup>99</div>
@@ -5538,34 +5561,34 @@ footer{
       <div class="pr-card">
         <div class="pr-card-top">
           <span class="pr-card-icon">🎬</span>
-          <p class="pr-card-label"><span data-en>Video Editing</span><span data-ro>Video Editing</span></p>
-          <div class="pr-card-title">Video <i>Edit</i></div>
-          <div class="pr-card-desc"><span data-en>Reels, promos & branded content.</span><span data-ro>Reels, promoții, conținut branded.</span></div>
+          <p class="pr-card-label"><span data-en>Video Editing</span><span data-ro>Editare Video</span></p>
+          <div class="pr-card-title"><span data-en>Video <i>Edit</i></span><span data-ro>Editare <i>Video</i></span></div>
+          <div class="pr-card-desc"><span data-en>Reels, promos & branded content.</span><span data-ro>Reels, promo-uri și conținut pentru branduri.</span></div>
         </div>
         <div class="pr-card-includes">
-          <p class="pr-card-includes-label"><span data-en>Every video includes</span><span data-ro>Fiecare video include</span></p>
+          <p class="pr-card-includes-label"><span data-en>Every video includes</span><span data-ro>Fiecare videoclip include</span></p>
           <ul class="pr-card-features">
-            <li><span data-en>Color grading & audio sync</span><span data-ro>Color grading & sincronizare audio</span></li>
+            <li><span data-en>Color grading & audio sync</span><span data-ro>Corecții de culoare și sincronizare audio</span></li>
             <li><span data-en>Captions / subtitles on request</span><span data-ro>Subtitrări la cerere</span></li>
             <li><span data-en>Delivery in 24–48h</span><span data-ro>Livrare în 24–48h</span></li>
             <li><span data-en>Formats: 9:16, 16:9, 1:1</span><span data-ro>Formate: 9:16, 16:9, 1:1</span></li>
           </ul>
         </div>
         <div class="pr-card-options">
-          <button class="pr-option" onclick="openOrder('Short Video','€5','Reel, story or clip · up to 60 seconds','5')">
+          <button class="pr-option" onclick="openOrder('Short Video||Video scurt','€5','Reel, story or clip · up to 60 seconds||Reel, story sau clip · până la 60 secunde','5')">
             <div class="pr-option-left">
-              <div class="pr-option-name">Short <i>Video</i></div>
-              <div class="pr-option-sub"><span data-en>Reel, story, clip · up to 60 sec</span><span data-ro>Reel, story, clip · până la 60 sec</span></div>
+              <div class="pr-option-name"><span data-en>Short <i>Video</i></span><span data-ro>Video <i>scurt</i></span></div>
+              <div class="pr-option-sub"><span data-en>Reel, story, clip · up to 60 sec</span><span data-ro>Reel, story sau clip · până la 60 sec</span></div>
             </div>
             <div class="pr-option-right">
               <div class="pr-option-price"><sup>€</sup>5</div>
               <div class="pr-option-ron">≈ 25 RON</div>
             </div>
           </button>
-          <button class="pr-option" onclick="openOrder('Standard Video','€9','Promo or branded video · up to 3 minutes · color grading','9')">
+          <button class="pr-option" onclick="openOrder('Standard Video||Video standard','€9','Promo or branded video · up to 3 minutes · color grading||Promo sau video pentru brand · până la 3 minute · corecții de culoare','9')">
             <div class="pr-option-left">
-              <div class="pr-option-name">Standard <i>Video</i></div>
-              <div class="pr-option-sub"><span data-en>Promo · up to 3 min · color grading</span><span data-ro>Promo · până la 3 min · color grading</span></div>
+              <div class="pr-option-name"><span data-en>Standard <i>Video</i></span><span data-ro>Video <i>standard</i></span></div>
+              <div class="pr-option-sub"><span data-en>Promo · up to 3 min · color grading</span><span data-ro>Promo · până la 3 min · corecții de culoare</span></div>
             </div>
             <div class="pr-option-right">
               <div class="pr-option-price"><sup>€</sup>9</div>
@@ -5579,23 +5602,23 @@ footer{
       <div class="pr-card">
         <div class="pr-card-top">
           <span class="pr-card-icon">📸</span>
-          <p class="pr-card-label"><span data-en>Photo Editing</span><span data-ro>Photo Editing</span></p>
-          <div class="pr-card-title">Photo <i>Edit</i></div>
+          <p class="pr-card-label"><span data-en>Photo Editing</span><span data-ro>Editare Foto</span></p>
+          <div class="pr-card-title"><span data-en>Photo <i>Edit</i></span><span data-ro>Editare <i>Foto</i></span></div>
           <div class="pr-card-desc"><span data-en>Retouch, color, cleanup. Fast.</span><span data-ro>Retuș, culoare, curățare. Rapid.</span></div>
         </div>
         <div class="pr-card-includes">
           <p class="pr-card-includes-label"><span data-en>Every edit includes</span><span data-ro>Fiecare editare include</span></p>
           <ul class="pr-card-features">
-            <li><span data-en>Color grading & skin retouch</span><span data-ro>Color grading & retuș ten</span></li>
+            <li><span data-en>Color grading & skin retouch</span><span data-ro>Corecții de culoare și retuș de ten</span></li>
             <li><span data-en>Object / background removal</span><span data-ro>Eliminare obiecte / fundal</span></li>
             <li><span data-en>Same-day delivery</span><span data-ro>Livrare în aceeași zi</span></li>
             <li><span data-en>JPG + PNG export</span><span data-ro>Export JPG + PNG</span></li>
           </ul>
         </div>
         <div class="pr-card-options">
-          <button class="pr-option" onclick="openOrder('1 Photo Edit','€2','Retouch · color grade · object removal','2')">
+          <button class="pr-option" onclick="openOrder('1 Photo Edit||1 editare foto','€2','Retouch · color grade · object removal||Retuș · corecții de culoare · eliminare obiecte','2')">
             <div class="pr-option-left">
-              <div class="pr-option-name">1 <i>Photo</i></div>
+              <div class="pr-option-name"><span data-en>1 <i>Photo</i></span><span data-ro>1 <i>fotografie</i></span></div>
               <div class="pr-option-sub"><span data-en>Retouch · color · object removal</span><span data-ro>Retuș · culoare · eliminare obiecte</span></div>
             </div>
             <div class="pr-option-right">
@@ -5603,9 +5626,9 @@ footer{
               <div class="pr-option-ron">≈ 10 RON</div>
             </div>
           </button>
-          <button class="pr-option" onclick="openOrder('10 Photos Pack','€15','Bulk edit · consistent look · fast delivery','15')">
+          <button class="pr-option" onclick="openOrder('10 Photos Pack||Pachet 10 fotografii','€15','Bulk edit · consistent look · fast delivery||Editare în lot · aspect uniform · livrare rapidă','15')">
             <div class="pr-option-left">
-              <div class="pr-option-name">10 <i>Photos</i></div>
+              <div class="pr-option-name"><span data-en>10 <i>Photos</i></span><span data-ro>10 <i>fotografii</i></span></div>
               <div class="pr-option-sub"><span data-en>Bulk edit · consistent look</span><span data-ro>Editare în lot · aspect uniform</span></div>
               <div class="pr-option-badge"><span data-en>Save 25%</span><span data-ro>Economisești 25%</span></div>
             </div>
@@ -5627,7 +5650,7 @@ footer{
       <div class="pr-pack">
         <div class="pr-pack-head">
           <span class="pr-pack-badge">Mini</span>
-          <div class="pr-pack-name">Mini <i>Pack</i></div>
+          <div class="pr-pack-name"><span data-en>Mini <i>Pack</i></span><span data-ro>Pachet <i>Mini</i></span></div>
         </div>
         <div class="pr-pack-body">
           <ul class="pr-pack-includes">
@@ -5638,17 +5661,17 @@ footer{
             <div class="pr-pack-price"><sup>€</sup>15</div>
             <div class="pr-pack-ron">≈ 75 RON</div>
           </div>
-          <button class="pr-pack-cta" onclick="openOrder('Mini Pack','€15','2 short videos + 3 photos edited','15')">
+          <button class="pr-pack-cta" onclick="openOrder('Mini Pack||Pachet Mini','€15','2 short videos + 3 photos edited||2 videoclipuri scurte + 3 poze editate','15')">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
-            <span data-en>Get it</span><span data-ro>Vreau</span>
+            <span data-en>Choose</span><span data-ro>Alege</span>
           </button>
         </div>
       </div>
 
       <div class="pr-pack hot">
         <div class="pr-pack-head">
-          <span class="pr-pack-badge">★ <span data-en>Most popular</span><span data-ro>Cel mai ales</span></span>
-          <div class="pr-pack-name">Starter <i>Pack</i></div>
+          <span class="pr-pack-badge">★ <span data-en>Most popular</span><span data-ro>Cel mai popular</span></span>
+          <div class="pr-pack-name"><span data-en>Starter <i>Pack</i></span><span data-ro>Pachet <i>Starter</i></span></div>
         </div>
         <div class="pr-pack-body">
           <ul class="pr-pack-includes">
@@ -5660,9 +5683,9 @@ footer{
             <div class="pr-pack-price"><sup>€</sup>39</div>
             <div class="pr-pack-ron">≈ 195 RON</div>
           </div>
-          <button class="pr-pack-cta" onclick="openOrder('Starter Pack','€39','5 short videos + 5 photos edited · consistent style','39')">
+          <button class="pr-pack-cta" onclick="openOrder('Starter Pack||Pachet Starter','€39','5 short videos + 5 photos edited · consistent style||5 videoclipuri scurte + 5 poze editate · stil uniform','39')">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
-            <span data-en>Get it</span><span data-ro>Vreau</span>
+            <span data-en>Choose</span><span data-ro>Alege</span>
           </button>
         </div>
       </div>
@@ -5670,7 +5693,7 @@ footer{
       <div class="pr-pack">
         <div class="pr-pack-head">
           <span class="pr-pack-badge">Business</span>
-          <div class="pr-pack-name">Business <i>Basic</i></div>
+          <div class="pr-pack-name"><span data-en>Business <i>Basic</i></span><span data-ro>Business <i>Basic</i></span></div>
         </div>
         <div class="pr-pack-body">
           <ul class="pr-pack-includes">
@@ -5682,9 +5705,9 @@ footer{
             <div class="pr-pack-price"><sup>€</sup>89</div>
             <div class="pr-pack-ron">≈ 445 RON</div>
           </div>
-          <button class="pr-pack-cta" onclick="openOrder('Business Basic','€89','Full website + 3 videos + 5 photos edited','89')">
+          <button class="pr-pack-cta" onclick="openOrder('Business Basic||Business Basic','€89','Full website + 3 videos + 5 photos edited||Site complet + 3 videoclipuri + 5 poze editate','89')">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
-            <span data-en>Get it</span><span data-ro>Vreau</span>
+            <span data-en>Choose</span><span data-ro>Alege</span>
           </button>
         </div>
       </div>
@@ -5695,15 +5718,15 @@ footer{
     <div class="pr-sub-strip rv">
       <div class="pr-sub-info">
         <p class="pr-sub-tag"><span data-en>Monthly subscription</span><span data-ro>Abonament lunar</span></p>
-        <p class="pr-sub-title"><span data-en>5 videos + 5 photos — <i>every month.</i></span><span data-ro>5 videoclipuri + 5 poze — <i>în fiecare lună.</i></span></p>
-        <p class="pr-sub-desc"><span data-en>Consistent content, always ready. Cancel anytime.</span><span data-ro>Conținut constant, mereu gata. Oprești oricând.</span></p>
+        <p class="pr-sub-title"><span data-en>5 videos + 5 photos, <i>every month.</i></span><span data-ro>5 videoclipuri + 5 poze, <i>în fiecare lună.</i></span></p>
+        <p class="pr-sub-desc"><span data-en>Consistent content for your page. You can stop whenever you want.</span><span data-ro>Conținut constant pentru pagina ta. Poți opri abonamentul oricând.</span></p>
       </div>
       <div class="pr-sub-right">
         <div class="pr-sub-price">
           <div class="pr-sub-amount"><sup>€</sup>39–49</div>
           <div class="pr-sub-ron">≈ 195–245 RON / lună</div>
         </div>
-        <button class="pr-sub-cta" onclick="openOrder('Monthly Subscription','€39–49/mo','5 videos + 5 photos every month · cancel anytime','39')">
+        <button class="pr-sub-cta" onclick="openOrder('Monthly Subscription||Abonament lunar','€39–49/mo||€39–49/lună','5 videos + 5 photos every month · cancel anytime||5 videoclipuri + 5 poze în fiecare lună · oprești oricând','39')">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
           <span data-en>Subscribe</span><span data-ro>Abonează-te</span>
         </button>
@@ -5712,8 +5735,8 @@ footer{
   </div>
 
   <p class="pr-note rv d3">
-    <span data-en>Not sure what you need? <a href="https://ig.me/m/costi1andrei" target="_blank" rel="noopener">Message me</a> and we'll figure it out.</span>
-    <span data-ro>Nu știi exact ce ai nevoie? <a href="https://ig.me/m/costi1andrei" target="_blank" rel="noopener">Scrie-mi</a> și găsim împreună.</span>
+    <span data-en>Not sure what you need? <a href="https://ig.me/m/costi1andrei" target="_blank" rel="noopener">Message me</a> and I'll help you choose.</span>
+    <span data-ro>Nu știi exact ce ți se potrivește? <a href="https://ig.me/m/costi1andrei" target="_blank" rel="noopener">Scrie-mi</a> și te ajut să alegi.</span>
   </p>
 </section>
 
@@ -5721,33 +5744,33 @@ footer{
 <section id="gallery">
   <div class="gal-header">
     <h2 class="rv">
-      <span data-en>Frames from<br/><i>the road.</i></span>
-      <span data-ro>Cadre din<br/><i>drum.</i></span>
+      <span data-en>A few frames<br/><i>from the road.</i></span>
+      <span data-ro>Câteva cadre<br/><i>din drum.</i></span>
     </h2>
     <p class="gal-sub rv d1">
-      <span data-en>Places, moods, moments. The real thing.</span>
-      <span data-ro>Locuri, stări, momente. Realul.</span>
+      <span data-en>Places, moods and moments that matter to me.</span>
+      <span data-ro>Locuri, stări și momente care spun ceva despre mine.</span>
     </p>
   </div>
   <div class="gal-grid rv-scale">
     <div class="gp gp-feature">
-      <img src="assets/img/photo3.jpeg" alt="Costi Andrei — editorial portrait in lounge" loading="lazy" style="object-position:center 18%;"/>
-      <div class="gp-cap"><span data-en>Editorial calm</span><span data-ro>Calm editorial</span></div>
+      <img src="assets/img/photo3.jpeg" alt="Costi Andrei, portret editorial" loading="lazy" style="object-position:center 18%;"/>
+      <div class="gp-cap"><span data-en>Editorial portrait</span><span data-ro>Portret editorial</span></div>
     </div>
     <div class="gp gp-tall">
-      <img src="assets/img/photo5.jpeg" alt="Portret Costi Andrei — look all black" loading="lazy" style="object-position:center 18%;"/>
-      <div class="gp-cap"><span data-en>All black</span><span data-ro>Tot negru</span></div>
+      <img src="assets/img/photo5.jpeg" alt="Costi Andrei, portret în negru" loading="lazy" style="object-position:center 18%;"/>
+      <div class="gp-cap"><span data-en>Black outfit</span><span data-ro>Ținută neagră</span></div>
     </div>
     <div class="gp gp-wide">
       <img src="assets/img/photo1.jpeg" alt="Costi Andrei la mare" loading="lazy" style="object-position:center 16%;"/>
       <div class="gp-cap"><span data-en>By the sea</span><span data-ro>La mare</span></div>
     </div>
     <div class="gp gp-motion">
-      <img src="assets/img/photo2.jpeg" alt="Costi Andrei în mișcare — fotografie de stradă" loading="lazy" style="object-position:center 12%;"/>
+      <img src="assets/img/photo2.jpeg" alt="Costi Andrei în mișcare, fotografie de stradă" loading="lazy" style="object-position:center 12%;"/>
       <div class="gp-cap"><span data-en>On the move</span><span data-ro>Pe drum</span></div>
     </div>
     <div class="gp gp-detail">
-      <img src="assets/img/photo4.jpeg" alt="Vedere din tren — peisaj românesc" loading="lazy" style="object-position:center 52%;"/>
+      <img src="assets/img/photo4.jpeg" alt="Vedere din tren, peisaj românesc" loading="lazy" style="object-position:center 52%;"/>
       <div class="gp-cap"><span data-en>Train thoughts</span><span data-ro>Gânduri în tren</span></div>
     </div>
   </div>
@@ -5767,8 +5790,8 @@ footer{
       <span data-ro>Ce spun<br/><i>clienții.</i></span>
     </h2>
     <p class="rv d1">
-      <span data-en>Real people. Identities blurred for privacy.</span>
-      <span data-ro>Oameni reali. Identitățile ascunse pentru confidențialitate.</span>
+      <span data-en>Messages received after real projects.</span>
+      <span data-ro>Mesaje primite după proiecte reale.</span>
     </p>
   </div>
   <div class="reviews-grid">
@@ -5788,9 +5811,9 @@ footer{
       <div class="review-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
       <p class="review-text">
         <span data-en>Delivered the landing page in 4 days. Clean, fast, exactly what I described. Didn't need to ask twice for anything.</span>
-        <span data-ro>A livrat landing page-ul în 4 zile. Curat, rapid, exact ce am descris. N-a trebuit să cer nimic de două ori.</span>
+        <span data-ro>A livrat pagina de prezentare în 4 zile. Curat, rapid și exact cum am cerut. N-a trebuit să repet nimic.</span>
       </p>
-      <p class="review-service"><span data-en>Web Development</span><span data-ro>Web Development</span></p>
+      <p class="review-service"><span data-en>Web Development</span><span data-ro>Dezvoltare Web</span></p>
     </div>
     <div class="review-card rv d2">
       <div class="review-top">
@@ -5807,10 +5830,10 @@ footer{
       </div>
       <div class="review-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
       <p class="review-text">
-        <span data-en>My reels went from 2k to 40k average views. The pacing, the cuts — everything changed. Seriously underpriced for the quality.</span>
-        <span data-ro>Reels-urile mele au trecut de la 2k la 40k vizualizări medii. Ritmul, tăieturile — totul s-a schimbat. Serios sub prețul pe care îl merită.</span>
+        <span data-en>The reels started looking much cleaner and more consistent. The pacing is better and people actually stay to watch.</span>
+        <span data-ro>Reels-urile au început să arate mult mai bine și mult mai coerent. Ritmul e mai bun, iar oamenii chiar stau să le urmărească.</span>
       </p>
-      <p class="review-service"><span data-en>Video Editing</span><span data-ro>Video Editing</span></p>
+      <p class="review-service"><span data-en>Video Editing</span><span data-ro>Editare Video</span></p>
     </div>
     <div class="review-card rv d3">
       <div class="review-top">
@@ -5822,20 +5845,20 @@ footer{
         </div>
         <div class="review-info">
           <p class="review-name">D. P.</p>
-          <p class="review-role"><span data-en>Startup Founder · București</span><span data-ro>Fondator Startup · București</span></p>
+          <p class="review-role"><span data-en>Online Store Owner · București</span><span data-ro>Proprietar magazin online · București</span></p>
         </div>
       </div>
       <div class="review-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
       <p class="review-text">
-        <span data-en>Wrote our entire outreach script from scratch. Closed 3 new clients the first week we used it. Clear thinker, fast executor.</span>
-        <span data-ro>A scris tot scriptul nostru de outreach de la zero. Am închis 3 clienți noi în prima săptămână. Gândire clară, execuție rapidă.</span>
+        <span data-en>Sent the photos quickly, cleaned them up exactly how I asked and kept the look consistent across all of them.</span>
+        <span data-ro>A trimis pozele repede, le-a editat exact cum am cerut și a păstrat același stil pe tot setul.</span>
       </p>
-      <p class="review-service"><span data-en>Photo & Video</span><span data-ro>Photo & Video</span></p>
+      <p class="review-service"><span data-en>Photo & Video</span><span data-ro>Foto & Video</span></p>
     </div>
   </div>
   <p class="privacy-note rv d4">
-    <span data-en>🔒 Identities blurred — shared with client permission</span>
-    <span data-ro>🔒 Identități ascunse — publicate cu acordul clienților</span>
+    <span data-en>🔒 Identities hidden, shared with client permission</span>
+    <span data-ro>🔒 Identități ascunse, publicate cu acordul clienților</span>
   </p>
 </section>
 
@@ -5843,25 +5866,25 @@ footer{
 <section id="mindset">
   <div class="ms-wrap">
     <div class="ms-left rv-left">
-      <h2><span data-en>How I<br/><i>think.</i></span><span data-ro>Cum<br/><i>gândesc.</i></span></h2>
-      <p data-en>18. Self-taught.<br/>Building real things<br/>for real people.</p>
-      <p data-ro>18 ani. Autodidact.<br/>Construiesc lucruri reale<br/>pentru oameni reali.</p>
+      <h2><span data-en>How I<br/><i>work.</i></span><span data-ro>Cum<br/><i>lucrez.</i></span></h2>
+      <p data-en>18 years old. Self-taught.<br/>Clear communication,<br/>clean execution.</p>
+      <p data-ro>18 ani. Autodidact.<br/>Comunicare clară,<br/>execuție curată.</p>
     </div>
     <div class="ms-quotes">
       <div class="ms-q rv d1">
-        <blockquote data-en>"The work is the argument. I let the results speak."</blockquote>
-        <blockquote data-ro>"Munca este argumentul. Las rezultatele să vorbească."</blockquote>
-        <small data-en>On quality</small><small data-ro>Despre calitate</small>
+        <blockquote data-en>"I care about clean design, good pacing and a final result that looks finished."</blockquote>
+        <blockquote data-ro>"Țin la design curat, ritm bun și un rezultat final care pare cu adevărat terminat."</blockquote>
+        <small data-en>Quality</small><small data-ro>Calitate</small>
       </div>
       <div class="ms-q rv d2">
-        <blockquote data-en>"I didn't wait until I was ready. I got ready by doing."</blockquote>
-        <blockquote data-ro>"N-am așteptat să fiu pregătit. M-am pregătit făcând."</blockquote>
-        <small data-en>On starting early</small><small data-ro>Despre debut timpuriu</small>
+        <blockquote data-en>"I work fast, but I don't skip the important details."</blockquote>
+        <blockquote data-ro>"Lucrez repede, dar nu sar peste detaliile importante."</blockquote>
+        <small data-en>Process</small><small data-ro>Proces</small>
       </div>
       <div class="ms-q rv d3">
-        <blockquote data-en>"Fast, honest, accountable. I don't disappear after delivery."</blockquote>
-        <blockquote data-ro>"Rapid, onest, responsabil. Nu dispar după livrare."</blockquote>
-        <small data-en>On working together</small><small data-ro>Despre colaborare</small>
+        <blockquote data-en>"After delivery, I stay available for small adjustments and questions."</blockquote>
+        <blockquote data-ro>"Și după livrare rămân disponibil pentru ajustări și întrebări."</blockquote>
+        <small data-en>Collaboration</small><small data-ro>Colaborare</small>
       </div>
     </div>
   </div>
@@ -5869,29 +5892,30 @@ footer{
 
 <!-- DREAMS -->
 <section id="dreams">
-  <div class="dream-bg" id="dream-bg">
-    <img src="assets/img/photo6.jpeg" alt="Costi Andrei — fotografie de copilărie, punct de start"/>
-  </div>
-  <div class="dream-vignette"></div>
-  <div class="dream-content" id="dream-content">
-    <span class="dream-year" id="dream-year">2008</span>
-    <div class="dream-inner">
+  <div class="dream-shell">
+    <div class="dream-media rv-left" id="dream-bg">
+      <img src="assets/img/photo6.jpeg" alt="Costi Andrei, fotografie din copilărie" />
+      <span class="dream-year" id="dream-year">2008</span>
+    </div>
+    <div class="dream-copy dream-content rv-right" id="dream-content">
+      <div class="dream-inner">
       <p class="dream-over-label">
         <span data-en>Where it started</span>
-        <span data-ro>De unde a început</span>
+        <span data-ro>De aici a început</span>
       </p>
       <h2 class="dream-over-title">
-        <span data-en>Born curious.<br/><i>Built obsessed.</i></span>
-        <span data-ro>Născut curios.<br/><i>Construit obsedat.</i></span>
+        <span data-en>Started early.<br/><i>Still learning.</i></span>
+        <span data-ro>Am început devreme.<br/><i>Încă învăț.</i></span>
       </h2>
       <p class="dream-over-body">
-        <span data-en>That kid in the photo had no idea what was coming. Started building at 15. Hasn't stopped since. This is the long game — played one project at a time.</span>
-        <span data-ro>Copilul din poză nu știa ce urmează. A început să construiască la 15 ani. Nu s-a oprit de atunci. Acesta e jocul lung — jucat un proiect pe rând.</span>
+        <span data-en>That photo reminds me that all of this started from curiosity. I began taking this seriously at 15 and I've kept learning with every project since then.</span>
+        <span data-ro>Poza asta îmi amintește că totul a pornit din curiozitate. Am început să iau munca asta în serios la 15 ani și de atunci am învățat cu fiecare proiect.</span>
       </p>
       <div class="dream-pills-row">
-        <span class="dream-pill-new"><span data-en>Started at 15</span><span data-ro>Început la 15 ani</span></span>
-        <span class="dream-pill-new"><span data-en>Built with purpose</span><span data-ro>Construit cu scop</span></span>
-        <span class="dream-pill-new"><span data-en>Still evolving</span><span data-ro>În continuă evoluție</span></span>
+        <span class="dream-pill-new"><span data-en>Started at 15</span><span data-ro>Am început la 15 ani</span></span>
+        <span class="dream-pill-new"><span data-en>Learned by doing</span><span data-ro>Am învățat lucrând</span></span>
+        <span class="dream-pill-new"><span data-en>Still improving</span><span data-ro>Încă evoluez</span></span>
+      </div>
       </div>
     </div>
   </div>
@@ -5916,7 +5940,7 @@ footer{
         <span class="faq-q-text"><span data-en>How fast do you deliver?</span><span data-ro>Cât de repede livrezi?</span></span>
         <span class="faq-icon">+</span>
       </div>
-      <div class="faq-a"><p><span data-en>Websites in 3–7 days. Videos in 24–48h. Photos same day or next day. I work fast without cutting corners.</span><span data-ro>Site-uri în 3–7 zile. Videoclipuri în 24–48h. Poze în aceeași zi sau a doua zi. Lucrez rapid fără să tai colțuri.</span></p></div>
+      <div class="faq-a"><p><span data-en>Websites usually take 3–7 days. Videos take 24–48 hours, and photo edits are usually ready the same day or the next day.</span><span data-ro>Site-urile durează, de regulă, 3–7 zile. Videoclipurile sunt gata în 24–48 de ore, iar editările foto în aceeași zi sau a doua zi.</span></p></div>
     </div>
 
     <div class="faq-item">
@@ -5924,7 +5948,7 @@ footer{
         <span class="faq-q-text"><span data-en>How do we communicate during the project?</span><span data-ro>Cum comunicăm pe parcursul proiectului?</span></span>
         <span class="faq-icon">+</span>
       </div>
-      <div class="faq-a"><p><span data-en>Mainly Instagram DM. I respond in under 2 hours during the day. No ghosting, no delays — I keep you updated at every step.</span><span data-ro>În principal pe Instagram DM. Răspund în mai puțin de 2 ore în timpul zilei. Fără dispărut, fără întârzieri — te țin la curent la fiecare pas.</span></p></div>
+      <div class="faq-a"><p><span data-en>Mainly through Instagram DM. I usually reply in under 2 hours during the day and keep you updated throughout the project.</span><span data-ro>În principal prin Instagram DM. De obicei răspund în mai puțin de 2 ore în timpul zilei și te țin la curent pe tot parcursul proiectului.</span></p></div>
     </div>
 
     <div class="faq-item">
@@ -5932,7 +5956,7 @@ footer{
         <span class="faq-q-text"><span data-en>Do you offer revisions?</span><span data-ro>Oferi revizii?</span></span>
         <span class="faq-icon">+</span>
       </div>
-      <div class="faq-a"><p><span data-en>Yes. All projects include at least 1 round of revisions. If something isn't right, we fix it — no extra charge for reasonable changes.</span><span data-ro>Da. Toate proiectele includ cel puțin 1 rundă de revizii. Dacă ceva nu e bine, îl corectăm — fără cost suplimentar pentru modificări rezonabile.</span></p></div>
+      <div class="faq-a"><p><span data-en>Yes. Every project includes at least one revision round. If something needs adjusting, we fix it without extra cost for reasonable changes.</span><span data-ro>Da. Fiecare proiect include cel puțin o rundă de revizii. Dacă ceva trebuie ajustat, îl corectăm fără cost suplimentar pentru modificări rezonabile.</span></p></div>
     </div>
 
     <div class="faq-item">
@@ -5948,7 +5972,7 @@ footer{
         <span class="faq-q-text"><span data-en>Can you work with clients outside Romania?</span><span data-ro>Lucrezi și cu clienți din afara României?</span></span>
         <span class="faq-icon">+</span>
       </div>
-      <div class="faq-a"><p><span data-en>Absolutely. I work remotely with clients from anywhere. Communication is in Romanian or English — whichever you prefer.</span><span data-ro>Absolut. Lucrez remote cu clienți de oriunde. Comunicarea se face în română sau engleză — la alegerea ta.</span></p></div>
+      <div class="faq-a"><p><span data-en>Yes. I work remotely with clients from anywhere, and we can communicate in Romanian or English.</span><span data-ro>Da. Lucrez remote cu clienți de oriunde, iar comunicarea poate fi în română sau în engleză.</span></p></div>
     </div>
 
   </div>
@@ -5959,7 +5983,7 @@ footer{
   <div class="ft-top">
     <div class="ft-brand">
       <a href="#hero" class="ft-logo">Aman <i>/ Costi Andrei</i></a>
-      <p><span data-en>Developer, Editor & Creator based in Iași, Romania. Building real things for real people since 2023.</span><span data-ro>Developer, Editor & Creator din Iași, România. Construiesc lucruri reale pentru oameni reali din 2023.</span></p>
+      <p><span data-en>Web developer, video editor and photo editor based in Iași, Romania.</span><span data-ro>Dezvoltator web, editor video și editor foto din Iași, România.</span></p>
       <div class="ft-status" style="margin-top:14px;">
         <span class="ft-status-dot"></span>
         <span data-en>Available for new projects</span>
@@ -5969,7 +5993,7 @@ footer{
     <div>
       <p class="ft-col-title"><span data-en>Navigation</span><span data-ro>Navigare</span></p>
       <ul class="ft-links">
-        <li><a href="#about"><span data-en>About</span><span data-ro>Despre</span></a></li>
+        <li><a href="#hero"><span data-en>About</span><span data-ro>Despre</span></a></li>
         <li><a href="#services"><span data-en>Services</span><span data-ro>Servicii</span></a></li>
         <li><a href="#pricing"><span data-en>Pricing</span><span data-ro>Prețuri</span></a></li>
         <li><a href="#gallery"><span data-en>Gallery</span><span data-ro>Galerie</span></a></li>
@@ -5991,7 +6015,7 @@ footer{
     </div>
   </div>
   <div class="ft-bottom">
-    <span class="ft-copy">© 2026 Costi Andrei · Iași, Romania · All rights reserved</span>
+    <span class="ft-copy">© 2026 Costi Andrei · Iași, România · Toate drepturile rezervate</span>
     <div class="ft-social">
       <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener">Instagram</a>
       <a href="mailto:zenmail.andrei@gmail.com">Email</a>
@@ -6034,20 +6058,32 @@ document.querySelectorAll('.pr-tab').forEach(tab=>{
 });
 
 /* ── ORDER MODAL ── */
+function pickLocalized(copy){
+  const parts = String(copy).split('||');
+  if(parts.length === 1) return parts[0];
+  return document.body.classList.contains('ro') ? (parts[1] || parts[0]) : parts[0];
+}
 function openOrder(name, price, desc, amount){
   const modal = document.getElementById('order-modal');
-  document.getElementById('om-service-name').textContent = name;
-  document.getElementById('om-service-price').textContent = price;
-  document.getElementById('om-service-desc').textContent = desc;
+  const localizedName = pickLocalized(name);
+  const localizedPrice = pickLocalized(price);
+  const localizedDesc = pickLocalized(desc);
+  document.getElementById('om-service-name').textContent = localizedName;
+  document.getElementById('om-service-price').textContent = localizedPrice;
+  document.getElementById('om-service-desc').textContent = localizedDesc;
   // Pre-fill IG DM link with context
   const isRo = document.body.classList.contains('ro');
   const msg = isRo
-    ? `Bună! Vreau să comand: ${name} (${price}). Când putem începe?`
-    : `Hey! I want to order: ${name} (${price}). When can we start?`;
+    ? `Bună! Vreau să comand: ${localizedName} (${localizedPrice}). Când putem începe?`
+    : `Hey! I want to order: ${localizedName} (${localizedPrice}). When can we start?`;
   document.getElementById('om-ig-link').href = `https://ig.me/m/costi1andrei`;
   // Email with subject pre-filled
-  const subject = encodeURIComponent(`Order: ${name} – ${price}`);
-  const body = encodeURIComponent(`Hi Costi,\n\nI want to order: ${name} (${price}).\n\n${desc}\n\nWhen can we start?`);
+  const subject = encodeURIComponent(`${isRo ? 'Comandă' : 'Order'}: ${localizedName} – ${localizedPrice}`);
+  const body = encodeURIComponent(
+    isRo
+      ? `Salut Costi,\n\nVreau să comand: ${localizedName} (${localizedPrice}).\n\n${localizedDesc}\n\nCând putem începe?`
+      : `Hi Costi,\n\nI want to order: ${localizedName} (${localizedPrice}).\n\n${localizedDesc}\n\nWhen can we start?`
+  );
   document.getElementById('om-email-link').href = `mailto:zenmail.andrei@gmail.com?subject=${subject}&body=${body}`;
   modal.classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -6189,12 +6225,15 @@ function closeOrder(){
             if(raf) cancelAnimationFrame(raf);
             loader.style.display='none';
             resetEntryScroll();
-            setTimeout(()=>document.getElementById('hw1').classList.add('up'),80);
-            setTimeout(()=>document.getElementById('hw2').classList.add('up'),220);
-            document.querySelectorAll('#hero .rv').forEach((el,i)=>{
+            const hw1=document.getElementById('hw1');
+            const hw2=document.getElementById('hw2');
+            if(hw1) setTimeout(()=>hw1.classList.add('up'),80);
+            if(hw2) setTimeout(()=>hw2.classList.add('up'),220);
+            document.querySelectorAll('#hero .rv, #hero .rv-left, #hero .rv-right, #hero .rv-scale').forEach((el,i)=>{
               setTimeout(()=>el.classList.add('in'),300+i*120);
             });
-            document.querySelector('.mq').classList.add('in');
+            const mq=document.querySelector('.mq');
+            if(mq) mq.classList.add('in');
           },1020);
         },300);
       },280);
@@ -6202,39 +6241,6 @@ function closeOrder(){
       lpct.textContent=Math.floor(n)+'%';
     }
   },90);
-})();
-
-/* ── HERO SHOWCASE PARALLAX ── */
-(function(){
-  const stage=document.querySelector('.hero-showcase-main');
-  if(!stage) return;
-  const compactHero = window.matchMedia('(max-width:760px)').matches
-    || 'ontouchstart' in window
-    || navigator.maxTouchPoints > 0
-    || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(compactHero){
-    stage.style.transform='';
-    stage.style.setProperty('--mx','0');
-    stage.style.setProperty('--my','0');
-    return;
-  }
-  let tx=0,ty=0,rx=0,ry=0;
-  stage.addEventListener('mousemove',e=>{
-    const r=stage.getBoundingClientRect();
-    tx=((e.clientX-r.left)/r.width-.5)*12;
-    ty=(.5-(e.clientY-r.top)/r.height)*10;
-  });
-  stage.addEventListener('mouseleave',()=>{
-    tx=0;ty=0;
-  });
-  (function frame(){
-    rx+=(tx-rx)*.12;
-    ry+=(ty-ry)*.12;
-    stage.style.transform=`rotateX(${(ry*0.55).toFixed(2)}deg) rotateY(${(rx*0.55).toFixed(2)}deg)`;
-    stage.style.setProperty('--mx',(rx/12).toFixed(3));
-    stage.style.setProperty('--my',(ry/10).toFixed(3));
-    requestAnimationFrame(frame);
-  })();
 })();
 
 /* ── CURSOR TRAIL — replaced by stars below ── */
@@ -6299,21 +6305,8 @@ function scramble(el){
 
 /* ── DREAMS PARALLAX ── */
 const dreamSec=document.getElementById('dreams');
-const dreamBg=document.getElementById('dream-bg');
-const dreamCont=document.getElementById('dream-content');
-const dreamYear=document.getElementById('dream-year');
 if(dreamSec){
   new IntersectionObserver(([e])=>{if(e.isIntersecting)dreamSec.classList.add('in-view');},{threshold:.08}).observe(dreamSec);
-  window.addEventListener('scroll',()=>{
-    const rect=dreamSec.getBoundingClientRect();
-    const vh=window.innerHeight;
-    if(rect.top>vh||rect.bottom<0)return;
-    const p=(vh-rect.top)/(vh+rect.height);
-    const s=(p-.5)*100;
-    if(dreamBg)dreamBg.style.transform=`translateY(${s*.5}px)`;
-    if(dreamCont)dreamCont.style.transform=`translateY(${s*-.15}px)`;
-    if(dreamYear)dreamYear.style.transform=`scale(${1+p*.1}) translateY(${s*-.06}px)`;
-  },{passive:true});
 }
 
 /* ── NAV ── */
@@ -6351,10 +6344,18 @@ window.addEventListener('DOMContentLoaded',()=>{
 });
 
 /* ── LANG ── */
-document.getElementById('lang').addEventListener('click',function(){
-  const ro=document.body.classList.toggle('ro');
+function syncLanguageUI(){
+  const ro=document.body.classList.contains('ro');
+  document.documentElement.lang=ro?'ro':'en';
   document.getElementById('lang-flag').textContent=ro?'🇬🇧':'🇷🇴';
   document.getElementById('lang-text').textContent=ro?'EN':'RO';
+  const wxInput=document.getElementById('wx-input');
+  if(wxInput) wxInput.placeholder=ro?'Caută oraș...':'Search city...';
+}
+syncLanguageUI();
+document.getElementById('lang').addEventListener('click',function(){
+  document.body.classList.toggle('ro');
+  syncLanguageUI();
 });
 
 /* ── MOBILE MENU ── */
@@ -6428,7 +6429,7 @@ setInterval(updateClock,1000);
 
   async function fetchWeather(city){
     document.getElementById('wx-desc').textContent='se încarcă...';
-    document.getElementById('wx-temp').textContent='—°';
+    document.getElementById('wx-temp').textContent='...';
     try{
       const geo=await geocode(city);
       const {latitude,longitude,name,country}=geo;
@@ -6447,6 +6448,7 @@ setInterval(updateClock,1000);
       document.getElementById('wx-feels').textContent=Math.round(cur.apparent_temperature)+'°C';
     }catch(e){
       document.getElementById('wx-desc').textContent='indisponibil';
+      document.getElementById('wx-temp').textContent='...';
     }
   }
 
