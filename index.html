@@ -631,62 +631,101 @@ nav.stuck{background:#050807;border-color:rgba(237,233,224,.14);}
 #dreams{
   position:relative;
   min-height:auto;
-  padding:clamp(56px,8vh,96px) var(--px);
-  background:linear-gradient(180deg, rgba(255,255,255,.96) 0%, rgba(245,236,224,.98) 100%);
+  padding:clamp(68px,10vh,118px) var(--px);
+  background:
+    radial-gradient(circle at 12% 22%, rgba(212,174,121,.14), transparent 30%),
+    radial-gradient(circle at 88% 76%, rgba(183,138,82,.1), transparent 28%),
+    linear-gradient(180deg, rgba(255,255,255,.97) 0%, rgba(245,236,224,.99) 100%);
 }
 .dream-shell{
-  width:min(100%,1180px);
+  width:min(100%,1240px);
   margin:0 auto;
   display:grid;
-  grid-template-columns:minmax(320px, .92fr) minmax(0, 1.08fr);
-  align-items:center;
-  gap:clamp(24px,4vw,46px);
+  grid-template-columns:minmax(320px, .9fr) minmax(0, 1.1fr);
+  align-items:start;
+  gap:clamp(28px,4.5vw,58px);
 }
 .dream-media{
+  display:grid;
+  gap:18px;
+  align-self:stretch;
+}
+.dream-photo{
   position:relative;
   min-height:clamp(420px,66vh,680px);
   border-radius:30px;
   overflow:hidden;
   box-shadow:0 28px 60px rgba(55,36,17,.12);
 }
-.dream-media img{
+.dream-photo img{
   width:100%;
   height:100%;
   object-fit:cover;
   object-position:center top;
   filter:grayscale(100%) sepia(.12) brightness(.88) contrast(1.03);
 }
-.dream-media::after{
+.dream-photo::after{
   content:'';
   position:absolute;
   inset:0;
-  background:linear-gradient(180deg, rgba(255,255,255,.12) 0%, rgba(20,16,11,.16) 100%);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.06) 0%, rgba(20,16,11,.2) 100%),
+    linear-gradient(135deg, rgba(255,255,255,.03) 0%, rgba(183,138,82,.08) 100%);
 }
 .dream-year{
   position:absolute;
-  left:26px;
-  bottom:18px;
+  right:22px;
+  bottom:14px;
   z-index:1;
   font-family:var(--display);
-  font-size:clamp(4.6rem,10vw,8rem);
+  font-size:clamp(5rem,10vw,8.4rem);
   font-weight:600;
   font-style:italic;
   line-height:.88;
   color:transparent;
-  -webkit-text-stroke:1px rgba(183,138,82,.5);
+  -webkit-text-stroke:1px rgba(212,174,121,.62);
   letter-spacing:-.04em;
   pointer-events:none;
   user-select:none;
 }
+.dream-memory-card{
+  padding:20px 22px 22px;
+  border-radius:24px;
+  background:rgba(255,252,247,.78);
+  border:1px solid rgba(23,19,16,.08);
+  box-shadow:0 16px 38px rgba(55,36,17,.06);
+  backdrop-filter:blur(14px);
+}
+.dream-memory-label{
+  font-family:var(--mono);
+  font-size:.56rem;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--acc);
+  margin-bottom:10px;
+}
+.dream-memory-copy{
+  font-size:.94rem;
+  line-height:1.75;
+  color:var(--fg2);
+}
 .dream-copy{
   position:relative;
-  padding:clamp(28px,4vw,44px);
-  border-radius:30px;
-  background:rgba(255,252,247,.82);
+  padding:clamp(32px,4.5vw,54px);
+  border-radius:34px;
+  background:rgba(255,252,247,.84);
   border:1px solid rgba(23,19,16,.08);
-  box-shadow:0 24px 60px rgba(55,36,17,.08);
-  backdrop-filter:blur(16px);
+  box-shadow:0 26px 70px rgba(55,36,17,.08);
+  backdrop-filter:blur(18px);
   text-align:left;
+}
+.dream-copy::before{
+  content:'';
+  position:absolute;
+  inset:0 auto 0 0;
+  width:4px;
+  border-radius:34px 0 0 34px;
+  background:linear-gradient(180deg, rgba(212,174,121,.9) 0%, rgba(183,138,82,.2) 100%);
 }
 .dream-over-label{
   font-family:var(--mono);font-size:.52rem;letter-spacing:.28em;text-transform:uppercase;
@@ -702,7 +741,7 @@ nav.stuck{background:#050807;border-color:rgba(237,233,224,.14);}
   font-size:clamp(2.8rem,5.3vw,5.8rem);
   font-weight:400;line-height:.98;letter-spacing:-.02em;
   color:var(--fg);
-  max-width:8ch;
+  max-width:9ch;
   margin:0;
   text-align:left;
   overflow:hidden;
@@ -713,31 +752,125 @@ nav.stuck{background:#050807;border-color:rgba(237,233,224,.14);}
 .dream-over-title i{font-style:italic;color:var(--acc-bright);}
 #dreams.in-view .dream-over-title{opacity:1;transform:none;}
 .dream-over-body{
-  font-size:clamp(.9rem,1.4vw,1.05rem);font-weight:300;
+  font-size:clamp(.95rem,1.45vw,1.08rem);font-weight:300;
   color:var(--fg2);line-height:1.9;
-  max-width:58ch;margin:clamp(16px,3vh,28px) 0 0;
+  max-width:58ch;margin:clamp(16px,3vh,24px) 0 0;
   opacity:0;transform:translateY(20px);
   transition:opacity 1s var(--ease),transform 1s var(--ease);
   transition-delay:.3s;
 }
 #dreams.in-view .dream-over-body{opacity:1;transform:none;}
-.dream-pills-row{
-  display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-start;
-  margin-top:clamp(20px,3vh,32px);
+.dream-story-intro{
+  font-size:.78rem;
+  line-height:1.8;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:rgba(23,19,16,.46);
+  margin-top:18px;
+  opacity:0;
+  transform:translateY(20px);
+  transition:opacity 1s var(--ease),transform 1s var(--ease);
+  transition-delay:.4s;
+}
+#dreams.in-view .dream-story-intro{opacity:1;transform:none;}
+.dream-rail{
+  position:relative;
+  display:grid;
+  gap:16px;
+  margin-top:clamp(26px,4vh,40px);
+  padding-left:34px;
   opacity:0;transform:translateY(16px);
   transition:opacity 1s var(--ease),transform 1s var(--ease);
   transition-delay:.45s;
 }
-#dreams.in-view .dream-pills-row{opacity:1;transform:none;}
-.dream-pill-new{
-  font-family:var(--mono);font-size:.5rem;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--fg3);
-  border:1px solid rgba(45,122,79,.2);
-  padding:7px 16px;
-  background:rgba(45,122,79,.04);
-  transition:border-color .3s,color .3s,background .3s;
+.dream-rail::before{
+  content:'';
+  position:absolute;
+  left:6px;
+  top:10px;
+  bottom:10px;
+  width:1px;
+  background:linear-gradient(180deg, rgba(183,138,82,.18) 0%, rgba(183,138,82,.48) 52%, rgba(183,138,82,.14) 100%);
 }
-.dream-pill-new:hover{border-color:var(--acc);color:var(--acc);background:rgba(45,122,79,.08);}
+#dreams.in-view .dream-rail{opacity:1;transform:none;}
+.dream-milestone{
+  position:relative;
+  display:grid;
+  grid-template-columns:minmax(86px,104px) minmax(0,1fr);
+  gap:18px;
+  align-items:start;
+  padding:22px 22px 20px;
+  border-radius:24px;
+  background:rgba(255,255,255,.66);
+  border:1px solid rgba(23,19,16,.08);
+  box-shadow:0 16px 34px rgba(55,36,17,.06);
+}
+.dream-milestone::before{
+  content:'';
+  position:absolute;
+  top:26px;
+  left:-34px;
+  width:13px;
+  height:13px;
+  border-radius:50%;
+  background:var(--acc);
+  box-shadow:0 0 0 7px rgba(183,138,82,.12);
+}
+.dream-milestone-year{
+  display:block;
+  font-family:var(--mono);
+  font-size:.54rem;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--acc);
+  margin-bottom:8px;
+}
+.dream-milestone-kicker{
+  display:block;
+  font-size:.8rem;
+  color:rgba(23,19,16,.5);
+  line-height:1.5;
+}
+.dream-milestone h3{
+  font-family:var(--display);
+  font-size:clamp(1.24rem,1.9vw,1.7rem);
+  font-weight:500;
+  line-height:1.06;
+  letter-spacing:-.02em;
+  margin-bottom:8px;
+}
+.dream-milestone p{
+  font-size:.92rem;
+  line-height:1.78;
+  color:rgba(23,19,16,.68);
+}
+.dream-present-note{
+  margin-top:20px;
+  padding:18px 22px;
+  border-radius:22px;
+  background:linear-gradient(135deg, rgba(183,138,82,.08) 0%, rgba(255,255,255,.68) 100%);
+  border:1px solid rgba(183,138,82,.18);
+  box-shadow:0 14px 28px rgba(55,36,17,.04);
+  opacity:0;
+  transform:translateY(18px);
+  transition:opacity 1s var(--ease),transform 1s var(--ease);
+  transition-delay:.58s;
+}
+#dreams.in-view .dream-present-note{opacity:1;transform:none;}
+.dream-present-label{
+  display:block;
+  margin-bottom:8px;
+  font-family:var(--mono);
+  font-size:.56rem;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--acc);
+}
+.dream-present-note p{
+  font-size:.92rem;
+  line-height:1.76;
+  color:var(--fg2);
+}
 
 /* MAGNETIC BUTTONS */
 .btn-gold,.ct-ig{
@@ -1046,6 +1179,8 @@ body.ro span[data-ro]{display:inline;}
   .dream-shell{grid-template-columns:1fr;gap:18px;}
   .dream-media{min-height:340px;}
   .dream-copy{padding:24px 22px;}
+  .dream-timeline{grid-template-columns:1fr;gap:12px;padding-top:18px;}
+  .dream-timeline::before{left:12px;right:12px;}
   .ms-left{position:static;}
   .svc-top p,.gal-sub,.pr-header p,.rv-header p{text-align:left;max-width:100%;}
   .hero-content{grid-template-columns:1fr;}
@@ -1089,7 +1224,8 @@ body.ro span[data-ro]{display:inline;}
     -webkit-text-stroke-width:.5px;
   }
   .dream-over-title{max-width:9ch;line-height:1.02;}
-  .dream-pills-row{gap:8px;}
+  .dream-step{padding:18px 16px 16px;border-radius:18px;}
+  .dream-step h3{font-size:1.12rem;}
   .pr-item{flex-wrap:nowrap;}
   .pr-item-desc{display:none;}
   .pr-item-right{flex-direction:row;align-items:center;gap:10px;}
@@ -2429,22 +2565,13 @@ body.cur-mindset{
 }
 
 #dreams{
-  background:linear-gradient(180deg, rgba(255,255,255,.94) 0%, rgba(245,236,224,.98) 100%);
+  background:linear-gradient(180deg, rgba(255,255,255,.96) 0%, rgba(245,236,224,.98) 100%);
 }
-.dream-bg img{
-  filter:grayscale(100%) sepia(.18) brightness(.86) contrast(1.04);
-}
-#dreams:hover .dream-bg img{
-  filter:grayscale(100%) sepia(.12) brightness(.92) contrast(1.04);
-}
-.dream-vignette{
-  background:
-    radial-gradient(ellipse at center, rgba(255,255,255,.08) 12%, rgba(250,245,238,.78) 100%),
-    linear-gradient(to top, rgba(249,243,235,.94) 4%, rgba(249,243,235,.18) 44%),
-    linear-gradient(to bottom, rgba(249,243,235,.76) 0%, rgba(249,243,235,0) 30%);
+.dream-media img{
+  filter:grayscale(100%) sepia(.12) brightness(.88) contrast(1.03);
 }
 .dream-year{
-  -webkit-text-stroke:1px rgba(183,138,82,.42);
+  -webkit-text-stroke:1px rgba(183,138,82,.5);
 }
 .dream-over-title,
 .dream-over-body{
@@ -2453,11 +2580,14 @@ body.cur-mindset{
 .dream-over-title i{
   color:var(--acc);
 }
-.dream-pill-new{
-  color:var(--fg2);
-  border-radius:999px;
-  border-color:rgba(183,138,82,.22);
-  background:rgba(255,255,255,.42);
+.dream-step{
+  background:rgba(255,255,255,.72);
+}
+.dream-step-year{
+  color:var(--acc);
+}
+.dream-step p{
+  color:rgba(23,19,16,.66);
 }
 
 #contact{
@@ -5893,12 +6023,23 @@ footer{
 <!-- DREAMS -->
 <section id="dreams">
   <div class="dream-shell">
-    <div class="dream-media rv-left" id="dream-bg">
-      <img src="assets/img/photo6.jpeg" alt="Costi Andrei, fotografie din copilărie" />
-      <span class="dream-year" id="dream-year">2008</span>
+    <div class="dream-media rv-left">
+      <div class="dream-photo" id="dream-bg">
+        <img src="assets/img/photo6.jpeg" alt="Costi Andrei, fotografie din copilărie" />
+        <span class="dream-year" id="dream-year">2008</span>
+      </div>
+      <div class="dream-memory-card">
+        <p class="dream-memory-label">
+          <span data-en>An old memory</span>
+          <span data-ro>Un reper vechi</span>
+        </p>
+        <p class="dream-memory-copy">
+          <span data-en>This photo matters because it reminds me the story began long before the work itself. Curiosity was there first.</span>
+          <span data-ro>Țin la fotografia asta pentru că îmi amintește că povestea a început cu mult înainte să existe munca propriu-zisă. Curiozitatea a fost prima.</span>
+        </p>
+      </div>
     </div>
     <div class="dream-copy dream-content rv-right" id="dream-content">
-      <div class="dream-inner">
       <p class="dream-over-label">
         <span data-en>Where it started</span>
         <span data-ro>De aici a început</span>
@@ -5911,11 +6052,60 @@ footer{
         <span data-en>That photo reminds me that all of this started from curiosity. I began taking this seriously at 15 and I've kept learning with every project since then.</span>
         <span data-ro>Poza asta îmi amintește că totul a pornit din curiozitate. Am început să iau munca asta în serios la 15 ani și de atunci am învățat cu fiecare proiect.</span>
       </p>
-      <div class="dream-pills-row">
-        <span class="dream-pill-new"><span data-en>Started at 15</span><span data-ro>Am început la 15 ani</span></span>
-        <span class="dream-pill-new"><span data-en>Learned by doing</span><span data-ro>Am învățat lucrând</span></span>
-        <span class="dream-pill-new"><span data-en>Still improving</span><span data-ro>Încă evoluez</span></span>
+      <p class="dream-story-intro">
+        <span data-en>A short timeline, from the first memory to the way I work today.</span>
+        <span data-ro>O poveste scurtă, de la primul reper până la felul în care lucrez azi.</span>
+      </p>
+      <div class="dream-rail">
+        <article class="dream-milestone">
+          <div class="dream-milestone-meta">
+            <span class="dream-milestone-year">2008</span>
+            <span class="dream-milestone-kicker">
+              <span data-en>First chapter</span>
+              <span data-ro>Primul capitol</span>
+            </span>
+          </div>
+          <div class="dream-milestone-copy">
+            <h3><span data-en>Curiosity came first</span><span data-ro>Curiozitatea a venit prima</span></h3>
+            <p><span data-en>Not the moment work started, but the moment the story started. That's why this photo still matters to me.</span><span data-ro>Nu e momentul în care a început munca, ci momentul în care a început povestea. De asta fotografia asta încă înseamnă ceva pentru mine.</span></p>
+          </div>
+        </article>
+        <article class="dream-milestone">
+          <div class="dream-milestone-meta">
+            <span class="dream-milestone-year"><span data-en>15 years old</span><span data-ro>15 ani</span></span>
+            <span class="dream-milestone-kicker">
+              <span data-en>Turning point</span>
+              <span data-ro>Punctul de cotitură</span>
+            </span>
+          </div>
+          <div class="dream-milestone-copy">
+            <h3><span data-en>I started taking it seriously</span><span data-ro>Am început să o iau în serios</span></h3>
+            <p><span data-en>That is when websites, editing and visuals stopped being just a curiosity and started becoming real work for me.</span><span data-ro>Atunci site-urile, editarea și vizualul n-au mai fost doar o curiozitate. Au început să devină muncă reală pentru mine.</span></p>
+          </div>
+        </article>
+        <article class="dream-milestone">
+          <div class="dream-milestone-meta">
+            <span class="dream-milestone-year"><span data-en>Today</span><span data-ro>Azi</span></span>
+            <span class="dream-milestone-kicker">
+              <span data-en>What stayed with me</span>
+              <span data-ro>Ce a rămas cu mine</span>
+            </span>
+          </div>
+          <div class="dream-milestone-copy">
+            <h3><span data-en>I work clearer than before</span><span data-ro>Lucrez mai clar decât înainte</span></h3>
+            <p><span data-en>Each project teaches me how to be more careful with detail, more consistent in execution and more confident in the final result.</span><span data-ro>Fiecare proiect mă învață să fiu mai atent la detalii, mai coerent în execuție și mai sigur pe rezultatul final.</span></p>
+          </div>
+        </article>
       </div>
+      <div class="dream-present-note">
+        <span class="dream-present-label">
+          <span data-en>Today</span>
+          <span data-ro>Astăzi</span>
+        </span>
+        <p>
+          <span data-en>What matters most to me now is simple: clear work, calm communication and projects that feel finished from start to end.</span>
+          <span data-ro>Ce contează cel mai mult pentru mine acum e simplu: muncă clară, comunicare calmă și proiecte care se simt bine făcute de la început până la final.</span>
+        </p>
       </div>
     </div>
   </div>
