@@ -5430,6 +5430,330 @@ footer{
     justify-content:center;
   }
 }
+
+/* ---------- MOBILE OPTIMIZATION PASS ---------- */
+@media(max-width:900px){
+  html,body{
+    overflow-x:hidden;
+  }
+  body{
+    max-width:100%;
+  }
+  nav{
+    top:10px;
+    left:10px;
+    right:10px;
+    width:auto;
+    height:auto;
+    min-height:70px;
+    padding:14px 18px;
+    border-radius:24px;
+  }
+  .n-logo{
+    font-size:1rem;
+    line-height:1.1;
+  }
+  .lang{
+    min-height:44px;
+    padding:0 14px;
+  }
+  .ham{
+    width:42px;
+    height:42px;
+    align-items:center;
+    justify-content:center;
+  }
+  #mnav{
+    padding:96px 24px 32px;
+    gap:16px;
+    text-align:center;
+  }
+  #mnav a{
+    font-size:clamp(1.8rem,8vw,3rem);
+  }
+  #hero.hero-about{
+    grid-template-columns:1fr;
+    margin-top:92px;
+    min-height:auto;
+  }
+  #hero.hero-about .about-img,
+  #hero.hero-about .about-text{
+    min-height:auto;
+  }
+  #hero.hero-about .about-img{
+    aspect-ratio:5 / 6;
+    min-height:clamp(320px,58svh,500px);
+    border-radius:26px 26px 0 0;
+  }
+  #hero.hero-about .about-img img{
+    object-position:center 14%;
+  }
+  #hero.hero-about .about-text{
+    padding:34px 24px 36px;
+    border-radius:0 0 26px 26px;
+  }
+  #hero.hero-about .about-text::before{
+    display:none;
+  }
+  #hero.hero-about .hero-about-title{
+    max-width:8.5ch;
+    font-size:clamp(2.6rem,9vw,4.2rem);
+  }
+  #hero.hero-about .word-reveal{
+    max-width:100%;
+  }
+  #hero.hero-about .about-chips{
+    gap:8px;
+  }
+  #hero.hero-about .chip{
+    padding:7px 12px;
+    font-size:.5rem;
+    letter-spacing:.1em;
+  }
+  .born-tag{
+    left:16px;
+    right:16px;
+    bottom:16px;
+    width:auto;
+    padding:10px 14px;
+  }
+  .svc-item{
+    grid-template-columns:34px 1fr;
+    align-items:start;
+    gap:14px;
+  }
+  .svc-arr{
+    display:none;
+  }
+  .svc-body h3{
+    margin-bottom:6px;
+  }
+  .pr-header,
+  .svc-top,
+  .faq-header{
+    gap:14px;
+  }
+  .pr-tabs{
+    width:100%;
+  }
+  .pr-tab{
+    flex:1;
+    padding:12px 10px;
+  }
+  .pr-option{
+    align-items:flex-start;
+  }
+  .pr-option-right{
+    align-items:flex-start;
+  }
+  .gal-grid{
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+  .reviews-grid{
+    grid-template-columns:1fr;
+  }
+  .review-card{
+    padding:22px 18px;
+  }
+  .ms-wrap{
+    gap:24px;
+  }
+  .ms-left h2{
+    max-width:8ch;
+  }
+  .dream-shell{
+    gap:18px;
+  }
+  .faq-item{
+    padding-left:18px;
+    padding-right:18px;
+  }
+  .ft-top{
+    grid-template-columns:1fr;
+    gap:22px;
+  }
+  .ft-bottom{
+    justify-content:center;
+    text-align:center;
+  }
+}
+
+@media(max-width:700px){
+  section[id],footer{
+    width:calc(100% - 12px);
+    margin-top:10px;
+    border-radius:20px;
+  }
+  #hero.hero-about{
+    margin-top:86px;
+  }
+  #hero.hero-about .about-img{
+    aspect-ratio:4 / 5;
+    min-height:clamp(300px,52svh,420px);
+    border-radius:20px 20px 0 0;
+  }
+  #hero.hero-about .about-img img{
+    object-position:center 12%;
+  }
+  #hero.hero-about .about-text{
+    padding:28px 18px 30px;
+    border-radius:0 0 20px 20px;
+  }
+  #hero.hero-about .about-label{
+    margin-bottom:14px;
+  }
+  #hero.hero-about .hero-about-title{
+    max-width:7.6ch;
+    font-size:clamp(2.25rem,11.5vw,3.7rem);
+    margin-bottom:16px;
+  }
+  #hero.hero-about .word-reveal{
+    font-size:.96rem;
+    line-height:1.72;
+  }
+  .hero-about-actions{
+    grid-template-columns:1fr;
+    gap:10px;
+    margin-top:20px;
+  }
+  .hero-about-actions .btn-gold,
+  .hero-about-actions .btn-line{
+    min-height:50px;
+  }
+  #hero.hero-about .about-chips{
+    margin-top:18px;
+  }
+  .chip{
+    max-width:100%;
+  }
+  .born-tag{
+    font-size:.52rem;
+    line-height:1.55;
+  }
+  .born-tag strong{
+    font-size:.84rem;
+  }
+  #services,
+  #pricing,
+  #gallery,
+  #reviews,
+  #mindset,
+  #dreams,
+  #faq,
+  footer{
+    padding-top:34px;
+    padding-bottom:34px;
+  }
+  .svc-top h2,
+  .pr-header h2,
+  .faq-header h2{
+    font-size:clamp(2rem,9vw,3rem);
+  }
+  .svc-item{
+    padding:18px 0;
+  }
+  .pr-card-top,
+  .pr-card-includes,
+  .pr-card-options,
+  .review-card,
+  .faq-item{
+    padding-left:16px;
+    padding-right:16px;
+  }
+  .pr-option{
+    flex-direction:column;
+    gap:8px;
+  }
+  .pr-option-left,
+  .pr-option-right{
+    width:100%;
+  }
+  .pr-option-right{
+    justify-content:space-between;
+  }
+  .gal-grid{
+    grid-template-columns:1fr;
+  }
+  .gp img{
+    aspect-ratio:4 / 5;
+  }
+  .ms-q{
+    padding:20px 16px;
+  }
+  .dream-photo{
+    min-height:280px;
+  }
+  .faq-q{
+    gap:10px;
+  }
+  .faq-q-text{
+    font-size:.96rem;
+    line-height:1.45;
+  }
+  .om-card{
+    padding:22px 16px;
+  }
+  .om-summary-row{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+  .ft-social{
+    width:100%;
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+}
+
+@media(max-width:480px){
+  nav{
+    min-height:64px;
+    padding:12px 14px;
+    border-radius:18px;
+  }
+  .n-logo{
+    font-size:.9rem;
+  }
+  .lang{
+    min-height:40px;
+    padding:0 12px;
+  }
+  #hero.hero-about{
+    margin-top:80px;
+  }
+  #hero.hero-about .about-img{
+    aspect-ratio:1 / 1.18;
+    min-height:280px;
+  }
+  #hero.hero-about .about-text{
+    padding:24px 14px 26px;
+  }
+  #hero.hero-about .hero-about-title{
+    font-size:clamp(2rem,12vw,3.25rem);
+    max-width:7.1ch;
+  }
+  #hero.hero-about .word-reveal{
+    font-size:.92rem;
+  }
+  .chip{
+    width:100%;
+    justify-content:center;
+    text-align:center;
+  }
+  .pr-tab{
+    font-size:.5rem;
+    letter-spacing:.14em;
+  }
+  .pr-option-price{
+    font-size:1.45rem;
+  }
+  .dream-photo{
+    min-height:250px;
+  }
+  .wx-main{
+    gap:10px;
+  }
+}
 </style>
 </head>
 <body class="ro loading-screen">
