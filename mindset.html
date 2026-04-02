@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ro">
+<html lang="en">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -100,6 +100,11 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;font-size:16px;overflow-x:hidden;width:100%;}
 body{background:var(--bg);color:var(--fg);font-family:var(--body);font-weight:300;line-height:1.6;overflow-x:hidden;cursor:none;width:100%;max-width:100vw;}
+html.order-open,
+body.order-open{
+  overflow:hidden;
+  overscroll-behavior:none;
+}
 img{display:block;width:100%;height:100%;object-fit:cover;}
 a{color:inherit;text-decoration:none;}
 button{background:none;border:none;font-family:inherit;cursor:pointer;}
@@ -571,10 +576,10 @@ nav.stuck{background:#050807;border-color:rgba(237,233,224,.14);}
 .pr-option-ron{font-family:var(--mono);font-size:.43rem;letter-spacing:.07em;color:var(--fg3);}
 
 /* ── ORDER MODAL ── */
-#order-modal{position:fixed;inset:0;z-index:99990;display:flex;align-items:flex-start;justify-content:center;padding:clamp(18px,4vh,42px) 20px 24px;overflow-y:auto;opacity:0;pointer-events:none;transition:opacity .35s var(--ease);}
+#order-modal{position:fixed;inset:0;z-index:99990;display:flex;align-items:flex-start;justify-content:center;height:100dvh;min-height:100dvh;padding:clamp(18px,4vh,42px) 20px 24px;overflow-y:auto;overflow-x:hidden;opacity:0;pointer-events:none;transition:opacity .35s var(--ease);isolation:isolate;background:rgba(12,9,7,.64);backdrop-filter:blur(14px) saturate(.92);-webkit-backdrop-filter:blur(14px) saturate(.92);}
 #order-modal.open{opacity:1;pointer-events:all;}
-.om-backdrop{position:absolute;inset:0;background:rgba(5,8,7,.88);backdrop-filter:blur(12px);cursor:pointer;}
-.om-card{position:relative;z-index:1;width:100%;max-width:520px;background:var(--bg2);border:1px solid rgba(45,122,79,.25);padding:clamp(28px,4vw,48px);transform:translateY(20px) scale(.97);transition:transform .4s var(--ease2);}
+.om-backdrop{position:absolute;inset:0;background:transparent;cursor:pointer;}
+.om-card{position:relative;z-index:1;width:100%;max-width:520px;border-radius:34px;background:linear-gradient(180deg, rgba(255,255,255,.99) 0%, rgba(247,239,230,.98) 100%);border:1px solid rgba(186,136,80,.18);box-shadow:0 36px 92px rgba(42,28,14,.24), inset 0 1px 0 rgba(255,255,255,.9);padding:clamp(28px,4vw,48px);transform:translateY(20px) scale(.97);transition:transform .4s var(--ease2);}
 #order-modal.open .om-card{transform:translateY(0) scale(1);}
 .om-close{position:absolute;top:16px;right:16px;font-family:var(--mono);font-size:.48rem;letter-spacing:.12em;color:var(--fg3);border:1px solid var(--line);padding:5px 10px;cursor:pointer;background:none;transition:all .25s;}
 .om-close:hover{color:var(--fg);border-color:var(--fg);}
@@ -2420,8 +2425,9 @@ body.cur-mindset{
 }
 
 .om-backdrop{
-  background:rgba(34,26,18,.48);
-  backdrop-filter:blur(18px);
+  background:transparent;
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
 }
 .om-card{
   max-width:520px;
@@ -6123,11 +6129,10 @@ nav.stuck{
   border-color:rgba(183,138,82,.45);
   background:rgba(183,138,82,.08);
 }
-body[data-page="home"] section:not(#hero):not(#page-hub){
+body[data-page="home"] section:not(#hero){
   display:none !important;
 }
-body[data-page="about"] #page-hub,
-body[data-page="about"] section:not(#hero),
+body[data-page="about"] section:not(#hero):not(#page-hub),
 body[data-page="services"] #page-hub,
 body[data-page="services"] section:not(#services),
 body[data-page="pricing"] #page-hub,
@@ -6161,7 +6166,17 @@ body[data-page="faq"] section:not(#faq){
 
 </style>
 </head>
-<body class="ro loading-screen" data-page="mindset">
+<body class="loading-screen" data-page="mindset">
+<script>
+(() => {
+  try {
+    const savedLanguage = localStorage.getItem('aman-site-language');
+    if(savedLanguage === 'ro') document.body.classList.add('ro');
+    else document.body.classList.remove('ro');
+    document.documentElement.lang = savedLanguage === 'ro' ? 'ro' : 'en';
+  } catch (error) {}
+})();
+</script>
 <div id="scroll-bar"></div>
 <div id="page-transition">
   <div class="pt-col"></div><div class="pt-col"></div><div class="pt-col"></div><div class="pt-col"></div><div class="pt-col"></div>
@@ -6213,9 +6228,9 @@ body[data-page="faq"] section:not(#faq){
 
 <!-- NAV -->
 <nav id="nav">
-  <a href="index.html" class="n-logo">Aman <i>/ Costi Andrei</i></a>
+  <div class="n-logo" aria-label="Aman / Costi Andrei">Aman <i>/ Costi Andrei</i></div>
   <ul class="n-links">
-    <li><a href="despre.html" data-nav-page="about"><span data-en>About</span><span data-ro>Despre</span></a></li>
+    <li><a href="despre.html" data-nav-page="about"><span data-en>Home</span><span data-ro>Acasă</span></a></li>
     <li><a href="servicii.html" data-nav-page="services"><span data-en>Services</span><span data-ro>Servicii</span></a></li>
     <li><a href="preturi.html" data-nav-page="pricing"><span data-en>Pricing</span><span data-ro>Prețuri</span></a></li>
     <li><a href="proiecte.html" data-nav-page="projects"><span data-en>Projects</span><span data-ro>Proiecte</span></a></li>
@@ -6233,8 +6248,7 @@ body[data-page="faq"] section:not(#faq){
 </nav>
 
 <div id="mnav">
-  <a href="index.html" class="mnav-link" data-nav-page="home"><span data-en>Home</span><span data-ro>Acasă</span></a>
-  <a href="despre.html" class="mnav-link" data-nav-page="about"><span data-en>About</span><span data-ro>Despre</span></a>
+  <a href="despre.html" class="mnav-link" data-nav-page="about"><span data-en>Home</span><span data-ro>Acasă</span></a>
   <a href="servicii.html" class="mnav-link" data-nav-page="services"><span data-en>Services</span><span data-ro>Servicii</span></a>
   <a href="preturi.html" class="mnav-link" data-nav-page="pricing"><span data-en>Pricing</span><span data-ro>Prețuri</span></a>
   <a href="proiecte.html" class="mnav-link" data-nav-page="projects"><span data-en>Projects</span><span data-ro>Proiecte</span></a>
@@ -6293,7 +6307,7 @@ body[data-page="faq"] section:not(#faq){
     <div class="hub-grid">
       <a href="despre.html" class="hub-card rv d1">
         <span class="hub-card-kicker">01</span>
-        <h3 class="hub-card-title"><span data-en>About</span><span data-ro>Despre</span></h3>
+        <h3 class="hub-card-title"><span data-en>Home</span><span data-ro>Acasă</span></h3>
         <p class="hub-card-copy"><span data-en>Who I am, how I work and what matters in my process.</span><span data-ro>Cine sunt, cum lucrez și ce contează în procesul meu.</span></p>
         <span class="hub-card-link"><span data-en>Open page</span><span data-ro>Deschide pagina</span></span>
       </a>
@@ -7069,8 +7083,7 @@ body[data-page="faq"] section:not(#faq){
     <div>
       <p class="ft-col-title"><span data-en>Navigation</span><span data-ro>Navigare</span></p>
       <ul class="ft-links">
-        <li><a href="index.html"><span data-en>Home</span><span data-ro>Acasă</span></a></li>
-        <li><a href="despre.html"><span data-en>About</span><span data-ro>Despre</span></a></li>
+        <li><a href="despre.html"><span data-en>Home</span><span data-ro>Acasă</span></a></li>
         <li><a href="servicii.html"><span data-en>Services</span><span data-ro>Servicii</span></a></li>
         <li><a href="preturi.html"><span data-en>Pricing</span><span data-ro>Prețuri</span></a></li>
         <li><a href="proiecte.html"><span data-en>Projects</span><span data-ro>Proiecte</span></a></li>
@@ -7143,8 +7156,11 @@ function pickLocalized(copy){
   if(parts.length === 1) return parts[0];
   return document.body.classList.contains('ro') ? (parts[1] || parts[0]) : parts[0];
 }
+const orderModal = document.getElementById('order-modal');
+if(orderModal && orderModal.parentElement !== document.body){
+  document.body.appendChild(orderModal);
+}
 function openOrder(name, price, desc, amount){
-  const modal = document.getElementById('order-modal');
   const localizedName = pickLocalized(name);
   const localizedPrice = pickLocalized(price);
   const localizedDesc = pickLocalized(desc);
@@ -7165,15 +7181,17 @@ function openOrder(name, price, desc, amount){
       : `Hi Costi,\n\nI want to order: ${localizedName} (${localizedPrice}).\n\n${localizedDesc}\n\nWhen can we start?`
   );
   document.getElementById('om-email-link').href = `mailto:zenmail.andrei@gmail.com?subject=${subject}&body=${body}`;
-  modal.classList.add('open');
-  document.body.style.overflow = 'hidden';
+  if(orderModal) orderModal.classList.add('open');
+  document.documentElement.classList.add('order-open');
+  document.body.classList.add('order-open');
 }
 document.getElementById('om-close').addEventListener('click', closeOrder);
 document.getElementById('om-backdrop').addEventListener('click', closeOrder);
 document.addEventListener('keydown', e => { if(e.key === 'Escape') closeOrder(); });
 function closeOrder(){
-  document.getElementById('order-modal').classList.remove('open');
-  document.body.style.overflow = '';
+  if(orderModal) orderModal.classList.remove('open');
+  document.documentElement.classList.remove('order-open');
+  document.body.classList.remove('order-open');
 }
 
 /* ── BLUR TO SHARP LOADER ── */
@@ -7346,7 +7364,15 @@ function syncLanguageUI(){
   document.getElementById('lang-text').textContent=ro?'EN':'RO';
   const wxInput=document.getElementById('wx-input');
   if(wxInput) wxInput.placeholder=ro?'Caută oraș...':'Search city...';
+  try{
+    localStorage.setItem('aman-site-language', ro ? 'ro' : 'en');
+  }catch(error){}
 }
+try{
+  const savedLanguage=localStorage.getItem('aman-site-language');
+  if(savedLanguage==='en') document.body.classList.remove('ro');
+  else if(savedLanguage==='ro') document.body.classList.add('ro');
+}catch(error){}
 syncLanguageUI();
 document.getElementById('lang').addEventListener('click',function(){
   document.body.classList.toggle('ro');
