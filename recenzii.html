@@ -6164,6 +6164,306 @@ body[data-page="faq"] section:not(#faq){
   .pj-card{min-height:unset;}
 }
 
+/* PHONE-FIRST NAV REBUILD */
+body.nav-open{
+  overflow:hidden !important;
+}
+#mobnav{
+  display:none;
+}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  .rv,.rv-left,.rv-right,.rv-scale{
+    opacity:1 !important;
+    transform:none !important;
+    transition:none !important;
+  }
+  #page-transition,
+  #trail-canvas{
+    display:none !important;
+  }
+}
+@media (max-width:900px){
+  body{
+    padding-bottom:calc(108px + env(safe-area-inset-bottom));
+  }
+  nav{
+    top:12px;
+    left:12px;
+    right:12px;
+    width:auto;
+    min-height:68px;
+    padding:12px 14px;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    gap:10px;
+    align-items:center;
+  }
+  .n-logo{
+    max-width:14ch;
+    font-size:.96rem;
+    line-height:1.08;
+  }
+  .n-right{
+    gap:8px;
+  }
+  .lang{
+    min-height:42px;
+    padding:0 13px;
+    border-radius:999px;
+    border-color:transparent;
+    background:#171310;
+    color:#fffaf4;
+    box-shadow:0 12px 26px rgba(23,19,16,.14);
+    justify-content:center;
+  }
+  .lang:hover{
+    background:#171310;
+    color:#fffaf4;
+    border-color:transparent;
+  }
+  .lang .flag{
+    font-size:.86rem;
+  }
+  .lang .lang-text{
+    font-size:.52rem;
+  }
+  .ham{
+    display:none !important;
+  }
+  #mnav{
+    display:flex;
+    position:fixed;
+    inset:0;
+    z-index:9500;
+    padding:18px 12px calc(18px + env(safe-area-inset-bottom));
+    align-items:flex-end;
+    justify-content:center;
+    background:none;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .32s var(--ease);
+  }
+  #mnav.o{
+    opacity:1;
+    pointer-events:auto;
+  }
+  .mnav-backdrop{
+    position:absolute;
+    inset:0;
+    border:0;
+    background:rgba(20,15,11,.42);
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+  }
+  .mnav-sheet{
+    position:relative;
+    z-index:1;
+    width:min(100%,560px);
+    max-height:min(78svh,760px);
+    overflow:auto;
+    padding:20px;
+    border-radius:28px;
+    border:1px solid rgba(23,19,16,.08);
+    background:linear-gradient(180deg, rgba(255,251,245,.98) 0%, rgba(246,238,228,.98) 100%);
+    box-shadow:0 28px 72px rgba(35,23,12,.22);
+    transform:translateY(22px);
+    opacity:0;
+    transition:transform .32s var(--ease), opacity .32s var(--ease);
+  }
+  #mnav.o .mnav-sheet{
+    transform:none;
+    opacity:1;
+  }
+  .mnav-sheet-head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:16px;
+    margin-bottom:18px;
+  }
+  .mnav-sheet-kicker{
+    font-family:var(--mono);
+    font-size:.48rem;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:rgba(147,104,57,.74);
+  }
+  .mnav-sheet-title{
+    margin-top:8px;
+    max-width:10ch;
+    font-family:var(--display);
+    font-size:clamp(1.7rem,7vw,2.5rem);
+    line-height:.96;
+    color:var(--fg);
+  }
+  .mnav-close{
+    min-height:40px;
+    padding:0 14px;
+    border-radius:999px;
+    border:1px solid rgba(23,19,16,.1);
+    background:rgba(255,255,255,.72);
+    font-family:var(--mono);
+    font-size:.52rem;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:rgba(23,19,16,.72);
+  }
+  .mnav-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+  }
+  #mnav a{
+    font-size:inherit;
+    color:inherit;
+  }
+  .mnav-link{
+    min-height:118px;
+    padding:14px 14px 16px;
+    border-radius:22px;
+    border:1px solid rgba(23,19,16,.08);
+    background:rgba(255,255,255,.66);
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    transition:border-color .24s var(--ease), transform .24s var(--ease), box-shadow .24s var(--ease), background .24s var(--ease);
+  }
+  .mnav-link-kicker{
+    font-family:var(--mono);
+    font-size:.44rem;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:rgba(147,104,57,.66);
+  }
+  .mnav-link-title{
+    font-family:var(--display);
+    font-size:1.35rem;
+    line-height:.94;
+    color:var(--fg);
+  }
+  .mnav-link-copy{
+    margin-top:auto;
+    font-family:var(--mono);
+    font-size:.5rem;
+    letter-spacing:.08em;
+    line-height:1.55;
+    color:rgba(23,19,16,.62);
+  }
+  .mnav-link.on{
+    border-color:rgba(183,138,82,.28);
+    background:rgba(255,255,255,.92);
+    box-shadow:0 18px 34px rgba(56,34,14,.08);
+  }
+  #mobnav{
+    display:grid;
+    position:fixed;
+    left:12px;
+    right:12px;
+    bottom:calc(12px + env(safe-area-inset-bottom));
+    z-index:9400;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:8px;
+    padding:10px;
+    border-radius:26px;
+    border:1px solid rgba(23,19,16,.08);
+    background:rgba(255,251,245,.94);
+    box-shadow:0 22px 54px rgba(48,30,14,.16);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+  }
+  .mobnav-link,
+  .mobnav-more{
+    min-height:56px;
+    padding:8px 6px;
+    border-radius:18px;
+    border:1px solid transparent;
+    background:transparent;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:3px;
+    color:rgba(23,19,16,.56);
+    text-align:center;
+    transition:background .24s var(--ease), border-color .24s var(--ease), color .24s var(--ease), transform .24s var(--ease);
+  }
+  .mobnav-mini{
+    font-family:var(--mono);
+    font-size:.42rem;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:rgba(147,104,57,.66);
+  }
+  .mobnav-label{
+    font-family:var(--mono);
+    font-size:.52rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+  }
+  .mobnav-link.on,
+  .mobnav-more.on{
+    background:#171310;
+    border-color:#171310;
+    color:#fffaf4;
+    transform:translateY(-1px);
+  }
+  .mobnav-link.on .mobnav-mini,
+  .mobnav-more.on .mobnav-mini{
+    color:rgba(255,250,244,.68);
+  }
+  .page-hub{
+    padding-bottom:116px;
+  }
+  .page-hub-title{
+    max-width:8ch;
+    font-size:clamp(2.3rem,10vw,3.6rem);
+  }
+  .page-hub-text{
+    max-width:100%;
+    font-size:.96rem;
+    line-height:1.75;
+  }
+  .hub-card{
+    min-height:unset;
+    padding:22px;
+  }
+  footer{
+    padding-bottom:calc(120px + env(safe-area-inset-bottom));
+  }
+}
+@media (max-width:560px){
+  #mnav{
+    padding-left:10px;
+    padding-right:10px;
+  }
+  .mnav-sheet{
+    padding:18px 16px;
+    border-radius:24px;
+  }
+  .mnav-grid{
+    grid-template-columns:1fr;
+  }
+  #mobnav{
+    left:10px;
+    right:10px;
+    bottom:calc(10px + env(safe-area-inset-bottom));
+    gap:6px;
+    padding:8px;
+    border-radius:22px;
+  }
+  .mobnav-link,
+  .mobnav-more{
+    min-height:54px;
+    border-radius:16px;
+  }
+  .mobnav-label{
+    font-size:.48rem;
+  }
+}
+
+
+
 </style>
 </head>
 <body class="loading-screen" data-page="reviews">
@@ -6248,16 +6548,85 @@ body[data-page="faq"] section:not(#faq){
 </nav>
 
 <div id="mnav">
-  <a href="despre.html" class="mnav-link" data-nav-page="about"><span data-en>Home</span><span data-ro>Acasă</span></a>
-  <a href="servicii.html" class="mnav-link" data-nav-page="services"><span data-en>Services</span><span data-ro>Servicii</span></a>
-  <a href="preturi.html" class="mnav-link" data-nav-page="pricing"><span data-en>Pricing</span><span data-ro>Prețuri</span></a>
-  <a href="proiecte.html" class="mnav-link" data-nav-page="projects"><span data-en>Projects</span><span data-ro>Proiecte</span></a>
-  <a href="galerie.html" class="mnav-link" data-nav-page="gallery"><span data-en>Aman</span><span data-ro>Aman</span></a>
-  <a href="recenzii.html" class="mnav-link" data-nav-page="reviews"><span data-en>Reviews</span><span data-ro>Recenzii</span></a>
-  <a href="mindset.html" class="mnav-link" data-nav-page="mindset"><span data-en>Mindset</span><span data-ro>Mindset</span></a>
-  <a href="visuri.html" class="mnav-link" data-nav-page="dreams"><span data-en>Dreams</span><span data-ro>Visuri</span></a>
-  <a href="faq.html" class="mnav-link" data-nav-page="faq">FAQ</a>
+  <button class="mnav-backdrop" id="mnav-backdrop" aria-label="Close menu"></button>
+  <div class="mnav-sheet" role="dialog" aria-modal="true" aria-label="Mobile navigation">
+    <div class="mnav-sheet-head">
+      <div class="mnav-sheet-copy">
+        <p class="mnav-sheet-kicker"><span data-en>Quick navigation</span><span data-ro>Navigare rapidă</span></p>
+        <h2 class="mnav-sheet-title"><span data-en>Everything within one thumb.</span><span data-ro>Totul la un singur deget.</span></h2>
+      </div>
+      <button class="mnav-close" id="mnav-close" aria-label="Close menu">
+        <span data-en>Close</span><span data-ro>Închide</span>
+      </button>
+    </div>
+    <div class="mnav-grid">
+      <a href="despre.html" class="mnav-link" data-nav-page="about">
+        <span class="mnav-link-kicker">01</span>
+        <span class="mnav-link-title"><span data-en>Home</span><span data-ro>Acasă</span></span>
+        <span class="mnav-link-copy"><span data-en>Intro, process, and who I am.</span><span data-ro>Intro, proces și cine sunt.</span></span>
+      </a>
+      <a href="servicii.html" class="mnav-link" data-nav-page="services">
+        <span class="mnav-link-kicker">02</span>
+        <span class="mnav-link-title"><span data-en>Services</span><span data-ro>Servicii</span></span>
+        <span class="mnav-link-copy"><span data-en>Web, video, and photo work.</span><span data-ro>Web, video și foto.</span></span>
+      </a>
+      <a href="preturi.html" class="mnav-link" data-nav-page="pricing">
+        <span class="mnav-link-kicker">03</span>
+        <span class="mnav-link-title"><span data-en>Pricing</span><span data-ro>Prețuri</span></span>
+        <span class="mnav-link-copy"><span data-en>Clear offers and fast next step.</span><span data-ro>Oferte clare și pas următor rapid.</span></span>
+      </a>
+      <a href="proiecte.html" class="mnav-link" data-nav-page="projects">
+        <span class="mnav-link-kicker">04</span>
+        <span class="mnav-link-title"><span data-en>Projects</span><span data-ro>Proiecte</span></span>
+        <span class="mnav-link-copy"><span data-en>See the kind of work I build.</span><span data-ro>Vezi tipul de proiecte pe care le fac.</span></span>
+      </a>
+      <a href="galerie.html" class="mnav-link" data-nav-page="gallery">
+        <span class="mnav-link-kicker">05</span>
+        <span class="mnav-link-title"><span data-en>Aman</span><span data-ro>Aman</span></span>
+        <span class="mnav-link-copy"><span data-en>Personal frames so people know me.</span><span data-ro>Cadre personale ca să știe lumea cine sunt.</span></span>
+      </a>
+      <a href="recenzii.html" class="mnav-link" data-nav-page="reviews">
+        <span class="mnav-link-kicker">06</span>
+        <span class="mnav-link-title"><span data-en>Reviews</span><span data-ro>Recenzii</span></span>
+        <span class="mnav-link-copy"><span data-en>Real feedback from real projects.</span><span data-ro>Feedback real din proiecte reale.</span></span>
+      </a>
+      <a href="mindset.html" class="mnav-link" data-nav-page="mindset">
+        <span class="mnav-link-kicker">07</span>
+        <span class="mnav-link-title"><span data-en>Mindset</span><span data-ro>Mindset</span></span>
+        <span class="mnav-link-copy"><span data-en>How I think about quality and rhythm.</span><span data-ro>Cum gândesc despre calitate și ritm.</span></span>
+      </a>
+      <a href="visuri.html" class="mnav-link" data-nav-page="dreams">
+        <span class="mnav-link-kicker">08</span>
+        <span class="mnav-link-title"><span data-en>Dreams</span><span data-ro>Visuri</span></span>
+        <span class="mnav-link-copy"><span data-en>Direction, ambition, and long-term energy.</span><span data-ro>Direcție, ambiție și energie pe termen lung.</span></span>
+      </a>
+      <a href="faq.html" class="mnav-link" data-nav-page="faq">
+        <span class="mnav-link-kicker">09</span>
+        <span class="mnav-link-title">FAQ</span>
+        <span class="mnav-link-copy"><span data-en>Short answers before you message me.</span><span data-ro>Răspunsuri scurte înainte să-mi scrii.</span></span>
+      </a>
+    </div>
+  </div>
 </div>
+
+<nav id="mobnav" aria-label="Mobile navigation">
+  <a href="despre.html" class="mobnav-link" data-nav-page="about">
+    <span class="mobnav-mini">01</span>
+    <span class="mobnav-label"><span data-en>Home</span><span data-ro>Acasă</span></span>
+  </a>
+  <a href="servicii.html" class="mobnav-link" data-nav-page="services">
+    <span class="mobnav-mini">02</span>
+    <span class="mobnav-label"><span data-en>Services</span><span data-ro>Servicii</span></span>
+  </a>
+  <a href="preturi.html" class="mobnav-link" data-nav-page="pricing">
+    <span class="mobnav-mini">03</span>
+    <span class="mobnav-label"><span data-en>Pricing</span><span data-ro>Prețuri</span></span>
+  </a>
+  <button class="mobnav-more" id="mobnav-more" type="button" aria-controls="mnav" aria-expanded="false">
+    <span class="mobnav-mini">04</span>
+    <span class="mobnav-label"><span data-en>Menu</span><span data-ro>Meniu</span></span>
+  </button>
+</nav>
 
 <!-- HERO -->
 <section id="hero" class="hero-about">
@@ -7381,16 +7750,42 @@ document.getElementById('lang').addEventListener('click',function(){
 
 /* ── MOBILE MENU ── */
 const ham=document.getElementById('ham'),mnav=document.getElementById('mnav');
-ham.addEventListener('click',()=>{
-  const open=ham.classList.toggle('o');
-  mnav.classList.toggle('o');
-  ham.setAttribute('aria-expanded', open ? 'true' : 'false');
-  ham.setAttribute('aria-label', open ? 'Închide meniu' : 'Deschide meniu');
+const mnavBackdrop=document.getElementById('mnav-backdrop');
+const mnavClose=document.getElementById('mnav-close');
+const mobnavMore=document.getElementById('mobnav-more');
+function setMobileNav(open){
+  if(!mnav) return;
+  mnav.classList.toggle('o', open);
+  mnav.setAttribute('aria-hidden', open ? 'false' : 'true');
+  document.body.classList.toggle('nav-open', open);
   document.body.style.overflow=open?'hidden':'';
-});
-function cm(){ham.classList.remove('o');mnav.classList.remove('o');ham.setAttribute('aria-expanded','false');ham.setAttribute('aria-label','Deschide meniu');document.body.style.overflow='';}
+  if(ham){
+    ham.classList.toggle('o', open);
+    ham.setAttribute('aria-expanded', open ? 'true' : 'false');
+    ham.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  }
+  if(mobnavMore){
+    mobnavMore.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+}
+function cm(){setMobileNav(false);}
+if(ham){
+  ham.addEventListener('click',()=>setMobileNav(!mnav.classList.contains('o')));
+}
+if(mobnavMore){
+  mobnavMore.addEventListener('click',()=>setMobileNav(!mnav.classList.contains('o')));
+}
+if(mnavBackdrop){
+  mnavBackdrop.addEventListener('click', cm);
+}
+if(mnavClose){
+  mnavClose.addEventListener('click', cm);
+}
 document.querySelectorAll('.mnav-link').forEach(link=>{
   link.addEventListener('click', cm);
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape' && mnav && mnav.classList.contains('o')) cm();
 });
 document.querySelectorAll('[data-order-name]').forEach(btn=>{
   btn.addEventListener('click',()=>{
@@ -7411,12 +7806,19 @@ document.querySelectorAll('.rv,.rv-left,.rv-right,.rv-scale').forEach(el=>{if(!e
 const secs=[...document.querySelectorAll('section[id]')].filter(section=>getComputedStyle(section).display!=='none');
 const nas=[...document.querySelectorAll('.n-links a[data-nav-page]')];
 const mnas=[...document.querySelectorAll('#mnav a[data-nav-page]')];
+const mobnas=[...document.querySelectorAll('#mobnav a[data-nav-page]')];
 const currentPage=document.body.dataset.page || 'home';
 if(nas.length){
   nas.forEach(a=>a.classList.toggle('on',a.dataset.navPage===currentPage));
 }
 if(mnas.length){
   mnas.forEach(a=>a.classList.toggle('on',a.dataset.navPage===currentPage));
+}
+if(mobnas.length){
+  mobnas.forEach(a=>a.classList.toggle('on',a.dataset.navPage===currentPage));
+}
+if(mobnavMore){
+  mobnavMore.classList.toggle('on', ['projects','gallery','reviews','mindset','dreams','faq'].includes(currentPage));
 }
 const sectionNavLinks=nas.filter(a=>(a.getAttribute('href')||'').startsWith('#'));
 if(sectionNavLinks.length){
