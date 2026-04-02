@@ -54,19 +54,19 @@
     {
       "@type": "Offer",
       "name": "Landing Page",
-      "price": "49",
+      "price": "85.75",
       "priceCurrency": "EUR"
     },
     {
       "@type": "Offer",
       "name": "Video Editing",
-      "price": "5",
+      "price": "8.75",
       "priceCurrency": "EUR"
     },
     {
       "@type": "Offer",
       "name": "Photo Editing",
-      "price": "2",
+      "price": "3.50",
       "priceCurrency": "EUR"
     }
   ]
@@ -649,6 +649,8 @@ nav.stuck{background:#050807;border-color:rgba(237,233,224,.14);}
 .gal-header h2{font-family:var(--display);font-size:clamp(2.4rem,5vw,5rem);font-weight:400;line-height:1.05;letter-spacing:-.01em;}
 .gal-header h2 i{font-style:italic;color:var(--acc);}
 .gal-sub{font-family:var(--body);font-size:clamp(.85rem,1.2vw,.95rem);font-weight:300;color:var(--fg2);max-width:280px;line-height:1.75;text-align:right;}
+.gal-note{margin-top:18px;display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid rgba(45,122,79,.24);border-radius:999px;background:rgba(45,122,79,.06);font-family:var(--mono);font-size:.54rem;letter-spacing:.12em;text-transform:uppercase;color:var(--acc);}
+.gal-note strong{font-weight:500;color:var(--fg);}
 .gal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(8px,1.5vw,18px);align-items:start;}
 .gal-col{display:flex;flex-direction:column;gap:clamp(8px,1.5vw,18px);}
 .gal-col:nth-child(2){margin-top:clamp(28px,4vw,56px);}
@@ -5799,6 +5801,58 @@ footer{
 
 
 /* MULTI-PAGE LAYOUT */
+nav{
+  width:min(1480px, calc(100% - 24px));
+  min-height:74px;
+  height:auto;
+  padding:10px clamp(16px,2.4vw,24px);
+  border-radius:24px;
+  border:1px solid rgba(23,19,16,.08);
+  background:rgba(255,251,245,.96);
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+  box-shadow:0 18px 50px rgba(56,34,14,.08);
+}
+nav.stuck{
+  background:#fffaf5;
+  border-color:rgba(23,19,16,.11);
+}
+.n-links{
+  gap:8px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.n-links a{
+  padding:9px 13px;
+  border-radius:999px;
+  font-size:.62rem;
+  letter-spacing:.11em;
+  color:rgba(23,19,16,.64);
+  background:transparent;
+  transition:background .25s var(--ease), color .25s var(--ease), box-shadow .25s var(--ease), transform .25s var(--ease);
+}
+.n-links a::before{
+  display:none;
+}
+.n-links a:hover{
+  color:var(--fg);
+  background:rgba(23,19,16,.06);
+  transform:translateY(-1px);
+}
+.n-links a.on{
+  color:#fffaf4;
+  background:#171310;
+  box-shadow:0 10px 22px rgba(23,19,16,.14);
+}
+#mnav a{
+  color:var(--fg2);
+  padding:10px 18px;
+  border-radius:999px;
+}
+#mnav a.on{
+  color:var(--fg);
+  background:rgba(23,19,16,.08);
+}
 .page-hub{
   padding:0 var(--px) clamp(90px,12vw,130px);
 }
@@ -5823,7 +5877,7 @@ footer{
 }
 .hub-grid{
   display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
+  grid-template-columns:repeat(3,minmax(0,1fr));
   gap:18px;
 }
 .hub-card{
@@ -5892,6 +5946,143 @@ footer{
   content:'↗';
   font-size:1rem;
 }
+#projects{
+  padding:clamp(64px,9vw,120px) var(--px);
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(180deg, rgba(255,255,255,.99) 0%, rgba(248,240,231,.99) 100%);
+}
+#projects::before{
+  content:'04';
+  position:absolute;
+  right:-2vw;
+  bottom:-4vw;
+  font-family:var(--display);
+  font-size:clamp(10rem,22vw,28rem);
+  font-weight:700;
+  font-style:italic;
+  color:rgba(23,19,16,.05);
+  pointer-events:none;
+  line-height:1;
+}
+#gallery::before{
+  content:'05';
+}
+.pj-header{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:24px;
+  flex-wrap:wrap;
+  margin-bottom:clamp(34px,5vw,58px);
+}
+.pj-header h2{
+  font-family:var(--display);
+  font-size:clamp(2.4rem,5vw,5rem);
+  font-weight:400;
+  line-height:1.04;
+  letter-spacing:-.01em;
+}
+.pj-header h2 i{
+  color:var(--acc);
+  font-style:italic;
+}
+.pj-header p{
+  max-width:520px;
+  color:var(--fg2);
+}
+.pj-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+}
+.pj-card{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+  min-height:100%;
+  padding:28px;
+  border:1px solid rgba(23,19,16,.08);
+  border-radius:28px;
+  background:linear-gradient(180deg, rgba(255,255,255,.95) 0%, rgba(244,234,220,.9) 100%);
+  box-shadow:0 16px 34px rgba(52,33,14,.06);
+}
+.pj-kicker{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  font-family:var(--mono);
+  font-size:.54rem;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--acc);
+}
+.pj-kicker::before{
+  content:'';
+  width:18px;
+  height:1px;
+  background:currentColor;
+}
+.pj-card h3{
+  margin-top:14px;
+  font-family:var(--display);
+  font-size:clamp(1.55rem,2.3vw,2.15rem);
+  line-height:1.05;
+  font-weight:400;
+  color:var(--fg);
+}
+.pj-copy{
+  color:rgba(23,19,16,.76);
+  line-height:1.7;
+}
+.pj-points{
+  list-style:none;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.pj-points li{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  color:rgba(23,19,16,.82);
+  font-family:var(--mono);
+  font-size:.62rem;
+  letter-spacing:.05em;
+  line-height:1.6;
+}
+.pj-points li::before{
+  content:'✦';
+  color:var(--acc);
+  font-size:.45rem;
+  margin-top:4px;
+}
+.pj-link{
+  margin-top:auto;
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  width:max-content;
+  border-radius:999px;
+  border:1px solid rgba(23,19,16,.12);
+  padding:11px 16px;
+  font-family:var(--mono);
+  font-size:.6rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--fg);
+  background:rgba(255,255,255,.78);
+  transition:border-color .25s var(--ease), background .25s var(--ease), transform .25s var(--ease);
+}
+.pj-link::after{
+  content:'↗';
+  font-size:.92rem;
+}
+.pj-link:hover{
+  transform:translateY(-2px);
+  border-color:rgba(183,138,82,.45);
+  background:rgba(183,138,82,.08);
+}
 body[data-page="home"] section:not(#hero):not(#page-hub){
   display:none !important;
 }
@@ -5901,6 +6092,8 @@ body[data-page="services"] #page-hub,
 body[data-page="services"] section:not(#services),
 body[data-page="pricing"] #page-hub,
 body[data-page="pricing"] section:not(#pricing),
+body[data-page="projects"] #page-hub,
+body[data-page="projects"] section:not(#projects),
 body[data-page="gallery"] #page-hub,
 body[data-page="gallery"] section:not(#gallery),
 body[data-page="reviews"] #page-hub,
@@ -5913,13 +6106,17 @@ body[data-page="faq"] #page-hub,
 body[data-page="faq"] section:not(#faq){
   display:none !important;
 }
-@media (max-width:1100px){
-  .hub-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+@media (max-width:1180px){
+  .hub-grid,
+  .pj-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .n-links a{padding:8px 11px;letter-spacing:.09em;}
 }
 @media (max-width:720px){
   .page-hub{padding:0 20px 84px;}
-  .hub-grid{grid-template-columns:1fr;}
-  .hub-card{min-height:unset;}
+  .hub-grid,
+  .pj-grid{grid-template-columns:1fr;}
+  .hub-card,
+  .pj-card{min-height:unset;}
 }
 
 </style>
@@ -5981,7 +6178,8 @@ body[data-page="faq"] section:not(#faq){
     <li><a href="despre.html" data-nav-page="about"><span data-en>About</span><span data-ro>Despre</span></a></li>
     <li><a href="servicii.html" data-nav-page="services"><span data-en>Services</span><span data-ro>Servicii</span></a></li>
     <li><a href="preturi.html" data-nav-page="pricing"><span data-en>Pricing</span><span data-ro>Prețuri</span></a></li>
-    <li><a href="galerie.html" data-nav-page="gallery"><span data-en>Gallery</span><span data-ro>Galerie</span></a></li>
+    <li><a href="proiecte.html" data-nav-page="projects"><span data-en>Projects</span><span data-ro>Proiecte</span></a></li>
+    <li><a href="galerie.html" data-nav-page="gallery"><span data-en>Aman</span><span data-ro>Aman</span></a></li>
     <li><a href="recenzii.html" data-nav-page="reviews"><span data-en>Reviews</span><span data-ro>Recenzii</span></a></li>
     <li><a href="faq.html" data-nav-page="faq">FAQ</a></li>
   </ul>
@@ -5999,7 +6197,8 @@ body[data-page="faq"] section:not(#faq){
   <a href="despre.html" class="mnav-link" data-nav-page="about"><span data-en>About</span><span data-ro>Despre</span></a>
   <a href="servicii.html" class="mnav-link" data-nav-page="services"><span data-en>Services</span><span data-ro>Servicii</span></a>
   <a href="preturi.html" class="mnav-link" data-nav-page="pricing"><span data-en>Pricing</span><span data-ro>Prețuri</span></a>
-  <a href="galerie.html" class="mnav-link" data-nav-page="gallery"><span data-en>Gallery</span><span data-ro>Galerie</span></a>
+  <a href="proiecte.html" class="mnav-link" data-nav-page="projects"><span data-en>Projects</span><span data-ro>Proiecte</span></a>
+  <a href="galerie.html" class="mnav-link" data-nav-page="gallery"><span data-en>Aman</span><span data-ro>Aman</span></a>
   <a href="recenzii.html" class="mnav-link" data-nav-page="reviews"><span data-en>Reviews</span><span data-ro>Recenzii</span></a>
   <a href="mindset.html" class="mnav-link" data-nav-page="mindset"><span data-en>Mindset</span><span data-ro>Mindset</span></a>
   <a href="visuri.html" class="mnav-link" data-nav-page="dreams"><span data-en>Dreams</span><span data-ro>Visuri</span></a>
@@ -6043,12 +6242,12 @@ body[data-page="faq"] section:not(#faq){
     <div class="page-hub-head rv">
       <p class="about-label"><span data-en>02 - Explore pages</span><span data-ro>02 - Explorează paginile</span></p>
       <h2 class="page-hub-title">
-        <span data-en>Open exactly the section you need.</span>
-        <span data-ro>Deschide direct secțiunea de care ai nevoie.</span>
+        <span data-en>Open exactly the page you need.</span>
+        <span data-ro>Deschide exact pagina de care ai nevoie.</span>
       </h2>
       <p class="page-hub-text">
-        <span data-en>The homepage stays clean, and every important section now has its own page.</span>
-        <span data-ro>Homepage-ul rămâne curat, iar fiecare secțiune importantă are acum pagina ei separată.</span>
+        <span data-en>The homepage stays short, and every major part now opens on its own page.</span>
+        <span data-ro>Homepage-ul rămâne scurt, iar fiecare parte importantă se deschide acum pe pagina ei.</span>
       </p>
     </div>
     <div class="hub-grid">
@@ -6061,43 +6260,49 @@ body[data-page="faq"] section:not(#faq){
       <a href="servicii.html" class="hub-card rv d2">
         <span class="hub-card-kicker">02</span>
         <h3 class="hub-card-title"><span data-en>Services</span><span data-ro>Servicii</span></h3>
-        <p class="hub-card-copy"><span data-en>Web, video and photo work grouped in a dedicated page.</span><span data-ro>Web, video și foto grupate acum într-o pagină dedicată.</span></p>
+        <p class="hub-card-copy"><span data-en>Web, video and photo work grouped in one dedicated page.</span><span data-ro>Web, video și foto grupate acum într-o singură pagină dedicată.</span></p>
         <span class="hub-card-link"><span data-en>Open page</span><span data-ro>Deschide pagina</span></span>
       </a>
       <a href="preturi.html" class="hub-card rv d3">
         <span class="hub-card-kicker">03</span>
         <h3 class="hub-card-title"><span data-en>Pricing</span><span data-ro>Prețuri</span></h3>
-        <p class="hub-card-copy"><span data-en>See the offers and choose what fits the project best.</span><span data-ro>Vezi ofertele și alege varianta potrivită pentru proiect.</span></p>
+        <p class="hub-card-copy"><span data-en>See the new prices clearly, without searching through the site.</span><span data-ro>Vezi noile prețuri clar, fără să cauți prin tot site-ul.</span></p>
         <span class="hub-card-link"><span data-en>Open page</span><span data-ro>Deschide pagina</span></span>
       </a>
-      <a href="galerie.html" class="hub-card rv d4">
+      <a href="proiecte.html" class="hub-card rv d4">
         <span class="hub-card-kicker">04</span>
-        <h3 class="hub-card-title"><span data-en>Gallery</span><span data-ro>Galerie</span></h3>
-        <p class="hub-card-copy"><span data-en>Visual examples gathered in a page you can browse separately.</span><span data-ro>Exemple vizuale adunate într-o pagină separată.</span></p>
+        <h3 class="hub-card-title"><span data-en>Projects</span><span data-ro>Proiecte</span></h3>
+        <p class="hub-card-copy"><span data-en>See the kinds of projects I build for businesses, creators and products.</span><span data-ro>Vezi tipurile de proiecte pe care le fac pentru business-uri, creatori și produse.</span></p>
         <span class="hub-card-link"><span data-en>Open page</span><span data-ro>Deschide pagina</span></span>
       </a>
-      <a href="recenzii.html" class="hub-card rv d1">
+      <a href="galerie.html" class="hub-card rv d1">
         <span class="hub-card-kicker">05</span>
+        <h3 class="hub-card-title"><span data-en>Aman</span><span data-ro>Aman</span></h3>
+        <p class="hub-card-copy"><span data-en>A personal page that makes it clear these are photos of me, not client work.</span><span data-ro>O pagină personală care arată clar că sunt poze cu mine, nu lucrări pentru clienți.</span></p>
+        <span class="hub-card-link"><span data-en>Open page</span><span data-ro>Deschide pagina</span></span>
+      </a>
+      <a href="recenzii.html" class="hub-card rv d2">
+        <span class="hub-card-kicker">06</span>
         <h3 class="hub-card-title"><span data-en>Reviews</span><span data-ro>Recenzii</span></h3>
         <p class="hub-card-copy"><span data-en>Feedback and proof from people I already worked with.</span><span data-ro>Feedback și dovezi din proiectele la care am lucrat deja.</span></p>
         <span class="hub-card-link"><span data-en>Open page</span><span data-ro>Deschide pagina</span></span>
       </a>
-      <a href="mindset.html" class="hub-card rv d2">
-        <span class="hub-card-kicker">06</span>
+      <a href="mindset.html" class="hub-card rv d3">
+        <span class="hub-card-kicker">07</span>
         <h3 class="hub-card-title"><span data-en>Mindset</span><span data-ro>Mindset</span></h3>
         <p class="hub-card-copy"><span data-en>How I think about consistency, details and long-term work.</span><span data-ro>Cum gândesc despre consistență, detalii și muncă pe termen lung.</span></p>
         <span class="hub-card-link"><span data-en>Open page</span><span data-ro>Deschide pagina</span></span>
       </a>
-      <a href="visuri.html" class="hub-card rv d3">
-        <span class="hub-card-kicker">07</span>
+      <a href="visuri.html" class="hub-card rv d4">
+        <span class="hub-card-kicker">08</span>
         <h3 class="hub-card-title"><span data-en>Dreams</span><span data-ro>Visuri</span></h3>
         <p class="hub-card-copy"><span data-en>A more personal page about direction, ambition and goals.</span><span data-ro>O pagină mai personală despre direcție, ambiție și obiective.</span></p>
         <span class="hub-card-link"><span data-en>Open page</span><span data-ro>Deschide pagina</span></span>
       </a>
-      <a href="faq.html" class="hub-card rv d4">
-        <span class="hub-card-kicker">08</span>
+      <a href="faq.html" class="hub-card rv d1">
+        <span class="hub-card-kicker">09</span>
         <h3 class="hub-card-title">FAQ</h3>
-        <p class="hub-card-copy"><span data-en>Short answers about process, delivery and communication.</span><span data-ro>Răspunsuri scurte despre proces, livrare și comunicare.</span></p>
+        <p class="hub-card-copy"><span data-en>Short answers about process, delivery, payment and communication.</span><span data-ro>Răspunsuri scurte despre proces, livrare, plată și comunicare.</span></p>
         <span class="hub-card-link"><span data-en>Open page</span><span data-ro>Deschide pagina</span></span>
       </a>
     </div>
@@ -6203,8 +6408,8 @@ body[data-page="faq"] section:not(#faq){
       <span data-ro>Prețuri<br/><i>simple și clare.</i></span>
     </h2>
     <p class="rv d1">
-      <span data-en>Choose the option that fits, message me first for details, then complete the payment when you're ready.</span>
-      <span data-ro>Alegi varianta potrivită, îmi scrii mai întâi pentru detalii, apoi faci plata când totul este clar.</span>
+      <span data-en>Choose the option that fits, message me first, and I'll send the exact payment details after we confirm the scope.</span>
+      <span data-ro>Alegi varianta potrivită, îmi scrii mai întâi, iar după ce stabilim tot îți trimit exact pașii de plată.</span>
     </p>
   </div>
 
@@ -6235,35 +6440,35 @@ body[data-page="faq"] section:not(#faq){
           </ul>
         </div>
         <div class="pr-card-options">
-          <button class="pr-option" data-stripe-url="https://buy.stripe.com/eVq14fgHydGVadugrv9sk07" data-order-name="Landing Page||Pagină de prezentare" data-order-price="€49" data-order-desc="1 page · mobile-first · 3–5 day delivery||1 pagină · optimizată pentru mobil · livrare în 3–5 zile" data-order-amount="49">
+          <button class="pr-option" data-order-name="Landing Page||Pagină de prezentare" data-order-price="€85.75" data-order-desc="1 page · mobile-first · 3–5 day delivery||1 pagină · optimizată pentru mobil · livrare în 3–5 zile" data-order-amount="85.75">
             <div class="pr-option-left">
               <div class="pr-option-name"><span data-en>Landing <i>Page</i></span><span data-ro>Pagină de <i>prezentare</i></span></div>
               <div class="pr-option-sub"><span data-en>Perfect if you want to launch quickly</span><span data-ro>Ideal dacă vrei să lansezi repede</span></div>
             </div>
             <div class="pr-option-right">
-              <div class="pr-option-price"><sup>€</sup>49</div>
-              <div class="pr-option-ron">≈ 245 RON</div>
+              <div class="pr-option-price"><sup>€</sup>85.75</div>
+              <div class="pr-option-ron">≈ 430 RON</div>
             </div>
           </button>
-          <button class="pr-option" data-stripe-url="https://buy.stripe.com/4gMbIT9f67ix1GYgrv9sk08" data-order-name="Simple Site||Site simplu" data-order-price="€79" data-order-desc="3–4 pages · portfolio or small business||3–4 pagini · portofoliu sau business mic" data-order-amount="79">
+          <button class="pr-option" data-order-name="Simple Site||Site simplu" data-order-price="€138.25" data-order-desc="3–4 pages · portfolio or small business||3–4 pagini · portofoliu sau business mic" data-order-amount="138.25">
             <div class="pr-option-left">
               <div class="pr-option-name"><span data-en>Simple <i>Site</i></span><span data-ro>Site <i>simplu</i></span></div>
               <div class="pr-option-sub"><span data-en>A strong upgrade for a portfolio or small business</span><span data-ro>O variantă foarte bună pentru portofoliu sau afacere mică</span></div>
             </div>
             <div class="pr-option-right">
-              <div class="pr-option-price"><sup>€</sup>79</div>
-              <div class="pr-option-ron">≈ 395 RON</div>
+              <div class="pr-option-price"><sup>€</sup>138.25</div>
+              <div class="pr-option-ron">≈ 690 RON</div>
             </div>
           </button>
-          <button class="pr-option" data-stripe-url="https://buy.stripe.com/aFa00bcri5ap3P60sx9sk09" data-order-name="Business Site||Site pentru business" data-order-price="€99" data-order-desc="5+ pages · full build · revisions included||5+ pagini · site complet · revizii incluse" data-order-amount="99">
+          <button class="pr-option" data-order-name="Business Site||Site pentru business" data-order-price="€173.25" data-order-desc="5+ pages · full build · revisions included||5+ pagini · site complet · revizii incluse" data-order-amount="173.25">
             <div class="pr-option-left">
               <div class="pr-option-name"><span data-en>Business <i>Site</i></span><span data-ro>Site pentru <i>afaceri</i></span></div>
               <div class="pr-option-sub"><span data-en>Best if you want a complete presence, ready to grow</span><span data-ro>Cea mai bună alegere dacă vrei o prezență completă, gata să crească</span></div>
               <div class="pr-option-badge"><span data-en>Best value</span><span data-ro>Cea mai bună opțiune</span></div>
             </div>
             <div class="pr-option-right">
-              <div class="pr-option-price"><sup>€</sup>99</div>
-              <div class="pr-option-ron">≈ 495 RON</div>
+              <div class="pr-option-price"><sup>€</sup>173.25</div>
+              <div class="pr-option-ron">≈ 865 RON</div>
             </div>
           </button>
         </div>
@@ -6287,24 +6492,24 @@ body[data-page="faq"] section:not(#faq){
           </ul>
         </div>
         <div class="pr-card-options">
-          <button class="pr-option" data-stripe-url="https://buy.stripe.com/4gMaEP4YQ46lclC3EJ9sk0f" data-order-name="Short Video||Video scurt" data-order-price="€5" data-order-desc="Reel, story or clip · up to 60 seconds||Reel, story sau clip · până la 60 secunde" data-order-amount="5">
+          <button class="pr-option" data-order-name="Short Video||Video scurt" data-order-price="€8.75" data-order-desc="Reel, story or clip · up to 60 seconds||Reel, story sau clip · până la 60 secunde" data-order-amount="8.75">
             <div class="pr-option-left">
               <div class="pr-option-name"><span data-en>Short <i>Video</i></span><span data-ro>Video <i>scurt</i></span></div>
               <div class="pr-option-sub"><span data-en>Fast content for reels, stories or short promos</span><span data-ro>Conținut rapid pentru reels, story-uri sau promo-uri scurte</span></div>
             </div>
             <div class="pr-option-right">
-              <div class="pr-option-price"><sup>€</sup>5</div>
-              <div class="pr-option-ron">≈ 25 RON</div>
+              <div class="pr-option-price"><sup>€</sup>8.75</div>
+              <div class="pr-option-ron">≈ 80 RON</div>
             </div>
           </button>
-          <button class="pr-option" data-stripe-url="https://buy.stripe.com/4gM9AL1MEauJaducbf9sk0g" data-order-name="Standard Video||Video standard" data-order-price="€9" data-order-desc="Promo or branded video · up to 3 minutes · color grading||Promo sau video pentru brand · până la 3 minute · corecții de culoare" data-order-amount="9">
+          <button class="pr-option" data-order-name="Standard Video||Video standard" data-order-price="€15.75" data-order-desc="Promo or branded video · up to 3 minutes · color grading||Promo sau video pentru brand · până la 3 minute · corecții de culoare" data-order-amount="15.75">
             <div class="pr-option-left">
               <div class="pr-option-name"><span data-en>Standard <i>Video</i></span><span data-ro>Video <i>standard</i></span></div>
               <div class="pr-option-sub"><span data-en>A cleaner, stronger edit for more serious content</span><span data-ro>O variantă mai solidă pentru conținut mai serios și mai bine pus la punct</span></div>
             </div>
             <div class="pr-option-right">
-              <div class="pr-option-price"><sup>€</sup>9</div>
-              <div class="pr-option-ron">≈ 45 RON</div>
+              <div class="pr-option-price"><sup>€</sup>15.75</div>
+              <div class="pr-option-ron">≈ 80 RON</div>
             </div>
           </button>
         </div>
@@ -6328,25 +6533,25 @@ body[data-page="faq"] section:not(#faq){
           </ul>
         </div>
         <div class="pr-card-options">
-          <button class="pr-option" data-stripe-url="https://buy.stripe.com/8x29ALajaeKZ99qa379sk0h" data-order-name="1 Photo Edit||1 editare foto" data-order-price="€2" data-order-desc="Retouch · color grade · object removal||Retuș · corecții de culoare · eliminare obiecte" data-order-amount="2">
+          <button class="pr-option" data-order-name="1 Photo Edit||1 editare foto" data-order-price="€3.50" data-order-desc="Retouch · color grade · object removal||Retuș · corecții de culoare · eliminare obiecte" data-order-amount="3.50">
             <div class="pr-option-left">
               <div class="pr-option-name"><span data-en>1 <i>Photo</i></span><span data-ro>1 <i>fotografie</i></span></div>
               <div class="pr-option-sub"><span data-en>Quick fix for a single photo that needs to look better</span><span data-ro>O soluție rapidă pentru o fotografie care trebuie să arate mai bine</span></div>
             </div>
             <div class="pr-option-right">
-              <div class="pr-option-price"><sup>€</sup>2</div>
-              <div class="pr-option-ron">≈ 10 RON</div>
+              <div class="pr-option-price"><sup>€</sup>3.50</div>
+              <div class="pr-option-ron">≈ 20 RON</div>
             </div>
           </button>
-          <button class="pr-option" data-stripe-url="https://buy.stripe.com/8x29AL3UM32hfxO5MR9sk0i" data-order-name="10 Photos Pack||Pachet 10 fotografii" data-order-price="€15" data-order-desc="Bulk edit · consistent look · fast delivery||Editare în lot · aspect uniform · livrare rapidă" data-order-amount="15">
+          <button class="pr-option" data-order-name="10 Photos Pack||Pachet 10 fotografii" data-order-price="€26.25" data-order-desc="Bulk edit · consistent look · fast delivery||Editare în lot · aspect uniform · livrare rapidă" data-order-amount="26.25">
             <div class="pr-option-left">
               <div class="pr-option-name"><span data-en>10 <i>Photos</i></span><span data-ro>10 <i>fotografii</i></span></div>
               <div class="pr-option-sub"><span data-en>Best if you want the whole set to feel consistent</span><span data-ro>Cea mai bună alegere dacă vrei ca tot setul să arate uniform</span></div>
               <div class="pr-option-badge"><span data-en>Save 25%</span><span data-ro>Economisești 25%</span></div>
             </div>
             <div class="pr-option-right">
-              <div class="pr-option-price"><sup>€</sup>15</div>
-              <div class="pr-option-ron">≈ 75 RON</div>
+              <div class="pr-option-price"><sup>€</sup>26.25</div>
+              <div class="pr-option-ron">≈ 130 RON</div>
             </div>
           </button>
         </div>
@@ -6370,12 +6575,12 @@ body[data-page="faq"] section:not(#faq){
             <li><span data-en>3 photos edited</span><span data-ro>3 poze editate</span></li>
           </ul>
           <div class="pr-pack-price-row">
-            <div class="pr-pack-price"><sup>€</sup>29</div>
-            <div class="pr-pack-ron">≈ 145 RON</div>
+            <div class="pr-pack-price"><sup>€</sup>50.75</div>
+            <div class="pr-pack-ron">≈ 255 RON</div>
           </div>
-          <button class="pr-pack-cta" data-stripe-url="https://buy.stripe.com/eVq6oz4YQ1Yd85m5MR9sk0a" data-order-name="Mini Pack||Pachet Mini" data-order-price="€29" data-order-desc="2 short videos + 3 photos edited||2 videoclipuri scurte + 3 poze editate" data-order-amount="29">
+          <button class="pr-pack-cta" data-order-name="Mini Pack||Pachet Mini" data-order-price="€50.75" data-order-desc="2 short videos + 3 photos edited||2 videoclipuri scurte + 3 poze editate" data-order-amount="50.75">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
-            <span data-en>Open checkout</span><span data-ro>Deschide plata</span>
+            <span data-en>Request this pack</span><span data-ro>Cere pachetul</span>
           </button>
         </div>
       </div>
@@ -6392,12 +6597,12 @@ body[data-page="faq"] section:not(#faq){
             <li><span data-en>Consistent style across all</span><span data-ro>Stil uniform pe tot</span></li>
           </ul>
           <div class="pr-pack-price-row">
-            <div class="pr-pack-price"><sup>€</sup>49</div>
-            <div class="pr-pack-ron">≈ 245 RON</div>
+            <div class="pr-pack-price"><sup>€</sup>85.75</div>
+            <div class="pr-pack-ron">≈ 430 RON</div>
           </div>
-          <button class="pr-pack-cta" data-stripe-url="https://buy.stripe.com/dRm3cnezqfP31GY8Z39sk0b" data-order-name="Starter Pack||Pachet Starter" data-order-price="€49" data-order-desc="5 short videos + 5 photos edited · consistent style||5 videoclipuri scurte + 5 poze editate · stil uniform" data-order-amount="49">
+          <button class="pr-pack-cta" data-order-name="Starter Pack||Pachet Starter" data-order-price="€85.75" data-order-desc="5 short videos + 5 photos edited · consistent style||5 videoclipuri scurte + 5 poze editate · stil uniform" data-order-amount="85.75">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
-            <span data-en>Open checkout</span><span data-ro>Deschide plata</span>
+            <span data-en>Request this pack</span><span data-ro>Cere pachetul</span>
           </button>
         </div>
       </div>
@@ -6414,12 +6619,12 @@ body[data-page="faq"] section:not(#faq){
             <li><span data-en>5 photos edited</span><span data-ro>5 poze editate</span></li>
           </ul>
           <div class="pr-pack-price-row">
-            <div class="pr-pack-price"><sup>€</sup>99</div>
-            <div class="pr-pack-ron">≈ 495 RON</div>
+            <div class="pr-pack-price"><sup>€</sup>173.25</div>
+            <div class="pr-pack-ron">≈ 865 RON</div>
           </div>
-          <button class="pr-pack-cta" data-stripe-url="https://buy.stripe.com/14AeV5ezq1Yd0CU6QV9sk0c" data-order-name="Business Basic||Business Basic" data-order-price="€99" data-order-desc="Full website + 3 videos + 5 photos edited||Site complet + 3 videoclipuri + 5 poze editate" data-order-amount="99">
+          <button class="pr-pack-cta" data-order-name="Business Basic||Business Basic" data-order-price="€173.25" data-order-desc="Full website + 3 videos + 5 photos edited||Site complet + 3 videoclipuri + 5 poze editate" data-order-amount="173.25">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
-            <span data-en>Open checkout</span><span data-ro>Deschide plata</span>
+            <span data-en>Request this pack</span><span data-ro>Cere pachetul</span>
           </button>
         </div>
       </div>
@@ -6435,55 +6640,114 @@ body[data-page="faq"] section:not(#faq){
       </div>
       <div class="pr-sub-right">
         <div class="pr-sub-price">
-          <div class="pr-sub-amount"><sup>€</sup>49</div>
-          <div class="pr-sub-ron">≈ 245 RON / lună</div>
+          <div class="pr-sub-amount"><sup>€</sup>85.75</div>
+          <div class="pr-sub-ron">≈ 430 RON / lună</div>
         </div>
-        <button class="pr-sub-cta" data-stripe-url="https://buy.stripe.com/28E00bezq32h71i5MR9sk0d" data-order-name="Monthly Subscription||Abonament lunar" data-order-price="€49/mo||€49/lună" data-order-desc="5 videos + 5 photos every month · cancel anytime||5 videoclipuri + 5 poze în fiecare lună · oprești oricând" data-order-amount="49">
+        <button class="pr-sub-cta" data-order-name="Monthly Subscription||Abonament lunar" data-order-price="€85.75/mo||€85.75/lună" data-order-desc="5 videos + 5 photos every month · cancel anytime||5 videoclipuri + 5 poze în fiecare lună · oprești oricând" data-order-amount="85.75">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
-          <span data-en>Open subscription</span><span data-ro>Deschide abonarea</span>
+          <span data-en>Request subscription</span><span data-ro>Cere abonarea</span>
         </button>
       </div>
     </div>
   </div>
 
   <p class="pr-note rv d3">
-    <span data-en>Before making any payment, please <a href="https://ig.me/m/costi1andrei" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">message me on Instagram</a> so we can confirm the details, timing and the right option for your project. After we agree on everything, you can complete the payment safely through the site.</span>
-    <span data-ro>Înainte să faci orice plată, te rog să-mi <a href="https://ig.me/m/costi1andrei" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">scrii pe Instagram</a> ca să stabilim detaliile, termenul și varianta potrivită pentru proiectul tău. După ce clarificăm totul și suntem de acord, poți efectua plata în siguranță direct prin site.</span>
+    <span data-en>Before making any payment, please <a href="https://ig.me/m/costi1andrei" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">message me on Instagram</a> so we can confirm the scope, timeline and the right option. After we agree on everything, I send the exact payment details for your project.</span>
+    <span data-ro>Înainte să faci orice plată, te rog să-mi <a href="https://ig.me/m/costi1andrei" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">scrii pe Instagram</a> ca să stabilim clar scope-ul, termenul și varianta potrivită. După ce suntem de acord pe tot, îți trimit exact pașii de plată pentru proiect.</span>
   </p>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="pj-header">
+    <h2 class="rv">
+      <span data-en>Projects built<br/><i>to convert.</i></span>
+      <span data-ro>Proiecte gândite<br/><i>să convertească.</i></span>
+    </h2>
+    <p class="rv d1">
+      <span data-en>These are the main types of work I can build fast and clean for clients right now.</span>
+      <span data-ro>Astea sunt tipurile principale de proiecte pe care le pot livra repede și curat chiar acum.</span>
+    </p>
+  </div>
+  <div class="pj-grid">
+    <article class="pj-card rv d1">
+      <div class="pj-card-top">
+        <span class="pj-kicker"><span data-en>Web Project</span><span data-ro>Proiect Web</span></span>
+        <h3><span data-en>Landing page for a business that needs messages, not just views.</span><span data-ro>Landing page pentru un business care vrea mesaje, nu doar vizite.</span></h3>
+      </div>
+      <p class="pj-copy"><span data-en>Clean structure, mobile-first design, strong CTA sections and a page that explains the offer quickly.</span><span data-ro>Structură clară, design mobile-first, secțiuni cu CTA puternice și o pagină care explică rapid oferta.</span></p>
+      <ul class="pj-points">
+        <li><span data-en>Fast loading and responsive layout</span><span data-ro>Încărcare rapidă și layout responsive</span></li>
+        <li><span data-en>Made for local services, freelancers or portfolios</span><span data-ro>Potrivit pentru servicii locale, freelanceri sau portofolii</span></li>
+        <li><span data-en>Clear contact flow to Instagram or email</span><span data-ro>Flux clar spre Instagram sau email</span></li>
+      </ul>
+      <a href="preturi.html" class="pj-link"><span data-en>See pricing</span><span data-ro>Vezi prețurile</span></a>
+    </article>
+    <article class="pj-card rv d2">
+      <div class="pj-card-top">
+        <span class="pj-kicker"><span data-en>Video Project</span><span data-ro>Proiect Video</span></span>
+        <h3><span data-en>Short-form edits for reels, promos and brand clips.</span><span data-ro>Editări scurte pentru reels, promo-uri și clipuri de brand.</span></h3>
+      </div>
+      <p class="pj-copy"><span data-en>Pacing, subtitles, cuts and color that keep attention and make the final video feel finished.</span><span data-ro>Ritm, subtitrări, tăieturi și culoare care țin atenția și fac videoclipul să pară cu adevărat terminat.</span></p>
+      <ul class="pj-points">
+        <li><span data-en>Formats for 9:16, 16:9 and 1:1</span><span data-ro>Formate pentru 9:16, 16:9 și 1:1</span></li>
+        <li><span data-en>Works for creators, gyms, cafes or personal brands</span><span data-ro>Merge pentru creatori, săli, cafenele sau brand personal</span></li>
+        <li><span data-en>Delivery usually in 24 to 48 hours</span><span data-ro>Livrare de obicei în 24-48 de ore</span></li>
+      </ul>
+      <a href="preturi.html" class="pj-link"><span data-en>See pricing</span><span data-ro>Vezi prețurile</span></a>
+    </article>
+    <article class="pj-card rv d3">
+      <div class="pj-card-top">
+        <span class="pj-kicker"><span data-en>Photo Project</span><span data-ro>Proiect Foto</span></span>
+        <h3><span data-en>Photo sets that look more premium, cleaner and more consistent.</span><span data-ro>Seturi foto care arată mai premium, mai curate și mai coerente.</span></h3>
+      </div>
+      <p class="pj-copy"><span data-en>Good for products, portraits or content batches where the whole set has to feel unified.</span><span data-ro>Bun pentru produse, portrete sau loturi de conținut unde tot setul trebuie să pară unitar.</span></p>
+      <ul class="pj-points">
+        <li><span data-en>Retouch, cleanup and color consistency</span><span data-ro>Retuș, curățare și consistență de culoare</span></li>
+        <li><span data-en>Useful for shops, creators and social media feeds</span><span data-ro>Util pentru magazine, creatori și feed-uri de social media</span></li>
+        <li><span data-en>Single edits or batch delivery</span><span data-ro>Editări individuale sau livrare în lot</span></li>
+      </ul>
+      <a href="preturi.html" class="pj-link"><span data-en>See pricing</span><span data-ro>Vezi prețurile</span></a>
+    </article>
+  </div>
 </section>
 
 <!-- GALLERY -->
 <section id="gallery">
   <div class="gal-header">
     <h2 class="rv">
-      <span data-en>A few frames<br/><i>from the road.</i></span>
-      <span data-ro>Câteva cadre<br/><i>din drum.</i></span>
+      <span data-en>This is<br/><i>Aman.</i></span>
+      <span data-ro>Acesta este<br/><i>Aman.</i></span>
     </h2>
     <p class="gal-sub rv d1">
-      <span data-en>Places, moods and moments that matter to me.</span>
-      <span data-ro>Locuri, stări și momente care spun ceva despre mine.</span>
+      <span data-en>A few personal frames, so it is obvious who is behind the work.</span>
+      <span data-ro>Câteva cadre personale, ca să fie clar cine este omul din spatele muncii.</span>
     </p>
   </div>
+  <p class="gal-note rv d2">
+    <span data-en>Photos of <strong>me</strong>, not photo-editing portfolio work.</span>
+    <span data-ro>Poze cu <strong>mine</strong>, nu exemple de editare pentru clienți.</span>
+  </p>
   <div class="gal-grid rv-scale">
     <div class="gp gp-feature">
       <img src="assets/img/photo3.jpeg" alt="Costi Andrei, portret editorial" loading="lazy"/>
-      <div class="gp-cap"><span data-en>Editorial portrait</span><span data-ro>Portret editorial</span></div>
+      <div class="gp-cap"><span data-en>Aman / Costi Andrei</span><span data-ro>Aman / Costi Andrei</span></div>
     </div>
     <div class="gp gp-tall">
-      <img src="assets/img/photo5.jpeg" alt="Costi Andrei, portret în negru" loading="lazy"/>
-      <div class="gp-cap"><span data-en>Black outfit</span><span data-ro>Ținută neagră</span></div>
+      <img src="assets/img/photo5.jpeg" alt="Costi Andrei, portret în ținută neagră" loading="lazy"/>
+      <div class="gp-cap"><span data-en>Same person you talk to</span><span data-ro>Același om cu care vorbești</span></div>
     </div>
     <div class="gp gp-wide">
       <img src="assets/img/photo1.jpeg" alt="Costi Andrei la mare" loading="lazy"/>
-      <div class="gp-cap"><span data-en>By the sea</span><span data-ro>La mare</span></div>
+      <div class="gp-cap"><span data-en>Personal frame, not client work</span><span data-ro>Cadru personal, nu proiect client</span></div>
     </div>
     <div class="gp gp-motion">
       <img src="assets/img/photo2.jpeg" alt="Costi Andrei în mișcare, fotografie de stradă" loading="lazy"/>
-      <div class="gp-cap"><span data-en>On the move</span><span data-ro>Pe drum</span></div>
+      <div class="gp-cap"><span data-en>The person behind Aman</span><span data-ro>Omul din spatele lui Aman</span></div>
     </div>
     <div class="gp gp-detail">
-      <img src="assets/img/photo4.jpeg" alt="Vedere din tren, peisaj românesc" loading="lazy"/>
-      <div class="gp-cap"><span data-en>Train thoughts</span><span data-ro>Gânduri în tren</span></div>
+      <img src="assets/img/photo4.jpeg" alt="Costi Andrei, cadru personal din călătorie" loading="lazy"/>
+      <div class="gp-cap"><span data-en>Just me, not an editing sample</span><span data-ro>Doar eu, nu un sample de editare</span></div>
     </div>
   </div>
   <div class="gal-footer rv">
@@ -6736,7 +7000,7 @@ body[data-page="faq"] section:not(#faq){
         <span class="faq-q-text"><span data-en>How do I pay?</span><span data-ro>Cum plătesc?</span></span>
         <span class="faq-icon">+</span>
       </div>
-      <div class="faq-a"><p><span data-en>Bank transfer or PayPal. 50% upfront, 50% on delivery. For smaller projects (under €20) it's full payment upfront.</span><span data-ro>Transfer bancar sau PayPal. 50% în avans, 50% la livrare. Pentru proiecte mici (sub 20€) plata integrală în avans.</span></p></div>
+      <div class="faq-a"><p><span data-en>Bank transfer or PayPal after we confirm the project. Usually it's 50% upfront and 50% on delivery. For smaller projects (under €35) it's full payment upfront.</span><span data-ro>Transfer bancar sau PayPal după ce confirmăm proiectul. De regulă este 50% în avans și 50% la livrare. Pentru proiecte mici (sub 35€) plata integrală este în avans.</span></p></div>
     </div>
 
     <div class="faq-item">
@@ -6769,7 +7033,8 @@ body[data-page="faq"] section:not(#faq){
         <li><a href="despre.html"><span data-en>About</span><span data-ro>Despre</span></a></li>
         <li><a href="servicii.html"><span data-en>Services</span><span data-ro>Servicii</span></a></li>
         <li><a href="preturi.html"><span data-en>Pricing</span><span data-ro>Prețuri</span></a></li>
-        <li><a href="galerie.html"><span data-en>Gallery</span><span data-ro>Galerie</span></a></li>
+        <li><a href="proiecte.html"><span data-en>Projects</span><span data-ro>Proiecte</span></a></li>
+        <li><a href="galerie.html"><span data-en>Aman</span><span data-ro>Aman</span></a></li>
         <li><a href="recenzii.html"><span data-en>Reviews</span><span data-ro>Recenzii</span></a></li>
         <li><a href="mindset.html"><span data-en>Mindset</span><span data-ro>Mindset</span></a></li>
         <li><a href="visuri.html"><span data-en>Dreams</span><span data-ro>Visuri</span></a></li>
@@ -7055,10 +7320,6 @@ document.querySelectorAll('.mnav-link').forEach(link=>{
 });
 document.querySelectorAll('[data-order-name]').forEach(btn=>{
   btn.addEventListener('click',()=>{
-    if(btn.dataset.stripeUrl){
-      window.open(btn.dataset.stripeUrl, '_blank', 'noopener,noreferrer');
-      return;
-    }
     openOrder(
       btn.dataset.orderName || '',
       btn.dataset.orderPrice || '',
@@ -7075,9 +7336,13 @@ document.querySelectorAll('.rv,.rv-left,.rv-right,.rv-scale').forEach(el=>{if(!e
 /* ── ACTIVE NAV / VISIBLE SECTIONS ── */
 const secs=[...document.querySelectorAll('section[id]')].filter(section=>getComputedStyle(section).display!=='none');
 const nas=[...document.querySelectorAll('.n-links a[data-nav-page]')];
+const mnas=[...document.querySelectorAll('#mnav a[data-nav-page]')];
 const currentPage=document.body.dataset.page || 'home';
 if(nas.length){
   nas.forEach(a=>a.classList.toggle('on',a.dataset.navPage===currentPage));
+}
+if(mnas.length){
+  mnas.forEach(a=>a.classList.toggle('on',a.dataset.navPage===currentPage));
 }
 const sectionNavLinks=nas.filter(a=>(a.getAttribute('href')||'').startsWith('#'));
 if(sectionNavLinks.length){
@@ -7251,7 +7516,7 @@ setInterval(updateClock,1000);
 
 /* ── CURSOR MORPHING PER SECTION ── */
 const sectionCursorMap={
-  'hero':'cur-hero','about':'cur-about','gallery':'cur-gallery',
+  'hero':'cur-hero','about':'cur-about','projects':'cur-gallery','gallery':'cur-gallery',
   'contact':'cur-contact','mindset':'cur-mindset','pricing':'cur-price',
   'reviews':'cur-about','services':'cur-hero','dreams':'cur-mindset'
 };
