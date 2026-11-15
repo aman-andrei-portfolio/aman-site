@@ -117,12 +117,34 @@ section{padding-block:clamp(64px,10vw,136px);border-top:1px solid var(--line)}
 .rows small{grid-column:1/-1;color:var(--mute);font-size:.84rem;line-height:1.5}
 .incl{color:var(--mute);font-size:.82rem;margin:18px 0 0}
 @media(max-width:900px){.menu{grid-template-columns:1fr}.menu .desc{min-height:0}}
-.packs{margin-top:clamp(48px,7vw,88px)}
-.packs .rows li{grid-template-columns:minmax(0,13rem) minmax(0,1fr) auto;padding:20px 0}
-.packs .rows small{grid-column:auto;font-size:.9rem}
-@media(max-width:640px){.packs .rows li{grid-template-columns:minmax(0,1fr) auto}.packs .rows small{grid-column:1/-1;grid-row:2}}
-.note{margin:28px 0 0;color:var(--mute);font-size:.9rem;max-width:62ch}
-.note a{color:var(--paper);border-bottom:1px solid var(--olive)}
+.price i,.amount i{font:400 .78rem var(--body);font-style:normal;color:var(--mute);letter-spacing:.04em}
+.btn i{font-style:normal}
+s{color:var(--mute);font-size:.72em;text-decoration-thickness:1px;margin-right:.25em}
+.tag{font:500 .62rem var(--body);font-style:normal;letter-spacing:.14em;text-transform:uppercase;color:var(--olive);border:1px solid color-mix(in srgb,var(--olive) 45%,transparent);padding:3px 7px;margin-left:8px;white-space:nowrap;vertical-align:2px}
+.packs{margin-top:clamp(56px,8vw,104px)}
+.packs-head{display:grid;gap:14px;margin-bottom:clamp(26px,4vw,40px)}
+.packs-head h3{font-size:clamp(1.7rem,3.6vw,2.5rem);line-height:1.1}
+.packs-head em{font-style:italic;color:var(--olive)}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.6vw,20px);align-items:stretch}
+.card{position:relative;display:flex;flex-direction:column;gap:10px;border:1px solid var(--line);padding:clamp(24px,3vw,36px)}
+.card.hot{border-color:var(--olive);background:var(--ink-2)}
+.flag{position:absolute;top:0;left:clamp(24px,3vw,36px);transform:translateY(-50%);background:var(--olive);color:var(--ink);font-size:.64rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:5px 10px}
+.card h4{font:italic 400 1.7rem/1.1 var(--display);margin:0}
+.what{color:var(--mute);font-size:.92rem;margin:0;max-width:44ch}
+.card .what{min-height:3.1em}
+.amount{font-family:var(--display);font-size:1.1rem;margin:10px 0 0;font-variant-numeric:tabular-nums;white-space:nowrap}
+.amount b{font-weight:400;font-size:clamp(2.6rem,4.4vw,3.4rem);line-height:1;letter-spacing:-.02em}
+.amount s{font-size:1.15rem}
+.save{color:var(--olive);font-size:.86rem;margin:0 0 14px}
+.card .btn{margin-top:auto;justify-content:space-between}
+.btn.ghost{background:none;color:var(--paper);box-shadow:inset 0 0 0 1px var(--line)}
+.btn.ghost:hover{background:var(--paper);color:var(--ink)}
+.sub{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:20px clamp(24px,4vw,56px);align-items:center;border:1px solid var(--line);padding:clamp(24px,3vw,36px);margin-top:clamp(12px,1.6vw,20px)}
+.sub .what{margin-top:10px}
+.sub .amount{margin:0}
+.trust{list-style:none;display:flex;flex-wrap:wrap;gap:10px 32px;margin:28px 0 0;padding:0;color:var(--mute);font-size:.86rem}
+.trust li::before{content:"✓";color:var(--olive);margin-right:9px}
+@media(max-width:900px){.cards{grid-template-columns:1fr;gap:22px}.card .what{min-height:0}.sub{grid-template-columns:1fr}.sub .btn{justify-content:space-between}}
 
 /* cadre */
 .frames{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(10px,1.6vw,22px)}
@@ -178,7 +200,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 
       <p class="name">Costi Andrei</p>
       <p class="lede" data-en="I build websites, edit video and retouch photos. Clean work, delivered fast, and you talk to one person from start to finish.">Fac site-uri, editez video și retușez fotografii. Lucru curat, livrat repede, și vorbești cu un singur om de la început până la final.</p>
       <div class="cta">
-        <a class="btn" href="https://ig.me/m/costi1andrei" target="_blank" rel="noopener"><i style="font-style:normal" data-en="Message me on Instagram">Scrie-mi pe Instagram</i> <span aria-hidden="true">→</span></a>
+        <a class="btn" href="https://ig.me/m/costi1andrei" target="_blank" rel="noopener"><i data-en="Message me on Instagram">Scrie-mi pe Instagram</i> <span aria-hidden="true">→</span></a>
         <a class="link" href="#preturi" data-en="See pricing">Vezi prețurile</a>
       </div>
     </div>
@@ -220,9 +242,9 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 
         <h3>Web</h3>
         <p class="desc" data-en="Pages that look good, load fast and bring you inquiries.">Pagini care arată bine, se încarcă repede și îți aduc cereri.</p>
         <ul class="rows">
-          <li><strong data-en="Landing page">Pagină de prezentare</strong><span class="price">€85,75</span><small data-en="One page, ready to launch quickly.">O pagină, gata de lansat repede.</small></li>
-          <li><strong data-en="Simple site">Site simplu</strong><span class="price">€138,25</span><small data-en="For a portfolio or a small business.">Pentru portofoliu sau afacere mică.</small></li>
-          <li><strong data-en="Business site">Site pentru afaceri</strong><span class="price">€173,25</span><small data-en="A complete presence, ready to grow.">Prezență completă, gata să crească.</small></li>
+          <li><strong data-en="Landing page">Pagină de prezentare</strong><span class="price" data-en="€85">429 <i>lei</i></span><small data-en="One page, ready to launch quickly.">O pagină, gata de lansat repede.</small></li>
+          <li><strong><span data-en="Simple site">Site simplu</span> <em class="tag" data-en="Recommended">Recomandat</em></strong><span class="price" data-en="€135">689 <i>lei</i></span><small data-en="For a portfolio or a small business.">Pentru portofoliu sau afacere mică.</small></li>
+          <li><strong data-en="Business site">Site pentru afaceri</strong><span class="price" data-en="€169">859 <i>lei</i></span><small data-en="A complete presence, ready to grow.">Prezență completă, gata să crească.</small></li>
         </ul>
         <p class="incl" data-en="Mobile-first · 1 revision round · delivery in 3–7 days">Optimizat pentru mobil · 1 rundă de revizii · livrare în 3–7 zile</p>
       </div>
@@ -230,8 +252,8 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 
         <h3>Video</h3>
         <p class="desc" data-en="Edits that hold attention: pacing, clean cuts, color.">Montaj care ține atenția: ritm, tăieturi curate, culoare.</p>
         <ul class="rows">
-          <li><strong data-en="Short video">Video scurt</strong><span class="price">€8,75</span><small data-en="Reels, stories, short promos.">Reels, story-uri, promo-uri scurte.</small></li>
-          <li><strong data-en="Standard video">Video standard</strong><span class="price">€15,75</span><small data-en="A stronger edit for more serious content.">Montaj mai solid, pentru conținut mai serios.</small></li>
+          <li><strong data-en="Short video">Video scurt</strong><span class="price" data-en="€9">45 <i>lei</i></span><small data-en="Reels, stories, short promos.">Reels, story-uri, promo-uri scurte.</small></li>
+          <li><strong data-en="Standard video">Video standard</strong><span class="price" data-en="€15">79 <i>lei</i></span><small data-en="A stronger edit for more serious content.">Montaj mai solid, pentru conținut mai serios.</small></li>
         </ul>
         <p class="incl" data-en="Color &amp; audio sync · subtitles on request · 9:16, 16:9, 1:1 · 24–48 h">Culoare și sincronizare audio · subtitrări la cerere · 9:16, 16:9, 1:1 · 24–48 h</p>
       </div>
@@ -239,22 +261,56 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 
         <h3 data-en="Photo">Foto</h3>
         <p class="desc" data-en="Retouching, color and cleanup so the whole set looks consistent.">Retuș, culoare și curățare, ca tot setul să arate unitar.</p>
         <ul class="rows">
-          <li><strong data-en="1 photo">1 fotografie</strong><span class="price">€3,50</span><small data-en="A quick fix for a single photo.">Soluție rapidă pentru o singură poză.</small></li>
-          <li><strong data-en="10 photos">10 fotografii</strong><span class="price">€26,25</span><small data-en="Same style across the set. You save 25%.">Același stil pe tot setul. Economisești 25%.</small></li>
+          <li><strong data-en="1 photo">1 fotografie</strong><span class="price" data-en="€4">19 <i>lei</i></span><small data-en="A quick fix for a single photo.">Soluție rapidă pentru o singură poză.</small></li>
+          <li><strong data-en="10 photos">10 fotografii</strong><span class="price" data-en="&lt;s&gt;€40&lt;/s&gt; €25"><s>190</s> 129 <i>lei</i></span><small data-en="Same style across the set. €2.50 per photo — you save €15.">Același stil pe tot setul. 12,90 lei / poză — economisești 61 lei.</small></li>
         </ul>
         <p class="incl" data-en="Skin retouch · object / background removal · JPG + PNG · same day">Retuș de ten · eliminare obiecte / fundal · JPG + PNG · în aceeași zi</p>
       </div>
     </div>
 
     <div class="packs">
-      <span class="label" data-en="Packages">Pachete</span>
-      <ul class="rows" style="margin-top:18px">
-        <li><strong>Mini</strong><small data-en="2 short videos + 3 edited photos">2 videoclipuri scurte + 3 poze editate</small><span class="price">€50,75</span></li>
-        <li><strong>Starter</strong><small data-en="5 short videos + 5 edited photos, one consistent style">5 videoclipuri scurte + 5 poze editate, același stil pe tot</small><span class="price">€85,75</span></li>
-        <li><strong>Business Basic</strong><small data-en="Full website + 3 short videos + 5 edited photos">Site complet + 3 videoclipuri scurte + 5 poze editate</small><span class="price">€173,25</span></li>
-        <li><strong data-en="Monthly subscription">Abonament lunar</strong><small data-en="5 videos + 5 photos, every month">5 videoclipuri + 5 poze, în fiecare lună</small><span class="price">€85,75 <i style="font:400 .8rem var(--body);color:var(--mute)" data-en="/ month">/ lună</i></span></li>
+      <div class="packs-head">
+        <span class="label" data-en="Packages">Pachete</span>
+        <h3 data-en="Take more, &lt;em&gt;pay less.&lt;/em&gt;">Iei mai mult, <em>plătești mai puțin.</em></h3>
+      </div>
+      <div class="cards">
+        <article class="card">
+          <h4>Mini</h4>
+          <p class="what" data-en="2 short videos + 3 edited photos">2 videoclipuri scurte + 3 poze editate</p>
+          <p class="amount" data-en="&lt;s&gt;€30&lt;/s&gt; &lt;b&gt;€25&lt;/b&gt;"><s>147</s> <b>129</b> <i>lei</i></p>
+          <p class="save" data-en="You save €5">Economisești 18 lei</p>
+          <a class="btn ghost" href="https://ig.me/m/costi1andrei" target="_blank" rel="noopener"><i data-en="I want Mini">Vreau Mini</i> <span aria-hidden="true">→</span></a>
+        </article>
+        <article class="card hot">
+          <span class="flag" data-en="Best deal for content">Cea mai bună alegere pentru conținut</span>
+          <h4>Starter</h4>
+          <p class="what" data-en="5 short videos + 5 edited photos, one consistent style">5 videoclipuri scurte + 5 poze editate, același stil pe tot</p>
+          <p class="amount" data-en="&lt;s&gt;€65&lt;/s&gt; &lt;b&gt;€55&lt;/b&gt;"><s>320</s> <b>279</b> <i>lei</i></p>
+          <p class="save" data-en="You save €10">Economisești 41 lei</p>
+          <a class="btn" href="https://ig.me/m/costi1andrei" target="_blank" rel="noopener"><i data-en="I want Starter">Vreau Starter</i> <span aria-hidden="true">→</span></a>
+        </article>
+        <article class="card">
+          <h4>Business Basic</h4>
+          <p class="what" data-en="Full website + 3 short videos + 5 edited photos">Site complet + 3 videoclipuri scurte + 5 poze editate</p>
+          <p class="amount" data-en="&lt;s&gt;€216&lt;/s&gt; &lt;b&gt;€169&lt;/b&gt;"><s>1089</s> <b>859</b> <i>lei</i></p>
+          <p class="save" data-en="Videos and photos included free — you save €47">Video și foto incluse gratuit — economisești 230 lei</p>
+          <a class="btn ghost" href="https://ig.me/m/costi1andrei" target="_blank" rel="noopener"><i data-en="I want Business">Vreau Business</i> <span aria-hidden="true">→</span></a>
+        </article>
+      </div>
+      <div class="sub">
+        <div>
+          <span class="label" data-en="Monthly subscription">Abonament lunar</span>
+          <p class="what" data-en="5 videos + 5 photos every month. Steady content, without starting from zero each time.">5 videoclipuri + 5 poze în fiecare lună. Conținut constant, fără să pornești de la zero de fiecare dată.</p>
+        </div>
+        <p class="amount" data-en="&lt;s&gt;€65&lt;/s&gt; &lt;b&gt;€49&lt;/b&gt; &lt;i&gt;/ month&lt;/i&gt;"><s>320</s> <b>249</b> <i>lei / lună</i></p>
+        <a class="btn" href="https://ig.me/m/costi1andrei" target="_blank" rel="noopener"><i data-en="Subscribe">Vreau abonamentul</i> <span aria-hidden="true">→</span></a>
+      </div>
+      <ul class="trust">
+        <li data-en="You pay nothing until we agree on everything">Nu plătești nimic până nu stabilim tot</li>
+        <li data-en="50% upfront, 50% on delivery">50% în avans, 50% la livrare</li>
+        <li data-en="1 revision round included">1 rundă de revizii inclusă</li>
+        <li data-en="Reply in under 2 hours">Răspuns în mai puțin de 2 ore</li>
       </ul>
-      <p class="note" data-en="Before any payment, &lt;a href=&quot;https://ig.me/m/costi1andrei&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;message me on Instagram&lt;/a&gt; so we can agree on what you need and by when. Usually 50% upfront and 50% on delivery.">Înainte de orice plată, <a href="https://ig.me/m/costi1andrei" target="_blank" rel="noopener">scrie-mi pe Instagram</a> ca să stabilim ce ai nevoie și până când. De regulă, 50% în avans și 50% la livrare.</p>
     </div>
   </div>
 </section>
@@ -295,7 +351,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 
       </details>
       <details>
         <summary data-en="How do I pay?">Cum plătesc?</summary>
-        <p data-en="Bank transfer or PayPal, after we confirm the project. Usually 50% upfront and 50% on delivery. Projects under €35 are paid in full upfront.">Transfer bancar sau PayPal, după ce confirmăm proiectul. De regulă 50% în avans și 50% la livrare. Proiectele sub 35 € se plătesc integral în avans.</p>
+        <p data-en="Bank transfer or PayPal, after we confirm the project. Usually 50% upfront and 50% on delivery. Projects under €35 are paid in full upfront.">Transfer bancar sau PayPal, după ce confirmăm proiectul. De regulă 50% în avans și 50% la livrare. Proiectele sub 175 de lei se plătesc integral în avans.</p>
       </details>
       <details>
         <summary data-en="Do you work with clients outside Romania?">Lucrezi și cu clienți din afara României?</summary>
