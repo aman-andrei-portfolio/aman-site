@@ -92,23 +92,32 @@ h2 em,h1 em{font-style:italic;color:var(--olive)}
   @keyframes rise{from{opacity:0;transform:translateY(18px)}}
 }
 
-/* intro „Dezvăluirea” */
-#intro{position:fixed;inset:0;z-index:100;background:var(--ink);display:none;overflow:hidden}
+/* intro „Galeria” — coridor 3D din cadre, camera înaintează spre titlu */
+#intro{position:fixed;inset:0;z-index:100;background:var(--ink);display:none;overflow:hidden;perspective:900px;perspective-origin:50% 50%}
 html.has-intro{overflow:hidden}
 html.has-intro #intro{display:block}
-.iw{position:absolute;left:0;top:0;margin:0;font-family:var(--display);font-style:italic;font-weight:400;line-height:.82;letter-spacing:-.035em;white-space:nowrap;transform-origin:center;will-change:transform,opacity;opacity:0}
-.iw.photo{background:url(assets/img/portret.jpg) 50% 31%/cover;-webkit-background-clip:text;background-clip:text;color:transparent}
+.stage,.world{position:absolute;inset:0;transform-style:preserve-3d}
+.world{will-change:transform}
+.glow{position:absolute;left:50%;top:50%;width:140vmax;height:140vmax;transform:translate(-50%,-50%) translateZ(-2300px);background:radial-gradient(closest-side,rgba(176,166,112,.22),rgba(176,166,112,.06) 35%,transparent 70%);pointer-events:none}
+.pn{position:absolute;left:50%;top:50%;width:var(--w,clamp(160px,25vw,380px));aspect-ratio:3/4;transform-style:preserve-3d;will-change:transform,opacity;backface-visibility:hidden;box-shadow:0 0 0 1px rgba(176,166,112,.45),0 40px 90px rgba(0,0,0,.65);background:#1a1916}
+.pn.wide{aspect-ratio:16/9;width:var(--w,clamp(220px,34vw,500px))}
+.pn img{width:100%;height:100%;object-fit:cover;filter:saturate(.7) brightness(.86) contrast(1.05)}
+.pn::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 0 10px var(--ink),inset 0 0 0 11px rgba(176,166,112,.35)}
+.iw{position:absolute;left:0;top:0;margin:0;font-family:var(--display);font-style:italic;font-weight:400;line-height:.82;letter-spacing:-.035em;white-space:nowrap;transform-origin:center;will-change:transform,opacity;opacity:0;transform:scale(.31)}
+.iw.photo{background:url(assets/img/portret.jpg) 50% 31%/cover;-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none}
 .iw.ink{color:var(--paper)}
-#intro.show .iw.photo{opacity:1;animation:push 1.6s cubic-bezier(.2,.6,.2,1) both}
-@keyframes push{from{transform:scale(.94)}to{transform:scale(1.05)}}
+#intro.show .iw.photo{opacity:1;transition:opacity .7s ease}
+.dust{position:absolute;inset:0;pointer-events:none;opacity:.9}
+.vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,transparent 45%,rgba(0,0,0,.55) 100%);pointer-events:none}
 .il{position:absolute;top:0;bottom:0;left:0;width:1px;background:var(--olive);box-shadow:0 0 18px 2px color-mix(in srgb,var(--olive) 55%,transparent);transform:translateX(-20px);opacity:0}
 #intro.sweep .il{animation:sweep .55s cubic-bezier(.6,0,.3,1) both}
 @keyframes sweep{0%{opacity:1;transform:translateX(-20px)}100%{opacity:1;transform:translateX(calc(100vw + 20px))}}
-#intro.travel .iw{animation:none;transition:transform var(--t,.75s) cubic-bezier(.65,0,.2,1),opacity var(--t,.75s) ease}
+#intro.travel .iw{transition:transform var(--t,.75s) cubic-bezier(.65,0,.2,1),opacity var(--t,.75s) ease}
 #intro.travel .iw.photo{opacity:0}
 #intro.travel .iw.ink{opacity:1}
+#intro.travel .pn,#intro.travel .dust,#intro.travel .glow{opacity:0!important;transition:opacity .4s ease}
 #intro.out{background:transparent;transition:background .45s ease}
-#intro.out .iw{opacity:0;transition:opacity .25s ease}
+#intro.out .iw,#intro.out .vig{opacity:0;transition:opacity .25s ease}
 html.has-intro .hero .wrap>*{animation:none}
 html.has-intro .hero .wrap>div>*:not(h1),html.has-intro .hero figure{opacity:0}
 html.has-intro .nav{opacity:0}
@@ -203,7 +212,17 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 
 </style>
 </head>
 <body>
-<div id="intro" aria-hidden="true"><p class="iw photo">Aman</p><p class="iw ink">Aman</p><div class="il"></div></div>
+<div id="intro" aria-hidden="true">
+  <div class="stage"><div class="world">
+    <div class="glow"></div>
+    <figure class="pn" data-x="-1" data-y="-30" data-z="-350" data-r="30"><img src="assets/img/intro/balcon-1.jpg" alt=""/></figure>
+    <figure class="pn" data-x="1" data-y="26" data-z="-800" data-r="-32"><img src="assets/img/intro/trabuc.jpg" alt=""/></figure>
+    <figure class="pn" data-x="-1" data-y="16" data-z="-1250" data-r="26"><img src="assets/img/intro/balcon-2.jpg" alt=""/></figure>
+    <figure class="pn wide" data-x="1" data-y="-24" data-z="-1650" data-r="-30"><img src="assets/img/intro/balcon-lat.jpg" alt=""/></figure>
+  </div></div>
+  <p class="iw photo">Aman</p><p class="iw ink">Aman</p>
+  <canvas class="dust"></canvas><div class="vig"></div><div class="il"></div>
+</div>
 
 <header class="nav">
   <div class="wrap">
@@ -418,26 +437,59 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 
   h.classList.add('has-intro');
   try{sessionStorage.setItem('intro-seen','1')}catch(e){}
   scrollTo(0,0);
-  var ws=o.querySelectorAll('.iw'),h1=d.querySelector('.hero h1'),timers=[],done=false,started=false;
+  var ws=o.querySelectorAll('.iw'),h1=d.querySelector('.hero h1'),stage=o.querySelector('.stage'),world=o.querySelector('.world'),
+      pns=[].slice.call(o.querySelectorAll('.pn')),cv=o.querySelector('.dust'),cx=cv.getContext('2d'),
+      timers=[],done=false,started=false,raf=0,t0=0,DUR=2300,DEPTH=2000,mx=0,my=0,sx=0,sy=0,prog=0,dots=[];
+  function ease(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2}
   function fit(){
     var W=innerWidth,H=innerHeight;
     ws.forEach(function(w){w.style.fontSize='100px'});
-    var r=ws[0].getBoundingClientRect();
-    var fs=Math.min(100*W*.92/r.width,100*H*.62/r.height);
+    var r=ws[0].getBoundingClientRect(),k=1/.31;
+    var fs=Math.min(100*W*.92/(r.width*k),100*H*.62/(r.height*k));
     ws.forEach(function(w){w.style.fontSize=fs+'px'});
     r=ws[0].getBoundingClientRect();
-    ws.forEach(function(w){w.style.left=(W-r.width)/2+'px';w.style.top=(H-r.height)/2+'px'});
+    ws.forEach(function(w){w.style.left=(W-r.width*k)/2+'px';w.style.top=(H-r.height*k)/2+'px'});
+    var side=Math.min(540,W*.38+70);
+    pns.forEach(function(p){p._x=side*+p.dataset.x;p._y=+p.dataset.y;p._z=+p.dataset.z;p._r=+p.dataset.r});
+    cv.width=W;cv.height=H;
+    if(!dots.length)for(var i=0;i<70;i++)dots.push({x:Math.random(),y:Math.random(),z:Math.random(),s:.6+Math.random()*1.6,a:.2+Math.random()*.5});
+  }
+  function layout(dz){
+    world.style.transform='translateZ('+dz+'px)';
+    pns.forEach(function(p){
+      var z=p._z+dz,op=z>-60?0:z>-320?(-60-z)/260:1;
+      p.style.opacity=op;
+      p.style.transform='translate(-50%,-50%) translate3d('+p._x+'px,'+p._y+'px,'+p._z+'px) rotateY('+p._r+'deg)';
+    });
+  }
+  function dust(t){
+    var W=cv.width,H=cv.height;cx.clearRect(0,0,W,H);
+    dots.forEach(function(q){
+      var z=(q.z+prog*1.2+t*.00002)%1,k=.25+z*1.4,x=(W/2+(q.x-.5)*W*k+Math.sin(t*.0005+q.x*9)*8)|0,y=(H/2+(q.y-.5)*H*k)|0;
+      cx.globalAlpha=q.a*(1-Math.abs(z-.5)*1.2);cx.fillStyle='#d8cf9a';cx.beginPath();cx.arc(x,y,q.s*k,0,6.283);cx.fill();
+    });
+  }
+  function frame(now){
+    if(done)return;
+    var t=Math.min(1,(now-t0)/DUR);prog=ease(t);
+    sx+=(mx-sx)*.08;sy+=(my-sy)*.08;
+    var damp=1-Math.max(0,(t-.75)/.25);
+    stage.style.transform='rotateY('+(sx*5*damp)+'deg) rotateX('+(-sy*3.5*damp)+'deg)';
+    var dz=prog*DEPTH,sc=900/(2900-dz);
+    ws[0].style.transform='translate('+(-sx*14*damp)+'px,'+(-sy*10*damp)+'px) scale('+sc+')';
+    layout(dz);dust(now);
+    raf=requestAnimationFrame(frame);
   }
   function land(fast){
-    if(done)return;done=true;timers.forEach(clearTimeout);
+    if(done)return;done=true;timers.forEach(clearTimeout);cancelAnimationFrame(raf);
+    stage.style.transform='none';layout(DEPTH);cx.clearRect(0,0,cv.width,cv.height);
+    ws.forEach(function(w){w.style.transform='scale(1)'});
     var t=fast?.4:.75;o.style.setProperty('--t',t+'s');
-    var a=h1.getBoundingClientRect(),b=ws[0].getBoundingClientRect(),onscreen=a.bottom<innerHeight&&a.top>0;
+    var a=h1.getBoundingClientRect(),base=ws[1].getBoundingClientRect(),onscreen=a.bottom<innerHeight&&a.top>0;
     o.classList.remove('sweep');o.classList.add('travel');
+    void ws[0].offsetWidth;
     if(onscreen){
-      var cur=ws[0].getBoundingClientRect(),base=ws[1].getBoundingClientRect();
       var sc=a.width/base.width,dx=(a.left+a.width/2)-(base.left+base.width/2),dy=(a.top+a.height/2)-(base.top+base.height/2);
-      ws[0].style.transform=getComputedStyle(ws[0]).transform;
-      void ws[0].offsetWidth;
       ws.forEach(function(w){w.style.transform='translate('+dx+'px,'+dy+'px) scale('+sc+')'});
     }else{ws[1].style.opacity=0}
     timers.push(setTimeout(function(){
@@ -447,13 +499,16 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 
   }
   function start(){
     if(started)return;started=true;
-    fit();o.classList.add('show');
-    timers.push(setTimeout(function(){o.classList.add('sweep')},1050));
-    timers.push(setTimeout(function(){land(false)},1450));
+    fit();layout(0);o.classList.add('show');
+    t0=performance.now();raf=requestAnimationFrame(frame);
+    timers.push(setTimeout(function(){o.classList.add('sweep')},DUR-250));
+    timers.push(setTimeout(function(){land(false)},DUR+150));
   }
-  var ready=Promise.race([Promise.all([d.fonts.load('italic 400 100px "Bodoni Moda"'),d.querySelector('.hero img').decode().catch(function(){})]),new Promise(function(r){setTimeout(r,900)})]);
+  var imgs=[d.querySelector('.hero img'),pns[0].querySelector('img'),pns[1].querySelector('img')].map(function(i){return i.decode().catch(function(){})});
+  var ready=Promise.race([Promise.all([d.fonts.load('italic 400 100px "Bodoni Moda"')].concat(imgs)),new Promise(function(r){setTimeout(r,1100)})]);
   ready.then(function(){requestAnimationFrame(start)});
-  ['pointerdown','keydown','wheel','touchstart'].forEach(function(ev){addEventListener(ev,function(){if(started)land(true)},{passive:true,once:false})});
+  addEventListener('pointermove',function(e){mx=e.clientX/innerWidth*2-1;my=e.clientY/innerHeight*2-1},{passive:true});
+  ['pointerdown','keydown','wheel','touchstart'].forEach(function(ev){addEventListener(ev,function(){if(started)land(true)},{passive:true})});
   addEventListener('resize',function(){if(!done&&started)fit()});
 })();
 </script>
