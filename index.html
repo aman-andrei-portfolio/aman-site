@@ -19,6 +19,13 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Person","name":"Costi Andrei","alternateName":"Aman","url":"https://costi1andrei.site","image":"https://costi1andrei.site/assets/img/og.jpg","jobTitle":"Dezvoltator web și editor video","address":{"@type":"PostalAddress","addressLocality":"Iași","addressCountry":"RO"},"sameAs":["https://www.instagram.com/costi1andrei/"]}
 </script>
+<script>
+(function(){try{
+  var seen=sessionStorage.getItem('intro-seen')==='1';
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!seen&&!reduce&&!location.hash&&innerWidth>=320){document.documentElement.classList.add('has-intro')}
+}catch(e){}})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400;1,6..96,500&family=Instrument+Sans:wght@400;500;600&display=swap"/>
@@ -431,10 +438,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 
 <script>
 (function(){
   var d=document,h=d.documentElement,o=d.getElementById('intro');
-  var seen=false;try{seen=sessionStorage.getItem('intro-seen')==='1'}catch(e){}
-  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(seen||reduce||location.hash||innerWidth<320){return}
-  h.classList.add('has-intro');
+  if(!h.classList.contains('has-intro')||!o){return}
   try{sessionStorage.setItem('intro-seen','1')}catch(e){}
   scrollTo(0,0);
   var ws=o.querySelectorAll('.iw'),h1=d.querySelector('.hero h1'),stage=o.querySelector('.stage'),world=o.querySelector('.world'),
