@@ -1,0 +1,5 @@
+{
+  "redirects": [
+    { "source": "/:page(despre|servicii|preturi|proiecte|galerie|recenzii|mindset|visuri|faq).html", "destination": "/", "permanent": true }
+  ]
+}

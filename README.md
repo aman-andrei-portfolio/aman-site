@@ -1,23 +1,10 @@
-# Aman — Costi Andrei · Personal Website
+# Aman — Costi Andrei
 
-## 📁 Structure
-```
-aman-site/
-├── index.html
-├── README.md
-└── assets/
-    └── img/
-        ├── photo1.jpeg
-        ├── photo2.jpeg
-        ├── photo3.jpeg
-        ├── photo4.jpeg
-        └── photo5.jpeg
-```
+Site personal, o singură pagină: `index.html` (HTML + CSS + puțin JS, fără build).
 
-## 🖼️ Adding more photos
-Drop new photos into `assets/img/` and reference them in `index.html`.
+- Fotografii: `assets/img/` (`portret.jpg` în hero, `trabuc.jpg` la „Despre”, restul la „Cadre”).
+- Texte RO/EN: textul românesc e în HTML, traducerea în atributul `data-en` al aceluiași element.
+- Prețuri: secțiunea `#preturi` din `index.html`.
+- `vercel.json` redirecționează vechile pagini (`servicii.html`, `preturi.html` etc.) către `/`.
 
-## 🚀 Deploy on Vercel
-1. Push this folder to a GitHub repo
-2. Go to vercel.com → New Project → Import repo
-3. Leave all settings default → Deploy
+Deploy: Vercel, setări implicite.
