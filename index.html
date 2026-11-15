@@ -16,6 +16,10 @@
 <meta property="og:locale" content="ro_RO"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="theme-color" content="#0e0d0b"/>
+<link rel="icon" href="/favicon.ico" sizes="48x48"/>
+<link rel="icon" href="/assets/img/logo/favicon.svg" type="image/svg+xml"/>
+<link rel="apple-touch-icon" href="/assets/img/logo/apple-touch-icon.png"/>
+<link rel="manifest" href="/site.webmanifest"/>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Person","name":"Costi Andrei","alternateName":"Aman","url":"https://costi1andrei.site","image":"https://costi1andrei.site/assets/img/og.jpg","jobTitle":"Dezvoltator web și editor video","address":{"@type":"PostalAddress","addressLocality":"Iași","addressCountry":"RO"},"sameAs":["https://www.instagram.com/costi1andrei/"]}
 </script>
@@ -62,7 +66,8 @@ h2 em,h1 em{font-style:italic;color:var(--olive)}
 /* nav */
 .nav{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--ink) 86%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
 .nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;height:64px}
-.brand{font-family:var(--display);font-style:italic;font-size:1.45rem;letter-spacing:.01em}
+.brand{display:inline-flex;align-items:center;gap:10px;font-family:var(--display);font-style:italic;font-size:1.45rem;letter-spacing:.01em}
+.brand .mark{height:1.05em;width:auto;color:var(--paper);flex:none}
 .nav nav{display:flex;align-items:center;gap:clamp(14px,3vw,34px);font-size:.82rem;letter-spacing:.06em}
 .nav nav a{color:var(--mute);transition:color .2s}
 .nav nav a:hover{color:var(--paper)}
@@ -202,7 +207,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 
 
 <header class="nav">
   <div class="wrap">
-    <a class="brand" href="#top" aria-label="Aman — sus">Aman</a>
+    <a class="brand" href="#top" aria-label="Aman, sus"><svg class="mark" aria-hidden="true" viewBox="-100 -1529 1600 1529"><path transform="scale(1 -1)" d="M50 0 932 1529H1170L1359 0H910L787 1200L95 0ZM-100 0V39H340V0ZM680 0V39H1500V0ZM366 470V509H1020V470Z" fill="currentColor"/></svg><span>Aman</span></a>
     <nav aria-label="Principal">
       <a class="opt" href="#despre" data-en="About">Despre</a>
       <a href="#preturi" data-en="Pricing">Prețuri</a>
