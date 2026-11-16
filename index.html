@@ -108,11 +108,13 @@ html.has-intro #intro{display:block}
 #intro video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .5s ease;background:var(--ink)}
 #intro video.on{opacity:1}
 #intro.ink video{opacity:0;transition:opacity .45s ease}
-.iw{position:absolute;left:0;top:0;margin:0;font-family:var(--display);font-style:italic;font-weight:400;line-height:.82;letter-spacing:-.035em;white-space:nowrap;color:var(--paper);opacity:0;transform:scale(.97);transform-origin:center;will-change:transform,opacity;transition:opacity .7s ease,transform .9s cubic-bezier(.2,.7,.2,1);text-shadow:0 2px 40px rgba(0,0,0,.45)}
+.iw{position:absolute;left:0;top:0;margin:0;font-family:var(--display);font-style:italic;font-weight:400;line-height:.82;letter-spacing:-.035em;white-space:nowrap;color:var(--paper);opacity:0;transform:scale(.97);transform-origin:center;will-change:transform,opacity;transition:opacity .7s ease,transform .9s cubic-bezier(.2,.7,.2,1);text-shadow:0 2px 60px rgba(0,0,0,.6),0 0 24px rgba(0,0,0,.35)}
+#intro::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(14,13,11,.28),rgba(14,13,11,.62) 100%);pointer-events:none}
+#intro .iw,#intro .il{z-index:2}
 #intro.title .iw{opacity:1;transform:scale(1)}
 #intro.travel .iw{transition:transform var(--t,.75s) cubic-bezier(.65,0,.2,1),opacity .3s ease;text-shadow:none}
 .il{position:absolute;top:0;bottom:0;left:0;width:1px;background:var(--olive);box-shadow:0 0 18px 2px color-mix(in srgb,var(--olive) 55%,transparent);transform:translateX(-20px);opacity:0}
-#intro.title .il{animation:sweep .6s cubic-bezier(.6,0,.3,1) .15s both}
+#intro.ink .il{animation:sweep .6s cubic-bezier(.6,0,.3,1) both}
 @keyframes sweep{0%{opacity:1;transform:translateX(-20px)}100%{opacity:1;transform:translateX(calc(100vw + 20px))}}
 #intro.out{background:transparent;transition:background .45s ease}
 #intro.out .iw{opacity:0;transition:opacity .25s ease}
@@ -426,7 +428,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 
   var d=document,h=d.documentElement,o=d.getElementById('intro'),v=d.getElementById('iv'),w=o&&o.querySelector('.iw'),h1=d.querySelector('.hero h1');
   if(!h.classList.contains('has-intro')||!o)return;
   scrollTo(0,0);
-  var TITLE_AT=4.55,LAND_AT=5.45,playing=false,titled=false,phase=0,timers=[],raf=0;
+  var TITLE_AT=0.35,LAND_AT=5.45,playing=false,titled=false,phase=0,timers=[],raf=0;
   var portrait=matchMedia('(orientation: portrait)').matches;
   v.poster='assets/video/intro-'+(portrait?'portrait':'landscape')+'.jpg';
   v.src='assets/video/intro-'+(portrait?'portrait':'landscape')+'.mp4';
