@@ -88,7 +88,8 @@ async function storage(path, { method = 'POST', body, headers = {} } = {}) {
   const key = env('SUPABASE_SERVICE_ROLE_KEY');
   const r = await fetch(env('SUPABASE_URL') + '/storage/v1/' + path, {
     method, headers: { apikey: key, Authorization: 'Bearer ' + key, 'Content-Type': 'application/json', ...headers },
-    body: body ? JSON.stringify(body) : undefined,
+    // Supabase Storage refuză cererile JSON fără conținut, așa că trimitem cel puțin {}.
+    body: method === 'GET' ? undefined : JSON.stringify(body || {}),
   });
   const text = await r.text();
   if (!r.ok) throw Object.assign(new Error('Storage ' + r.status + ': ' + text.slice(0, 200)), { status: 502 });
