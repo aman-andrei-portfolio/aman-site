@@ -4,7 +4,7 @@
 'use strict';
 const { CATALOG, send, sameOrigin, readJson, configured, getUser, db, handle, orderCode, cleanInstagram } = require('./_lib');
 
-const MAX_OPEN = 5; // limită anti-spam: câte comenzi neplătite poate avea un client deodată
+const MAX_OPEN = 3; // limită anti-spam: câte comenzi neplătite poate avea un client deodată
 
 module.exports = handle(async (req, res) => {
   if (req.method !== 'POST') return send(res, 405, { error: 'Metodă nepermisă.' });
@@ -24,7 +24,7 @@ module.exports = handle(async (req, res) => {
   const instagram = cleanInstagram(body.instagram) || null;
 
   const open = await db(`orders?select=id&user_id=eq.${user.id}&status=eq.requested`);
-  if (open.length >= MAX_OPEN) return send(res, 429, { error: 'Ai deja 5 comenzi neplătite. Scrie-mi pe Instagram sau anulează una din cont.' });
+  if (open.length >= MAX_OPEN) return send(res, 429, { error: 'Ai deja 3 comenzi neplătite. Scrie-mi pe Instagram sau anulează una din cont.' });
 
   for (let i = 0; i < 5; i++) {
     const code = orderCode();

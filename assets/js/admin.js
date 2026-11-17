@@ -145,6 +145,13 @@
     Object.assign(o, r.json.order);
     li.querySelectorAll('.st button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.s === o.status)); });
     out.className = 'out saved'; out.textContent = 'Salvat ✓';
+    updateCounts();
+  }
+  function updateCounts() {
+    app.querySelectorAll('[data-tab]').forEach(function (b) {
+      var n = orders.filter(function (o) { return TABS[b.dataset.tab].indexOf(o.status) >= 0; }).length;
+      var el = b.querySelector('b'); if (el) el.textContent = n;
+    });
   }
 
   app.addEventListener('click', function (e) {

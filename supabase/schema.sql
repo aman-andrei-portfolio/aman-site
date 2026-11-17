@@ -52,3 +52,11 @@ drop policy if exists "client citeste comenzile proprii" on public.orders;
 create policy "client citeste comenzile proprii" on public.orders
   for select to authenticated
   using ((select auth.uid()) = user_id);
+-- Cât spațiu ocupă fișierele din „livrari” (folosit de server ca să nu se depășească 1 GB).
+create or replace function public.livrari_used_bytes() returns bigint
+language sql security definer set search_path = '' stable as $$
+  select coalesce(sum((metadata->>'size')::bigint), 0)::bigint from storage.objects where bucket_id = 'livrari';
+$$;
+revoke all on function public.livrari_used_bytes() from public, anon, authenticated;
+grant execute on function public.livrari_used_bytes() to service_role;
+select public.livrari_used_bytes() as used;

@@ -12,6 +12,13 @@ const { env, CATALOG, send, sameOrigin, readJson, configured, getUser, db, handl
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const TOO_BIG = 'Fișierul are peste 50 MB. Pentru fișiere mari trimite un link (Google Drive, WeTransfer).';
+const ORDER_CAP = 150 * 1024 * 1024;   // cât poate trimite un client la o comandă
+const CLIENT_QUOTA = 900 * 1024 * 1024; // peste atât, clienții nu mai pot urca (planul gratuit are 1 GB)
+
+async function usedBytes() {
+  const r = await db('rpc/livrari_used_bytes', { method: 'POST', body: {} });
+  return Number(r) || 0;
+}
 
 async function signUpload(path) {
   const j = await storage(`object/upload/sign/${BUCKET}/${path}`, { headers: { 'x-upsert': 'true' } });
@@ -56,6 +63,9 @@ module.exports = handle(async (req, res) => {
     const max = (CATALOG[o.package] && CATALOG[o.package].max) || 10;
     const have = await listFiles(o.id + '/client');
     if (have.length >= max && !have.some((f) => f.name === name)) return send(res, 400, { error: `Poți trimite maximum ${max} ${max === 1 ? 'fișier' : 'fișiere'} pentru opțiunea asta.` });
+    const orderBytes = have.filter((f) => f.name !== name).reduce((a, f) => a + (f.size || 0), 0);
+    if (orderBytes + size > ORDER_CAP) return send(res, 400, { error: 'Ai trimis deja 150 MB la comanda asta. Restul trimite-l ca link (Google Drive, WeTransfer).' });
+    if ((await usedBytes()) + size > CLIENT_QUOTA) return send(res, 507, { error: 'Nu mai pot primi fișiere pe site acum. Trimite-mi-le pe Instagram sau ca link.' });
     return send(res, 200, { url: await signUpload(`${o.id}/client/${encodeURIComponent(name)}`), name });
   }
 
