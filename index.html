@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data:; font-src 'self' https://fonts.gstatic.com; connect-src 'self'"/>
 <title>Aman · Costi Andrei · web, video, foto · Iași</title>
 <meta name="description" content="Costi Andrei (Aman): site-uri, editare video și editare foto, din Iași. Prețuri clare, livrare rapidă, un singur om cu care vorbești."/>
 <meta name="author" content="Costi Andrei"/>
@@ -23,10 +22,11 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Person","name":"Costi Andrei","alternateName":"Aman","url":"https://costi1andrei.site","image":"https://costi1andrei.site/assets/img/og.jpg","jobTitle":"Dezvoltator web și editor video","address":{"@type":"PostalAddress","addressLocality":"Iași","addressCountry":"RO"},"sameAs":["https://www.instagram.com/costi1andrei/"]}
 </script>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"/>
+<link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin/>
 <style>
+/* Inter, găzduit pe site (fără Google Fonts, deci fără transfer de IP către Google). Licență: assets/fonts/OFL.txt */
+@font-face{font-family:"Inter";font-style:normal;font-weight:400 700;font-display:swap;src:url(/assets/fonts/inter-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"Inter";font-style:normal;font-weight:400 700;font-display:swap;src:url(/assets/fonts/inter-latin.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 /* Layout: o coloană centrată, secțiuni alternând alb / gri foarte deschis, ca o pagină de produs. */
 :root{
   --bg:#ffffff;
@@ -250,6 +250,56 @@ html.views #s-contact.on>.wrap{width:100%}
 html.tabs [data-pane]:not(.on){display:none}
 html.tabs .packs{margin-top:0}
 
+/* cont */
+#s-cont.in .head .lead{display:none}
+.nav nav a.acct-link{display:inline-flex;align-items:center;gap:6px}
+@media(max-width:700px){.nav nav a.acct-link{display:inline-flex}.nav nav a.acct-link span{display:none}.nav nav a.acct-link.cur{color:var(--blue)}}
+.acct{max-width:680px;margin-inline:auto;display:flex;flex-direction:column;gap:16px}
+.acct-card{background:var(--bg-2);border-radius:var(--r);padding:clamp(28px,4vw,44px)}
+.acct-card .ctas{margin-top:20px}
+.muted{color:var(--fg-2)}
+.fine{margin-top:16px;font-size:13px;line-height:1.45;color:var(--fg-2)}
+.gbtn{display:inline-flex;align-items:center;gap:12px;font:500 17px var(--sans);letter-spacing:-.01em;color:#1f1f1f;background:#fff;border:1px solid #747775;border-radius:980px;padding:12px 24px;cursor:pointer}
+.gbtn:hover{background:#f8f9fa}
+.who{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.who strong{display:block;font-weight:600}
+.who span{display:block;font-size:14px;color:var(--fg-2)}
+.more.plain{background:none;border:0;padding:0;font:inherit;font-size:15px;color:var(--link);cursor:pointer}
+.more.plain::after{content:""}
+.more.plain:hover{text-decoration:underline}
+.danger{color:#c4001a!important}
+.btn.danger{background:#c4001a;color:#fff!important}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+button.btn{border:0;cursor:pointer;font-family:var(--sans)}
+.banner{background:#fff4e5;color:#7a4100;border-radius:14px;padding:12px 16px;font-size:14px;line-height:1.45}
+.notice{border-radius:14px;padding:12px 16px;font-size:15px}
+.notice.ok{background:#e9f7ee;color:#0d5c2a}
+.notice.warn{background:#fdecee;color:#8a0a1c}
+.orders{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.order{background:var(--bg-2);border-radius:20px;padding:20px 22px;display:flex;flex-direction:column;gap:10px}
+.o-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.order h4{font-size:19px;letter-spacing:-.02em}
+.order .muted{font-size:14px}
+.o-note{font-size:15px;background:var(--bg);border-radius:12px;padding:10px 14px}
+.o-note span{display:block;font-size:12px;font-weight:600;color:var(--fg-2);margin-bottom:2px}
+.pill{flex:none;font-size:12px;font-weight:600;border-radius:980px;padding:5px 10px;white-space:nowrap;background:#e8e8ed;color:var(--fg)}
+.s-paid{background:#e8f1fd;color:#0058b0}
+.s-in_progress{background:#fff1e0;color:#a14d00}
+.s-review{background:#f1e9fb;color:#6b2fb3}
+.s-delivered{background:#e5f6ea;color:#156b32}
+.data{margin-top:12px;padding-top:20px;border-top:1px solid var(--line)}
+.data .row,.buy .row{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;margin-top:10px}
+.confirm{margin-top:14px;background:#fdecee;border-radius:16px;padding:16px 18px;font-size:15px}
+dialog.buy{border:0;border-radius:var(--r);padding:0;width:min(520px,calc(100% - 32px));box-shadow:0 30px 80px rgba(0,0,0,.25);color:var(--fg)}
+dialog.buy::backdrop{background:rgba(0,0,0,.35);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.buy-in{padding:clamp(24px,4vw,36px);display:flex;flex-direction:column;gap:12px}
+.buy h3{font-size:28px;letter-spacing:-.03em}
+.buy .amount{margin:0}
+.chk{display:flex;gap:12px;align-items:flex-start;font-size:14px;line-height:1.45;color:var(--fg);background:var(--bg-2);border-radius:14px;padding:14px 16px;cursor:pointer}
+.chk input{width:18px;height:18px;margin-top:1px;flex:none;accent-color:var(--blue)}
+.err{color:#c4001a;font-size:14px}
+footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
+
 /* apariție la scroll (conținutul e vizibil și fără JS) */
 @media(prefers-reduced-motion:no-preference){
   html.rv-on .rv{opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
@@ -267,6 +317,7 @@ html.tabs .packs{margin-top:0}
       <a class="tl" href="#preturi" data-en="Pricing">Prețuri</a>
       <a class="tl" href="#intrebari" data-en="FAQ">Întrebări</a>
       <a class="tl" href="#contact">Contact</a>
+      <a class="tl acct-link" href="#cont" aria-label="Contul meu"><svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><circle cx="12" cy="8.5" r="3.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M4.8 19.6c1.3-3.3 4-5 7.2-5s5.9 1.7 7.2 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span data-en="Account">Cont</span></a>
       <button class="lang" id="lang" type="button" aria-label="Switch to English">EN</button>
     </nav>
   </div>
@@ -402,7 +453,7 @@ html.tabs .packs{margin-top:0}
           <p class="what" data-en="2 short videos + 3 edited photos">2 videoclipuri scurte + 3 poze editate</p>
           <p class="amount" data-en="&lt;s&gt;€30&lt;/s&gt;€25"><s>147</s>129<small>lei</small></p>
           <p class="save" data-en="You save €5">Economisești 18 lei</p>
-          <a class="btn" href="https://ig.me/m/costi1andrei" target="_blank" rel="noopener" data-en="Choose Mini">Aleg Mini</a>
+          <a class="btn" href="https://ig.me/m/costi1andrei" target="_blank" rel="noopener" data-buy="mini" data-en="Choose Mini">Aleg Mini</a>
         </article>
         <article class="pack best rv">
           <p class="badge" data-en="Best value">Cea mai bună alegere</p>
@@ -410,14 +461,14 @@ html.tabs .packs{margin-top:0}
           <p class="what" data-en="5 short videos + 5 edited photos, one consistent style">5 videoclipuri scurte + 5 poze editate, același stil pe tot</p>
           <p class="amount" data-en="&lt;s&gt;€65&lt;/s&gt;€55"><s>320</s>279<small>lei</small></p>
           <p class="save" data-en="You save €10">Economisești 41 lei</p>
-          <a class="btn" href="https://ig.me/m/costi1andrei" target="_blank" rel="noopener" data-en="Choose Starter">Aleg Starter</a>
+          <a class="btn" href="https://ig.me/m/costi1andrei" target="_blank" rel="noopener" data-buy="starter" data-en="Choose Starter">Aleg Starter</a>
         </article>
         <article class="pack rv">
           <h4>Business Basic</h4>
           <p class="what" data-en="Full website + 3 short videos + 5 edited photos">Site complet + 3 videoclipuri scurte + 5 poze editate</p>
           <p class="amount" data-en="&lt;s&gt;€216&lt;/s&gt;€169"><s>1089</s>859<small>lei</small></p>
           <p class="save" data-en="Videos and photos included free, you save €47">Video și foto incluse gratuit, economisești 230 lei</p>
-          <a class="btn" href="https://ig.me/m/costi1andrei" target="_blank" rel="noopener" data-en="Choose Business">Aleg Business</a>
+          <a class="btn" href="https://ig.me/m/costi1andrei" target="_blank" rel="noopener" data-buy="business" data-en="Choose Business">Aleg Business</a>
         </article>
       </div>
       <div class="subscr rv">
@@ -437,6 +488,17 @@ html.tabs .packs{margin-top:0}
         <li data-en="Reply in under 2 hours">Răspuns în mai puțin de 2 ore</li>
       </ul>
     </div>
+  </div>
+</section>
+
+<section id="s-cont" data-view="cont">
+  <div class="wrap">
+    <div class="head center">
+      <p class="eyebrow" data-en="Your account">Contul tău</p>
+      <h2 class="h2" style="margin-top:10px" data-en="Your orders.">Comenzile tale.</h2>
+      <p class="lead" data-en="Sign in with Google to pay for a package and follow the status of every order.">Intră cu Google ca să plătești un pachet și să vezi statusul fiecărei comenzi.</p>
+    </div>
+    <div id="acct" class="acct" aria-live="polite"></div>
   </div>
 </section>
 
@@ -460,7 +522,7 @@ html.tabs .packs{margin-top:0}
       </details>
       <details>
         <summary data-en="How do I pay?">Cum plătesc?</summary>
-        <p data-en="Bank transfer or PayPal, after we confirm the project. Usually 50% upfront and 50% on delivery. Projects under €35 are paid in full upfront.">Transfer bancar sau PayPal, după ce confirmăm proiectul. De regulă 50% în avans și 50% la livrare. Proiectele sub 175 de lei se plătesc integral în avans.</p>
+        <p data-en="Packages can be paid online by card, Apple Pay or Google Pay, from your account. Card details go only to Stripe, never to this site. Custom projects are paid by bank transfer, usually 50% upfront and 50% on delivery.">Pachetele se plătesc online cu cardul, Apple Pay sau Google Pay, din contul tău. Datele cardului ajung doar la Stripe, niciodată pe site. Proiectele personalizate se plătesc prin transfer, de regulă 50% în avans și 50% la livrare.</p>
       </details>
       <details>
         <summary data-en="Do you work with clients outside Romania?">Lucrezi și cu clienți din afara României?</summary>
@@ -486,7 +548,12 @@ html.tabs .packs{margin-top:0}
 <footer>
   <div class="wrap">
     <span>© <span id="yr">2026</span> Costi Andrei · Iași, România</span>
-    <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener">Instagram</a>
+    <span class="legal">
+      <a href="/termeni.html" data-en="Terms">Termeni</a>
+      <a href="/confidentialitate.html" data-en="Privacy">Confidențialitate</a>
+      <a href="https://anpc.ro/ce-este-sal/" target="_blank" rel="noopener">ANPC · SAL</a>
+      <a href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener">Instagram</a>
+    </span>
   </div>
 </footer>
 
@@ -501,13 +568,14 @@ html.tabs .packs{margin-top:0}
     btn.textContent=l==='en'?'RO':'EN';
     btn.setAttribute('aria-label',l==='en'?'Schimbă în română':'Switch to English');
     try{localStorage.setItem('lang',l)}catch(e){}
+    document.dispatchEvent(new CustomEvent('langchange'));
   }
   btn.addEventListener('click',function(){set(lang==='ro'?'en':'ro')});
   try{if(localStorage.getItem('lang')==='en')set('en')}catch(e){}
   document.getElementById('yr').textContent=new Date().getFullYear();
 
   /* pagini */
-  var h=document.documentElement,VIEWS=['acasa','despre','preturi','intrebari','contact'];
+  var h=document.documentElement,VIEWS=['acasa','despre','preturi','intrebari','contact','cont'];
   var ALIAS={servicii:'acasa',top:'acasa','':'acasa'};
   var blocks=document.querySelectorAll('[data-view]'),links=document.querySelectorAll('.tl,.tabbar a');
   function show(first){
@@ -553,5 +621,6 @@ html.tabs .packs{margin-top:0}
   }
 })();
 </script>
+<script src="/assets/js/account.js" defer></script>
 </body>
 </html>
