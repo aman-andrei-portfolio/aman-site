@@ -185,6 +185,21 @@ section{padding-block:clamp(48px,7vw,88px)}
 .subscr .what{margin-top:6px;color:var(--fg-2);font-size:15px;line-height:1.43;max-width:32em}
 .subscr .amount{margin:0}
 @media(max-width:860px){.pk{grid-template-columns:1fr}.subscr{grid-template-columns:1fr}.subscr .btn{justify-self:start}}
+/* telefon: pachetele ca un carusel orizontal */
+.dots{display:none}
+@media(max-width:860px){
+  .rail{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+    margin-inline:calc(-1 * max(22px,env(safe-area-inset-left,0px)));padding:4px max(22px,env(safe-area-inset-left,0px)) 8px;scroll-padding-inline:max(22px,env(safe-area-inset-left,0px))}
+  .rail::-webkit-scrollbar{display:none}
+  .rail .pk{display:contents}
+  .rail .pack,.rail .subscr{flex:0 0 84%;scroll-snap-align:start;margin:0}
+  .rail .subscr{display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+  .rail .subscr .amount{margin-top:8px}
+  .rail .subscr .btn{margin-top:auto}
+  .dots{display:flex;justify-content:center;gap:8px;margin-top:14px}
+  .dots i{width:7px;height:7px;border-radius:50%;background:#c7c7cc;transition:background .2s,transform .2s}
+  .dots i.on{background:var(--fg);transform:scale(1.15)}
+}
 .trust{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:10px 32px;margin:36px 0 0;padding:0;font-size:14px;color:var(--fg-2)}
 .trust li::before{content:"✓";color:var(--fg);margin-right:8px;font-weight:600}
 
@@ -380,6 +395,7 @@ html.tabs .packs{margin-top:0}
 
     <div class="packs" data-pane="pachete">
       <h3 class="sub rv" data-en="Take more. Pay less.">Iei mai mult. Plătești mai puțin.</h3>
+      <div class="rail" id="rail">
       <div class="pk">
         <article class="pack rv">
           <h4>Mini</h4>
@@ -412,6 +428,8 @@ html.tabs .packs{margin-top:0}
         <p class="amount" data-en="&lt;s&gt;€65&lt;/s&gt;€49&lt;small&gt;/ month&lt;/small&gt;"><s>320</s>249<small>lei / lună</small></p>
         <a class="btn" href="https://ig.me/m/costi1andrei" target="_blank" rel="noopener" data-en="Subscribe">Mă abonez</a>
       </div>
+      </div>
+      <div class="dots" id="dots" aria-hidden="true"></div>
       <ul class="trust rv">
         <li data-en="You pay nothing until we agree on everything">Nu plătești nimic până nu stabilim tot</li>
         <li data-en="50% upfront, 50% on delivery">50% în avans, 50% la livrare</li>
@@ -511,6 +529,21 @@ html.tabs .packs{margin-top:0}
   }
   h.classList.add('tabs');tab('servicii');
   tabs.forEach(function(t){t.addEventListener('click',function(){tab(t.dataset.tab)})});
+
+  /* puncte pentru carusel */
+  var rail=document.getElementById('rail'),dots=document.getElementById('dots');
+  if(rail&&dots){
+    var items=rail.querySelectorAll('.pack,.subscr');
+    items.forEach(function(){dots.appendChild(document.createElement('i'))});
+    var ds=dots.children;
+    function upd(){
+      var best=0,min=1e9,x=rail.getBoundingClientRect().left;
+      items.forEach(function(it,i){var d=Math.abs(it.getBoundingClientRect().left-x-22);if(d<min){min=d;best=i}});
+      for(var i=0;i<ds.length;i++)ds[i].classList.toggle('on',i===best);
+    }
+    rail.addEventListener('scroll',function(){requestAnimationFrame(upd)},{passive:true});
+    upd();
+  }
 
   if('IntersectionObserver' in window&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
     var els=document.querySelectorAll('.rv');
