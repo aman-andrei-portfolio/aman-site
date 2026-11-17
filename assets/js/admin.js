@@ -48,6 +48,50 @@
     render();
   }
 
+  function size(n) { return n > 1048576 ? (n / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(n / 1024)) + ' KB'; }
+  async function loadFiles(li) {
+    var tk = await token(); if (!tk) return;
+    var r = await fetch('/api/files?order=' + li.dataset.id, { headers: { Authorization: 'Bearer ' + tk } });
+    var j = await r.json().catch(function () { return {}; });
+    var files = (j.files && j.files[li.dataset.id]) || [];
+    var ul = li.querySelector('[data-flist]');
+    ul.innerHTML = files.length ? files.map(function (f) {
+      return '<li><a href="' + esc(f.download) + '" target="_blank" rel="noopener">' + esc(f.name) + '</a><span class="meta">' + size(f.size) + '</span><button type="button" class="x" data-del="' + esc(f.name) + '" aria-label="Șterge ' + esc(f.name) + '">Șterge</button></li>';
+    }).join('') : '<li class="meta">Niciun fișier încă.</li>';
+  }
+  function put(url, file, onp) {
+    return new Promise(function (ok, bad) {
+      var x = new XMLHttpRequest(); x.open('PUT', url);
+      x.setRequestHeader('Content-Type', file.type || 'application/octet-stream'); x.setRequestHeader('x-upsert', 'true');
+      x.upload.onprogress = function (e) { if (e.lengthComputable) onp(Math.round(e.loaded / e.total * 100)); };
+      x.onload = function () { x.status < 300 ? ok() : bad(new Error('Încărcarea a eșuat (' + x.status + ').')); };
+      x.onerror = function () { bad(new Error('Conexiunea s-a întrerupt.')); };
+      x.send(file);
+    });
+  }
+  async function upload(li, list) {
+    var out = li.querySelector('.out');
+    for (var i = 0; i < list.length; i++) {
+      var f = list[i];
+      out.className = 'out'; out.textContent = 'Se încarcă ' + f.name + '…';
+      if (f.size > 50 * 1024 * 1024) { out.className = 'out err'; out.textContent = f.name + ' are peste 50 MB. Folosește „Link livrare”.'; continue; }
+      var tk = await token();
+      var r = await fetch('/api/files', { method: 'POST', headers: { Authorization: 'Bearer ' + tk, 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'upload', order: li.dataset.id, name: f.name, size: f.size }) });
+      var j = await r.json().catch(function () { return {}; });
+      if (!r.ok) { out.className = 'out err'; out.textContent = j.error || 'Nu am putut pregăti încărcarea.'; continue; }
+      try { await put(j.url, f, function (p) { out.textContent = 'Se încarcă ' + f.name + '… ' + p + '%'; }); out.className = 'out saved'; out.textContent = 'Încărcat ✓'; }
+      catch (e) { out.className = 'out err'; out.textContent = e.message; }
+    }
+    loadFiles(li);
+  }
+  async function delFile(li, name) {
+    var tk = await token();
+    var r = await fetch('/api/files', { method: 'POST', headers: { Authorization: 'Bearer ' + tk, 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'delete', order: li.dataset.id, name: name }) });
+    var out = li.querySelector('.out');
+    if (r.ok) { out.className = 'out saved'; out.textContent = 'Șters ✓'; } else { out.className = 'out err'; out.textContent = 'Nu s-a șters.'; }
+    loadFiles(li);
+  }
+
   function render() {
     d.getElementById('reload').hidden = false; d.getElementById('help').hidden = false;
     var count = function (k) { return orders.filter(function (o) { return TABS[k].indexOf(o.status) >= 0; }).length; };
@@ -58,6 +102,7 @@
     if (!list.length) h += '<p class="empty">Nimic aici deocamdată.</p>';
     else h += '<ul class="list">' + list.map(card).join('') + '</ul>';
     app.innerHTML = h;
+    app.querySelectorAll('.card').forEach(loadFiles);
   }
 
   function card(o) {
@@ -67,6 +112,8 @@
       '<div><label for="n-' + o.id + '">Mesaj pentru client</label><textarea id="n-' + o.id + '" maxlength="1000" placeholder="ex: Am primit plata, livrez joi.">' + esc(o.note || '') + '</textarea></div>' +
       '<div><label for="u-' + o.id + '">Link livrare (opțional)</label><input type="url" id="u-' + o.id + '" placeholder="https://drive.google.com/…" value="' + esc(o.delivery_url || '') + '"/></div>' +
       '<div class="row"><button type="button" class="btn" data-save>Salvează</button><span class="out" aria-live="polite"></span></div>' +
+      '<div class="files"><label>Fișiere pentru client</label><ul class="flist" data-flist><li class="meta">Se încarcă…</li></ul>' +
+      '<label class="up"><input type="file" multiple data-up/> <span>＋ Adaugă fișiere</span></label><span class="meta"> Maximum 50 MB pe fișier. Clientul le vede în contul lui.</span></div>' +
       '<p class="meta">Cerută ' + when(o.created_at) + (o.paid_at ? ' · plătită ' + when(o.paid_at) : '') + '</p></li>';
   }
 
@@ -87,11 +134,16 @@
     var t = e.target.closest('[data-tab]');
     if (t) { tab = t.dataset.tab; render(); return; }
     var li = e.target.closest('.card'); if (!li) return;
+    var del = e.target.closest('[data-del]');
+    if (del) { delFile(li, del.dataset.del); return; }
     var s = e.target.closest('.st button');
     if (s) { save(li, { status: s.dataset.s }); return; }
     if (e.target.closest('[data-save]')) {
       save(li, { note: li.querySelector('textarea').value, delivery_url: li.querySelector('input[type=url]').value });
     }
+  });
+  app.addEventListener('change', function (e) {
+    if (e.target.matches('[data-up]') && e.target.files.length) { upload(e.target.closest('.card'), Array.prototype.slice.call(e.target.files)); e.target.value = ''; }
   });
   d.getElementById('reload').addEventListener('click', load);
 

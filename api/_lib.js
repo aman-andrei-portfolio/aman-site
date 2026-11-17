@@ -80,6 +80,56 @@ async function authAdmin(path, method = 'GET') {
   return r.ok;
 }
 
+// Spațiul privat pentru fișierele livrate. Doar serverul (cheia service_role) are acces.
+const BUCKET = 'livrari';
+const MAX_FILE = 50 * 1024 * 1024; // limita planului gratuit Supabase
+
+async function storage(path, { method = 'POST', body, headers = {} } = {}) {
+  const key = env('SUPABASE_SERVICE_ROLE_KEY');
+  const r = await fetch(env('SUPABASE_URL') + '/storage/v1/' + path, {
+    method, headers: { apikey: key, Authorization: 'Bearer ' + key, 'Content-Type': 'application/json', ...headers },
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  const text = await r.text();
+  if (!r.ok) throw Object.assign(new Error('Storage ' + r.status + ': ' + text.slice(0, 200)), { status: 502 });
+  return text ? JSON.parse(text) : null;
+}
+
+// Fișierele unei comenzi, cu linkuri de descărcare valabile o oră.
+async function listFiles(orderId) {
+  const items = await storage('object/list/' + BUCKET, { body: { prefix: orderId, limit: 100, offset: 0, sortBy: { column: 'created_at', order: 'asc' } } });
+  const files = (items || []).filter((f) => f.id && f.name && !f.name.startsWith('.'));
+  if (!files.length) return [];
+  const signed = await storage('object/sign/' + BUCKET, { body: { expiresIn: 3600, paths: files.map((f) => orderId + '/' + f.name) } });
+  const base = env('SUPABASE_URL') + '/storage/v1';
+  return files.map((f, i) => {
+    const s = signed[i] || {};
+    const url = s.signedURL ? base + s.signedURL : null;
+    return { name: f.name, size: (f.metadata && f.metadata.size) || 0, type: (f.metadata && f.metadata.mimetype) || '', created_at: f.created_at,
+      url, download: url ? url + (url.includes('?') ? '&' : '?') + 'download=' + encodeURIComponent(f.name) : null };
+  });
+}
+
+async function removeFiles(orderId, names) {
+  let list = names;
+  if (!list) { const items = await storage('object/list/' + BUCKET, { body: { prefix: orderId, limit: 1000, offset: 0 } }); list = (items || []).filter((f) => f.id).map((f) => f.name); }
+  if (!list.length) return;
+  await storage('object/' + BUCKET, { method: 'DELETE', body: { prefixes: list.map((n) => orderId + '/' + n) } });
+}
+
+// Nume de fișier sigur: fără diacritice, spații sau caractere speciale.
+function safeName(name) {
+  const n = String(name || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^A-Za-z0-9._-]+/g, '-').replace(/^[-.]+|-+$/g, '').slice(-120);
+  return n || 'fisier';
+}
+
+const csv = (k) => env(k).toLowerCase().split(',').map((s) => s.trim()).filter(Boolean);
+function isAdmin(user) {
+  if (!user) return false;
+  if (csv('ADMIN_USER_IDS').includes(String(user.id).toLowerCase())) return true;
+  return !!(user.email && csv('ADMIN_EMAILS').includes(user.email.toLowerCase()));
+}
+
 function handle(fn) {
   return async (req, res) => {
     try { await fn(req, res); }
@@ -90,4 +140,4 @@ function handle(fn) {
   };
 }
 
-module.exports = { env, CATALOG, send, sameOrigin, readJson, configured, getUser, db, authAdmin, handle };
+module.exports = { env, CATALOG, send, sameOrigin, readJson, configured, getUser, db, authAdmin, handle, BUCKET, MAX_FILE, storage, listFiles, removeFiles, safeName, isAdmin };

@@ -48,6 +48,15 @@ textarea:focus,input:focus{outline:2px solid #0071e3;outline-offset:1px;border-c
 .empty,.box{background:var(--bg-2);border-radius:20px;padding:28px;text-align:center;color:var(--fg-2)}
 .box .btn{margin-top:14px}
 .help{font-size:14px;color:var(--fg-2);margin:0 0 18px}
+.files{border-top:1px solid var(--line);padding-top:12px}
+.flist{list-style:none;margin:0 0 10px;padding:0;display:flex;flex-direction:column;gap:6px}
+.flist li{display:flex;align-items:center;gap:10px;background:#fff;border-radius:10px;padding:8px 12px;font-size:14px}
+.flist li.meta{background:none;padding:0}
+.flist a{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.x{font:500 13px var(--sans);color:#c4001a;background:none;border:0;cursor:pointer;padding:2px 4px}
+.up{display:inline-flex;align-items:center;font:500 14px var(--sans);color:#0066cc;border:1px solid #0066cc;border-radius:980px;padding:7px 14px;cursor:pointer;margin:0}
+.up input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.up:focus-within{outline:2px solid #0071e3;outline-offset:2px}
 </style>
 </head>
 <body>

@@ -2,17 +2,11 @@
 // sau, opțional, emailurile din ADMIN_EMAILS.
 // GET  → toate comenzile;  POST { id, status, note, delivery_url } → actualizează o comandă.
 'use strict';
-const { env, send, sameOrigin, readJson, configured, getUser, db, handle } = require('./_lib');
+const { send, sameOrigin, readJson, configured, getUser, db, handle, isAdmin } = require('./_lib');
 
 const STATUSES = ['requested', 'paid', 'in_progress', 'review', 'delivered', 'cancelled', 'refunded'];
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-const csv = (k) => env(k).toLowerCase().split(',').map((s) => s.trim()).filter(Boolean);
-function isAdmin(user) {
-  if (!user) return false;
-  if (csv('ADMIN_USER_IDS').includes(String(user.id).toLowerCase())) return true;
-  return !!(user.email && csv('ADMIN_EMAILS').includes(user.email.toLowerCase()));
-}
 
 module.exports = handle(async (req, res) => {
   if (!configured()) return send(res, 503, { error: 'Conturile nu sunt încă active.' });

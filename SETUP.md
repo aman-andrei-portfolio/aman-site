@@ -20,6 +20,9 @@ variabila `ADMIN_USER_IDS` din Vercel (id-ul contului din Supabase → Authentic
 - Apeși pe status (Cerere nouă, Plătită, În lucru, De verificat, Livrată, Anulată), iar clientul îl vede imediat.
 - Scrii un mesaj pentru client și, la final, linkul cu fișierele, apoi apeși **Salvează**.
 - Data plății se completează singură când pui „Plătită”.
+- La **Fișiere pentru client** apeși „Adaugă fișiere” și alegi pozele/videoclipurile (maximum 50 MB fiecare).
+  Clientul le vede în Cont, cu previzualizare și buton „Descarcă”. Doar el le poate vedea.
+  Fișierele stau în Supabase → Storage → `livrari` (privat), într-un folder cu id-ul comenzii.
 
 ### Varianta avansată: direct în Supabase
 

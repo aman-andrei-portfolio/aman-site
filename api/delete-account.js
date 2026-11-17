@@ -2,7 +2,7 @@
 // Contul și datele personale dispar; comenzile plătite rămân anonimizate,
 // pentru că evidența încasărilor trebuie păstrată.
 'use strict';
-const { send, sameOrigin, configured, getUser, db, authAdmin, handle } = require('./_lib');
+const { send, sameOrigin, configured, getUser, db, authAdmin, handle, removeFiles } = require('./_lib');
 
 module.exports = handle(async (req, res) => {
   if (req.method !== 'POST') return send(res, 405, { error: 'Metodă nepermisă.' });
@@ -11,6 +11,9 @@ module.exports = handle(async (req, res) => {
   const user = await getUser(req);
   if (!user) return send(res, 401, { error: 'Sesiunea a expirat. Intră din nou în cont.' });
 
+  // Fișierele livrate (pot fi poze cu clientul) se șterg odată cu contul.
+  const mine = await db(`orders?select=id&user_id=eq.${user.id}`);
+  for (const o of mine || []) await removeFiles(o.id);
   // Cererile neplătite se șterg; comenzile plătite se anonimizează.
   await db(`orders?user_id=eq.${user.id}&paid_at=is.null`, { method: 'DELETE', prefer: 'return=minimal' });
   await db(`orders?user_id=eq.${user.id}`, { method: 'PATCH', prefer: 'return=minimal', body: { email: null, customer_name: null, user_id: null } });
