@@ -4,13 +4,10 @@
 const { env, send, configured, handle } = require('./_lib');
 
 module.exports = handle(async (req, res) => {
-  const c = configured();
-  const key = env('AMAN_STRIPE_SECRET_KEY');
+  const ok = configured();
   send(res, 200, {
-    auth: c.auth,
-    payments: c.auth && c.payments,
-    testMode: !key || key.startsWith('sk_test_') || key.startsWith('rk_test_'),
-    supabaseUrl: c.auth ? env('SUPABASE_URL') : null,
-    supabaseAnonKey: c.auth ? env('SUPABASE_ANON_KEY') : null,
+    auth: ok,
+    supabaseUrl: ok ? env('SUPABASE_URL') : null,
+    supabaseAnonKey: ok ? env('SUPABASE_ANON_KEY') : null,
   });
 });
