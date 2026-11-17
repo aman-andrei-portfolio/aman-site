@@ -48,6 +48,14 @@ textarea:focus,input:focus{outline:2px solid #0071e3;outline-offset:1px;border-c
 .empty,.box{background:var(--bg-2);border-radius:20px;padding:28px;text-align:center;color:var(--fg-2)}
 .box .btn{margin-top:14px}
 .help{font-size:14px;color:var(--fg-2);margin:0 0 18px}
+.search{width:100%;font:400 16px var(--sans);color:var(--fg);background:var(--bg-2);border:1px solid transparent;border-radius:12px;padding:12px 14px;margin-bottom:12px}
+.search:focus{outline:2px solid #0071e3;outline-offset:1px;background:#fff}
+.code{font-size:13px;font-weight:700;letter-spacing:.04em;color:#0066cc;margin:0 0 2px;font-variant-numeric:tabular-nums}
+.igh{display:inline-block;margin-top:4px;font-size:14px;font-weight:600}
+.brief{background:#fff;border-radius:12px;padding:10px 12px}
+.brief p{margin:0;font-size:15px;white-space:pre-wrap}
+.files.cl{border-top:0;padding-top:0}
+.x.dl{color:#0066cc}
 .files{border-top:1px solid var(--line);padding-top:12px}
 .flist{list-style:none;margin:0 0 10px;padding:0;display:flex;flex-direction:column;gap:6px}
 .flist li{display:flex;align-items:center;gap:10px;background:#fff;border-radius:10px;padding:8px 12px;font-size:14px}
@@ -63,7 +71,8 @@ textarea:focus,input:focus{outline:2px solid #0071e3;outline-offset:1px;border-c
 <header class="nav"><div class="wrap"><a class="brand" href="/">Aman</a><a href="/#cont">Contul meu</a></div></header>
 <main class="wrap">
   <div class="top"><h1>Comenzi</h1><button type="button" class="btn" id="reload" hidden>Reîmprospătează</button></div>
-  <p class="help" id="help" hidden>Apasă pe un status ca să-l schimbi. Clientul îl vede imediat în contul lui. Mesajul și linkul de livrare se salvează cu butonul „Salvează”.</p>
+  <input type="search" id="q" class="search" hidden placeholder="Caută după cod (AM-…), @instagram, nume sau email" autocomplete="off" autocapitalize="none" spellcheck="false" aria-label="Caută comenzi"/>
+  <p class="help" id="help" hidden>Când îți scrie cineva pe Instagram cu un cod (ex. AM-K7P2Q), caută-l mai sus. Apasă pe un status ca să-l schimbi; clientul îl vede imediat. Mesajul și linkul se salvează cu „Salvează”.</p>
   <div id="app"><p class="muted">Se încarcă…</p></div>
 </main>
 <script src="/assets/js/admin.js" defer></script>

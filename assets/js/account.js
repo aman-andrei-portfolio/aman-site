@@ -87,7 +87,7 @@
   // ---------- comenzi ----------
   async function loadOrders() {
     var tk = await token(); if (!tk) { render(); return; }
-    var r = await fetch(cfg.supabaseUrl + '/rest/v1/orders?select=id,title,package,amount,currency,status,note,delivery_url,created_at,paid_at&order=created_at.desc',
+    var r = await fetch(cfg.supabaseUrl + '/rest/v1/orders?select=id,code,title,package,amount,currency,status,note,delivery_url,created_at,paid_at&order=created_at.desc',
       { headers: { apikey: cfg.supabaseAnonKey, Authorization: 'Bearer ' + tk } });
     orders = r.ok ? await r.json() : [];
     render();
@@ -103,23 +103,17 @@
   }
   function date(s) { return new Date(s).toLocaleDateString(L() === 'en' ? 'en-GB' : 'ro-RO', { day: 'numeric', month: 'long', year: 'numeric' }); }
 
-  // Butoanele de la pachete: linkul spre Instagram se deschide normal;
-  // dacă ești logat, salvăm în paralel cererea în cont.
-  d.addEventListener('click', function (e) {
-    var b = e.target.closest('[data-buy]');
-    if (!b || !cfg || !cfg.auth || !session) return;
-    var pkg = b.dataset.buy, card = b.closest('.pack'), li = b.closest('li');
-    var el = card ? card.querySelector('h4') : li && li.querySelector('strong');
-    if (el && el.firstElementChild) el = el.firstElementChild;
-    var name = el ? el.textContent : pkg;
-    token().then(function (tk) {
-      if (!tk) return;
-      return fetch('/api/request', { method: 'POST', keepalive: true, headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + tk },
-        body: JSON.stringify({ package: pkg, lang: L() }) }).then(function (r) {
-        if (r.ok) { notice = { kind: 'ok', text: t('saved').replace('{p}', name) }; loadOrders(); }
-      });
-    }).catch(function () {});
-  });
+  // Legătura cu formularul de comandă (assets/js/order.js).
+  window.AmanAccount = {
+    ready: function () { return !!cfg; },
+    enabled: function () { return !!(cfg && cfg.auth); },
+    user: function () { return session && session.user; },
+    token: token,
+    login: login,
+    lang: L,
+    refresh: function (n) { if (n) notice = n; return loadOrders(); },
+  };
+
   // Când clientul revine din Instagram, reîmprospătăm statusurile.
   d.addEventListener('visibilitychange', function () { if (!d.hidden && session && cfg && cfg.auth) loadOrders(); });
 
@@ -185,7 +179,7 @@
     else {
       if (orders.some(function (o) { return o.status === 'requested'; })) h += '<p class="banner">' + t('how') + '</p>';
       h += '<ul class="orders">' + orders.map(function (o) {
-        return '<li class="order"><div class="o-top"><div><h4>' + esc(o.title) + '</h4><span class="muted">' + date(o.created_at) + ' · ' + money(o) + '</span></div>' +
+        return '<li class="order"><div class="o-top"><div><h4>' + esc(o.title) + '</h4><span class="muted">' + (o.code ? '<b class="ocode">' + esc(o.code) + '</b> · ' : '') + date(o.created_at) + ' · ' + money(o) + '</span></div>' +
           '<span class="pill s-' + esc(o.status) + '">' + esc(t('st')[o.status] || o.status) + '</span></div>' +
           (o.note ? '<p class="o-note"><span>' + t('note') + '</span>' + esc(o.note) + '</p>' : '') +
           (o.status === 'requested' ? (confirmCancel === o.id
@@ -219,7 +213,7 @@
     render();
     try { var r = await fetch('/api/config', { cache: 'no-store' }); cfg = r.ok ? await r.json() : { auth: false }; }
     catch (e) { cfg = { auth: false }; }
-    if (!cfg.auth) return render();
+    if (!cfg.auth) { render(); return d.dispatchEvent(new CustomEvent('aman:ready')); }
     var q = new URLSearchParams(location.search);
     if (q.get('auth') && q.get('code')) {
       try { saveSession(await authPost('pkce', { auth_code: q.get('code'), code_verifier: sload(PKCE) || '' })); }
@@ -236,5 +230,6 @@
       var tk = await token();
       if (tk) fetch('/api/admin', { headers: { Authorization: 'Bearer ' + tk } }).then(function (r) { if (r.ok) { isAdmin = true; render(); } }).catch(function () {});
     }
+    d.dispatchEvent(new CustomEvent('aman:ready'));
   })();
 })();

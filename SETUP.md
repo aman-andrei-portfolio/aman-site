@@ -5,11 +5,12 @@ plata se face prin transfer bancar, după ce stabiliți detaliile pe Instagram.
 
 ## Cum funcționează
 
-1. Clientul apasă „Aleg Mini / Starter / Business” la Pachete. Se deschide Instagram ca să-ți scrie.
-2. Dacă e logat pe site, cererea apare automat în contul lui, cu statusul
-   **„Cerere trimisă · aștept plata”**.
-3. Îi trimiți pe Instagram contul pentru transfer.
-4. Când primești banii, schimbi statusul comenzii (vezi mai jos). Clientul îl vede în cont.
+1. Clientul apasă „Aleg” la un serviciu sau pachet și se loghează cu Google.
+2. Completează formularul: ce vrea, username-ul de Instagram și materialele lui
+   (poze de editat, clipuri, logo). Limita de fișiere depinde de opțiune (ex. 1 la „1 fotografie”).
+3. Primește un **cod de comandă** (ex. `AM-K7P2Q`) și un mesaj gata scris, pe care ți-l trimite pe Instagram.
+4. Cauți codul în panou, vezi tot ce a trimis și îi dai detaliile de plată.
+5. Când primești banii, schimbi statusul. Clientul îl vede în cont.
 
 ## Cum gestionezi comenzile
 

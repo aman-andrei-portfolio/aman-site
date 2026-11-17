@@ -5,17 +5,18 @@
 const env = (k) => (process.env[k] || '').trim();
 
 // Pachetele care pot fi cerute din site. Prețul e stabilit aici, pe server.
+// max = câte fișiere poate urca clientul la comandă (poze de editat, clipuri, logo etc.)
 const CATALOG = {
-  mini:     { name: { ro: 'Pachet Mini',           en: 'Mini package' },           ron: 12900, eur: 2500 },
-  starter:  { name: { ro: 'Pachet Starter',        en: 'Starter package' },        ron: 27900, eur: 5500 },
-  business: { name: { ro: 'Pachet Business Basic', en: 'Business Basic package' }, ron: 85900, eur: 16900 },
-  'web-landing':    { name: { ro: 'Pagină de prezentare', en: 'Landing page' },   ron: 42900, eur: 8500 },
-  'web-simplu':     { name: { ro: 'Site simplu',          en: 'Simple site' },    ron: 68900, eur: 13500 },
-  'web-business':   { name: { ro: 'Site pentru afaceri',  en: 'Business site' },  ron: 85900, eur: 16900 },
-  'video-scurt':    { name: { ro: 'Video scurt',          en: 'Short video' },    ron: 4500,  eur: 900 },
-  'video-standard': { name: { ro: 'Video standard',       en: 'Standard video' }, ron: 7900,  eur: 1500 },
-  'foto-1':         { name: { ro: '1 fotografie',         en: '1 photo' },        ron: 1900,  eur: 400 },
-  'foto-10':        { name: { ro: '10 fotografii',        en: '10 photos' },      ron: 12900, eur: 2500 },
+  mini:             { name: { ro: 'Pachet Mini',           en: 'Mini package' },           ron: 12900, eur: 2500,  max: 15 },
+  starter:          { name: { ro: 'Pachet Starter',        en: 'Starter package' },        ron: 27900, eur: 5500,  max: 15 },
+  business:         { name: { ro: 'Pachet Business Basic', en: 'Business Basic package' }, ron: 85900, eur: 16900, max: 15 },
+  'web-landing':    { name: { ro: 'Pagină de prezentare', en: 'Landing page' },   ron: 42900, eur: 8500,  max: 10 },
+  'web-simplu':     { name: { ro: 'Site simplu',          en: 'Simple site' },    ron: 68900, eur: 13500, max: 10 },
+  'web-business':   { name: { ro: 'Site pentru afaceri',  en: 'Business site' },  ron: 85900, eur: 16900, max: 10 },
+  'video-scurt':    { name: { ro: 'Video scurt',          en: 'Short video' },    ron: 4500,  eur: 900,   max: 3 },
+  'video-standard': { name: { ro: 'Video standard',       en: 'Standard video' }, ron: 7900,  eur: 1500,  max: 3 },
+  'foto-1':         { name: { ro: '1 fotografie',         en: '1 photo' },        ron: 1900,  eur: 400,   max: 1 },
+  'foto-10':        { name: { ro: '10 fotografii',        en: '10 photos' },      ron: 12900, eur: 2500,  max: 10 },
 };
 
 function send(res, status, body) {
@@ -97,11 +98,12 @@ async function storage(path, { method = 'POST', body, headers = {} } = {}) {
 }
 
 // Fișierele unei comenzi, cu linkuri de descărcare valabile o oră.
-async function listFiles(orderId) {
-  const items = await storage('object/list/' + BUCKET, { body: { prefix: orderId, limit: 100, offset: 0, sortBy: { column: 'created_at', order: 'asc' } } });
+// folder = orderId (fișierele livrate de tine) sau orderId + '/client' (materialele trimise de client)
+async function listFiles(folder) {
+  const items = await storage('object/list/' + BUCKET, { body: { prefix: folder, limit: 100, offset: 0, sortBy: { column: 'created_at', order: 'asc' } } });
   const files = (items || []).filter((f) => f.id && f.name && !f.name.startsWith('.'));
   if (!files.length) return [];
-  const signed = await storage('object/sign/' + BUCKET, { body: { expiresIn: 3600, paths: files.map((f) => orderId + '/' + f.name) } });
+  const signed = await storage('object/sign/' + BUCKET, { body: { expiresIn: 3600, paths: files.map((f) => folder + '/' + f.name) } });
   const base = env('SUPABASE_URL') + '/storage/v1';
   return files.map((f, i) => {
     const s = signed[i] || {};
@@ -111,11 +113,29 @@ async function listFiles(orderId) {
   });
 }
 
+// names = doar acele fișiere livrate; fără names = tot ce ține de comandă (inclusiv materialele clientului)
 async function removeFiles(orderId, names) {
-  let list = names;
-  if (!list) { const items = await storage('object/list/' + BUCKET, { body: { prefix: orderId, limit: 1000, offset: 0 } }); list = (items || []).filter((f) => f.id).map((f) => f.name); }
-  if (!list.length) return;
-  await storage('object/' + BUCKET, { method: 'DELETE', body: { prefixes: list.map((n) => orderId + '/' + n) } });
+  const paths = [];
+  if (names) names.forEach((n) => paths.push(orderId + '/' + n));
+  else {
+    for (const folder of [orderId, orderId + '/client']) {
+      const items = await storage('object/list/' + BUCKET, { body: { prefix: folder, limit: 1000, offset: 0 } });
+      (items || []).filter((f) => f.id).forEach((f) => paths.push(folder + '/' + f.name));
+    }
+  }
+  if (!paths.length) return;
+  await storage('object/' + BUCKET, { method: 'DELETE', body: { prefixes: paths } });
+}
+
+// Cod scurt de comandă, ușor de dictat: fără litere/cifre care se confundă (0/O, 1/I/L).
+function orderCode() {
+  const A = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+  const b = require('crypto').randomBytes(5);
+  return 'AM-' + Array.from(b, (x) => A[x % A.length]).join('');
+}
+function cleanInstagram(v) {
+  const h = String(v || '').trim().replace(/^https?:\/\/(www\.)?instagram\.com\//i, '').replace(/^@/, '').replace(/[/?#].*$/, '');
+  return /^[A-Za-z0-9._]{1,30}$/.test(h) ? h.toLowerCase() : '';
 }
 
 // Nume de fișier sigur: fără diacritice, spații sau caractere speciale.
@@ -141,4 +161,4 @@ function handle(fn) {
   };
 }
 
-module.exports = { env, CATALOG, send, sameOrigin, readJson, configured, getUser, db, authAdmin, handle, BUCKET, MAX_FILE, storage, listFiles, removeFiles, safeName, isAdmin };
+module.exports = { env, CATALOG, send, sameOrigin, readJson, configured, getUser, db, authAdmin, handle, BUCKET, MAX_FILE, storage, listFiles, removeFiles, safeName, isAdmin, orderCode, cleanInstagram };

@@ -14,6 +14,9 @@ create table if not exists public.orders (
   -- requested = cerere trimisă din site, aștept plata prin transfer
   status            text not null default 'requested'
                     check (status in ('requested', 'paid', 'in_progress', 'review', 'delivered', 'cancelled', 'refunded')),
+  code              text unique,                             -- codul comenzii, ex. AM-K7P2Q (îl trimite clientul pe Instagram)
+  instagram         text,                                    -- username-ul de Instagram al clientului
+  brief             text,                                    -- ce dorește clientul, scris de el
   note              text,                                    -- mesaj de la tine pentru client (opțional)
   delivery_url      text,                                    -- link către fișierele livrate (opțional)
   paid_at           timestamptz,

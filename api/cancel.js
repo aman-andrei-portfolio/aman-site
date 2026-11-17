@@ -1,7 +1,7 @@
 // Clientul își anulează o cerere neplătită (statusul „requested”).
 // Comenzile plătite nu pot fi anulate de aici; pentru ele clientul îți scrie.
 'use strict';
-const { send, sameOrigin, readJson, configured, getUser, db, handle } = require('./_lib');
+const { send, sameOrigin, readJson, configured, getUser, db, handle, removeFiles } = require('./_lib');
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -17,5 +17,6 @@ module.exports = handle(async (req, res) => {
 
   const gone = await db(`orders?id=eq.${id}&user_id=eq.${user.id}&status=eq.requested`, { method: 'DELETE', prefer: 'return=representation' });
   if (!gone || !gone.length) return send(res, 409, { error: 'Cererea nu mai poate fi anulată. Scrie-mi pe Instagram.' });
+  await removeFiles(id); // materialele trimise la comandă se șterg odată cu ea
   send(res, 200, { cancelled: true });
 });

@@ -3,7 +3,7 @@
 (function () {
   'use strict';
   var d = document, app = d.getElementById('app');
-  var cfg = null, session = null, orders = [], tab = 'new';
+  var cfg = null, session = null, orders = [], tab = 'new', query = '';
   var KEY = 'aman.session';
   var LABEL = { requested: 'Cerere nouă', paid: 'Plătită', in_progress: 'În lucru', review: 'De verificat', delivered: 'Livrată', cancelled: 'Anulată', refunded: 'Rambursată' };
   var FLOW = ['requested', 'paid', 'in_progress', 'review', 'delivered', 'cancelled'];
@@ -34,7 +34,7 @@
   }
 
   function msg(text, withLogin) {
-    d.getElementById('reload').hidden = true; d.getElementById('help').hidden = true;
+    d.getElementById('reload').hidden = true; d.getElementById('help').hidden = true; d.getElementById('q').hidden = true;
     app.innerHTML = '<div class="box"><p>' + text + '</p>' + (withLogin ? '<a class="btn" href="/#cont">Intră în cont cu Google</a>' : '') + '</div>';
   }
 
@@ -49,6 +49,15 @@
   }
 
   function size(n) { return n > 1048576 ? (n / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(n / 1024)) + ' KB'; }
+  async function loadClient(li) {
+    var tk = await token(); if (!tk) return;
+    var r = await fetch('/api/files?kind=client&order=' + li.dataset.id, { headers: { Authorization: 'Bearer ' + tk } });
+    var j = await r.json().catch(function () { return {}; });
+    var files = (j.files && j.files[li.dataset.id]) || [];
+    li.querySelector('[data-clist]').innerHTML = files.length ? files.map(function (f) {
+      return '<li><a href="' + esc(f.download) + '">' + esc(f.name) + '</a><span class="meta">' + size(f.size) + '</span><a class="x dl" href="' + esc(f.download) + '">Descarcă</a></li>';
+    }).join('') : '<li class="meta">Clientul nu a trimis fișiere.</li>';
+  }
   async function loadFiles(li) {
     var tk = await token(); if (!tk) return;
     var r = await fetch('/api/files?order=' + li.dataset.id, { headers: { Authorization: 'Bearer ' + tk } });
@@ -93,21 +102,29 @@
   }
 
   function render() {
-    d.getElementById('reload').hidden = false; d.getElementById('help').hidden = false;
+    d.getElementById('reload').hidden = false; d.getElementById('help').hidden = false; d.getElementById('q').hidden = false;
     var count = function (k) { return orders.filter(function (o) { return TABS[k].indexOf(o.status) >= 0; }).length; };
     var h = '<div class="tabs" role="tablist">' + Object.keys(TABS).map(function (k) {
       return '<button type="button" role="tab" data-tab="' + k + '" aria-selected="' + (k === tab) + '">' + TAB_NAME[k] + '<b>' + count(k) + '</b></button>';
     }).join('') + '</div>';
-    var list = orders.filter(function (o) { return TABS[tab].indexOf(o.status) >= 0; });
-    if (!list.length) h += '<p class="empty">Nimic aici deocamdată.</p>';
+    var q = query.trim().toLowerCase().replace(/^@/, '');
+    var list = q
+      ? orders.filter(function (o) { return [o.code, o.instagram, o.customer_name, o.email, o.title].some(function (v) { return v && String(v).toLowerCase().indexOf(q) >= 0; }); })
+      : orders.filter(function (o) { return TABS[tab].indexOf(o.status) >= 0; });
+    if (q) h = '<p class="meta" style="margin-bottom:12px">' + list.length + (list.length === 1 ? ' rezultat' : ' rezultate') + ' pentru „' + esc(query.trim()) + '”, din toate comenzile</p>';
+    if (!list.length) h += '<p class="empty">' + (q ? 'Nicio comandă găsită. Verifică codul sau username-ul.' : 'Nimic aici deocamdată.') + '</p>';
     else h += '<ul class="list">' + list.map(card).join('') + '</ul>';
     app.innerHTML = h;
-    app.querySelectorAll('.card').forEach(loadFiles);
+    app.querySelectorAll('.card').forEach(function (li) { loadFiles(li); loadClient(li); });
   }
 
   function card(o) {
     return '<li class="card" data-id="' + o.id + '">' +
-      '<div class="head"><div><h2>' + esc(o.title) + '</h2><div class="who">' + esc(o.customer_name || 'Fără nume') + (o.email ? ' · ' + esc(o.email) : '') + '</div></div><span class="price">' + money(o) + '</span></div>' +
+      '<div class="head"><div>' + (o.code ? '<p class="code">' + esc(o.code) + '</p>' : '') + '<h2>' + esc(o.title) + '</h2><div class="who">' + esc(o.customer_name || 'Fără nume') + (o.email ? ' · ' + esc(o.email) : '') + '</div>' +
+        (o.instagram ? '<a class="igh" href="https://www.instagram.com/' + encodeURIComponent(o.instagram) + '/" target="_blank" rel="noopener">@' + esc(o.instagram) + '</a>' : '<span class="meta">Fără Instagram</span>') +
+        '</div><span class="price">' + money(o) + '</span></div>' +
+      (o.brief ? '<div class="brief"><label>Ce vrea clientul</label><p>' + esc(o.brief) + '</p></div>' : '') +
+      '<div class="files cl"><label>Materiale de la client</label><ul class="flist" data-clist><li class="meta">Se încarcă…</li></ul></div>' +
       '<div class="st">' + FLOW.map(function (s) { return '<button type="button" data-s="' + s + '" aria-pressed="' + (o.status === s) + '">' + LABEL[s] + '</button>'; }).join('') + '</div>' +
       '<div><label for="n-' + o.id + '">Mesaj pentru client</label><textarea id="n-' + o.id + '" maxlength="1000" placeholder="ex: Am primit plata, livrez joi.">' + esc(o.note || '') + '</textarea></div>' +
       '<div><label for="u-' + o.id + '">Link livrare (opțional)</label><input type="url" id="u-' + o.id + '" placeholder="https://drive.google.com/…" value="' + esc(o.delivery_url || '') + '"/></div>' +
@@ -146,6 +163,7 @@
     if (e.target.matches('[data-up]') && e.target.files.length) { upload(e.target.closest('.card'), Array.prototype.slice.call(e.target.files)); e.target.value = ''; }
   });
   d.getElementById('reload').addEventListener('click', load);
+  d.getElementById('q').addEventListener('input', function (e) { query = e.target.value; if (orders.length || query) render(); });
 
   (async function init() {
     try { var r = await fetch('/api/config', { cache: 'no-store' }); cfg = r.ok ? await r.json() : { auth: false }; } catch (e) { cfg = { auth: false }; }
