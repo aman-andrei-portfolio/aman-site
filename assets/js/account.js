@@ -101,8 +101,10 @@
   d.addEventListener('click', function (e) {
     var b = e.target.closest('[data-buy]');
     if (!b || !cfg || !cfg.auth || !session) return;
-    var pkg = b.dataset.buy, card = b.closest('.pack'), h4 = card && card.querySelector('h4');
-    var name = h4 ? h4.textContent : pkg;
+    var pkg = b.dataset.buy, card = b.closest('.pack'), li = b.closest('li');
+    var el = card ? card.querySelector('h4') : li && li.querySelector('strong');
+    if (el && el.firstElementChild) el = el.firstElementChild;
+    var name = el ? el.textContent : pkg;
     token().then(function (tk) {
       if (!tk) return;
       return fetch('/api/request', { method: 'POST', keepalive: true, headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + tk },

@@ -9,6 +9,13 @@ const CATALOG = {
   mini:     { name: { ro: 'Pachet Mini',           en: 'Mini package' },           ron: 12900, eur: 2500 },
   starter:  { name: { ro: 'Pachet Starter',        en: 'Starter package' },        ron: 27900, eur: 5500 },
   business: { name: { ro: 'Pachet Business Basic', en: 'Business Basic package' }, ron: 85900, eur: 16900 },
+  'web-landing':    { name: { ro: 'Pagină de prezentare', en: 'Landing page' },   ron: 42900, eur: 8500 },
+  'web-simplu':     { name: { ro: 'Site simplu',          en: 'Simple site' },    ron: 68900, eur: 13500 },
+  'web-business':   { name: { ro: 'Site pentru afaceri',  en: 'Business site' },  ron: 85900, eur: 16900 },
+  'video-scurt':    { name: { ro: 'Video scurt',          en: 'Short video' },    ron: 4500,  eur: 900 },
+  'video-standard': { name: { ro: 'Video standard',       en: 'Standard video' }, ron: 7900,  eur: 1500 },
+  'foto-1':         { name: { ro: '1 fotografie',         en: '1 photo' },        ron: 1900,  eur: 400 },
+  'foto-10':        { name: { ro: '10 fotografii',        en: '10 photos' },      ron: 12900, eur: 2500 },
 };
 
 function send(res, status, body) {

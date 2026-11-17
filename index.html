@@ -161,8 +161,11 @@ section{padding-block:clamp(48px,7vw,88px)}
 .rows strong{font-weight:600}
 .rows .price{font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
 .rows .price s{color:var(--fg-2);font-weight:400;margin-right:6px}
-.rows small{grid-column:1/-1;color:var(--fg-2);font-size:14px;line-height:1.43}
+.rows small{grid-column:1;color:var(--fg-2);font-size:14px;line-height:1.43}
+.rows .pick{grid-column:2;grid-row:2;justify-self:end;align-self:start;font-size:13px;font-weight:500;color:#fff;background:var(--blue);border-radius:980px;padding:5px 14px;margin-top:2px;transition:background .2s}
+.rows .pick:hover{background:#0077ed;text-decoration:none}
 .tag{display:inline-block;margin-left:8px;font-size:12px;font-weight:600;color:#b64400;vertical-align:1px}
+.rows .tag{display:block;margin:2px 0 0}
 .incl{margin-top:16px;font-size:14px;color:var(--fg-2);line-height:1.43}
 @media(max-width:860px){.price-cards{grid-template-columns:1fr}}
 
@@ -420,25 +423,25 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
       <div class="pc rv">
         <h3>Web</h3>
         <ul class="rows">
-          <li><strong data-en="Landing page">Pagină de prezentare</strong><span class="price" data-en="€85">429 lei</span><small data-en="One page, ready to launch quickly.">O pagină, gata de lansat repede.</small></li>
-          <li><strong><span data-en="Simple site">Site simplu</span><span class="tag" data-en="Recommended">Recomandat</span></strong><span class="price" data-en="€135">689 lei</span><small data-en="For a portfolio or a small business.">Pentru portofoliu sau afacere mică.</small></li>
-          <li><strong data-en="Business site">Site pentru afaceri</strong><span class="price" data-en="€169">859 lei</span><small data-en="A complete presence, ready to grow.">Prezență completă, gata să crească.</small></li>
+          <li><strong data-en="Landing page">Pagină de prezentare</strong><span class="price" data-en="€85">429 lei</span><small data-en="One page, ready to launch quickly.">O pagină, gata de lansat repede.</small><a class="pick" href="https://ig.me/m/costi1andrei" target="_blank" rel="noopener" data-buy="web-landing" data-en="Choose">Aleg</a></li>
+          <li><strong><span data-en="Simple site">Site simplu</span><span class="tag" data-en="Recommended">Recomandat</span></strong><span class="price" data-en="€135">689 lei</span><small data-en="For a portfolio or a small business.">Pentru portofoliu sau afacere mică.</small><a class="pick" href="https://ig.me/m/costi1andrei" target="_blank" rel="noopener" data-buy="web-simplu" data-en="Choose">Aleg</a></li>
+          <li><strong data-en="Business site">Site pentru afaceri</strong><span class="price" data-en="€169">859 lei</span><small data-en="A complete presence, ready to grow.">Prezență completă, gata să crească.</small><a class="pick" href="https://ig.me/m/costi1andrei" target="_blank" rel="noopener" data-buy="web-business" data-en="Choose">Aleg</a></li>
         </ul>
         <p class="incl" data-en="Mobile-first, 1 revision round, delivery in 3–7 days.">Optimizat pentru mobil, 1 rundă de revizii, livrare în 3–7 zile.</p>
       </div>
       <div class="pc rv">
         <h3>Video</h3>
         <ul class="rows">
-          <li><strong data-en="Short video">Video scurt</strong><span class="price" data-en="€9">45 lei</span><small data-en="Reels, stories, short promos.">Reels, story-uri, promo-uri scurte.</small></li>
-          <li><strong data-en="Standard video">Video standard</strong><span class="price" data-en="€15">79 lei</span><small data-en="A stronger edit for more serious content.">Montaj mai solid, pentru conținut mai serios.</small></li>
+          <li><strong data-en="Short video">Video scurt</strong><span class="price" data-en="€9">45 lei</span><small data-en="Reels, stories, short promos.">Reels, story-uri, promo-uri scurte.</small><a class="pick" href="https://ig.me/m/costi1andrei" target="_blank" rel="noopener" data-buy="video-scurt" data-en="Choose">Aleg</a></li>
+          <li><strong data-en="Standard video">Video standard</strong><span class="price" data-en="€15">79 lei</span><small data-en="A stronger edit for more serious content.">Montaj mai solid, pentru conținut mai serios.</small><a class="pick" href="https://ig.me/m/costi1andrei" target="_blank" rel="noopener" data-buy="video-standard" data-en="Choose">Aleg</a></li>
         </ul>
         <p class="incl" data-en="Color and audio sync, subtitles on request, 9:16, 16:9 or 1:1, delivery in 24–48 h.">Culoare și sincronizare audio, subtitrări la cerere, 9:16, 16:9 sau 1:1, livrare în 24–48 h.</p>
       </div>
       <div class="pc rv">
         <h3 data-en="Photo">Foto</h3>
         <ul class="rows">
-          <li><strong data-en="1 photo">1 fotografie</strong><span class="price" data-en="€4">19 lei</span><small data-en="A quick fix for a single photo.">Soluție rapidă pentru o singură poză.</small></li>
-          <li><strong data-en="10 photos">10 fotografii</strong><span class="price" data-en="&lt;s&gt;€40&lt;/s&gt;€25"><s>190</s>129 lei</span><small data-en="Same style across the set. You save €15.">Același stil pe tot setul. Economisești 61 lei.</small></li>
+          <li><strong data-en="1 photo">1 fotografie</strong><span class="price" data-en="€4">19 lei</span><small data-en="A quick fix for a single photo.">Soluție rapidă pentru o singură poză.</small><a class="pick" href="https://ig.me/m/costi1andrei" target="_blank" rel="noopener" data-buy="foto-1" data-en="Choose">Aleg</a></li>
+          <li><strong data-en="10 photos">10 fotografii</strong><span class="price" data-en="&lt;s&gt;€40&lt;/s&gt;€25"><s>190</s>129 lei</span><small data-en="Same style across the set. You save €15.">Același stil pe tot setul. Economisești 61 lei.</small><a class="pick" href="https://ig.me/m/costi1andrei" target="_blank" rel="noopener" data-buy="foto-10" data-en="Choose">Aleg</a></li>
         </ul>
         <p class="incl" data-en="Skin retouch, object and background removal, JPG + PNG, same-day delivery.">Retuș de ten, eliminare obiecte și fundal, JPG + PNG, livrare în aceeași zi.</p>
       </div>
