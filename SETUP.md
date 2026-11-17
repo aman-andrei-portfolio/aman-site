@@ -13,6 +13,17 @@ plata se face prin transfer bancar, după ce stabiliți detaliile pe Instagram.
 
 ## Cum gestionezi comenzile
 
+Deschide **<https://costi1andrei.site/admin.html>**, logat cu Google pe contul tău.
+Linkul apare și în pagina Cont, ca buton „Panou comenzi”. Au acces doar conturile din
+variabila `ADMIN_USER_IDS` din Vercel (id-ul contului din Supabase → Authentication → Users).
+
+- Apeși pe status (Cerere nouă, Plătită, În lucru, De verificat, Livrată, Anulată), iar clientul îl vede imediat.
+- Scrii un mesaj pentru client și, la final, linkul cu fișierele, apoi apeși **Salvează**.
+- Data plății se completează singură când pui „Plătită”.
+
+### Varianta avansată: direct în Supabase
+
+
 Supabase → proiectul **costi1andrei website** → **Table Editor → orders**
 (<https://supabase.com/dashboard/project/qjfvphhsqvutuxlxrvec/editor>).
 
@@ -34,7 +45,7 @@ tu comanda: **Insert row**, cu `user_id` luat din **Authentication → Users** (
 - **Google Cloud** (proiectul `Aman`, Google Auth Platform): clientul OAuth pentru „Continuă cu Google”.
   Redirect URI: `https://qjfvphhsqvutuxlxrvec.supabase.co/auth/v1/callback`.
 - **Vercel** (proiectul `aman-site`) → Settings → Environment Variables:
-  `SITE_URL`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`.
+  `SITE_URL`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `ADMIN_USER_IDS`.
 
 Fără aceste variabile, pagina Cont spune „în curând”, iar butoanele duc doar pe Instagram.
 

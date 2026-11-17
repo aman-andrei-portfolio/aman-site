@@ -5,7 +5,7 @@
   'use strict';
   var d = document, box = d.getElementById('acct');
   if (!box) return;
-  var cfg = null, session = null, orders = null, notice = null, busy = false, confirmDel = false, confirmCancel = null;
+  var cfg = null, session = null, orders = null, notice = null, busy = false, confirmDel = false, confirmCancel = null, isAdmin = false;
   var KEY = 'aman.session', PKCE = 'aman.pkce';
   var IG = 'https://www.instagram.com/costi1andrei/';
 
@@ -163,6 +163,7 @@
     }
     var u = session.user || {};
     h += '<div class="who"><div><strong>' + esc(u.name || u.email) + '</strong>' + (u.name ? '<span>' + esc(u.email) + '</span>' : '') + '</div><button type="button" class="more plain" id="logout">' + t('logout') + '</button></div>';
+    if (isAdmin) h += '<a class="btn admin-link" href="/admin.html">Panou comenzi</a>';
     if (orders === null) h += '<p class="muted">' + t('loading') + '</p>';
     else if (!orders.length) h += '<div class="acct-card center"><p class="muted">' + t('empty') + '</p><div class="ctas"><a class="btn" href="#preturi" id="see-packs">' + t('seePacks') + '</a></div></div>';
     else {
@@ -212,6 +213,11 @@
     }
     if (!session) session = load(KEY);
     render();
-    if (session) await loadOrders();
+    if (session) {
+      await loadOrders();
+      // Doar pentru administrator: serverul răspunde 200 numai dacă emailul e în ADMIN_EMAILS.
+      var tk = await token();
+      if (tk) fetch('/api/admin', { headers: { Authorization: 'Bearer ' + tk } }).then(function (r) { if (r.ok) { isAdmin = true; render(); } }).catch(function () {});
+    }
   })();
 })();
