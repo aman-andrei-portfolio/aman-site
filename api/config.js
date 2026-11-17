@@ -5,7 +5,7 @@ const { env, send, configured, handle } = require('./_lib');
 
 module.exports = handle(async (req, res) => {
   const c = configured();
-  const key = env('STRIPE_SECRET_KEY');
+  const key = env('AMAN_STRIPE_SECRET_KEY');
   send(res, 200, {
     auth: c.auth,
     payments: c.auth && c.payments,

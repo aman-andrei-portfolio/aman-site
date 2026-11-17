@@ -51,7 +51,7 @@ client vine în curând, iar butoanele de la pachete duc pe Instagram.
 
 1. Intră pe <https://dashboard.stripe.com/register> și creează contul.
    Lasă-l în **Test mode** (comutatorul din dreapta sus). Așa nu se încasează bani reali.
-2. **Developers → API keys** → copiază **Secret key** (`sk_test_...`) → `STRIPE_SECRET_KEY`.
+2. **Developers → API keys** → copiază **Secret key** (`sk_test_...`) → `AMAN_STRIPE_SECRET_KEY`.
 3. **Developers → Webhooks → Add endpoint**:
    - Endpoint URL: `https://costi1andrei.site/api/stripe-webhook`
    - Events: `checkout.session.completed`, `checkout.session.async_payment_succeeded`,
@@ -70,7 +70,7 @@ Proiectul site-ului în Vercel → **Settings → Environment Variables** → ad
 | `SUPABASE_URL` | de la 1.4 |
 | `SUPABASE_ANON_KEY` | de la 1.4 |
 | `SUPABASE_SERVICE_ROLE_KEY` | de la 1.4 (secret) |
-| `STRIPE_SECRET_KEY` | de la 3.2 (secret) |
+| `AMAN_STRIPE_SECRET_KEY` | de la 3.2 (secret). Numele e diferit de `STRIPE_SECRET_KEY` pus de integrarea Stripe din Vercel, ca site-ul să nu folosească din greșeală o cheie live veche. |
 | `STRIPE_WEBHOOK_SECRET` | de la 3.3 (secret) |
 
 Apoi **Deployments → ultimul deploy → Redeploy**.
@@ -106,7 +106,7 @@ Plățile reale **nu** trebuie pornite până nu e clară partea legală:
 2. **Termenii.** În `termeni.html` completează căsuța galbenă: forma legală și adresa poștală,
    cum cere OUG 34/2014 pentru vânzările la distanță.
 3. **Stripe live.** În Stripe apeși **Activate payments** și completezi datele (identitate, IBAN).
-   Apoi înlocuiești în Vercel `STRIPE_SECRET_KEY` cu cheia `sk_live_...` și creezi webhook-ul
+   Apoi înlocuiești în Vercel `AMAN_STRIPE_SECRET_KEY` cu cheia `sk_live_...` și creezi webhook-ul
    și în modul live, cu noul `whsec_...`. Redeploy.
 
 ## Ce e deja făcut pentru siguranță și GDPR

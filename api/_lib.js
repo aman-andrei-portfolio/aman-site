@@ -47,7 +47,7 @@ async function readJson(req) {
 function configured() {
   return {
     auth: !!(env('SUPABASE_URL') && env('SUPABASE_ANON_KEY') && env('SUPABASE_SERVICE_ROLE_KEY')),
-    payments: !!(env('STRIPE_SECRET_KEY') && env('STRIPE_WEBHOOK_SECRET')),
+    payments: !!(env('AMAN_STRIPE_SECRET_KEY') && env('STRIPE_WEBHOOK_SECRET')),
   };
 }
 
@@ -94,7 +94,7 @@ function form(obj, prefix, out = []) {
 }
 
 async function stripe(path, params, idempotencyKey) {
-  const headers = { Authorization: 'Bearer ' + env('STRIPE_SECRET_KEY'), 'Content-Type': 'application/x-www-form-urlencoded' };
+  const headers = { Authorization: 'Bearer ' + env('AMAN_STRIPE_SECRET_KEY'), 'Content-Type': 'application/x-www-form-urlencoded' };
   if (idempotencyKey) headers['Idempotency-Key'] = idempotencyKey;
   // STRIPE_API_BASE e folosit doar în testele locale; în producție rămâne api.stripe.com.
   const r = await fetch((env('STRIPE_API_BASE') || 'https://api.stripe.com') + '/v1/' + path, { method: 'POST', headers, body: form(params) });
