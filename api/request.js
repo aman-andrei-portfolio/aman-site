@@ -17,7 +17,7 @@ module.exports = handle(async (req, res) => {
   const body = await readJson(req);
   const key = String(body.package || '');
   const pkg = CATALOG[key];
-  if (!pkg) return send(res, 400, { error: 'Opțiune necunoscută.' });
+  if (!pkg || pkg.editorOnly) return send(res, 400, { error: 'Opțiune necunoscută.' });
   const lang = body.lang === 'en' ? 'en' : 'ro';
   const currency = lang === 'en' ? 'eur' : 'ron';
   const brief = String(body.brief || '').trim().slice(0, 2000) || null;

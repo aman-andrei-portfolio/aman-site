@@ -17,6 +17,8 @@ const CATALOG = {
   'video-standard': { name: { ro: 'Video standard',       en: 'Standard video' }, ron: 7900,  eur: 1500,  max: 3 },
   'foto-1':         { name: { ro: '1 fotografie',         en: '1 photo' },        ron: 1900,  eur: 400,   max: 1 },
   'foto-10':        { name: { ro: '10 fotografii',        en: '10 photos' },      ron: 12900, eur: 2500,  max: 10 },
+  // site făcut de client în editor: se comandă doar din editor, nu din lista de servicii
+  'site-builder':   { name: { ro: 'Site din editor',      en: 'Site from the editor' }, ron: 19900, eur: 3900, max: 0, editorOnly: true },
 };
 
 function send(res, status, body) {
@@ -138,6 +140,18 @@ function cleanInstagram(v) {
   return /^[A-Za-z0-9._]{1,30}$/.test(h) ? h.toLowerCase() : '';
 }
 
+// Descarcă un fișier din spațiul privat (doar pe server).
+async function storageGet(path) {
+  const key = env('SUPABASE_SERVICE_ROLE_KEY');
+  const r = await fetch(env('SUPABASE_URL') + '/storage/v1/object/' + BUCKET + '/' + path.split('/').map(encodeURIComponent).join('/'), { headers: { apikey: key, Authorization: 'Bearer ' + key } });
+  if (!r.ok) return null;
+  return Buffer.from(await r.arrayBuffer());
+}
+async function usedBytes() {
+  const r = await db('rpc/livrari_used_bytes', { method: 'POST', body: {} });
+  return Number(r) || 0;
+}
+
 // Nume de fișier sigur: fără diacritice, spații sau caractere speciale.
 function safeName(name) {
   const n = String(name || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^A-Za-z0-9._-]+/g, '-').replace(/^[-.]+|-+$/g, '').slice(-120);
@@ -161,4 +175,4 @@ function handle(fn) {
   };
 }
 
-module.exports = { env, CATALOG, send, sameOrigin, readJson, configured, getUser, db, authAdmin, handle, BUCKET, MAX_FILE, storage, listFiles, removeFiles, safeName, isAdmin, orderCode, cleanInstagram };
+module.exports = { storageGet, usedBytes, env, CATALOG, send, sameOrigin, readJson, configured, getUser, db, authAdmin, handle, BUCKET, MAX_FILE, storage, listFiles, removeFiles, safeName, isAdmin, orderCode, cleanInstagram };

@@ -60,3 +60,20 @@ $$;
 revoke all on function public.livrari_used_bytes() from public, anon, authenticated;
 grant execute on function public.livrari_used_bytes() to service_role;
 select public.livrari_used_bytes() as used;
+-- Site-uri create de clienți în editor (ciorne). Accesul se face doar prin serverul site-ului.
+create table if not exists public.sites (
+  id          uuid primary key default gen_random_uuid(),
+  user_id     uuid not null references auth.users (id) on delete cascade,
+  template    text not null check (template in ('barber', 'cafe', 'salon', 'portfolio')),
+  data        jsonb not null default '{}'::jsonb,
+  created_at  timestamptz not null default now(),
+  updated_at  timestamptz not null default now()
+);
+create index if not exists sites_user_id_idx on public.sites (user_id);
+alter table public.sites enable row level security;
+revoke all on public.sites from anon, authenticated;
+alter table public.orders add column if not exists site_id uuid references public.sites (id) on delete set null;
+create or replace function public.sites_touch() returns trigger language plpgsql set search_path = '' as $$
+begin new.updated_at := now(); return new; end $$;
+drop trigger if exists sites_touch on public.sites;
+create trigger sites_touch before update on public.sites for each row execute function public.sites_touch();

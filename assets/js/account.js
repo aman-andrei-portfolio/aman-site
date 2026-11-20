@@ -5,7 +5,7 @@
   'use strict';
   var d = document, box = d.getElementById('acct');
   if (!box) return;
-  var cfg = null, session = null, orders = null, notice = null, busy = false, confirmDel = false, confirmCancel = null, isAdmin = false, files = {};
+  var cfg = null, session = null, orders = null, notice = null, busy = false, confirmDel = false, confirmCancel = null, isAdmin = false, files = {}, sites = [];
   var KEY = 'aman.session', PKCE = 'aman.pkce';
   var IG = 'https://www.instagram.com/costi1andrei/';
 
@@ -24,6 +24,7 @@
       delConfirm: 'Sigur? Contul se șterge definitiv. Comenzile plătite rămân doar anonimizate, pentru evidență.',
       delYes: 'Da, șterge contul', delNo: 'Renunț', deleted: 'Contul a fost șters.',
       loginErr: 'Logarea nu a reușit. Încearcă din nou.', expired: 'Sesiunea a expirat. Intră din nou în cont.',
+      zip: 'Descarcă site-ul (ZIP)', openEd: 'Deschide în editor', mySites: 'Site-urile tale din editor', newSite: 'Fă un site nou', edit: 'Continuă editarea', draft: 'Ciornă',
       cancel: 'Anulează cererea', cancelQ: 'Sigur anulezi cererea?', cancelYes: 'Da, anulează', cancelNo: 'Nu', cancelled: 'Cererea a fost anulată.',
       st: { requested: 'Cerere trimisă · aștept plata', paid: 'Plătită · urmează să încep', in_progress: 'În lucru', review: 'Gata de verificare', delivered: 'Livrată', cancelled: 'Anulată', refunded: 'Rambursată' },
     },
@@ -41,6 +42,7 @@
       delConfirm: 'Are you sure? The account is deleted permanently. Paid orders are kept only in anonymised form, for records.',
       delYes: 'Yes, delete it', delNo: 'Cancel', deleted: 'Your account has been deleted.',
       loginErr: 'Sign-in failed. Please try again.', expired: 'Your session expired. Please sign in again.',
+      zip: 'Download the site (ZIP)', openEd: 'Open in the editor', mySites: 'Your sites from the editor', newSite: 'Make a new site', edit: 'Continue editing', draft: 'Draft',
       cancel: 'Cancel request', cancelQ: 'Cancel this request?', cancelYes: 'Yes, cancel', cancelNo: 'No', cancelled: 'The request has been cancelled.',
       st: { requested: 'Request sent · awaiting payment', paid: 'Paid · starting soon', in_progress: 'In progress', review: 'Ready for review', delivered: 'Delivered', cancelled: 'Cancelled', refunded: 'Refunded' },
     },
@@ -89,9 +91,11 @@
   // ---------- comenzi ----------
   async function loadOrders() {
     var tk = await token(); if (!tk) { render(); return; }
-    var r = await fetch(cfg.supabaseUrl + '/rest/v1/orders?select=id,code,title,package,amount,currency,status,note,delivery_url,created_at,paid_at&order=created_at.desc',
+    var r = await fetch(cfg.supabaseUrl + '/rest/v1/orders?select=id,code,title,package,site_id,amount,currency,status,note,delivery_url,created_at,paid_at&order=created_at.desc',
       { headers: { apikey: cfg.supabaseAnonKey, Authorization: 'Bearer ' + tk } });
     orders = r.ok ? await r.json() : [];
+    var sr = await fetch('/api/sites', { headers: { Authorization: 'Bearer ' + tk } }).catch(function () { return null; });
+    sites = sr && sr.ok ? ((await sr.json()).sites || []) : [];
     render();
     // Fișierele livrate: linkuri temporare, generate de server doar pentru comenzile tale.
     if (orders.some(function (o) { return o.status !== 'requested'; })) {
@@ -135,6 +139,15 @@
     render();
   }
 
+  async function downloadZip(siteId, btn) {
+    var tk = await token(); if (!tk) return render();
+    var old = btn.textContent; btn.disabled = true; btn.textContent = '…';
+    var r = await fetch('/api/site-export?id=' + encodeURIComponent(siteId), { headers: { Authorization: 'Bearer ' + tk } });
+    btn.disabled = false; btn.textContent = old;
+    if (!r.ok) { var j = await r.json().catch(function () { return {}; }); notice = { kind: 'warn', text: j.error || 'Eroare.' }; return render(); }
+    var m = (r.headers.get('Content-Disposition') || '').match(/filename="([^"]+)"/);
+    var a = d.createElement('a'); a.href = URL.createObjectURL(await r.blob()); a.download = m ? m[1] : 'site.zip'; d.body.appendChild(a); a.click(); a.remove();
+  }
   async function cancelOrder(id) {
     var tk = await token(); if (!tk) return render();
     busy = true; render();
@@ -188,8 +201,14 @@
             ? '<div class="confirm"><p>' + t('cancelQ') + '</p><div class="row"><button type="button" class="btn danger" data-cancel-yes="' + esc(o.id) + '"' + (busy ? ' disabled' : '') + '>' + t('cancelYes') + '</button><button type="button" class="more plain" data-cancel-no="1">' + t('cancelNo') + '</button></div></div>'
             : '<div class="row o-actions"><a class="more" href="' + IG + '" target="_blank" rel="noopener">' + t('ig') + '</a><button type="button" class="more plain danger" data-cancel="' + esc(o.id) + '">' + t('cancel') + '</button></div>') : '') +
           (o.delivery_url && /^https:\/\//.test(o.delivery_url) ? '<a class="more" href="' + esc(o.delivery_url) + '" target="_blank" rel="noopener">' + t('files') + '</a>' : '') +
-          fileList(files[o.id]) + '</li>';
+          fileList(files[o.id]) +
+          (o.site_id ? '<div class="row o-actions">' + (['paid', 'in_progress', 'review', 'delivered'].indexOf(o.status) >= 0 ? '<button type="button" class="btn small" data-zip="' + esc(o.site_id) + '">' + t('zip') + '</button>' : '') + '<a class="more" href="/editor.html?id=' + esc(o.site_id) + '">' + t('openEd') + '</a></div>' : '') + '</li>';
       }).join('') + '</ul>';
+    }
+    if (sites.length) {
+      h += '<div class="sites"><p class="eyebrow">' + t('mySites') + '</p><ul>' + sites.map(function (x) {
+        return '<li><span><strong>' + esc(x.name || 'Site fără nume') + '</strong><small>' + (x.order ? esc(x.order.code) + ' · ' + esc(t('st')[x.order.status] || x.order.status) : t('draft')) + '</small></span><a class="more" href="/editor.html?id=' + esc(x.id) + '">' + t('edit') + '</a></li>';
+      }).join('') + '</ul></div>';
     }
     h += '<div class="data"><p class="eyebrow">' + t('data') + '</p><div class="row">' +
       '<button type="button" class="more plain" id="exp">' + t('export') + '</button>' +
@@ -203,6 +222,7 @@
     if ((x = d.getElementById('del'))) x.addEventListener('click', function () { confirmDel = true; render(); });
     if ((x = d.getElementById('del-no'))) x.addEventListener('click', function () { confirmDel = false; render(); });
     if ((x = d.getElementById('del-yes'))) x.addEventListener('click', deleteAccount);
+    box.querySelectorAll('[data-zip]').forEach(function (b) { b.addEventListener('click', function () { downloadZip(b.dataset.zip, b); }); });
     box.querySelectorAll('[data-cancel]').forEach(function (b) { b.addEventListener('click', function () { confirmCancel = b.dataset.cancel; render(); }); });
     box.querySelectorAll('[data-cancel-no]').forEach(function (b) { b.addEventListener('click', function () { confirmCancel = null; render(); }); });
     box.querySelectorAll('[data-cancel-yes]').forEach(function (b) { b.addEventListener('click', function () { cancelOrder(b.dataset.cancelYes); }); });
@@ -220,11 +240,16 @@
     if (q.get('auth') && q.get('code')) {
       try { saveSession(await authPost('pkce', { auth_code: q.get('code'), code_verifier: sload(PKCE) || '' })); }
       catch (e) { notice = { kind: 'warn', text: t('loginErr') }; }
-      sstore(PKCE, null); goCont();
+      sstore(PKCE, null);
+      var back = sload('aman.return'); sstore('aman.return', null);
+      if (back && /^\/[a-z0-9./?=&-]*$/i.test(back) && session) { location.replace(back); return; }
+      goCont();
     } else if (q.get('auth') && q.get('error')) {
       notice = { kind: 'warn', text: t('loginErr') }; goCont();
     }
     if (!session) session = load(KEY);
+    if (!session && sload('aman.autologin')) { sstore('aman.autologin', null); return login(); }
+    if (session && sload('aman.return')) { var b2 = sload('aman.return'); sstore('aman.return', null); if (/^\/[a-z0-9./?=&-]*$/i.test(b2)) { location.replace(b2); return; } }
     render();
     if (session) {
       await loadOrders();

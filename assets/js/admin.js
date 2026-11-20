@@ -124,6 +124,7 @@
         (o.instagram ? '<a class="igh" href="https://www.instagram.com/' + encodeURIComponent(o.instagram) + '/" target="_blank" rel="noopener">@' + esc(o.instagram) + '</a>' : '<span class="meta">Fără Instagram</span>') +
         '</div><span class="price">' + money(o) + '</span></div>' +
       (o.brief ? '<div class="brief"><label>Ce vrea clientul</label><p>' + esc(o.brief) + '</p></div>' : '') +
+      (o.site_id ? '<div class="brief"><label>Site din editor</label><p>„Plătită” deblochează descărcarea pentru client. <a href="/editor.html?id=' + esc(o.site_id) + '" target="_blank" rel="noopener">Vezi site-ul în editor ›</a></p></div>' : '') +
       '<div class="files cl"><label>Materiale de la client</label><ul class="flist" data-clist><li class="meta">Se încarcă…</li></ul></div>' +
       '<div class="st">' + FLOW.map(function (s) { return '<button type="button" data-s="' + s + '" aria-pressed="' + (o.status === s) + '">' + LABEL[s] + '</button>'; }).join('') + '</div>' +
       '<div><label for="n-' + o.id + '">Mesaj pentru client</label><textarea id="n-' + o.id + '" maxlength="1000" placeholder="ex: Am primit plata, livrez joi.">' + esc(o.note || '') + '</textarea></div>' +

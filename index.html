@@ -336,6 +336,27 @@ a.ccard:hover{text-decoration:none;transform:translateY(-4px);box-shadow:0 20px 
 .btn:active{transform:scale(.97)}
 .btn{transition:background .2s,transform .15s}
 
+/* editor: intrări */
+.builder-sec{padding-block:clamp(56px,8vw,96px) 0}
+.builder{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,5vw,64px);align-items:center;background:linear-gradient(135deg,#f5f5f7,#eef4ff);border-radius:var(--r);padding:clamp(28px,5vw,56px)}
+.builder .lead{margin-top:14px}
+.eyebrow.new{display:inline-block;color:#fff;background:var(--blue);border-radius:980px;padding:3px 10px;font-size:12px;margin-bottom:12px}
+.from-b{font-size:14px;color:var(--fg-2)}
+.mock{background:#111;border-radius:18px;overflow:hidden;box-shadow:0 30px 60px -24px rgba(0,0,0,.4);color:#f2f2f2;transform:rotate(-1.5deg)}
+.mock-bar{display:flex;gap:6px;padding:10px 12px;background:#1c1c1e}.mock-bar i{width:9px;height:9px;border-radius:50%;background:#3a3a3c}
+.mock-hero{padding:26px 22px;display:flex;flex-direction:column;gap:6px;background:linear-gradient(180deg,#1a1a1a,#0f0f10)}
+.mock-hero b{font-size:24px;text-transform:uppercase;letter-spacing:.02em}.mock-hero span{color:#a1a1a6;font-size:14px}
+.mock-hero em{align-self:flex-start;margin-top:10px;font-style:normal;font-weight:600;font-size:13px;background:#c8a24a;color:#111;border-radius:999px;padding:7px 14px}
+.mock-rows{display:flex;flex-direction:column;gap:8px;padding:16px 22px 22px}
+.mock-rows span{display:flex;justify-content:space-between;border:1px solid #2a2a2d;border-radius:12px;padding:10px 12px;font-size:14px}.mock-rows b{color:#c8a24a}
+@media(max-width:860px){.builder{grid-template-columns:1fr}.mock{transform:none}}
+.diy{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding:12px 14px;border-radius:14px;background:#eef4ff;font-size:14px;font-weight:500}
+.diy:hover{text-decoration:none;background:#e3edff}
+.sites{background:var(--bg-2);border-radius:20px;padding:16px 18px}
+.sites ul{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.sites li{display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--bg);border-radius:12px;padding:10px 14px}
+.sites small{display:block;font-size:12px;color:var(--fg-2)}
+
 /* cont */
 #s-cont.in .head .lead{display:none}
 .nav nav a.acct-link{display:inline-flex;align-items:center;gap:6px}
@@ -512,6 +533,20 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
   </div>
 </section>
 
+<section id="s-builder" class="builder-sec" data-view="acasa">
+  <div class="wrap">
+    <div class="builder rv">
+      <div>
+        <p class="eyebrow new" data-en="New">Nou</p>
+        <h2 class="h2" data-en="Make your own site.">Fă-ți singur site-ul.</h2>
+        <p class="lead" data-en="Barber shop, café, salon or portfolio. Pick a template, change the text and photos, and watch it live. You download it after payment.">Frizerie, cafenea, salon sau portofoliu. Alegi un șablon, schimbi textele și pozele și îl vezi live. Îl descarci după plată.</p>
+        <div class="ctas" style="justify-content:flex-start"><a class="btn" href="/editor.html" data-en="Open the editor">Deschide editorul</a><span class="from-b" data-en="€39 · no account needed to try">199 lei · încerci fără cont</span></div>
+      </div>
+      <div class="mock" aria-hidden="true"><div class="mock-bar"><i></i><i></i><i></i></div><div class="mock-hero"><b>Barber Shop Nord</b><span>Tunsori precise, fără grabă.</span><em>Programează-te</em></div><div class="mock-rows"><span>Tuns<b>60 lei</b></span><span>Tuns + barbă<b>90 lei</b></span><span>Barbă<b>40 lei</b></span></div></div>
+    </div>
+  </div>
+</section>
+
 <section id="s-cum" data-view="acasa">
   <div class="wrap">
     <div class="head center rv">
@@ -568,6 +603,7 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
           <li><strong data-en="Business site">Site pentru afaceri</strong><span class="price" data-en="€169">859 lei</span><small data-en="A complete presence, ready to grow.">Prezență completă, gata să crească.</small><a class="pick" href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" data-buy="web-business" data-en="Choose">Aleg</a></li>
         </ul>
         <p class="incl" data-en="Mobile-first, 1 revision round, delivery in 3–7 days.">Optimizat pentru mobil, 1 rundă de revizii, livrare în 3–7 zile.</p>
+        <a class="diy" href="/editor.html"><span data-en="Or make it yourself in the editor">Sau fă-l singur în editor</span><b data-en="€39 ›">199 lei ›</b></a>
       </div>
       <div class="pc rv">
         <h3>Video</h3>

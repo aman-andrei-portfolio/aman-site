@@ -15,7 +15,7 @@ module.exports = handle(async (req, res) => {
   if (!isAdmin(user)) return send(res, 403, { error: 'Nu ai acces la panou.' });
 
   if (req.method === 'GET') {
-    const rows = await db('orders?select=id,code,instagram,brief,title,package,amount,currency,status,note,delivery_url,customer_name,email,created_at,paid_at,updated_at&order=created_at.desc&limit=1000');
+    const rows = await db('orders?select=id,code,instagram,brief,site_id,title,package,amount,currency,status,note,delivery_url,customer_name,email,created_at,paid_at,updated_at&order=created_at.desc&limit=1000');
     return send(res, 200, { orders: rows });
   }
 
