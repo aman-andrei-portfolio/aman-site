@@ -83,23 +83,51 @@ p{margin:0}
 .lang:hover{background:#e8e8ed}
 @media(max-width:600px){.nav nav a.opt{display:none}}
 
-/* hero */
-.hero{padding-block:clamp(56px,9vw,104px) clamp(48px,7vw,88px)}
-.hero h1{font-size:clamp(72px,14vw,140px);line-height:1;letter-spacing:-.05em;font-weight:700;margin-top:10px}
-.hero .lead{margin-top:18px;color:var(--fg)}
-.hero{text-align:center}
-.hero figure{margin:32px 0 0}
-.hero figure img{width:100%;aspect-ratio:4/5;object-fit:cover;object-position:50% 72%;border-radius:var(--r)}
-@media(min-width:880px){
-  .hero{text-align:left;padding-block:clamp(48px,6vw,72px)}
-  .hero .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:center}
-  .hero .lead{margin-inline:0}
-  .hero .ctas{justify-content:flex-start}
-  .hero figure{margin:0;max-width:none}
-  .hero figure img{max-height:calc(100vh - 150px);min-height:440px}
+/* hero: centrat, fără poză; dedesubt o „vitrină” cu cele trei servicii, desenată din cod */
+.hero{padding-block:clamp(56px,9vw,112px) clamp(40px,6vw,72px);text-align:center;overflow:hidden}
+.hero h1{font-size:clamp(76px,15vw,168px);line-height:.95;letter-spacing:-.055em;font-weight:700;margin-top:18px}
+.hero .lead{margin:20px auto 0;color:var(--fg);max-width:26em;text-wrap:balance}
+.hero .ctas{justify-content:center}
+.stage{position:relative;display:grid;grid-template-columns:1.25fr .8fr 1fr;gap:clamp(12px,2vw,24px);align-items:end;max-width:980px;margin:clamp(44px,6vw,72px) auto 0;perspective:1600px}
+.sc{position:relative;background:#fff;border-radius:22px;box-shadow:0 1px 0 rgba(0,0,0,.04),0 30px 60px -28px rgba(0,0,0,.32);overflow:hidden;text-align:left;animation:float 7s ease-in-out infinite}
+.sc-video{animation-delay:-2.3s}.sc-foto{animation-delay:-4.6s}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.sc-tag{position:absolute;left:14px;bottom:12px;margin:0;font-size:12px;font-weight:600;letter-spacing:.02em;padding:4px 10px;border-radius:980px;background:rgba(255,255,255,.9);color:var(--fg);box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.sc-bar{display:flex;align-items:center;gap:6px;padding:10px 12px;border-bottom:1px solid var(--line)}
+.sc-bar i{width:9px;height:9px;border-radius:50%;background:#ff5f57}.sc-bar i:nth-child(2){background:#febc2e}.sc-bar i:nth-child(3){background:#28c840}
+.sc-bar span{margin-left:8px;flex:1;font-size:11px;color:var(--fg-2);background:var(--bg-2);border-radius:6px;padding:3px 8px}
+.sc-site{padding:22px 20px 54px;background:linear-gradient(160deg,#f5f5f7,#fff);display:flex;flex-direction:column;align-items:flex-start;gap:9px;min-height:250px}
+.sc-site b{font-size:26px;letter-spacing:-.03em}
+.sc-site em{font-style:normal;font-size:12px;font-weight:600;color:#fff;background:var(--blue);padding:7px 14px;border-radius:980px}
+.sc-site>span{display:block;height:7px;border-radius:4px;background:#d2d2d7;width:70%}.sc-site>span+span{width:46%}
+.sc-rows{width:100%;display:grid;gap:7px;margin-top:8px}.sc-rows i{display:block;height:26px;border-radius:8px;background:#fff;box-shadow:inset 0 0 0 1px var(--line)}
+.sc-video{background:#111;border-radius:28px;padding:10px;min-height:320px;display:flex;flex-direction:column;gap:10px}
+.sc-clip{position:relative;flex:1;border-radius:20px;background:linear-gradient(160deg,#2b2b30,#0b0b0d);display:grid;place-items:center;min-height:220px;overflow:hidden}
+.sc-clip::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 50% at 30% 30%,rgba(255,255,255,.18),transparent 70%)}
+.play{width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.18);backdrop-filter:blur(6px);position:relative}
+.play::after{content:"";position:absolute;left:18px;top:14px;border-left:14px solid #fff;border-top:9px solid transparent;border-bottom:9px solid transparent}
+.sc-prog{position:absolute;left:14px;right:14px;bottom:14px;height:3px;border-radius:2px;background:rgba(255,255,255,.25);overflow:hidden}
+.sc-prog i{display:block;height:100%;width:40%;background:#fff;animation:prog 6s linear infinite}
+@keyframes prog{from{width:0}to{width:100%}}
+.sc-tl{display:flex;gap:4px;padding:0 4px 30px}.sc-tl i{flex:1;height:22px;border-radius:5px;background:#2c2c30}.sc-tl i:nth-child(2){flex:2;background:#0071e3}.sc-tl i:nth-child(4){flex:1.5;background:#3a3a40}
+.sc-video .sc-tag{background:rgba(255,255,255,.14);color:#fff;box-shadow:none}
+.sc-ba{position:relative;height:300px}
+.sc-ba .before,.sc-ba .after{position:absolute;inset:0;background:radial-gradient(40% 35% at 50% 38%,#e9c9a8,transparent 70%),radial-gradient(70% 45% at 50% 100%,#3a4a6b,transparent 70%),linear-gradient(180deg,#bfd4e6,#f3e2cf)}
+.sc-ba .before{filter:grayscale(.85) brightness(.82) contrast(.85)}
+.sc-ba .after{clip-path:inset(0 0 0 50%);filter:saturate(1.35) contrast(1.08);animation:wipe 6s ease-in-out infinite}
+.sc-ba .split{position:absolute;top:0;bottom:0;left:50%;width:2px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.06);animation:slide 6s ease-in-out infinite}
+.sc-ba .split::after{content:"";position:absolute;top:50%;left:50%;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.sc-ba small{position:absolute;top:12px;font-size:11px;font-weight:600;color:#fff;background:rgba(0,0,0,.35);padding:3px 8px;border-radius:980px}.sc-ba .l{left:12px}.sc-ba .r{right:12px}
+@keyframes wipe{0%,100%{clip-path:inset(0 0 0 70%)}50%{clip-path:inset(0 0 0 28%)}}
+@keyframes slide{0%,100%{left:70%}50%{left:28%}}
+@media(prefers-reduced-motion:reduce){.sc,.sc-prog i,.sc-ba .after,.sc-ba .split{animation:none}}
+.hero .byline{margin-top:clamp(28px,4vw,40px)}
+@media(max-width:760px){
+  .stage{grid-template-columns:1.2fr .8fr;gap:10px}
+  .sc-foto{display:none}
+  .sc-site{min-height:200px;padding:16px 14px 46px}.sc-site b{font-size:20px}
+  .sc-video{min-height:260px}.sc-clip{min-height:170px}
 }
-
-/* cifre */
 .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;padding-block:8px clamp(64px,9vw,104px)}
 .stats div{text-align:center}
 .stats b{display:block;font-size:clamp(36px,5vw,56px);font-weight:600;letter-spacing:-.04em;line-height:1.1;font-variant-numeric:tabular-nums}
@@ -126,7 +154,6 @@ section{padding-block:clamp(48px,7vw,88px)}
 @media(max-width:860px){.cards{grid-template-columns:1fr;gap:12px}}
 @media(max-width:600px){
   .hero{padding-block:32px 36px}
-  .hero figure{margin-top:28px}
   .card{padding:22px 24px;gap:6px;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:baseline}
   .card h3{font-size:22px}
   .card p{grid-column:1/-1;font-size:15px}
@@ -272,12 +299,6 @@ html.tabs .packs{margin-top:0}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(48,209,88,.45)}70%{box-shadow:0 0 0 8px rgba(48,209,88,0)}100%{box-shadow:0 0 0 0 rgba(48,209,88,0)}}
 @media(prefers-reduced-motion:reduce){.avail .dot{animation:none}}
 .byline{margin-top:22px;font-size:14px;color:var(--fg-2)}
-.hero-photo{position:relative}
-.hero-photo img{box-shadow:0 30px 60px -20px rgba(0,0,0,.28)}
-.badge-float{position:absolute;left:-18px;bottom:28px;display:flex;flex-direction:column;background:rgba(255,255,255,.86);backdrop-filter:saturate(180%) blur(16px);-webkit-backdrop-filter:saturate(180%) blur(16px);border-radius:18px;padding:12px 16px;box-shadow:0 10px 30px rgba(0,0,0,.12);text-align:left}
-.badge-float b{font-size:24px;font-weight:700;letter-spacing:-.03em;line-height:1.1}
-.badge-float span{font-size:12px;color:var(--fg-2)}
-@media(max-width:879px){.badge-float{left:12px;bottom:12px;padding:10px 14px}.badge-float b{font-size:20px}}
 
 /* cifre într-o bandă */
 .stats{background:var(--bg-2);border-radius:var(--r);padding:28px 12px !important;margin-bottom:clamp(48px,7vw,88px)}
@@ -523,12 +544,24 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
       <a class="btn" href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" data-en="Message me">Scrie-mi</a>
       <a class="more" href="#preturi" data-en="See pricing">Vezi prețurile</a>
     </div>
-    <p class="byline">Costi Andrei · <span data-en="Iași, Romania · working remotely with clients anywhere">Iași, România · lucrez remote cu clienți de oriunde</span></p>
     </div>
-    <figure class="rv hero-photo">
-      <img src="assets/img/portret-720.jpg" srcset="assets/img/portret-720.jpg 720w, assets/img/portret.jpg 1334w" sizes="(min-width: 880px) 460px, 340px" width="1334" height="2000" alt="Costi Andrei, așezat pe o banchetă de catifea în fața unei scări din lemn" fetchpriority="high"/>
-      <figcaption class="badge-float"><b>&lt; 2 h</b><span data-en="reply time on Instagram">timp de răspuns pe Instagram</span></figcaption>
-    </figure>
+    <div class="stage" aria-hidden="true">
+      <div class="sc sc-web">
+        <div class="sc-bar"><i></i><i></i><i></i><span>numele-tau.ro</span></div>
+        <div class="sc-site"><b data-en="Your business">Afacerea ta</b><em data-en="Book now">Programează-te</em><span></span><span></span><div class="sc-rows"><i></i><i></i><i></i></div></div>
+        <p class="sc-tag">Web</p>
+      </div>
+      <div class="sc sc-video">
+        <div class="sc-clip"><span class="play"></span><div class="sc-prog"><i></i></div></div>
+        <div class="sc-tl"><i></i><i></i><i></i><i></i><i></i></div>
+        <p class="sc-tag">Video</p>
+      </div>
+      <div class="sc sc-foto">
+        <div class="sc-ba"><div class="before"></div><div class="after"></div><span class="split"></span><small class="l" data-en="Before">Înainte</small><small class="r" data-en="After">După</small></div>
+        <p class="sc-tag">Foto</p>
+      </div>
+    </div>
+    <p class="byline">Costi Andrei · <span data-en="Iași, Romania · working remotely with clients anywhere">Iași, România · lucrez remote cu clienți de oriunde</span></p>
   </div>
 </div>
 
