@@ -71,9 +71,12 @@ Fără aceste variabile, pagina Cont spune „în curând”, iar butoanele duc 
 - „Vreau site-ul” creează o comandă cu cod (149 lei / €29, din `api/_lib.js` → `site-builder`).
 - În panou, comanda are linkul „Vezi site-ul în editor”. Când pui **Plătită**, clientul vede butonul
   **„Descarcă site-ul (ZIP)”** în editor și în cont. Arhiva conține `index.html`, pozele și instrucțiuni de publicare, fără watermark.
-- **Locația** (pasul Contact): harta Google din editor se mută după adresă; „📍 Sunt acum la afacere” pune pinul exact
-  (cere permisiunea browserului), iar câmpul „Link Google Maps” acceptă doar linkuri Google. Pe site-ul final apare harta
-  interactivă, plus butoanele „Indicații” și „Deschide în Google Maps”. Previzualizarea arată doar locul hărții.
+- **Locația** (pasul Contact): clientul alege locul pe o hartă interactivă (OpenStreetMap): click pe hartă, tragi pinul,
+  caută adresa sau „📍 Sunt acum la afacere”. Coordonatele rămân salvate în site (și în cont, dacă e logat).
+  Pe site-ul final apare harta Google cu pinul exact, plus butoanele „Indicații” și „Deschide în Google Maps”.
+  Câmpul „Link Google Maps” e opțional (doar linkuri Google) și schimbă doar unde duce butonul.
+- Ciorna intră automat în cont la prima modificare, dacă clientul e logat (altfel rămâne pe dispozitiv).
+- Watermark-ul din previzualizare: „Creat cu Aman Web Builder” (site-ul descărcat nu îl are).
 - Site-ul final arată live **„Deschis acum / Închis acum”** după program (un script mic, fără servicii externe).
 - Pasul **Extra**: bară de anunț, recenzii (doar reale, pornesc goale) și întrebări frecvente (cu „Întrebări sugerate” pe domeniu).
 - Fonturile titlurilor sunt reale (Oswald, Playfair Display, Bodoni Moda, Archivo Black, JetBrains Mono, Inter; licență OFL),

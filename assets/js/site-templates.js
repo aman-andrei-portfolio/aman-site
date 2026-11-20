@@ -446,7 +446,7 @@
       'footer .copy{grid-column:1/-1;border-top:1px solid #27272a;padding-top:22px;margin-top:8px;color:#71717a;font-size:13px}' +
       // bară de acțiuni pe telefon
       '.dock{display:none}@media(max-width:700px){.dock{display:flex;position:fixed;left:12px;right:12px;bottom:' + (opt.preview ? '50px' : '12px') + ';z-index:30;gap:8px;padding:8px;border-radius:' + (BR === '999px' ? '999px' : '10px') + ';background:' + (dark ? 'rgba(24,24,27,.86)' : 'rgba(255,255,255,.88)') + ';backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 12px 34px rgba(0,0,0,.22)}.dock a{flex:1;padding:12px}body{padding-bottom:' + (opt.preview ? '120px' : '84px') + '}}' +
-      (opt.preview ? '.pv{position:fixed;left:0;right:0;bottom:0;z-index:50;background:#111;color:#fff;text-align:center;font:600 13px/1.2 -apple-system,sans-serif;padding:10px}.wm{position:fixed;inset:0;z-index:40;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'260\' height=\'160\'%3E%3Ctext x=\'0\' y=\'90\' transform=\'rotate(-24 130 80)\' fill=\'rgba(127,127,127,0.18)\' font-family=\'Arial\' font-size=\'22\' font-weight=\'700\'%3ECreat cu Aman%3C/text%3E%3C/svg%3E")}@media(min-width:701px){body{padding-bottom:40px}}' : '');
+      (opt.preview ? '.pv{position:fixed;left:0;right:0;bottom:0;z-index:50;background:#111;color:#fff;text-align:center;font:600 13px/1.2 -apple-system,sans-serif;padding:10px}.wm{position:fixed;inset:0;z-index:40;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'380\' height=\'200\'%3E%3Ctext x=\'10\' y=\'115\' transform=\'rotate(-22 190 100)\' fill=\'rgba(127,127,127,0.18)\' font-family=\'Arial\' font-size=\'21\' font-weight=\'700\'%3ECreat cu Aman Web Builder%3C/text%3E%3C/svg%3E")}@media(min-width:701px){body{padding-bottom:40px}}' : '');
 
     // titlul mare: ultimul cuvânt evidențiat cu accentul
     var words = esc(name).split(' ');
@@ -506,7 +506,7 @@
         '<div class="copy">© ' + year + ' ' + esc(name) + '. Toate drepturile rezervate.</div></div></footer>' +
       ((d.phone || d.whatsapp) ? '<div class="dock">' + (d.phone ? '<a class="btn ghost" href="tel:' + esc(digits(d.phone)) + '">Sună</a>' : '') + '<a class="btn" href="' + esc(ctaHref) + '"' + ext(ctaHref) + '>' + (d.whatsapp ? 'WhatsApp' : esc(cta)) + '</a></div>' : '') +
       (!opt.preview && st ? '<script>(function(){var e=document.getElementById("open-now");if(!e)return;var r=(' + OPEN_JS + ')(' + JSON.stringify(d.hours).replace(/</g, '\\u003c') + ',new Date());if(!r)return;e.textContent=r[1];e.className="open"+(r[0]?" on":"")})()</script>' : '') +
-      (opt.preview ? '<div class="wm" aria-hidden="true"></div><div class="pv">Previzualizare · Creat cu Aman · costi1andrei.site</div>' : '') +
+      (opt.preview ? '<div class="wm" aria-hidden="true"></div><div class="pv">Previzualizare · Creat cu Aman Web Builder · costi1andrei.site</div>' : '') +
       '</body></html>';
   }
 

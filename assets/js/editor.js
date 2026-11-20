@@ -62,14 +62,19 @@
     preview();
     status(session ? 'Se salvează…' : 'Salvat pe acest dispozitiv');
     clearTimeout(saveTimer);
-    if (S.id && session) saveTimer = setTimeout(function () { save(false); }, 1200);
+    // Logat: ciorna intră în cont de la prima modificare (locația, textele etc. rămân și pe alt dispozitiv).
+    if (session) saveTimer = setTimeout(function () { save(!S.id && !noAuto, true); }, S.id ? 1200 : 1800);
   }
-  async function save(create) {
+  var noAuto = false;
+  async function save(create, auto) {
     if (!editable()) return false;
     if (!(await token())) { status('Salvat pe acest dispozitiv'); return false; }
     if (!S.id && !create) return false;
     var r = await api('POST', '/api/sites', { action: 'save', id: S.id || undefined, template: S.template, data: S.data });
-    if (!r.ok) { status(''); flash(r.json.error || 'Nu s-a putut salva.'); return false; }
+    if (!r.ok) {
+      if (auto && !S.id) { noAuto = true; status('Salvat pe acest dispozitiv · ' + (r.json.error || 'nu s-a putut salva în cont')); return false; }
+      status(''); flash(r.json.error || 'Nu s-a putut salva.'); return false;
+    }
     if (!S.id) { S.id = r.json.id; history.replaceState(null, '', '/editor.html?id=' + S.id); lsSet(LOCAL, { id: S.id, template: S.template, data: S.data }); }
     dirty = false; status('Salvat în cont ✓');
     return true;
@@ -96,21 +101,54 @@
     var cur = d.querySelector('#steps [aria-selected="true"]'); if (cur && cur.scrollIntoView) cur.scrollIntoView({ block: 'nearest', inline: 'center' });
   }
 
-  // Harta din editor (direct de la Google, în afara previzualizării), ca clientul să vadă imediat dacă pinul e corect.
-  function locMap() {
-    var q = ST.mapQuery(ST.normalize(S.template, S.data));
-    return q ? '<iframe src="' + esc(ST.mapEmbed(q)) + '" title="Verifică locația pe hartă" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>' : '<p>Scrie adresa și harta apare aici.</p>';
+  // Harta din editor (OpenStreetMap, prin Leaflet): click sau tragi pinul ca să alegi exact locul.
+  // Pe site-ul final, aceleași coordonate apar pe harta Google.
+  var picker = null, pin = null, IASI = [47.1585, 27.6014];
+  function geoArr() { var g = ST.geo(S.data.geo); return g ? g.split(',').map(Number) : null; }
+  function setPin(ll, msg) {
+    S.data.geo = ll[0].toFixed(6) + ',' + ll[1].toFixed(6);
+    if (picker) { if (pin) pin.setLatLng(ll); else addPin(ll); }
+    var st = $('geost'); if (st) st.textContent = msg || 'Pin pus. Îl poți trage sau poți da click în alt loc pe hartă.';
+    var x = $('geo-x'); if (!x && $('geo')) $('geo').insertAdjacentHTML('afterend', '<button type="button" class="plain danger" id="geo-x">Șterge pinul</button>');
+    changed();
   }
-  var mapTimer = 0;
-  function refreshMap() { clearTimeout(mapTimer); mapTimer = setTimeout(function () { var m = $('locmap'); if (m) m.innerHTML = locMap(); }, 900); }
+  function addPin(ll) {
+    pin = L.marker(ll, { draggable: true, autoPan: true, icon: L.divIcon({ className: '', html: '<div class="pinm"></div>', iconSize: [30, 30], iconAnchor: [15, 30] }), keyboard: true, title: 'Locația afacerii' }).addTo(picker);
+    pin.on('dragend', function () { var p = pin.getLatLng(); setPin([p.lat, p.lng]); });
+  }
+  function killPicker() { if (picker) { picker.remove(); picker = null; pin = null; } }
+  function initPicker() {
+    killPicker();
+    var el = $('locmap'); if (!el || !window.L) return;
+    var g = geoArr();
+    picker = L.map(el, { scrollWheelZoom: false, tap: true }).setView(g || IASI, g ? 17 : 13);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap' }).addTo(picker);
+    if (g) addPin(g);
+    if (editable()) picker.on('click', function (e) { setPin([e.latlng.lat, e.latlng.lng]); });
+    if (!g && S.data.address) search(S.data.address, true);
+  }
+  async function search(q, quiet) {
+    q = String(q || '').trim(); var st = $('geost'); if (!q) return;
+    if (!quiet && st) st.textContent = 'Caut „' + q + '”…';
+    try {
+      var r = await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&accept-language=ro&q=' + encodeURIComponent(q));
+      var j = r.ok ? await r.json() : [];
+      if (!j.length) { if (st && !quiet) st.textContent = 'N-am găsit locul. Încearcă altfel sau dă click direct pe hartă.'; return; }
+      var ll = [+j[0].lat, +j[0].lon];
+      if (!picker) return;
+      picker.setView(ll, 17);
+      if (!quiet) setPin(ll, 'Am găsit locul. Verifică pinul; dacă nu e exact, trage-l sau dă click unde trebuie.');
+      else if (st) st.textContent = 'Harta e centrată pe adresă. Dă click exact pe clădire ca să pui pinul.';
+    } catch (e) { if (st && !quiet) st.textContent = 'Căutarea nu merge acum. Dă click direct pe hartă.'; }
+  }
   function useMyLocation() {
     var st = $('geost');
     if (!navigator.geolocation) { if (st) st.textContent = 'Browserul tău nu poate da locația. Pune linkul din Google Maps.'; return; }
     if (st) st.textContent = 'Caut locația… (acceptă cererea browserului)';
     navigator.geolocation.getCurrentPosition(function (pos) {
-      S.data.geo = pos.coords.latitude.toFixed(6) + ',' + pos.coords.longitude.toFixed(6);
-      changed(); renderBody();
-      var s2 = $('geost'); if (s2) s2.textContent = 'Gata: pinul e pus exact unde ești acum (precizie ~' + Math.round(pos.coords.accuracy) + ' m).';
+      var ll = [pos.coords.latitude, pos.coords.longitude];
+      if (picker) picker.setView(ll, 18);
+      setPin(ll, 'Gata: pinul e pus exact unde ești acum (precizie ~' + Math.round(pos.coords.accuracy) + ' m). Îl poți trage dacă e nevoie.');
     }, function () { var s3 = $('geost'); if (s3) s3.textContent = 'N-am primit locația. Verifică permisiunea browserului sau pune linkul din Google Maps.'; }, { enableHighAccuracy: true, timeout: 15000 });
   }
   function field(key, label, opts) {
@@ -187,9 +225,10 @@
           field('phone', 'Telefon', { type: 'tel', ph: '07xx xxx xxx' }) + field('whatsapp', 'WhatsApp', { type: 'tel', ph: '07xx xxx xxx' }) +
           field('instagram', 'Instagram', { ph: 'numele.tau' }) + field('email', 'Email', { type: 'email', ph: 'contact@exemplu.ro' }) +
           field('address', 'Adresă', { ph: 'Strada, număr, oraș' }) +
-          '<div class="locbox"><div class="locmap" id="locmap">' + locMap() + '</div>' +
+          '<label class="f" for="locq">Locația pe hartă</label><div class="locbox"><div class="locsearch"><input type="search" id="locq" placeholder="Caută: stradă, oraș sau numele locului" value="' + esc(S.data.address || '') + '" autocomplete="off"/><button type="button" class="btn sm" id="locgo">Caută</button></div>' +
+          '<div class="locmap" id="locmap" role="application" aria-label="Hartă: dă click ca să alegi locul"></div>' +
           '<div class="locbtns"><button type="button" class="btn ghost sm" id="geo">📍 Sunt acum la afacere</button>' + (S.data.geo ? '<button type="button" class="plain danger" id="geo-x">Șterge locația exactă</button>' : '') + '</div>' +
-          '<p class="sub" id="geost" style="font-size:13px;margin:6px 0 0">' + (S.data.geo ? 'Folosim locația exactă salvată (' + esc(S.data.geo) + ').' : 'Harta se mută singură după adresă. Dacă pinul nu e exact, apasă butonul de mai sus când ești la afacere sau pune linkul din Google Maps.') + '</p></div>' +
+          '<p class="sub" id="geost" style="font-size:13px;margin:6px 0 0">' + (S.data.geo ? 'Pin pus. Îl poți trage sau poți da click în alt loc pe hartă.' : 'Dă click pe hartă exact unde e afacerea (sau caută mai sus). Pinul se poate trage după aceea.') + '</p></div>' +
           field('mapsUrl', 'Link Google Maps (opțional)', { ph: 'https://maps.app.goo.gl/…' }) +
           '<p class="sub" style="font-size:13px;margin:4px 0 12px">În aplicația Google Maps caută-ți afacerea, apasă <b>Distribuie</b> → <b>Copiază linkul</b> și lipește-l aici. Butonul „Deschide în Google Maps” de pe site va duce exact la ea.</p>' +
           '<label class="f">Program (lasă gol zilele în care nu vrei să apară)</label><div class="hours">' +
@@ -223,7 +262,9 @@
         (S.own ? '<p style="margin:10px 0 0"><button type="button" class="btn sm" id="dup">Fă o versiune nouă</button></p>' : '') + '<p class="err" hidden></p></div>' +
         '<fieldset class="lock" disabled>' + h + '</fieldset>';
     }
+    killPicker();
     b.innerHTML = h;
+    if (S.step === 4) initPicker();
   }
 
   function renderFinal() {
@@ -296,7 +337,6 @@
     if (!editable() && el.closest('#body')) return;
     if (el.dataset.k) {
       S.data[el.dataset.k] = el.value;
-      if (el.dataset.k === 'address' || el.dataset.k === 'mapsUrl') refreshMap();
       var c = d.querySelector('[data-count="' + el.dataset.k + '"]'); if (c) c.textContent = el.value.length + '/' + (ST.LIMITS[el.dataset.k] || '');
       changed();
     } else if (el.dataset.i !== undefined && el.dataset.f && !el.dataset.l) { S.data.items[+el.dataset.i][el.dataset.f] = el.value; changed(); }
@@ -304,6 +344,7 @@
     else if (el.dataset.h !== undefined) { S.data.hours[+el.dataset.h] = el.value; changed(); }
     else if (el.id === 'f-accent') { S.data.accent = el.value; changed(); d.querySelectorAll('#sw [data-c]').forEach(function (x) { x.setAttribute('aria-pressed', 'false'); }); }
   });
+  d.addEventListener('keydown', function (e) { if (e.target.id === 'locq' && e.key === 'Enter') { e.preventDefault(); search(e.target.value); } });
   d.addEventListener('change', function (e) {
     var el = e.target;
     if (el.dataset && el.dataset.up && el.files && el.files.length) { upload(el.dataset.up, Array.prototype.slice.call(el.files)); el.value = ''; }
@@ -328,6 +369,7 @@
     if (t.id === 'surprise') return surprise(t);
     if (t.id === 'geo') return useMyLocation();
     if (t.id === 'geo-x') { S.data.geo = ''; renderBody(); changed(); return; }
+    if (t.id === 'locgo') return search(($('locq') || {}).value);
     if (t.dataset.add) { var lst = S.data[t.dataset.add] = S.data[t.dataset.add] || []; lst.push(t.dataset.add === 'faq' ? { q: '', a: '' } : { name: '', text: '' }); renderBody(); var f = d.querySelectorAll('#' + (t.dataset.add === 'faq' ? 'faqs' : 'revs') + ' li:last-child [data-f]'); if (f[0]) f[0].focus(); changed(); return; }
     if (t.dataset.delL) { var pp = t.dataset.delL.split(':'); S.data[pp[0]].splice(+pp[1], 1); renderBody(); changed(); return; }
     if (t.id === 'sugg') {
