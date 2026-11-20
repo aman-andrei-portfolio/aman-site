@@ -162,7 +162,7 @@
   // compatibilitate: font, upper, italic din cheia fontului
   Object.keys(TEMPLATES).forEach(function (k) { var t = TEMPLATES[k], f = FONTS[t.fontKey]; t.font = f.css; t.upper = !!f.upper; t.italic = !!f.italic; });
 
-  var LIMITS = { name: 60, tagline: 120, about: 800, cta: 40, phone: 20, whatsapp: 20, instagram: 40, address: 120, email: 80, itemName: 60, itemPrice: 24, itemDesc: 160, hours: 30, items: 20, gallery: 6, notice: 120, reviews: 6, reviewName: 40, reviewText: 300, faq: 8, faqQ: 120, faqA: 500 };
+  var LIMITS = { name: 60, tagline: 120, about: 800, cta: 40, phone: 20, whatsapp: 20, instagram: 40, address: 120, email: 80, itemName: 60, itemPrice: 24, itemDesc: 160, hours: 30, items: 20, gallery: 6, mapsUrl: 400, notice: 120, reviews: 6, reviewName: 40, reviewText: 300, faq: 8, faqQ: 120, faqA: 500 };
 
   // Întrebări sugerate pe domenii (clientul le adaugă cu un buton și le modifică).
   var SUGGEST_FAQ = {
@@ -197,12 +197,53 @@
       instagram: str(d.instagram, LIMITS.instagram).replace(/^@/, '').replace(/[^A-Za-z0-9._]/g, ''),
       email: /^[^\s@<>"']+@[^\s@<>"']+\.[^\s@<>"']+$/.test(str(d.email, LIMITS.email)) ? str(d.email, LIMITS.email) : '',
       address: str(d.address, LIMITS.address),
+      mapsUrl: mapsUrl(d.mapsUrl), geo: geo(d.geo),
       items: items.map(function (i) { i = i || {}; return { name: str(i.name, LIMITS.itemName), price: str(i.price, LIMITS.itemPrice), desc: str(i.desc, LIMITS.itemDesc) }; }).filter(function (i) { return i.name; }),
       hours: DAYS.map(function (_, k) { return str(hours[k], LIMITS.hours); }),
       logo: asset(d.logo), hero: asset(d.hero),
       gallery: (Array.isArray(d.gallery) ? d.gallery : []).map(asset).filter(Boolean).slice(0, LIMITS.gallery),
     };
   }
+
+  // Locația: link Google Maps (doar de pe domeniile Google) și coordonate „lat,lng”.
+  function mapsUrl(v) {
+    v = str(v, LIMITS.mapsUrl);
+    return /^https:\/\/((www\.|maps\.)?google\.[a-z.]{2,6}\/maps|maps\.app\.goo\.gl\/|goo\.gl\/maps\/)[^\s"'<>]*$/i.test(v) ? v : '';
+  }
+  function geo(v) {
+    var m = String(v || '').match(/^\s*(-?\d{1,2}(?:\.\d+)?)\s*,\s*(-?\d{1,3}(?:\.\d+)?)\s*$/);
+    if (!m || Math.abs(+m[1]) > 90 || Math.abs(+m[2]) > 180) return '';
+    return (+m[1]).toFixed(6) + ',' + (+m[2]).toFixed(6);
+  }
+  // Ce arată harta: coordonatele, apoi pinul din linkul Google Maps, apoi adresa.
+  function mapQuery(d) {
+    if (d.geo) return d.geo;
+    var m = (d.mapsUrl || '').match(/@(-?\d+\.\d+),(-?\d+\.\d+)/) || (d.mapsUrl || '').match(/[?&](?:q|query|ll)=(-?\d+\.\d+),(-?\d+\.\d+)/);
+    if (m) return m[1] + ',' + m[2];
+    var pl = (d.mapsUrl || '').match(/\/maps\/place\/([^/@?]+)/);
+    if (pl) { try { return decodeURIComponent(pl[1].replace(/\+/g, ' ')); } catch (e) {} }
+    return d.address || '';
+  }
+  function mapEmbed(q) { return q ? 'https://maps.google.com/maps?q=' + encodeURIComponent(q) + '&z=16&hl=ro&output=embed' : ''; }
+  function mapLinks(d) {
+    var q = mapQuery(d);
+    return { open: d.mapsUrl || (q ? 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q) : ''), dir: q ? 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(q) : '' };
+  }
+
+  // „Deschis acum”: din programul zilei (format 09:00–18:00). Aceeași logică rulează și pe site-ul final, în browser.
+  function openStatus(h, now) {
+    var D = ['Luni', 'Marți', 'Miercuri', 'Joi', 'Vineri', 'Sâmbătă', 'Duminică'];
+    function p(s) { var m = String(s || '').match(/(\d{1,2}):(\d{2})\s*[–-]\s*(\d{1,2}):(\d{2})/); return m ? [+m[1] * 60 + +m[2], +m[3] * 60 + +m[4], (m[3].length < 2 ? '0' : '') + m[3] + ':' + m[4]] : null; }
+    function hm(x) { var a = Math.floor(x / 60), b = x % 60; return (a < 10 ? '0' : '') + a + ':' + (b < 10 ? '0' : '') + b; }
+    var k = (now.getDay() + 6) % 7, t = now.getHours() * 60 + now.getMinutes(), r = p(h[k]);
+    if (r && t >= r[0] && t < r[1]) return [1, 'Deschis acum · până la ' + r[2]];
+    for (var i = 0; i < 7; i++) {
+      var j = (k + i) % 7, q = p(h[j]);
+      if (q && (i > 0 || t < q[0])) return [0, 'Închis acum · deschide ' + (i === 0 ? 'azi' : i === 1 ? 'mâine' : D[j].toLowerCase()) + ' la ' + hm(q[0])];
+    }
+    return null;
+  }
+  var OPEN_JS = String(openStatus); // același cod rulează și pe site-ul final
 
   function starter(tpl) {
     var T = TEMPLATES[tpl] || TEMPLATES.barber;
@@ -392,6 +433,11 @@
       '.links{display:flex;flex-direction:column;gap:4px;margin:0;padding:0;list-style:none}.links a{display:block;text-decoration:none;font-weight:600;font-size:17px;padding:10px 0;border-bottom:1px solid var(--line)}.links li:last-child a{border-bottom:0}.links a:hover{color:var(--a)}.links span{display:block;font-size:12.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--fg2);margin-bottom:2px}' +
       '.map{display:flex;flex-direction:column;justify-content:space-between;gap:22px;background:' + (dark ? '#111113' : mix(A, 0.9)) + ';border-color:transparent;' +
         'background-image:linear-gradient(' + (dark ? '#ffffff0d' : '#ffffff99') + ' 2px,transparent 2px),linear-gradient(90deg,' + (dark ? '#ffffff0d' : '#ffffff99') + ' 2px,transparent 2px);background-size:34px 34px}' +
+      '.open{display:inline-flex;align-items:center;gap:8px;font-weight:600;color:' + (hero ? '#fff' : 'var(--fg)') + ';padding:5px 12px 5px 10px;border-radius:999px;background:' + (hero ? 'rgba(255,255,255,.14)' : 'rgba(127,127,127,.12)') + '}.open::before{content:"";width:8px;height:8px;border-radius:50%;background:#e5484d}.open.on::before{background:#30a46c;box-shadow:0 0 0 4px rgba(48,164,108,.25)}' +
+      '.mapbox{position:relative;margin-top:16px;border-radius:' + R + ';overflow:hidden;border:1px solid var(--line);min-height:340px;background:' + (dark ? '#111113' : mix(A, 0.9)) + '}.mapbox iframe{display:block;width:100%;height:420px;border:0;filter:' + (dark ? 'grayscale(.4) invert(.9) hue-rotate(180deg)' : 'grayscale(.15)') + '}' +
+      '.mapph{height:420px;background-image:linear-gradient(' + (dark ? '#ffffff0d' : '#ffffff99') + ' 2px,transparent 2px),linear-gradient(90deg,' + (dark ? '#ffffff0d' : '#ffffff99') + ' 2px,transparent 2px);background-size:34px 34px;display:grid;place-items:center}.mapph .pin{transform:rotate(-45deg) scale(1.3)}' +
+      '.mapinfo{position:absolute;left:16px;bottom:16px;right:16px;max-width:440px;background:var(--card);border:1px solid var(--line);border-radius:' + R + ';padding:18px 20px;box-shadow:0 18px 40px -18px rgba(0,0,0,.45);display:flex;flex-direction:column;gap:12px}.mapinfo p{margin:0;font-size:18px;font-weight:700}.mapinfo .ctas{gap:8px}.mapinfo .btn{padding:10px 16px;font-size:14px}.mapinfo small{color:var(--fg2);font-size:13px}' +
+      '@media(max-width:600px){.mapinfo{position:static;max-width:none;border-radius:0;border:0;border-top:1px solid var(--line)}.mapbox iframe,.mapph{height:300px}}' +
       '.pin{width:46px;height:46px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--a);display:grid;place-items:center}.pin::after{content:"";width:16px;height:16px;border-radius:50%;background:var(--on)}' +
       '.map p{margin:0;font-size:20px;font-weight:600}' +
       // subsol
@@ -411,10 +457,16 @@
     if (d.whatsapp) links.push('<li><a href="https://wa.me/' + esc(wa(d.whatsapp)) + '" target="_blank" rel="noopener"><span>WhatsApp</span>' + esc(d.whatsapp) + '</a></li>');
     if (d.instagram) links.push('<li><a href="https://www.instagram.com/' + esc(d.instagram) + '/" target="_blank" rel="noopener"><span>Instagram</span>@' + esc(d.instagram) + '</a></li>');
     if (d.email) links.push('<li><a href="mailto:' + esc(d.email) + '"><span>Email</span>' + esc(d.email) + '</a></li>');
-    var mapHref = d.address ? 'https://www.google.com/maps/search/?api=1&amp;query=' + encodeURIComponent(d.address) : '';
+    var mq = mapQuery(d), ml = mapLinks(d);
+    var mapBlock = mq ? '<div class="mapbox">' + (opt.preview
+        ? '<div class="mapph"><span class="pin" aria-hidden="true"></span></div>'
+        : '<iframe src="' + esc(mapEmbed(mq)) + '" title="Hartă: ' + esc(d.address || name) + '" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>') +
+      '<div class="mapinfo"><p>' + esc(d.address || 'Locația noastră') + '</p>' + (opt.preview ? '<small>Harta Google interactivă apare aici pe site-ul publicat.</small>' : '') +
+      '<div class="ctas"><a class="btn" href="' + esc(ml.dir) + '" target="_blank" rel="noopener">Indicații</a><a class="btn ghost" href="' + esc(ml.open) + '" target="_blank" rel="noopener">Deschide în Google Maps</a></div></div></div>' : '';
     var hoursT = d.hours.some(Boolean) ? '<div class="card"><h3>Program</h3><table class="hours">' + DAYS.map(function (day, k) { return '<tr><td>' + day + '</td><td>' + (d.hours[k] ? esc(d.hours[k]) : '—') + '</td></tr>'; }).join('') + '</table></div>' : '';
 
-    var chips = [];
+    var chips = [], st = openStatus(d.hours, new Date());
+    if (st) chips.push('<b class="open' + (st[0] ? ' on' : '') + '" id="open-now">' + esc(st[1]) + '</b>');
     if (d.address) chips.push(esc(d.address));
     if (hs.length) chips.push(esc(hs[0]));
     if (d.phone) chips.push(esc(d.phone));
@@ -434,7 +486,7 @@
       '<header><div class="w"><a class="brand" href="#">' + (logo ? '<img src="' + esc(logo) + '" alt=""/>' : '<i></i>') + '<span>' + esc(name) + '</span></a><nav aria-label="Meniu">' + nav + '</nav><a class="btn sm" href="' + esc(ctaHref) + '"' + ext(ctaHref) + '>' + esc(cta) + '</a></div></header>' +
       '<main><div class="hero"><div class="w"><div><p class="eyebrow">' + X.kind + (town ? ' · ' + esc(town) : '') + '</p><h1>' + h1 + '</h1>' + (d.tagline ? '<p class="lead">' + esc(d.tagline) + '</p>' : '<p class="lead"></p>') +
         '<div class="ctas"><a class="btn" href="' + esc(ctaHref) + '"' + ext(ctaHref) + '>' + esc(cta) + '</a>' + (d.items.length ? '<a class="btn ghost" href="#servicii">Vezi ' + T.itemsLabel.toLowerCase() + '</a>' : '') + '</div>' +
-        (chips.length ? '<div class="chips">' + chips.map(function (c) { return '<span>' + c + '</span>'; }).join('') + '</div>' : '') + '</div>' + side + '</div></div>' +
+        (chips.length ? '<div class="chips">' + chips.map(function (c) { return /^<b/.test(c) ? c : '<span>' + c + '</span>'; }).join('') + '</div>' : '') + '</div>' + side + '</div></div>' +
       (d.items.length ? '<section id="servicii"><div class="w"><div class="sh"><div><p class="eyebrow">' + T.itemsLabel + '</p><h2>' + X.items + '</h2></div>' + (hs.length ? '<p>' + esc(hs.join(' · ')) + '</p>' : '') + '</div><ul class="items">' +
         d.items.map(function (i, k) { return '<li><span class="n">' + (k < 9 ? '0' : '') + (k + 1) + '</span><b>' + esc(i.name) + '</b>' + (i.price ? '<span class="p">' + esc(i.price) + '</span>' : '<span></span>') + (i.desc ? '<small>' + esc(i.desc) + '</small>' : '') + '</li>'; }).join('') + '</ul></div></section>' : '') +
       '<section class="alt"><div class="w"><div class="sh"><div><p class="eyebrow">Cum funcționează</p><h2>Simplu, în trei pași.</h2></div></div><ol class="steps">' + X.steps.map(function (s) { return '<li><h3>' + s[0] + '</h3><p>' + s[1] + '</p></li>'; }).join('') + '</ol></div></section>' +
@@ -447,17 +499,17 @@
       '<section><div class="w"><div class="band"><div><h2>' + X.band + '</h2><p>' + X.bandP + '</p></div><a class="btn" href="' + esc(ctaHref) + '"' + ext(ctaHref) + '>' + esc(cta) + '</a></div></div></section>' +
       '<section id="contact" class="alt"><div class="w"><div class="sh"><div><p class="eyebrow">Contact</p><h2>' + (tpl === 'portfolio' ? 'Hai să vorbim.' : 'Ne găsești aici.') + '</h2></div></div><div class="contact">' +
         (links.length ? '<div class="card"><h3>' + (tpl === 'portfolio' ? 'Scrie-mi' : 'Scrie-ne sau sună-ne') + '</h3><ul class="links">' + links.join('') + '</ul></div>' : '') + hoursT +
-        (d.address ? '<a class="card map" href="' + mapHref + '" target="_blank" rel="noopener" style="text-decoration:none"><span class="pin" aria-hidden="true"></span><div><p>' + esc(d.address) + '</p><span style="color:var(--fg2);font-size:15px">Deschide în Google Maps →</span></div></a>' : '') +
-      '</div></div></section></main>' +
+      '</div>' + mapBlock + '</div></section></main>' +
       '<footer><div class="w"><div><div class="disp">' + esc(name) + '</div>' + (d.tagline ? '<p>' + esc(d.tagline) + '</p>' : '') + '</div>' +
         '<div><h4>Pagini</h4><ul>' + nav.replace(/<a /g, '<li><a ').replace(/<\/a>/g, '</a></li>') + '</ul></div>' +
         '<div><h4>Contact</h4><ul>' + (d.phone ? '<li><a href="tel:' + esc(digits(d.phone)) + '">' + esc(d.phone) + '</a></li>' : '') + (d.email ? '<li><a href="mailto:' + esc(d.email) + '">' + esc(d.email) + '</a></li>' : '') + (d.address ? '<li>' + esc(d.address) + '</li>' : '') + (d.instagram ? '<li><a href="https://www.instagram.com/' + esc(d.instagram) + '/" target="_blank" rel="noopener">Instagram</a></li>' : '') + '</ul></div>' +
         '<div class="copy">© ' + year + ' ' + esc(name) + '. Toate drepturile rezervate.</div></div></footer>' +
       ((d.phone || d.whatsapp) ? '<div class="dock">' + (d.phone ? '<a class="btn ghost" href="tel:' + esc(digits(d.phone)) + '">Sună</a>' : '') + '<a class="btn" href="' + esc(ctaHref) + '"' + ext(ctaHref) + '>' + (d.whatsapp ? 'WhatsApp' : esc(cta)) + '</a></div>' : '') +
+      (!opt.preview && st ? '<script>(function(){var e=document.getElementById("open-now");if(!e)return;var r=(' + OPEN_JS + ')(' + JSON.stringify(d.hours).replace(/</g, '\\u003c') + ',new Date());if(!r)return;e.textContent=r[1];e.className="open"+(r[0]?" on":"")})()</script>' : '') +
       (opt.preview ? '<div class="wm" aria-hidden="true"></div><div class="pv">Previzualizare · Creat cu Aman · costi1andrei.site</div>' : '') +
       '</body></html>';
   }
 
   function siteFonts(tpl, data) { var d = normalize(tpl, data); return fontFiles(d.font || (TEMPLATES[tpl] || TEMPLATES.barber).fontKey); }
-  return { TEMPLATES: TEMPLATES, DAYS: DAYS, LIMITS: LIMITS, FONTS: FONTS, CORNERS: CORNERS, LAYOUTS: LAYOUTS, SUGGEST_FAQ: SUGGEST_FAQ, normalize: normalize, starter: starter, render: render, randomLook: randomLook, siteFonts: siteFonts };
+  return { TEMPLATES: TEMPLATES, DAYS: DAYS, LIMITS: LIMITS, FONTS: FONTS, CORNERS: CORNERS, LAYOUTS: LAYOUTS, SUGGEST_FAQ: SUGGEST_FAQ, normalize: normalize, starter: starter, render: render, randomLook: randomLook, siteFonts: siteFonts, mapEmbed: mapEmbed, mapQuery: mapQuery, geo: geo, openStatus: openStatus };
 });
