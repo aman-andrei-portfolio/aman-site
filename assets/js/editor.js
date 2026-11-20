@@ -75,6 +75,13 @@
       if (auto && !S.id) { noAuto = true; status('Salvat pe acest dispozitiv · ' + (r.json.error || 'nu s-a putut salva în cont')); return false; }
       status(''); flash(r.json.error || 'Nu s-a putut salva.'); return false;
     }
+    // serverul a citit linkul scurt de Google Maps: luăm linkul complet și pinul exact
+    var lc = r.json.loc;
+    if (lc && (lc.geo !== (S.data.geo || '') || lc.mapsUrl !== (S.data.mapsUrl || '')) && (S.data.mapsUrl || '').trim()) {
+      var hadGeo = !!S.data.geo; S.data.mapsUrl = lc.mapsUrl; S.data.geo = lc.geo;
+      lsSet(LOCAL, { id: S.id || r.json.id, template: S.template, data: S.data }); preview();
+      if (!hadGeo && lc.geo && S.step === 4) { renderBody(); var gs = $('geost'); if (gs) gs.textContent = 'Am pus pinul după linkul tău din Google Maps. Verifică-l pe hartă.'; }
+    }
     if (!S.id) { S.id = r.json.id; history.replaceState(null, '', '/editor.html?id=' + S.id); lsSet(LOCAL, { id: S.id, template: S.template, data: S.data }); }
     dirty = false; status('Salvat în cont ✓');
     return true;
@@ -225,6 +232,7 @@
           field('phone', 'Telefon', { type: 'tel', ph: '07xx xxx xxx' }) + field('whatsapp', 'WhatsApp', { type: 'tel', ph: '07xx xxx xxx' }) +
           field('instagram', 'Instagram', { ph: 'numele.tau' }) + field('email', 'Email', { type: 'email', ph: 'contact@exemplu.ro' }) +
           field('address', 'Adresă', { ph: 'Strada, număr, oraș' }) +
+          (S.data.address && S.data.address === t.defaults.address ? '<p class="note warn" style="margin:6px 0 10px">Adresa e încă cea de exemplu. Scrie adresa ta, ca să apară corect pe site.</p>' : '') +
           '<label class="f" for="locq">Locația pe hartă</label><div class="locbox"><div class="locsearch"><input type="search" id="locq" placeholder="Caută: stradă, oraș sau numele locului" value="' + esc(S.data.address || '') + '" autocomplete="off"/><button type="button" class="btn sm" id="locgo">Caută</button></div>' +
           '<div class="locmap" id="locmap" role="application" aria-label="Hartă: dă click ca să alegi locul"></div>' +
           '<div class="locbtns"><button type="button" class="btn ghost sm" id="geo">📍 Sunt acum la afacere</button>' + (S.data.geo ? '<button type="button" class="plain danger" id="geo-x">Șterge locația exactă</button>' : '') + '</div>' +

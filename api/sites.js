@@ -8,6 +8,7 @@
 // POST {action:'delete', id}                           → șterge ciorna (dacă nu e plătită)
 'use strict';
 const T = require('../assets/js/site-templates.js');
+const maps = require('./_maps');
 const { env, CATALOG, send, sameOrigin, readJson, configured, getUser, db, handle, BUCKET, storage, isAdmin, orderCode, cleanInstagram, usedBytes } = require('./_lib');
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -79,15 +80,22 @@ module.exports = handle(async (req, res) => {
     const template = T.TEMPLATES[b.template] ? b.template : null;
     if (!template) return send(res, 400, { error: 'Șablon necunoscut.' });
     const data = T.normalize(template, b.data);
+    // link scurt Google Maps → link complet + pin exact (dacă clientul n-a pus deja pinul pe hartă)
+    if (data.mapsUrl) {
+      const x = await maps.expand(data.mapsUrl);
+      data.mapsUrl = T.normalize(template, { mapsUrl: x.url }).mapsUrl || data.mapsUrl;
+      if (!data.geo && x.geo) data.geo = x.geo;
+    }
+    const loc = { mapsUrl: data.mapsUrl, geo: data.geo };
     if (b.id) {
       const s = await own(b.id); if (!s) return send(res, 404, { error: 'Site-ul nu există.' });
       if (await isPaid(s.id)) return send(res, 409, LOCKED);
       await db('sites?id=eq.' + s.id, { method: 'PATCH', prefer: 'return=minimal', body: { template, data } });
-      return send(res, 200, { id: s.id });
+      return send(res, 200, { id: s.id, loc });
     }
     if ((await unpaidCount(user.id)) >= MAX_SITES) return send(res, 400, { error: 'Poți avea maximum 3 ciorne neplătite în cont. Șterge una ca să faci alta.' });
     const rows = await db('sites', { method: 'POST', prefer: 'return=representation', body: { user_id: user.id, template, data } });
-    return send(res, 201, { id: rows[0].id });
+    return send(res, 201, { id: rows[0].id, loc });
   }
 
   if (b.action === 'upload') {

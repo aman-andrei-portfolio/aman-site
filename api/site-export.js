@@ -48,6 +48,7 @@ module.exports = handle(async (req, res) => {
   if (!admin && (!paid || !paid.length)) return send(res, 402, { error: 'Descărcarea se deblochează după ce confirm plata.' });
 
   const data = T.normalize(site.template, site.data);
+  if (data.mapsUrl && !data.geo) { const x = await require('./_maps').expand(data.mapsUrl); if (x.geo) data.geo = x.geo; }
   const used = [data.logo, data.hero, ...data.gallery].filter(Boolean);
   const files = [];
   for (const name of [...new Set(used)]) {
