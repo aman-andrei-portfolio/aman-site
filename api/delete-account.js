@@ -14,6 +14,8 @@ module.exports = handle(async (req, res) => {
   // Fișierele livrate (pot fi poze cu clientul) se șterg odată cu contul.
   const mine = await db(`orders?select=id&user_id=eq.${user.id}`);
   for (const o of mine || []) await removeFiles(o.id);
+  // Conversațiile cu clientul se șterg odată cu contul.
+  if ((mine || []).length) await db(`messages?order_id=in.(${mine.map((o) => o.id).join(',')})`, { method: 'DELETE', prefer: 'return=minimal' });
   // Cererile neplătite se șterg; comenzile plătite se anonimizează.
   await db(`orders?user_id=eq.${user.id}&paid_at=is.null`, { method: 'DELETE', prefer: 'return=minimal' });
   await db(`orders?user_id=eq.${user.id}`, { method: 'PATCH', prefer: 'return=minimal', body: { email: null, customer_name: null, user_id: null } });

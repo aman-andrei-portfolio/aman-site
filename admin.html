@@ -56,6 +56,26 @@ textarea:focus,input:focus{outline:2px solid #0071e3;outline-offset:1px;border-c
 .brief p{margin:0;font-size:15px;white-space:pre-wrap}
 .files.cl{border-top:0;padding-top:0}
 .x.dl{color:#0066cc}
+.payinfo{background:var(--bg-2);border-radius:14px;padding:12px 16px;margin-bottom:16px}
+.payinfo summary{cursor:pointer;font-weight:600;font-size:15px}
+.payinfo textarea{margin-top:8px}
+.chat-toggle{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;background:#fff;border:0;border-radius:980px;padding:8px 14px;font:500 14px var(--sans);color:#0066cc;cursor:pointer}
+.badge{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;border-radius:980px;background:#ff3b30;color:#fff;font-size:12px;font-weight:600}
+.badge[hidden]{display:none}
+.chat{background:#fff;border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:10px}
+.chat-log{max-height:360px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:4px}
+.chat-empty{color:var(--fg-2);font-size:14px;text-align:center;padding:16px 8px;margin:0}
+.msg{max-width:82%;display:flex;flex-direction:column;gap:2px}
+.msg p{margin:0;padding:9px 13px;border-radius:18px;font-size:15px;line-height:1.4;white-space:pre-wrap;overflow-wrap:anywhere;color:inherit}
+.msg time{font-size:11px;color:var(--fg-2);padding:0 6px}
+.msg.me{align-self:flex-end;align-items:flex-end}.msg.me p{background:#0071e3;color:#fff;border-bottom-right-radius:6px}
+.msg.them{align-self:flex-start}.msg.them p{background:#e9e9eb;color:var(--fg);border-bottom-left-radius:6px}
+.chat-form{display:flex;gap:8px;align-items:flex-end}
+.chat-form textarea{flex:1;min-width:0;resize:none;border-radius:20px;padding:9px 14px;min-height:0}
+.chat-send{flex:none;width:38px;height:38px;border-radius:50%;border:0;background:#0071e3;color:#fff;font-size:18px;font-weight:700;cursor:pointer}
+.chat-err{color:#c4001a;font-size:13px;margin:0}
+.chat-quick{display:flex;flex-wrap:wrap;gap:6px}
+.chat-chip{border:1px solid var(--line);background:#fff;border-radius:980px;padding:6px 12px;font:500 13px var(--sans);cursor:pointer}
 .files{border-top:1px solid var(--line);padding-top:12px}
 .flist{list-style:none;margin:0 0 10px;padding:0;display:flex;flex-direction:column;gap:6px}
 .flist li{display:flex;align-items:center;gap:10px;background:#fff;border-radius:10px;padding:8px 12px;font-size:14px}
@@ -72,9 +92,16 @@ textarea:focus,input:focus{outline:2px solid #0071e3;outline-offset:1px;border-c
 <main class="wrap">
   <div class="top"><h1>Comenzi</h1><button type="button" class="btn" id="reload" hidden>Reîmprospătează</button></div>
   <input type="search" id="q" class="search" hidden placeholder="Caută după cod (AM-…), @instagram, nume sau email" autocomplete="off" autocapitalize="none" spellcheck="false" aria-label="Caută comenzi"/>
-  <p class="help" id="help" hidden>Când îți scrie cineva pe Instagram cu un cod (ex. AM-K7P2Q), caută-l mai sus. Apasă pe un status ca să-l schimbi; clientul îl vede imediat. Mesajul și linkul se salvează cu „Salvează”.</p>
+  <p class="help" id="help" hidden>Clienții îți scriu în „Conversația cu clientul” de la fiecare comandă (tab-ul Necitite arată mesajele noi). Dacă îți scrie cineva pe Instagram cu un cod, caută-l mai sus. Apasă pe un status ca să-l schimbi; clientul îl vede imediat. Mesajul și linkul se salvează cu „Salvează”.</p>
+  <details class="payinfo" id="payinfo">
+    <summary>Detaliile tale de plată</summary>
+    <p class="meta">Le scrii o singură dată. Apar în mesajul „Detaliile de plată” din conversații. Se salvează doar pe acest dispozitiv, nu pe server.</p>
+    <textarea rows="4" placeholder="Titular: …&#10;IBAN: RO…&#10;Banca: …&#10;sau Revolut: @…"></textarea>
+    <p class="meta" id="paysaved"></p>
+  </details>
   <div id="app"><p class="muted">Se încarcă…</p></div>
 </main>
+<script src="/assets/js/chat.js" defer></script>
 <script src="/assets/js/admin.js" defer></script>
 </body>
 </html>

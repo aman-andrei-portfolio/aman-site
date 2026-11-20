@@ -28,7 +28,7 @@ async function signAssets(id, names) {
 }
 async function siteOrder(id) {
   const rows = await db(`orders?select=id,code,status&site_id=eq.${id}&status=neq.cancelled&order=created_at.desc&limit=1`);
-  return rows && rows[0] ? { code: rows[0].code, status: rows[0].status, unlocked: PAID.includes(rows[0].status) } : null;
+  return rows && rows[0] ? { id: rows[0].id, code: rows[0].code, status: rows[0].status, unlocked: PAID.includes(rows[0].status) } : null;
 }
 
 module.exports = handle(async (req, res) => {
@@ -102,7 +102,7 @@ module.exports = handle(async (req, res) => {
   if (b.action === 'order') {
     const s = await own(b.id); if (!s) return send(res, 404, { error: 'Salvează mai întâi site-ul.' });
     const existing = await siteOrder(s.id);
-    if (existing) return send(res, 200, { code: existing.code, status: existing.status, existing: true });
+    if (existing) return send(res, 200, { id: existing.id, code: existing.code, status: existing.status, existing: true });
     const open = await db(`orders?select=id&user_id=eq.${user.id}&status=eq.requested`);
     if (open.length >= 3) return send(res, 429, { error: 'Ai deja 3 comenzi neplătite. Scrie-mi pe Instagram sau anulează una din cont.' });
     const lang = b.lang === 'en' ? 'en' : 'ro', currency = lang === 'en' ? 'eur' : 'ron', pkg = CATALOG['site-builder'];
@@ -114,7 +114,8 @@ module.exports = handle(async (req, res) => {
           user_id: user.id, email: user.email, customer_name: user.name, package: 'site-builder',
           title: pkg.name[lang] + ': ' + String(name).slice(0, 60), amount: pkg[currency], currency, lang,
           status: 'requested', code, instagram: cleanInstagram(b.instagram) || null, brief: 'Șablon: ' + T.TEMPLATES[s.template].label, site_id: s.id } });
-        return send(res, 201, { code, status: 'requested' });
+        const made = await db(`orders?select=id&code=eq.${code}`);
+        return send(res, 201, { code, status: 'requested', id: made[0] && made[0].id });
       } catch (e) { if (!/23505|duplicate/.test(e.message)) throw e; }
     }
     return send(res, 500, { error: 'Nu am putut crea comanda. Încearcă din nou.' });

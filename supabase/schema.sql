@@ -77,3 +77,16 @@ create or replace function public.sites_touch() returns trigger language plpgsql
 begin new.updated_at := now(); return new; end $$;
 drop trigger if exists sites_touch on public.sites;
 create trigger sites_touch before update on public.sites for each row execute function public.sites_touch();
+-- Chat-ul dintre tine și client, câte unul pentru fiecare comandă. Acces doar prin serverul site-ului.
+create table if not exists public.messages (
+  id              uuid primary key default gen_random_uuid(),
+  order_id        uuid not null references public.orders (id) on delete cascade,
+  sender          text not null check (sender in ('client', 'admin')),
+  body            text not null check (char_length(body) between 1 and 2000),
+  created_at      timestamptz not null default now(),
+  read_by_client  timestamptz,
+  read_by_admin   timestamptz
+);
+create index if not exists messages_order_idx on public.messages (order_id, created_at);
+alter table public.messages enable row level security;
+revoke all on public.messages from anon, authenticated;

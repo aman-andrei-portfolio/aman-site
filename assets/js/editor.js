@@ -6,7 +6,7 @@
   var d = document, ST = window.SiteTemplates;
   var LOCAL = 'aman.editor.v1', SESSION = 'aman.session';
   var IG = 'https://www.instagram.com/costi1andrei/';
-  var PRICE = { ro: '199 lei', en: '€39' };
+  var PRICE = { ro: '149 lei', en: '€29' };
   var SWATCHES = ['#c8a24a', '#8a5a3b', '#c56b8a', '#2b59ff', '#1a7f37', '#d9480f', '#6741d9', '#111111'];
 
   var S = { id: null, template: 'barber', data: ST.starter('barber'), assets: {}, order: null, own: true, step: 0 };
@@ -169,14 +169,15 @@
     }
     if (o) {
       return '<h2>Comanda e trimisă</h2><p class="code">' + esc(o.code) + '</p>' +
-        '<p class="sub">Trimite-mi codul pe Instagram. După ce confirm plata, aici și în contul tău apare butonul de descărcare.</p>' + igBox(o.code) +
+        '<p class="sub">Îți răspund pe site, în conversația comenzii, cu detaliile de plată. După ce confirm plata, aici și în contul tău apare butonul de descărcare.</p>' +
+        '<p><a class="btn" id="tochat" href="/#cont">Deschide conversația</a></p><p class="sub" style="font-size:13px">Preferi Instagram? Trimite-mi codul pe <a href="' + IG + '" target="_blank" rel="noopener">@costi1andrei</a>.</p>' +
         '<p class="sub" style="margin-top:14px">Poți continua să modifici site-ul până la descărcare.</p>';
     }
     var list = '<ul class="list"><li>Site-ul complet, gata de pus online</li><li>Pozele tale, optimizate</li><li>Arată bine pe telefon și calculator</li><li>Instrucțiuni pas cu pas pentru publicare</li></ul>';
     if (!session) return '<h2>Îți place?</h2><p class="price">' + PRICE[lang] + '</p>' + list + '<p class="note" style="margin-top:16px">Intră în cont ca să-ți salvăm site-ul și să primești codul comenzii.</p><p><button type="button" class="btn" id="login">Intră cu Google</button></p>';
     return '<h2>Îți place?</h2><p class="price">' + PRICE[lang] + '</p>' + list +
       '<label class="f" for="f-ig">Username-ul tău de Instagram</label><input type="text" id="f-ig" maxlength="40" placeholder="@numele.tau" autocapitalize="none" autocomplete="off"/>' +
-      '<p class="sub" style="margin-top:12px">Primești un cod. Mi-l trimiți pe Instagram, plătești prin transfer, iar eu deblochez descărcarea.</p>' +
+      '<p class="sub" style="margin-top:12px">Primești un cod și vorbim aici, pe site: îți trimit detaliile de plată, plătești prin transfer, iar eu deblochez descărcarea.</p>' +
       '<p><button type="button" class="btn" id="buy">Vreau site-ul</button></p><p class="err" hidden></p>' +
       '<p class="sub" style="font-size:12px">Site-ul e conținut digital: după ce îl descarci, nu mai poți cere banii înapoi. Detalii în <a href="/termeni.html" target="_blank" rel="noopener">Termeni</a>.</p>';
   }
@@ -267,6 +268,7 @@
     if (t.dataset.rm) { removeAsset(S.data[t.dataset.rm]); S.data[t.dataset.rm] = ''; renderBody(); changed(); return; }
     if (t.dataset.rmg !== undefined) { removeAsset(S.data.gallery.splice(+t.dataset.rmg, 1)[0]); renderBody(); changed(); return; }
     if (t.id === 'buy') return buy();
+    if (t.id === 'tochat') { try { sessionStorage.setItem('aman.openchat', S.order && S.order.id || ''); } catch (x) {} return; }
     if (t.id === 'dl') return download();
     if (t.id === 'igbtn') {
       var msg = $('igmsg').value;
@@ -281,7 +283,7 @@
     if (!(await save(true))) { btn.disabled = false; return; }
     var r = await api('POST', '/api/sites', { action: 'order', id: S.id, instagram: ($('f-ig') || {}).value || '', lang: d.documentElement.lang });
     if (!r.ok) { btn.disabled = false; return flash(r.json.error || 'Nu am putut trimite comanda.'); }
-    S.order = { code: r.json.code, status: r.json.status, unlocked: false };
+    S.order = { id: r.json.id, code: r.json.code, status: r.json.status, unlocked: false };
     renderBody();
   }
   async function download() {

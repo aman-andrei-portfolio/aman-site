@@ -18,7 +18,7 @@ const CATALOG = {
   'foto-1':         { name: { ro: '1 fotografie',         en: '1 photo' },        ron: 1900,  eur: 400,   max: 1 },
   'foto-10':        { name: { ro: '10 fotografii',        en: '10 photos' },      ron: 12900, eur: 2500,  max: 10 },
   // site făcut de client în editor: se comandă doar din editor, nu din lista de servicii
-  'site-builder':   { name: { ro: 'Site din editor',      en: 'Site from the editor' }, ron: 19900, eur: 3900, max: 0, editorOnly: true },
+  'site-builder':   { name: { ro: 'Site din editor',      en: 'Site from the editor' }, ron: 14900, eur: 2900, max: 0, editorOnly: true },
 };
 
 function send(res, status, body) {

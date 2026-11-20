@@ -26,7 +26,7 @@
       pick: 'Alege fișiere', max: 'maximum {n} · până la 50 MB fiecare', big: 'Pentru fișiere mai mari, pune un link în descriere (Google Drive, WeTransfer).',
       tooMany: 'Poți trimite maximum {n} fișiere pentru opțiunea asta.', tooBig: '{f} are peste 50 MB. Pune-l ca link în descriere.',
       send: 'Trimite comanda', cancel: 'Renunț', sending: 'Se trimite comanda…', up: 'Se încarcă {f}… {p}%',
-      doneH: 'Comanda a fost trimisă', doneP: 'Ultimul pas: trimite-mi mesajul de mai jos pe Instagram, ca să știu că ești tu. Îți răspund cu detaliile de plată.',
+      doneH: 'Comanda a fost trimisă', doneP: 'Îți răspund aici, pe site, în conversația comenzii, cu detaliile de plată. De obicei în mai puțin de 2 ore.', chatGo: 'Deschide conversația', igAlt: 'Preferi Instagram? Trimite-mi codul pe @costi1andrei.',
       msg: 'Salut! Am trimis comanda {c} ({n}) de pe site.', copyGo: 'Copiază mesajul și deschide Instagram', copied: 'Mesaj copiat. Lipește-l în chat.',
       seeAcc: 'Vezi comanda în cont', partial: 'Comanda e trimisă, dar unele fișiere nu s-au încărcat. Mi le poți trimite pe Instagram.',
     },
@@ -39,7 +39,7 @@
       pick: 'Choose files', max: 'up to {n} · up to 50 MB each', big: 'For bigger files, add a link in the description (Google Drive, WeTransfer).',
       tooMany: 'You can send up to {n} files for this option.', tooBig: '{f} is over 50 MB. Add it as a link in the description.',
       send: 'Send order', cancel: 'Cancel', sending: 'Sending the order…', up: 'Uploading {f}… {p}%',
-      doneH: 'Order sent', doneP: 'Last step: send me the message below on Instagram so I know it is you. I will reply with the payment details.',
+      doneH: 'Order sent', doneP: 'I will reply here on the site, in the order conversation, with the payment details. Usually within 2 hours.', chatGo: 'Open the conversation', igAlt: 'Prefer Instagram? Send me the code at @costi1andrei.',
       msg: 'Hi! I sent order {c} ({n}) from the website.', copyGo: 'Copy the message and open Instagram', copied: 'Message copied. Paste it in the chat.',
       seeAcc: 'See the order in your account', partial: 'The order is sent, but some files did not upload. You can send them to me on Instagram.',
     },
@@ -152,28 +152,23 @@
           await put(sj.url, f, function (p) { status.textContent = t('up').replace('{f}', f.name).replace('{p}', p); });
         } catch (e) { failed++; }
       }
-      stepDone(j.code, failed);
+      stepDone(j.code, failed, j.id);
       A().refresh();
     } catch (e) {
       status.remove(); err(e.message); send.disabled = false;
     }
   }
 
-  function stepDone(code, failed) {
-    var msg = t('msg').replace('{c}', code).replace('{n}', cur.name);
+  function stepDone(code, failed, orderId) {
     shell('<p class="eyebrow">' + t('doneH') + '</p><p class="code">' + esc(code) + '</p>' +
       '<p class="muted">' + t('doneP') + '</p>' + (failed ? '<p class="banner">' + t('partial') + '</p>' : '') +
-      '<textarea class="msg" id="o-msg" rows="2" readonly>' + esc(msg) + '</textarea>' +
-      '<div class="row"><a class="btn" id="o-go" href="' + IG + '" target="_blank" rel="noopener">' + t('copyGo') + '</a></div>' +
-      '<p class="fine" id="o-copied" hidden>' + t('copied') + '</p>' +
-      '<p class="fine"><a href="#cont" id="o-acc">' + t('seeAcc') + '</a></p>');
-    dlg.querySelector('#o-go').addEventListener('click', function () {
-      var ta = dlg.querySelector('#o-msg');
-      var done = function () { dlg.querySelector('#o-copied').hidden = false; };
-      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(msg).then(done, function () { ta.select(); try { d.execCommand('copy'); done(); } catch (e) {} });
-      else { ta.select(); try { d.execCommand('copy'); done(); } catch (e) {} }
+      '<div class="row"><button type="button" class="btn" id="o-chat">' + t('chatGo') + '</button></div>' +
+      '<p class="fine"><a href="' + IG + '" target="_blank" rel="noopener">' + t('igAlt') + '</a></p>');
+    dlg.querySelector('#o-chat').addEventListener('click', function () {
+      try { sessionStorage.setItem('aman.openchat', orderId); } catch (e) {}
+      dlg.close();
+      if (location.hash === '#cont') location.reload(); else { location.hash = 'cont'; location.reload(); }
     });
-    dlg.querySelector('#o-acc').addEventListener('click', function () { dlg.close(); });
   }
 
   function open(key) {

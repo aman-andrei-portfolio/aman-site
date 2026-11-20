@@ -67,8 +67,18 @@ Fără aceste variabile, pagina Cont spune „în curând”, iar butoanele duc 
 
 - Clientul alege un șablon (Frizerie, Cafenea/Restaurant, Salon/Beauty, Portofoliu), își scrie textele,
   urcă poze și vede site-ul live, cu watermark „Creat cu Aman”. Textele se salvează în browser; după logare, și în cont (max. 3 site-uri).
-- „Vreau site-ul” creează o comandă cu cod (199 lei / €39, din `api/_lib.js` → `site-builder`).
+- „Vreau site-ul” creează o comandă cu cod (149 lei / €29, din `api/_lib.js` → `site-builder`).
 - În panou, comanda are linkul „Vezi site-ul în editor”. Când pui **Plătită**, clientul vede butonul
   **„Descarcă site-ul (ZIP)”** în editor și în cont. Arhiva conține `index.html`, pozele și instrucțiuni de publicare, fără watermark.
 - Șabloanele sunt în `assets/js/site-templates.js` (același cod face previzualizarea și arhiva finală).
 - Pozele stau în spațiul privat `livrari`, folderul `sites/{id}/`.
+
+## Conversații pe site (în loc de Instagram)
+
+- Fiecare comandă are o conversație între tine și client: în pagina **Cont** (client) și în **Panou** (tu).
+- După ce trimite o comandă, clientul e dus direct în conversație. Instagramul rămâne doar ca variantă.
+- În panou, tab-ul **Necitite** arată comenzile cu mesaje noi (titlul paginii arată și numărul). Se verifică singur la 20 de secunde.
+- Scrie o singură dată, sus în panou, **Detaliile tale de plată** (IBAN, titular). Rămân doar pe dispozitivul tău.
+  În conversație, butonul **Detaliile de plată** completează automat mesajul cu suma, codul și IBAN-ul.
+- Clienții pot trimite maximum 30 de mesaje pe oră. Conversațiile se șterg odată cu contul clientului.
+- La comenzile din editor nu mai apar secțiunile de fișiere: clientul își descarcă singur site-ul după „Plătită”.

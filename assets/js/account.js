@@ -5,7 +5,7 @@
   'use strict';
   var d = document, box = d.getElementById('acct');
   if (!box) return;
-  var cfg = null, session = null, orders = null, notice = null, busy = false, confirmDel = false, confirmCancel = null, isAdmin = false, files = {}, sites = [];
+  var cfg = null, session = null, orders = null, notice = null, busy = false, confirmDel = false, confirmCancel = null, isAdmin = false, files = {}, sites = [], openChat = null, chatInst = null, unread = {};
   var KEY = 'aman.session', PKCE = 'aman.pkce';
   var IG = 'https://www.instagram.com/costi1andrei/';
 
@@ -18,12 +18,13 @@
       privacy: 'Politica de confidențialitate', logout: 'Ieși din cont', loading: 'Se încarcă…',
       empty: 'Încă nu ai nicio comandă. Alege un pachet, scrie-mi pe Instagram și comanda apare aici.',
       seePacks: 'Vezi pachetele', files: 'Deschide fișierele', note: 'Mesaj de la Aman', yourFiles: 'Fișierele tale', dl: 'Descarcă',
-      how: 'Plata se face prin transfer bancar. Îți trimit detaliile pe Instagram, iar statusul se actualizează aici după ce primesc plata.',
+      how: 'Plata se face prin transfer bancar. Îți trimit detaliile aici, în mesajele comenzii, iar statusul se actualizează după ce primesc plata.',
       saved: 'Cererea pentru {p} a fost salvată în cont. Continuă discuția pe Instagram.',
       data: 'Datele tale', export: 'Descarcă datele mele', del: 'Șterge contul',
       delConfirm: 'Sigur? Contul se șterge definitiv. Comenzile plătite rămân doar anonimizate, pentru evidență.',
       delYes: 'Da, șterge contul', delNo: 'Renunț', deleted: 'Contul a fost șters.',
       loginErr: 'Logarea nu a reușit. Încearcă din nou.', expired: 'Sesiunea a expirat. Intră din nou în cont.',
+      chat: 'Mesaje', chatHide: 'Ascunde mesajele', chatEmpty: 'Scrie-mi aici despre comandă: ce vrei, întrebări, detalii. Îți răspund de obicei în mai puțin de 2 ore.', chatPh: 'Scrie un mesaj…',
       zip: 'Descarcă site-ul (ZIP)', openEd: 'Deschide în editor', mySites: 'Site-urile tale din editor', newSite: 'Fă un site nou', edit: 'Continuă editarea', draft: 'Ciornă',
       cancel: 'Anulează cererea', cancelQ: 'Sigur anulezi cererea?', cancelYes: 'Da, anulează', cancelNo: 'Nu', cancelled: 'Cererea a fost anulată.',
       st: { requested: 'Cerere trimisă · aștept plata', paid: 'Plătită · urmează să încep', in_progress: 'În lucru', review: 'Gata de verificare', delivered: 'Livrată', cancelled: 'Anulată', refunded: 'Rambursată' },
@@ -36,12 +37,13 @@
       privacy: 'Privacy policy', logout: 'Sign out', loading: 'Loading…',
       empty: 'You have no orders yet. Pick a package, message me on Instagram and the order shows up here.',
       seePacks: 'See packages', files: 'Open the files', note: 'Message from Aman', yourFiles: 'Your files', dl: 'Download',
-      how: 'Payment is by bank transfer. I send you the details on Instagram, and the status updates here once I receive it.',
+      how: 'Payment is by bank transfer. I send you the details here, in the order messages, and the status updates once I receive it.',
       saved: 'Your request for {p} is saved in your account. Carry on the chat on Instagram.',
       data: 'Your data', export: 'Download my data', del: 'Delete account',
       delConfirm: 'Are you sure? The account is deleted permanently. Paid orders are kept only in anonymised form, for records.',
       delYes: 'Yes, delete it', delNo: 'Cancel', deleted: 'Your account has been deleted.',
       loginErr: 'Sign-in failed. Please try again.', expired: 'Your session expired. Please sign in again.',
+      chat: 'Messages', chatHide: 'Hide messages', chatEmpty: 'Write to me here about the order: what you need, questions, details. I usually reply in under 2 hours.', chatPh: 'Write a message…',
       zip: 'Download the site (ZIP)', openEd: 'Open in the editor', mySites: 'Your sites from the editor', newSite: 'Make a new site', edit: 'Continue editing', draft: 'Draft',
       cancel: 'Cancel request', cancelQ: 'Cancel this request?', cancelYes: 'Yes, cancel', cancelNo: 'No', cancelled: 'The request has been cancelled.',
       st: { requested: 'Request sent · awaiting payment', paid: 'Paid · starting soon', in_progress: 'In progress', review: 'Ready for review', delivered: 'Delivered', cancelled: 'Cancelled', refunded: 'Refunded' },
@@ -139,6 +141,18 @@
     render();
   }
 
+  // Mesaje necitite: insigne pe comenzi și un punct pe „Cont” în meniu.
+  function badges() {
+    var total = 0;
+    Object.keys(unread).forEach(function (k) { total += unread[k] || 0; });
+    box.querySelectorAll('[data-chat]').forEach(function (b) { var n = unread[b.dataset.chat] || 0, e = b.querySelector('.badge'); if (e) { e.textContent = n || ''; e.hidden = !n; } });
+    d.querySelectorAll('.acct-link').forEach(function (a) { a.classList.toggle('has-new', total > 0); });
+  }
+  async function loadUnread() {
+    var tk = await token(); if (!tk) return;
+    var r = await fetch('/api/messages?unread=1&as=client', { headers: { Authorization: 'Bearer ' + tk } }).catch(function () { return null; });
+    if (r && r.ok) { unread = (await r.json()).unread || {}; if (openChat) unread[openChat] = 0; badges(); }
+  }
   async function downloadZip(siteId, btn) {
     var tk = await token(); if (!tk) return render();
     var old = btn.textContent; btn.disabled = true; btn.textContent = '…';
@@ -172,6 +186,8 @@
   // ---------- afișare ----------
   var G = '<svg viewBox="0 0 48 48" width="18" height="18" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.540 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.730-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>';
   function render() {
+    var draft = box.querySelector('.chatbox textarea'); draft = draft ? draft.value : '';
+    if (chatInst) { chatInst.stop(); chatInst = null; }
     var sec = d.getElementById('s-cont'); if (sec) sec.classList.toggle('in', !!session);
     var h = '';
     if (notice) h += '<p class="notice ' + notice.kind + '">' + esc(notice.text) + '</p>';
@@ -199,10 +215,12 @@
           (o.note ? '<p class="o-note"><span>' + t('note') + '</span>' + esc(o.note) + '</p>' : '') +
           (o.status === 'requested' ? (confirmCancel === o.id
             ? '<div class="confirm"><p>' + t('cancelQ') + '</p><div class="row"><button type="button" class="btn danger" data-cancel-yes="' + esc(o.id) + '"' + (busy ? ' disabled' : '') + '>' + t('cancelYes') + '</button><button type="button" class="more plain" data-cancel-no="1">' + t('cancelNo') + '</button></div></div>'
-            : '<div class="row o-actions"><a class="more" href="' + IG + '" target="_blank" rel="noopener">' + t('ig') + '</a><button type="button" class="more plain danger" data-cancel="' + esc(o.id) + '">' + t('cancel') + '</button></div>') : '') +
+            : '<div class="row o-actions"><button type="button" class="more plain danger" data-cancel="' + esc(o.id) + '">' + t('cancel') + '</button></div>') : '') +
           (o.delivery_url && /^https:\/\//.test(o.delivery_url) ? '<a class="more" href="' + esc(o.delivery_url) + '" target="_blank" rel="noopener">' + t('files') + '</a>' : '') +
           fileList(files[o.id]) +
-          (o.site_id ? '<div class="row o-actions">' + (['paid', 'in_progress', 'review', 'delivered'].indexOf(o.status) >= 0 ? '<button type="button" class="btn small" data-zip="' + esc(o.site_id) + '">' + t('zip') + '</button>' : '') + '<a class="more" href="/editor.html?id=' + esc(o.site_id) + '">' + t('openEd') + '</a></div>' : '') + '</li>';
+          (o.site_id ? '<div class="row o-actions">' + (['paid', 'in_progress', 'review', 'delivered'].indexOf(o.status) >= 0 ? '<button type="button" class="btn small" data-zip="' + esc(o.site_id) + '">' + t('zip') + '</button>' : '') + '<a class="more" href="/editor.html?id=' + esc(o.site_id) + '">' + t('openEd') + '</a></div>' : '') +
+          '<button type="button" class="chat-toggle" data-chat="' + esc(o.id) + '" aria-expanded="' + (openChat === o.id) + '"><span>' + (openChat === o.id ? t('chatHide') : t('chat')) + '</span><b class="badge"' + (unread[o.id] ? '' : ' hidden') + '>' + (unread[o.id] || '') + '</b></button>' +
+          (openChat === o.id ? '<div class="chatbox" data-chatbox="' + esc(o.id) + '"></div>' : '') + '</li>';
       }).join('') + '</ul>';
     }
     if (sites.length) {
@@ -222,6 +240,13 @@
     if ((x = d.getElementById('del'))) x.addEventListener('click', function () { confirmDel = true; render(); });
     if ((x = d.getElementById('del-no'))) x.addEventListener('click', function () { confirmDel = false; render(); });
     if ((x = d.getElementById('del-yes'))) x.addEventListener('click', deleteAccount);
+    box.querySelectorAll('[data-chat]').forEach(function (b) { b.addEventListener('click', function () { openChat = openChat === b.dataset.chat ? null : b.dataset.chat; render(); }); });
+    var cb = box.querySelector('[data-chatbox]');
+    if (cb && window.AmanChat) {
+      var oid = cb.dataset.chatbox;
+      chatInst = window.AmanChat.mount(cb, { order: oid, token: token, as: 'client', empty: t('chatEmpty'), placeholder: t('chatPh'), onSeen: function () { unread[oid] = 0; badges(); } });
+      if (draft) { var ta = cb.querySelector('textarea'); ta.value = draft; }
+    }
     box.querySelectorAll('[data-zip]').forEach(function (b) { b.addEventListener('click', function () { downloadZip(b.dataset.zip, b); }); });
     box.querySelectorAll('[data-cancel]').forEach(function (b) { b.addEventListener('click', function () { confirmCancel = b.dataset.cancel; render(); }); });
     box.querySelectorAll('[data-cancel-no]').forEach(function (b) { b.addEventListener('click', function () { confirmCancel = null; render(); }); });
@@ -252,7 +277,10 @@
     if (session && sload('aman.return')) { var b2 = sload('aman.return'); sstore('aman.return', null); if (/^\/[a-z0-9./?=&-]*$/i.test(b2)) { location.replace(b2); return; } }
     render();
     if (session) {
+      var oc = sload('aman.openchat'); if (oc) { sstore('aman.openchat', null); openChat = oc; }
       await loadOrders();
+      loadUnread(); setInterval(function () { if (!d.hidden) loadUnread(); }, 30000);
+      if (openChat) { var el = box.querySelector('[data-chatbox]'); if (el) setTimeout(function () { el.scrollIntoView({ block: 'center' }); }, 100); }
       // Doar pentru administrator: serverul răspunde 200 numai dacă emailul e în ADMIN_EMAILS.
       var tk = await token();
       if (tk) fetch('/api/admin', { headers: { Authorization: 'Bearer ' + tk } }).then(function (r) { if (r.ok) { isAdmin = true; render(); } }).catch(function () {});
