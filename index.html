@@ -83,50 +83,60 @@ p{margin:0}
 .lang:hover{background:#e8e8ed}
 @media(max-width:600px){.nav nav a.opt{display:none}}
 
-/* hero: centrat, fără poză; dedesubt o „vitrină” cu cele trei servicii, desenată din cod */
-.hero{padding-block:clamp(56px,9vw,112px) clamp(40px,6vw,72px);text-align:center;overflow:hidden}
-.hero h1{font-size:clamp(76px,15vw,168px);line-height:.95;letter-spacing:-.055em;font-weight:700;margin-top:18px}
-.hero .lead{margin:20px auto 0;color:var(--fg);max-width:26em;text-wrap:balance}
-.hero .ctas{justify-content:center}
-.stage{position:relative;display:grid;grid-template-columns:1.25fr .8fr 1fr;gap:clamp(12px,2vw,24px);align-items:end;max-width:980px;margin:clamp(44px,6vw,72px) auto 0;perspective:1600px}
-.sc{position:relative;background:#fff;border-radius:22px;box-shadow:0 1px 0 rgba(0,0,0,.04),0 30px 60px -28px rgba(0,0,0,.32);overflow:hidden;text-align:left;animation:float 7s ease-in-out infinite}
-.sc-video{animation-delay:-2.3s}.sc-foto{animation-delay:-4.6s}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-.sc-tag{position:absolute;left:14px;bottom:12px;margin:0;font-size:12px;font-weight:600;letter-spacing:.02em;padding:4px 10px;border-radius:980px;background:rgba(255,255,255,.9);color:var(--fg);box-shadow:0 2px 8px rgba(0,0,0,.08)}
-.sc-bar{display:flex;align-items:center;gap:6px;padding:10px 12px;border-bottom:1px solid var(--line)}
-.sc-bar i{width:9px;height:9px;border-radius:50%;background:#ff5f57}.sc-bar i:nth-child(2){background:#febc2e}.sc-bar i:nth-child(3){background:#28c840}
-.sc-bar span{margin-left:8px;flex:1;font-size:11px;color:var(--fg-2);background:var(--bg-2);border-radius:6px;padding:3px 8px}
-.sc-site{padding:22px 20px 54px;background:linear-gradient(160deg,#f5f5f7,#fff);display:flex;flex-direction:column;align-items:flex-start;gap:9px;min-height:250px}
-.sc-site b{font-size:26px;letter-spacing:-.03em}
-.sc-site em{font-style:normal;font-size:12px;font-weight:600;color:#fff;background:var(--blue);padding:7px 14px;border-radius:980px}
-.sc-site>span{display:block;height:7px;border-radius:4px;background:#d2d2d7;width:70%}.sc-site>span+span{width:46%}
-.sc-rows{width:100%;display:grid;gap:7px;margin-top:8px}.sc-rows i{display:block;height:26px;border-radius:8px;background:#fff;box-shadow:inset 0 0 0 1px var(--line)}
-.sc-video{background:#111;border-radius:28px;padding:10px;min-height:320px;display:flex;flex-direction:column;gap:10px}
-.sc-clip{position:relative;flex:1;border-radius:20px;background:linear-gradient(160deg,#2b2b30,#0b0b0d);display:grid;place-items:center;min-height:220px;overflow:hidden}
-.sc-clip::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 50% at 30% 30%,rgba(255,255,255,.18),transparent 70%)}
-.play{width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.18);backdrop-filter:blur(6px);position:relative}
-.play::after{content:"";position:absolute;left:18px;top:14px;border-left:14px solid #fff;border-top:9px solid transparent;border-bottom:9px solid transparent}
-.sc-prog{position:absolute;left:14px;right:14px;bottom:14px;height:3px;border-radius:2px;background:rgba(255,255,255,.25);overflow:hidden}
-.sc-prog i{display:block;height:100%;width:40%;background:#fff;animation:prog 6s linear infinite}
+/* acasă: compactă, în stil Apple: titlu, plăci (bento), alegere „De ce ai nevoie?” */
+.home{padding-block:clamp(40px,6vw,72px) clamp(56px,7vw,88px)}
+.h-hero{text-align:center;margin-bottom:clamp(32px,4.5vw,52px)}
+.h-hero h1{font-size:clamp(40px,6.6vw,80px);line-height:1.04;letter-spacing:-.045em;font-weight:700;margin-top:12px;text-wrap:balance}
+.h-hero h1 .mute{color:#86868b}
+.h-hero .ctas{justify-content:center;margin-top:26px}
+.bento{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+.tile{position:relative;overflow:hidden;background:var(--bg-2);border-radius:28px;padding:clamp(26px,3vw,36px);display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;min-height:340px}
+.tile h2{font-size:clamp(30px,3.4vw,44px);letter-spacing:-.035em;line-height:1.05}
+.tile p{margin:0;color:var(--fg-2);font-size:17px;max-width:24em}
+.tile .meta{font-size:14px;color:var(--fg-2);margin-top:2px}
+.tile .links{display:flex;gap:22px;margin-top:10px}
+.tile button.more{background:none;border:0;padding:0;font:inherit;font-size:17px;color:var(--link);cursor:pointer}
+.tile .more::after{content:" ›"}
+.t-dark{background:#000;color:#f5f5f7}.t-dark p,.t-dark .meta{color:#a1a1a6}.t-dark .more,.t-dark button.more{color:#2997ff}
+.t-web{grid-column:span 4;flex-direction:row;text-align:left;align-items:center;gap:28px}.t-web .t-txt{flex:1;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.t-ed{grid-column:span 2}.t-video{grid-column:span 3}.t-foto{grid-column:span 3}
+.t-ed .new{color:#f56300;font-size:13px;font-weight:600;margin:0}
+/* ilustrații mici, din cod */
+.v-web{flex:1.1;max-width:360px;align-self:stretch;display:flex;flex-direction:column;background:#fff;border-radius:14px;box-shadow:0 24px 50px -24px rgba(0,0,0,.3);overflow:hidden;margin-right:-60px;transform:rotate(-2deg)}
+.vb{display:flex;gap:5px;padding:9px 11px;border-bottom:1px solid var(--line)}.vb i{width:8px;height:8px;border-radius:50%;background:#ff5f57}.vb i:nth-child(2){background:#febc2e}.vb i:nth-child(3){background:#28c840}
+.vs{padding:18px;display:flex;flex-direction:column;gap:9px}.vs b{height:16px;width:62%;border-radius:4px;background:#1d1d1f}.vs em{height:22px;width:92px;border-radius:980px;background:var(--blue)}.vs span{height:6px;border-radius:3px;background:#d2d2d7;width:80%}.vs span+span{width:55%}
+.v-sw{display:flex;gap:6px;margin:auto 0 0;padding-top:18px}.v-sw i{width:22px;height:22px;border-radius:50%;box-shadow:0 0 0 2px #000,0 0 0 3px rgba(255,255,255,.2)}
+.v-vid{position:relative;width:min(100%,300px);aspect-ratio:16/9;margin:auto 0 0;padding-top:0;border-radius:14px;background:radial-gradient(60% 60% at 30% 30%,#3a3a40,#0b0b0d);display:grid;place-items:center}
+.v-vid .pl{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.16);position:relative}.v-vid .pl::after{content:"";position:absolute;left:17px;top:13px;border-left:13px solid #fff;border-top:9px solid transparent;border-bottom:9px solid transparent}
+.v-vid .pr{position:absolute;left:12px;right:12px;bottom:10px;height:3px;border-radius:2px;background:rgba(255,255,255,.25);overflow:hidden}.v-vid .pr i{display:block;height:100%;background:#fff;animation:prog 6s linear infinite}
+.v-ba{position:relative;width:min(100%,300px);aspect-ratio:16/9;margin:auto 0 0;border-radius:14px;overflow:hidden}
+.v-ba i{position:absolute;inset:0;background:radial-gradient(circle at 70% 34%,#ffd27a 0 9%,transparent 9.5%),radial-gradient(120% 62% at 18% 104%,#2f6b4f 0 50%,transparent 50.5%),radial-gradient(110% 56% at 88% 108%,#4a9466 0 50%,transparent 50.5%),linear-gradient(#6fb0ea,#f7d8ae)}
+.v-ba .b{filter:grayscale(.75) brightness(.8) contrast(.8)}.v-ba .a{clip-path:inset(0 0 0 50%);filter:saturate(1.35);animation:wipe 6s ease-in-out infinite}
+.v-ba .s{background:#fff;width:2px;left:50%;right:auto;animation:slide 6s ease-in-out infinite}
 @keyframes prog{from{width:0}to{width:100%}}
-.sc-tl{display:flex;gap:4px;padding:0 4px 30px}.sc-tl i{flex:1;height:22px;border-radius:5px;background:#2c2c30}.sc-tl i:nth-child(2){flex:2;background:#0071e3}.sc-tl i:nth-child(4){flex:1.5;background:#3a3a40}
-.sc-video .sc-tag{background:rgba(255,255,255,.14);color:#fff;box-shadow:none}
-.sc-ba{position:relative;height:300px}
-.sc-ba .before,.sc-ba .after{position:absolute;inset:0;background:radial-gradient(40% 35% at 50% 38%,#e9c9a8,transparent 70%),radial-gradient(70% 45% at 50% 100%,#3a4a6b,transparent 70%),linear-gradient(180deg,#bfd4e6,#f3e2cf)}
-.sc-ba .before{filter:grayscale(.85) brightness(.82) contrast(.85)}
-.sc-ba .after{clip-path:inset(0 0 0 50%);filter:saturate(1.35) contrast(1.08);animation:wipe 6s ease-in-out infinite}
-.sc-ba .split{position:absolute;top:0;bottom:0;left:50%;width:2px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.06);animation:slide 6s ease-in-out infinite}
-.sc-ba .split::after{content:"";position:absolute;top:50%;left:50%;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.25)}
-.sc-ba small{position:absolute;top:12px;font-size:11px;font-weight:600;color:#fff;background:rgba(0,0,0,.35);padding:3px 8px;border-radius:980px}.sc-ba .l{left:12px}.sc-ba .r{right:12px}
-@keyframes wipe{0%,100%{clip-path:inset(0 0 0 70%)}50%{clip-path:inset(0 0 0 28%)}}
-@keyframes slide{0%,100%{left:70%}50%{left:28%}}
-@media(prefers-reduced-motion:reduce){.sc,.sc-prog i,.sc-ba .after,.sc-ba .split{animation:none}}
-.hero .byline{margin-top:clamp(28px,4vw,40px)}
-@media(max-width:760px){
-  .stage{grid-template-columns:1.2fr .8fr;gap:10px}
-  .sc-foto{display:none}
-  .sc-site{min-height:200px;padding:16px 14px 46px}.sc-site b{font-size:20px}
-  .sc-video{min-height:260px}.sc-clip{min-height:170px}
+@keyframes wipe{0%,100%{clip-path:inset(0 0 0 72%)}50%{clip-path:inset(0 0 0 28%)}}
+@keyframes slide{0%,100%{left:72%}50%{left:28%}}
+@media(prefers-reduced-motion:reduce){.v-vid .pr i,.v-ba .a,.v-ba .s{animation:none}}
+/* De ce ai nevoie? */
+.need{margin-top:clamp(56px,7vw,88px);text-align:center;scroll-margin-top:80px}
+.need .h3{font-size:clamp(28px,3.6vw,40px);letter-spacing:-.035em}
+.need-seg{margin:18px auto 22px}
+.need-pane{max-width:760px;margin:0 auto;text-align:left;background:var(--bg-2);border-radius:24px;padding:8px clamp(18px,3vw,32px) clamp(18px,2.6vw,26px)}
+.need-pane[hidden]{display:none}
+.need-pane .diy{margin-top:14px}
+.flow{list-style:none;margin:26px auto 0;padding:0;display:flex;justify-content:center;gap:clamp(14px,3vw,36px);flex-wrap:wrap;font-size:15px;color:var(--fg-2)}
+.flow li{display:flex;align-items:center;gap:8px}.flow b{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--fg);color:#fff;font-size:12px}
+.need .fine-c{margin-top:10px}
+@media(max-width:860px){
+  .bento{grid-template-columns:1fr 1fr}
+  .t-web{grid-column:1/-1;flex-direction:column;text-align:center}.t-web .t-txt{align-items:center}.v-web{margin:6px 0 -70px;align-self:center;width:86%;flex:none;min-height:180px}
+  .t-ed,.t-video,.t-foto{grid-column:span 1}
+  .tile{min-height:0;border-radius:22px}
+}
+@media(max-width:560px){
+  .t-ed{grid-column:1/-1}.t-video,.t-foto{padding:22px 16px}
+  .tile p{font-size:15px}.tile .meta{font-size:13px}
+  .t-video .v-vid,.t-foto .v-ba{margin-top:14px}
 }
 .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;padding-block:8px clamp(64px,9vw,104px)}
 .stats div{text-align:center}
@@ -534,101 +544,71 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
 
 <main id="top">
 
-<div class="hero" data-view="acasa">
+<section class="home" data-view="acasa">
   <div class="wrap">
-    <div class="hero-text">
-    <p class="avail"><span class="dot" aria-hidden="true"></span><span data-en="Available for new projects">Disponibil pentru proiecte noi</span></p>
-    <h1>Aman.</h1>
-    <p class="lead" data-en="Websites, video and photo editing. Clean, fast, one message away.">Site-uri, editare video și foto. Curat, rapid, la un mesaj distanță.</p>
-    <div class="ctas">
-      <a class="btn" href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" data-en="Message me">Scrie-mi</a>
-      <a class="more" href="#preturi" data-en="See pricing">Vezi prețurile</a>
-    </div>
-    </div>
-    <div class="stage" aria-hidden="true">
-      <div class="sc sc-web">
-        <div class="sc-bar"><i></i><i></i><i></i><span>numele-tau.ro</span></div>
-        <div class="sc-site"><b data-en="Your business">Afacerea ta</b><em data-en="Book now">Programează-te</em><span></span><span></span><div class="sc-rows"><i></i><i></i><i></i></div></div>
-        <p class="sc-tag">Web</p>
-      </div>
-      <div class="sc sc-video">
-        <div class="sc-clip"><span class="play"></span><div class="sc-prog"><i></i></div></div>
-        <div class="sc-tl"><i></i><i></i><i></i><i></i><i></i></div>
-        <p class="sc-tag">Video</p>
-      </div>
-      <div class="sc sc-foto">
-        <div class="sc-ba"><div class="before"></div><div class="after"></div><span class="split"></span><small class="l" data-en="Before">Înainte</small><small class="r" data-en="After">După</small></div>
-        <p class="sc-tag">Foto</p>
-      </div>
-    </div>
-    <p class="byline">Costi Andrei · <span data-en="Iași, Romania · working remotely with clients anywhere">Iași, România · lucrez remote cu clienți de oriunde</span></p>
-  </div>
-</div>
+    <header class="h-hero">
+      <p class="eyebrow">Costi Andrei · <span data-en="Iași, Romania">Iași, România</span></p>
+      <h1><span data-en="Websites, video and photo.">Site-uri, video și foto.</span><br/><span class="mute" data-en="Done right. Delivered fast.">Bine făcute. Livrate repede.</span></h1>
+      <div class="ctas"><button type="button" class="btn" data-need="web" data-go data-en="Start a project">Începe un proiect</button><a class="more" href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" data-en="Ask me on Instagram">Întreabă-mă pe Instagram</a></div>
+    </header>
 
-<div class="wrap" data-view="acasa">
-  <div class="stats rv">
-    <div><b>3–7 <i data-en="days">zile</i></b><span data-en="for a website">pentru un site</span></div>
-    <div><b>24–48 h</b><span data-en="for a video">pentru un video</span></div>
-    <div><b data-en="Same day">Aceeași zi</b><span data-en="for photo edits">pentru editări foto</span></div>
-  </div>
-</div>
-
-<section id="s-servicii" class="alt" data-view="acasa">
-  <div class="wrap">
-    <div class="head center rv">
-      <p class="eyebrow" data-en="Services">Servicii</p>
-      <h2 class="h2" style="margin-top:10px" data-en="Three services. One person.">Trei servicii. Un singur om.</h2>
+    <div class="bento">
+      <article class="tile t-web">
+        <div class="t-txt"><h2>Web</h2><p data-en="Websites that look good and bring you clients.">Site-uri care arată bine și aduc clienți.</p><p class="meta" data-en="from €85 · 3–7 days">de la 429 lei · 3–7 zile</p>
+          <p class="links"><button type="button" class="more" data-need="web" data-go data-en="Choose">Alege</button><a class="more" href="#preturi" data-en="Pricing">Prețuri</a></p></div>
+        <div class="v-web" aria-hidden="true"><div class="vb"><i></i><i></i><i></i></div><div class="vs"><b></b><em></em><span></span><span></span></div></div>
+      </article>
+      <article class="tile t-dark t-ed">
+        <p class="new" data-en="New">Nou</p><h2 data-en="Build it yourself.">Fă-ți singur site-ul.</h2><p data-en="7 templates. Live preview. €29.">7 șabloane. Previzualizare live. 149 lei.</p>
+        <div class="v-sw" aria-hidden="true"><i style="background:#c8a24a"></i><i style="background:#8a5a3b"></i><i style="background:#c56b8a"></i><i style="background:#d4ff3a"></i><i style="background:#e63946"></i><i style="background:#0e8f8a"></i><i style="background:#2b59ff"></i></div>
+        <p class="links"><a class="more" href="/editor.html" data-en="Open the editor">Deschide editorul</a></p>
+      </article>
+      <article class="tile t-dark t-video">
+        <h2>Video</h2><p data-en="Reels and promos with good pacing.">Reels și promo-uri cu ritm bun.</p><p class="meta" data-en="from €9 · 24–48 h">de la 45 lei · 24–48 h</p>
+        <div class="v-vid" aria-hidden="true"><span class="pl"></span><div class="pr"><i></i></div></div>
+        <p class="links"><button type="button" class="more" data-need="video" data-go data-en="Choose">Alege</button></p>
+      </article>
+      <article class="tile t-foto">
+        <h2 data-en="Photo">Foto</h2><p data-en="Retouch and colour, one style for the whole set.">Retuș și culoare, același stil pe tot setul.</p><p class="meta" data-en="from €4 · same day">de la 19 lei · în aceeași zi</p>
+        <div class="v-ba" aria-hidden="true"><i class="b"></i><i class="a"></i><i class="s"></i></div>
+        <p class="links"><button type="button" class="more" data-need="foto" data-go data-en="Choose">Alege</button></p>
+      </article>
     </div>
-    <div class="cards">
-      <a class="card rv" href="#preturi">
-        <span class="ico ico-web"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4.5" width="18" height="15" rx="2.5"/><path d="M3 9h18"/><circle cx="6.2" cy="6.8" r=".6" fill="currentColor" stroke="none"/><circle cx="8.4" cy="6.8" r=".6" fill="currentColor" stroke="none"/></svg></span>
-        <h3>Web</h3>
-        <p data-en="Websites that look good, load fast and bring you inquiries.">Site-uri care arată bine, se încarcă repede și îți aduc mesaje.</p>
-        <span class="card-foot"><span class="from" data-en="From €85">De la 429 lei</span><span class="arrow" aria-hidden="true">→</span></span>
-      </a>
-      <a class="card rv" href="#preturi">
-        <span class="ico ico-video"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10.2 9.3v5.4l4.6-2.7z" fill="currentColor" stroke="none"/></svg></span>
-        <h3>Video</h3>
-        <p data-en="Reels, promos and brand content. Good pacing, clean cuts.">Reels, promo-uri și conținut de brand. Ritm bun, tăieturi curate.</p>
-        <span class="card-foot"><span class="from" data-en="From €9">De la 45 lei</span><span class="arrow" aria-hidden="true">→</span></span>
-      </a>
-      <a class="card rv" href="#preturi">
-        <span class="ico ico-foto"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.8l1.4-2h4.6l1.4 2h1.8A2.5 2.5 0 0 1 20 8.5v8A2.5 2.5 0 0 1 17.5 19h-11A2.5 2.5 0 0 1 4 16.5z"/><circle cx="12" cy="12.5" r="3.4"/></svg></span>
-        <h3 data-en="Photo">Foto</h3>
-        <p data-en="Retouching, color and cleanup so the whole set looks consistent.">Retuș, culoare și curățare, ca tot setul să arate unitar.</p>
-        <span class="card-foot"><span class="from" data-en="From €4">De la 19 lei</span><span class="arrow" aria-hidden="true">→</span></span>
-      </a>
-    </div>
-  </div>
-</section>
 
-<section id="s-builder" class="builder-sec" data-view="acasa">
-  <div class="wrap">
-    <div class="builder rv">
-      <div>
-        <p class="eyebrow new" data-en="New">Nou</p>
-        <h2 class="h2" data-en="Make your own site.">Fă-ți singur site-ul.</h2>
-        <p class="lead" data-en="7 templates for barber shops, cafés, salons, gyms, car detailing, clinics and portfolios. Or press “Surprise me” and get a random design. You see it live and download it after payment.">7 șabloane pentru frizerii, cafenele, saloane, săli, auto detailing, clinici și portofolii. Sau apeși „Surprinde-mă” și primești un design la întâmplare. Îl vezi live și îl descarci după plată.</p>
-        <div class="ctas" style="justify-content:flex-start"><a class="btn" href="/editor.html" data-en="Open the editor">Deschide editorul</a><span class="from-b" data-en="€29 · no account needed to try">149 lei · încerci fără cont</span></div>
+    <div class="need" id="nevoie">
+      <h2 class="h3" data-en="What do you need?">De ce ai nevoie?</h2>
+      <div class="seg need-seg" role="tablist" aria-label="Alege ce ai nevoie">
+        <button type="button" role="tab" data-need="web" aria-selected="true" data-en="Website">Site</button>
+        <button type="button" role="tab" data-need="video" aria-selected="false">Video</button>
+        <button type="button" role="tab" data-need="foto" aria-selected="false" data-en="Photo">Foto</button>
+        <button type="button" role="tab" data-need="pack" aria-selected="false" data-en="Package">Pachet</button>
       </div>
-      <div class="mock" aria-hidden="true"><div class="mock-bar"><i></i><i></i><i></i></div><div class="mock-hero"><b>Barber Shop Nord</b><span>Tunsori precise, fără grabă.</span><em>Programează-te</em></div><div class="mock-rows"><span>Tuns<b>60 lei</b></span><span>Tuns + barbă<b>90 lei</b></span><span>Barbă<b>40 lei</b></span></div></div>
+      <div class="need-pane" data-pane-need="web"><ul class="rows">
+          <li><strong><span data-en="Landing page">Pagină de prezentare</span></strong><span class="price" data-en="€85">429 lei</span><small data-en="One page, ready to launch quickly.">O pagină, gata de lansat repede.</small><a class="pick" href="#cont" data-buy="web-landing" data-en="Choose">Aleg</a></li>
+          <li><strong><span data-en="Simple site">Site simplu</span><span class="tag" data-en="Recommended">Recomandat</span></strong><span class="price" data-en="€135">689 lei</span><small data-en="For a portfolio or a small business.">Pentru portofoliu sau afacere mică.</small><a class="pick" href="#cont" data-buy="web-simplu" data-en="Choose">Aleg</a></li>
+          <li><strong><span data-en="Business site">Site pentru afaceri</span></strong><span class="price" data-en="€169">859 lei</span><small data-en="A complete presence, ready to grow.">Prezență completă, gata să crească.</small><a class="pick" href="#cont" data-buy="web-business" data-en="Choose">Aleg</a></li>
+        </ul><a class="diy" href="/editor.html"><span data-en="Or build it yourself in the editor">Sau fă-l singur în editor</span><b data-en="€29 ›">149 lei ›</b></a></div>
+      <div class="need-pane" data-pane-need="video" hidden><ul class="rows">
+          <li><strong><span data-en="Short video">Video scurt</span></strong><span class="price" data-en="€9">45 lei</span><small data-en="Reels, stories, short promos.">Reels, story-uri, promo-uri scurte.</small><a class="pick" href="#cont" data-buy="video-scurt" data-en="Choose">Aleg</a></li>
+          <li><strong><span data-en="Standard video">Video standard</span></strong><span class="price" data-en="€15">79 lei</span><small data-en="A stronger edit for more serious content.">Montaj mai solid, pentru conținut mai serios.</small><a class="pick" href="#cont" data-buy="video-standard" data-en="Choose">Aleg</a></li>
+        </ul></div>
+      <div class="need-pane" data-pane-need="foto" hidden><ul class="rows">
+          <li><strong><span data-en="1 photo">1 fotografie</span></strong><span class="price" data-en="€4">19 lei</span><small data-en="A quick fix for a single photo.">Soluție rapidă pentru o singură poză.</small><a class="pick" href="#cont" data-buy="foto-1" data-en="Choose">Aleg</a></li>
+          <li><strong><span data-en="10 photos">10 fotografii</span></strong><span class="price" data-en="&lt;s&gt;€40&lt;/s&gt;€25"><s>190</s>129 lei</span><small data-en="Same style across the set. You save €15.">Același stil pe tot setul. Economisești 61 lei.</small><a class="pick" href="#cont" data-buy="foto-10" data-en="Choose">Aleg</a></li>
+        </ul></div>
+      <div class="need-pane" data-pane-need="pack" hidden><ul class="rows">
+          <li><strong><span data-en="Mini">Mini</span></strong><span class="price" data-en="€25">129 lei</span><small data-en="2 short videos + 3 edited photos.">2 videoclipuri scurte + 3 poze editate.</small><a class="pick" href="#cont" data-buy="mini" data-en="Choose">Aleg</a></li>
+          <li><strong><span data-en="Starter">Starter</span><span class="tag" data-en="Recommended">Recomandat</span></strong><span class="price" data-en="€55">279 lei</span><small data-en="5 short videos + 5 photos, one style.">5 videoclipuri scurte + 5 poze, același stil.</small><a class="pick" href="#cont" data-buy="starter" data-en="Choose">Aleg</a></li>
+          <li><strong><span data-en="Business Basic">Business Basic</span></strong><span class="price" data-en="€169">859 lei</span><small data-en="Full website + 3 videos + 5 photos.">Site complet + 3 videoclipuri + 5 poze.</small><a class="pick" href="#cont" data-buy="business" data-en="Choose">Aleg</a></li>
+        </ul></div>
+      <ol class="flow">
+        <li><b>1</b><span data-en="You choose">Alegi</span></li>
+        <li><b>2</b><span data-en="We talk on the site">Vorbim pe site</span></li>
+        <li><b>3</b><span data-en="You pay by transfer">Plătești prin transfer</span></li>
+        <li><b>4</b><span data-en="You get the files">Primești fișierele</span></li>
+      </ol>
+      <p class="fine-c" data-en="You pay nothing until we agree on everything.">Nu plătești nimic până nu stabilim tot.</p>
     </div>
-  </div>
-</section>
-
-<section id="s-cum" data-view="acasa">
-  <div class="wrap">
-    <div class="head center rv">
-      <p class="eyebrow" data-en="How to order">Cum comanzi</p>
-      <h2 class="h2" style="margin-top:10px" data-en="Four steps. No surprises.">Patru pași. Fără surprize.</h2>
-    </div>
-    <ol class="steps">
-      <li class="rv"><span class="n">1</span><h3 data-en="Pick and describe">Alegi și descrii</h3><p data-en="Choose a service or package and tell me what you need. You can upload your photos or clips right away.">Alegi serviciul sau pachetul și îmi spui ce vrei. Poți urca direct pozele sau clipurile tale.</p></li>
-      <li class="rv"><span class="n">2</span><h3 data-en="We talk on the site">Vorbim pe site</h3><p data-en="Your order gets a code and a private conversation in your account. That is where we agree on everything.">Comanda primește un cod și o conversație privată în contul tău. Acolo stabilim toate detaliile.</p></li>
-      <li class="rv"><span class="n">3</span><h3 data-en="Pay by transfer">Plătești prin transfer</h3><p data-en="Once we agree, I send the bank details in the conversation. You pay nothing before that.">După ce ne înțelegem, îți trimit datele de plată în conversație. Nu plătești nimic înainte.</p></li>
-      <li class="rv"><span class="n">4</span><h3 data-en="Download your files">Descarci fișierele</h3><p data-en="You follow every step in your account and download the final files from there.">Urmărești fiecare pas în contul tău și de acolo descarci fișierele finale.</p></li>
-    </ol>
-    <div class="ctas rv"><a class="btn" href="#preturi" data-en="Choose a service">Alege un serviciu</a></div>
   </div>
 </section>
 

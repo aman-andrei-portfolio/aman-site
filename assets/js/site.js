@@ -31,7 +31,7 @@
   if(location.hash){requestAnimationFrame(function(){window.scrollTo(0,0)})}
 
   /* Servicii / Pachete */
-  var tabs=document.querySelectorAll('.seg button'),panes=document.querySelectorAll('[data-pane]');
+  var tabs=document.querySelectorAll('.seg button[data-tab]'),panes=document.querySelectorAll('[data-pane]');
   function tab(name){
     tabs.forEach(function(t){t.setAttribute('aria-selected',t.dataset.tab===name?'true':'false')});
     panes.forEach(function(p){p.classList.toggle('on',p.dataset.pane===name)});
@@ -69,3 +69,17 @@ document.addEventListener('click',function(e){
   function ok(){b.textContent=en?'Copied ✓':'Copiat ✓';setTimeout(function(){b.innerHTML=old},1800)}
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(v).then(ok,function(){})}
 });
+
+/* Acasă: „De ce ai nevoie?”. Butoanele din plăci aleg categoria și duc la ea. */
+(function(){
+  var panes=document.querySelectorAll('[data-pane-need]');if(!panes.length)return;
+  function pick(k){
+    document.querySelectorAll('.need-seg [data-need]').forEach(function(b){b.setAttribute('aria-selected',String(b.dataset.need===k))});
+    panes.forEach(function(p){p.hidden=p.dataset.paneNeed!==k});
+  }
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('[data-need]');if(!b)return;
+    pick(b.dataset.need);
+    if(b.hasAttribute('data-go')){var n=document.getElementById('nevoie');if(n)n.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'})}
+  });
+})();
