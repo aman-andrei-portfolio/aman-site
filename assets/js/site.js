@@ -61,3 +61,11 @@
     els.forEach(function(el){io.observe(el)});
   }
 })();
+
+/* Butonul „Copiază adresa” din Contact */
+document.addEventListener('click',function(e){
+  var b=e.target.closest('[data-copy]');if(!b)return;
+  var v=b.getAttribute('data-copy'),old=b.innerHTML,en=document.documentElement.lang==='en';
+  function ok(){b.textContent=en?'Copied ✓':'Copiat ✓';setTimeout(function(){b.innerHTML=old},1800)}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(v).then(ok,function(){})}
+});

@@ -253,12 +253,86 @@ html.views #s-contact.on>.wrap{width:100%}
 html.tabs [data-pane]:not(.on){display:none}
 html.tabs .packs{margin-top:0}
 
+/* hero: disponibilitate, insignă, byline */
+.avail{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:500;color:var(--fg);background:var(--bg-2);border-radius:980px;padding:6px 14px 6px 12px;margin:0}
+.avail .dot{width:8px;height:8px;border-radius:50%;background:#30d158;box-shadow:0 0 0 0 rgba(48,209,88,.5);animation:pulse 2.4s ease-out infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(48,209,88,.45)}70%{box-shadow:0 0 0 8px rgba(48,209,88,0)}100%{box-shadow:0 0 0 0 rgba(48,209,88,0)}}
+@media(prefers-reduced-motion:reduce){.avail .dot{animation:none}}
+.byline{margin-top:22px;font-size:14px;color:var(--fg-2)}
+.hero-photo{position:relative}
+.hero-photo img{box-shadow:0 30px 60px -20px rgba(0,0,0,.28)}
+.badge-float{position:absolute;left:-18px;bottom:28px;display:flex;flex-direction:column;background:rgba(255,255,255,.86);backdrop-filter:saturate(180%) blur(16px);-webkit-backdrop-filter:saturate(180%) blur(16px);border-radius:18px;padding:12px 16px;box-shadow:0 10px 30px rgba(0,0,0,.12);text-align:left}
+.badge-float b{font-size:24px;font-weight:700;letter-spacing:-.03em;line-height:1.1}
+.badge-float span{font-size:12px;color:var(--fg-2)}
+@media(max-width:879px){.badge-float{left:-12px;bottom:18px;padding:10px 14px}.badge-float b{font-size:20px}}
+
+/* cifre într-o bandă */
+.stats{background:var(--bg-2);border-radius:var(--r);padding:28px 12px !important;margin-bottom:clamp(48px,7vw,88px)}
+.stats>div+div{border-left:1px solid var(--line)}
+.stats b i{font-style:normal}
+@media(max-width:600px){.stats{padding:18px 6px !important;margin-bottom:40px}.stats>div+div{border-left:1px solid var(--line)}.stats b{font-size:21px !important;white-space:nowrap}.stats span{font-size:11.5px}}
+
+/* carduri de servicii clicabile */
+a.card{color:var(--fg);transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s}
+a.card:hover{text-decoration:none;transform:translateY(-4px);box-shadow:0 20px 40px -18px rgba(0,0,0,.18)}
+a.card:active{transform:translateY(-1px) scale(.995)}
+.ico{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;background:var(--bg-2);color:var(--fg)}
+.ico svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.card .ico{background:#eef4ff;color:var(--blue);margin-bottom:6px}
+.card .ico-video{background:#fff1e6;color:#c45200}
+.card .ico-foto{background:#eefaf1;color:#1a7f37}
+.card-foot{margin-top:auto;padding-top:16px;display:flex;justify-content:space-between;align-items:center}
+.card-foot .from{margin:0;padding:0;font-weight:600}
+.arrow{font-size:20px;color:var(--blue);transition:transform .3s}
+a.card:hover .arrow{transform:translateX(4px)}
+@media(max-width:600px){a.card{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:14px;row-gap:4px;align-items:center}a.card .ico{grid-row:1/3;margin:0}a.card h3{align-self:end}a.card p{grid-column:2}a.card .card-foot{grid-column:1/-1;padding-top:10px}}
+
+/* cum comanzi */
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;counter-reset:s}
+.steps li{position:relative;background:var(--bg-2);border-radius:var(--r);padding:28px 24px}
+.steps .n{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--fg);color:#fff;font-weight:600;font-size:15px;margin-bottom:16px}
+.steps h3{font-size:20px;letter-spacing:-.025em;margin-bottom:8px}
+.steps p{color:var(--fg-2);font-size:15px;line-height:1.47}
+#s-cum .ctas{margin-top:clamp(28px,4vw,44px)}
+@media(max-width:900px){.steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.steps{grid-template-columns:1fr;gap:12px}.steps li{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:14px;padding:18px 20px}.steps .n{grid-row:1/3;margin:0}.steps h3{font-size:18px;margin:0}.steps p{grid-column:2}}
+
+/* întrebări: card final */
+.ask{max-width:820px;margin:clamp(32px,5vw,48px) auto 0;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;background:var(--bg-2);border-radius:var(--r);padding:24px 28px}
+.ask h3{font-size:21px;letter-spacing:-.02em}
+.ask p{color:var(--fg-2);font-size:15px;margin-top:2px}
+
+/* contact */
+.contact .lead{margin-top:16px}
+.ccards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;max-width:760px;margin:clamp(32px,5vw,48px) auto 0;text-align:left}
+.ccard{display:flex;flex-direction:column;gap:6px;background:var(--bg);border-radius:var(--r);padding:28px;color:var(--fg)}
+a.ccard{transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s}
+a.ccard:hover{text-decoration:none;transform:translateY(-4px);box-shadow:0 20px 40px -18px rgba(0,0,0,.18)}
+.ccard .ico{margin-bottom:10px}
+.ccard.primary .ico{background:linear-gradient(135deg,#feda75,#fa7e1e 30%,#d62976 60%,#962fbf 85%,#4f5bd5);color:#fff}
+.ct{font-size:13px;font-weight:600;color:var(--fg-2)}
+.cv{font-size:21px;font-weight:600;letter-spacing:-.02em;word-break:break-all}
+.cv.mail-addr{font-size:17px;user-select:all}
+.cn{font-size:14px;color:var(--fg-2);margin-bottom:12px}
+.ccard .btn{margin-top:auto;align-self:flex-start}
+.btn.ghost{background:none;color:var(--link);box-shadow:inset 0 0 0 1px var(--link)}
+.btn.ghost:hover{background:rgba(0,102,204,.06)}
+.fine-c{margin-top:28px;font-size:14px;color:var(--fg-2)}
+@media(max-width:700px){.ccards{grid-template-columns:1fr;gap:12px}.ccard{padding:22px}}
+
+/* butoane: apăsare */
+.btn:active{transform:scale(.97)}
+.btn{transition:background .2s,transform .15s}
+
 /* cont */
 #s-cont.in .head .lead{display:none}
 .nav nav a.acct-link{display:inline-flex;align-items:center;gap:6px}
 @media(max-width:700px){.nav nav a.acct-link{display:inline-flex}.nav nav a.acct-link span{display:none}.nav nav a.acct-link.cur{color:var(--blue)}}
 .acct{max-width:680px;margin-inline:auto;display:flex;flex-direction:column;gap:16px}
 .acct-card{background:var(--bg-2);border-radius:var(--r);padding:clamp(28px,4vw,44px)}
+.perks{list-style:none;margin:0 auto 24px;padding:0;display:flex;flex-direction:column;gap:10px;max-width:380px;text-align:left}
+.perks li{display:flex;gap:10px;align-items:flex-start;font-size:15px}
+.perks li::before{content:"";flex:none;width:20px;height:20px;margin-top:1px;border-radius:50%;background:var(--blue) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='m6 10.2 2.6 2.6L14 7.4' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/20px no-repeat}
 .acct-card .ctas{margin-top:20px}
 .muted{color:var(--fg-2)}
 .fine{margin-top:16px;font-size:13px;line-height:1.45;color:var(--fg-2)}
@@ -373,24 +447,28 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
 <div class="hero" data-view="acasa">
   <div class="wrap">
     <div class="hero-text">
-    <p class="eyebrow">Costi Andrei · Iași</p>
+    <p class="avail"><span class="dot" aria-hidden="true"></span><span data-en="Available for new projects">Disponibil pentru proiecte noi</span></p>
     <h1>Aman.</h1>
     <p class="lead" data-en="Websites, video and photo editing. Clean, fast, one message away.">Site-uri, editare video și foto. Curat, rapid, la un mesaj distanță.</p>
     <div class="ctas">
       <a class="btn" href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" data-en="Message me">Scrie-mi</a>
       <a class="more" href="#preturi" data-en="See pricing">Vezi prețurile</a>
     </div>
+    <p class="byline">Costi Andrei · <span data-en="Iași, Romania · working remotely with clients anywhere">Iași, România · lucrez remote cu clienți de oriunde</span></p>
     </div>
-    <figure class="rv">
+    <figure class="rv hero-photo">
       <img src="assets/img/portret-720.jpg" srcset="assets/img/portret-720.jpg 720w, assets/img/portret.jpg 1334w" sizes="(min-width: 880px) 460px, 340px" width="1334" height="2000" alt="Costi Andrei, așezat pe o banchetă de catifea în fața unei scări din lemn" fetchpriority="high"/>
+      <figcaption class="badge-float"><b>&lt; 2 h</b><span data-en="reply time on Instagram">timp de răspuns pe Instagram</span></figcaption>
     </figure>
   </div>
 </div>
 
-<div class="wrap stats rv" data-view="acasa">
-  <div><b>3–7 <span style="display:inline;margin:0;font-size:inherit;color:inherit" data-en="days">zile</span></b><span data-en="for a website">pentru un site</span></div>
-  <div><b>24–48 h</b><span data-en="for a video">pentru un video</span></div>
-  <div><b>&lt; 2 h</b><span data-en="reply on Instagram">răspuns pe Instagram</span></div>
+<div class="wrap" data-view="acasa">
+  <div class="stats rv">
+    <div><b>3–7 <i data-en="days">zile</i></b><span data-en="for a website">pentru un site</span></div>
+    <div><b>24–48 h</b><span data-en="for a video">pentru un video</span></div>
+    <div><b data-en="Same day">Aceeași zi</b><span data-en="for photo edits">pentru editări foto</span></div>
+  </div>
 </div>
 
 <section id="s-servicii" class="alt" data-view="acasa">
@@ -400,25 +478,41 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
       <h2 class="h2" style="margin-top:10px" data-en="Three services. One person.">Trei servicii. Un singur om.</h2>
     </div>
     <div class="cards">
-      <article class="card rv">
+      <a class="card rv" href="#preturi">
+        <span class="ico ico-web"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4.5" width="18" height="15" rx="2.5"/><path d="M3 9h18"/><circle cx="6.2" cy="6.8" r=".6" fill="currentColor" stroke="none"/><circle cx="8.4" cy="6.8" r=".6" fill="currentColor" stroke="none"/></svg></span>
         <h3>Web</h3>
         <p data-en="Websites that look good, load fast and bring you inquiries.">Site-uri care arată bine, se încarcă repede și îți aduc mesaje.</p>
-        <p class="from" data-en="From €85">De la 429 lei</p>
-        <a class="more" href="#preturi" data-en="See pricing">Vezi prețurile</a>
-      </article>
-      <article class="card rv">
+        <span class="card-foot"><span class="from" data-en="From €85">De la 429 lei</span><span class="arrow" aria-hidden="true">→</span></span>
+      </a>
+      <a class="card rv" href="#preturi">
+        <span class="ico ico-video"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10.2 9.3v5.4l4.6-2.7z" fill="currentColor" stroke="none"/></svg></span>
         <h3>Video</h3>
         <p data-en="Reels, promos and brand content. Good pacing, clean cuts.">Reels, promo-uri și conținut de brand. Ritm bun, tăieturi curate.</p>
-        <p class="from" data-en="From €9">De la 45 lei</p>
-        <a class="more" href="#preturi" data-en="See pricing">Vezi prețurile</a>
-      </article>
-      <article class="card rv">
+        <span class="card-foot"><span class="from" data-en="From €9">De la 45 lei</span><span class="arrow" aria-hidden="true">→</span></span>
+      </a>
+      <a class="card rv" href="#preturi">
+        <span class="ico ico-foto"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.8l1.4-2h4.6l1.4 2h1.8A2.5 2.5 0 0 1 20 8.5v8A2.5 2.5 0 0 1 17.5 19h-11A2.5 2.5 0 0 1 4 16.5z"/><circle cx="12" cy="12.5" r="3.4"/></svg></span>
         <h3 data-en="Photo">Foto</h3>
         <p data-en="Retouching, color and cleanup so the whole set looks consistent.">Retuș, culoare și curățare, ca tot setul să arate unitar.</p>
-        <p class="from" data-en="From €4">De la 19 lei</p>
-        <a class="more" href="#preturi" data-en="See pricing">Vezi prețurile</a>
-      </article>
+        <span class="card-foot"><span class="from" data-en="From €4">De la 19 lei</span><span class="arrow" aria-hidden="true">→</span></span>
+      </a>
     </div>
+  </div>
+</section>
+
+<section id="s-cum" data-view="acasa">
+  <div class="wrap">
+    <div class="head center rv">
+      <p class="eyebrow" data-en="How to order">Cum comanzi</p>
+      <h2 class="h2" style="margin-top:10px" data-en="Four steps. No surprises.">Patru pași. Fără surprize.</h2>
+    </div>
+    <ol class="steps">
+      <li class="rv"><span class="n">1</span><h3 data-en="Pick and describe">Alegi și descrii</h3><p data-en="Choose a service or package and tell me what you need. You can upload your photos or clips right away.">Alegi serviciul sau pachetul și îmi spui ce vrei. Poți urca direct pozele sau clipurile tale.</p></li>
+      <li class="rv"><span class="n">2</span><h3 data-en="Get a code">Primești un cod</h3><p data-en="Your order gets a code like AM-K7P2Q. Send it to me on Instagram so I know it is you.">Comanda primește un cod, de exemplu AM-K7P2Q. Mi-l trimiți pe Instagram, ca să știu că ești tu.</p></li>
+      <li class="rv"><span class="n">3</span><h3 data-en="Pay by transfer">Plătești prin transfer</h3><p data-en="We agree on the details and I send you the account. You pay nothing before that.">Stabilim detaliile și îți trimit contul. Nu plătești nimic înainte de asta.</p></li>
+      <li class="rv"><span class="n">4</span><h3 data-en="Download your files">Descarci fișierele</h3><p data-en="You follow every step in your account and download the final files from there.">Urmărești fiecare pas în contul tău și de acolo descarci fișierele finale.</p></li>
+    </ol>
+    <div class="ctas rv"><a class="btn" href="#preturi" data-en="Choose a service">Alege un serviciu</a></div>
   </div>
 </section>
 
@@ -567,6 +661,10 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
         <p data-en="Yes. I work remotely with clients from anywhere, in Romanian or English.">Da. Lucrez remote cu clienți de oriunde, în română sau în engleză.</p>
       </details>
     </div>
+    <div class="ask rv">
+      <div><h3 data-en="Didn't find your answer?">N-ai găsit răspunsul?</h3><p data-en="Ask me directly. I usually reply in under 2 hours.">Întreabă-mă direct. De obicei răspund în mai puțin de 2 ore.</p></div>
+      <a class="btn" href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" data-en="Message me">Scrie-mi</a>
+    </div>
   </div>
 </section>
 
@@ -574,10 +672,24 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
   <div class="wrap rv">
     <p class="eyebrow" data-en="Available for new projects">Disponibil pentru proiecte noi</p>
     <h2 class="h2" style="margin-top:10px" data-en="Let's talk.">Hai să vorbim.</h2>
-    <div class="ctas">
-      <a class="btn" href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" data-en="Message me on Instagram">Scrie-mi pe Instagram</a>
+    <p class="lead" data-en="Tell me what you need. I reply fast and we sort out the details together.">Spune-mi de ce ai nevoie. Îți răspund repede și stabilim împreună detaliile.</p>
+    <div class="ccards">
+      <a class="ccard primary" href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener">
+        <span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".9" fill="currentColor" stroke="none"/></svg></span>
+        <span class="ct">Instagram</span>
+        <span class="cv">@costi1andrei</span>
+        <span class="cn" data-en="Fastest · usually under 2 hours">Cel mai rapid · de obicei sub 2 ore</span>
+        <span class="btn" data-en="Open Instagram">Deschide Instagram</span>
+      </a>
+      <div class="ccard">
+        <span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg></span>
+        <span class="ct">Email</span>
+        <span class="cv mail-addr">anndreiconstantinn@yahoo.com</span>
+        <span class="cn" data-en="For longer briefs or files">Pentru descrieri lungi sau fișiere</span>
+        <button type="button" class="btn ghost" data-copy="anndreiconstantinn@yahoo.com" data-en="Copy address">Copiază adresa</button>
+      </div>
     </div>
-    <p class="mail"><i style="font-style:normal" data-en="or by email:">sau pe email:</i> <span>anndreiconstantinn@yahoo.com</span></p>
+    <p class="fine-c" data-en="Iași, Romania · working with clients anywhere">Iași, România · lucrez cu clienți de oriunde</p>
   </div>
 </section>
 

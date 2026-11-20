@@ -14,6 +14,7 @@
       soon: 'Contul de client va fi disponibil în curând. Până atunci, scrie-mi pe Instagram și stabilim totul acolo.',
       ig: 'Scrie-mi pe Instagram', google: 'Continuă cu Google',
       why: 'Folosesc doar numele și emailul din contul tău Google, ca să-ți arăt comenzile. Detalii în ',
+      perks: ['Trimiți comenzi și primești un cod pentru fiecare', 'Vezi statusul: plătită, în lucru, livrată', 'Descarci fișierele finale direct de aici'],
       privacy: 'Politica de confidențialitate', logout: 'Ieși din cont', loading: 'Se încarcă…',
       empty: 'Încă nu ai nicio comandă. Alege un pachet, scrie-mi pe Instagram și comanda apare aici.',
       seePacks: 'Vezi pachetele', files: 'Deschide fișierele', note: 'Mesaj de la Aman', yourFiles: 'Fișierele tale', dl: 'Descarcă',
@@ -30,6 +31,7 @@
       soon: 'The client area is coming soon. Until then, message me on Instagram and we sort everything out there.',
       ig: 'Message me on Instagram', google: 'Continue with Google',
       why: 'I only use the name and email from your Google account to show you your orders. Details in the ',
+      perks: ['Send orders and get a code for each one', 'Follow the status: paid, in progress, delivered', 'Download the final files right here'],
       privacy: 'Privacy policy', logout: 'Sign out', loading: 'Loading…',
       empty: 'You have no orders yet. Pick a package, message me on Instagram and the order shows up here.',
       seePacks: 'See packages', files: 'Open the files', note: 'Message from Aman', yourFiles: 'Your files', dl: 'Download',
@@ -166,7 +168,7 @@
       return;
     }
     if (!session) {
-      box.innerHTML = h + '<div class="acct-card center"><button type="button" class="gbtn" id="g-login">' + G + '<span>' + t('google') + '</span></button>' +
+      box.innerHTML = h + '<div class="acct-card center"><ul class="perks">' + t('perks').map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul><button type="button" class="gbtn" id="g-login">' + G + '<span>' + t('google') + '</span></button>' +
         '<p class="fine">' + t('why') + '<a href="/confidentialitate.html">' + t('privacy') + '</a>.</p></div>';
       d.getElementById('g-login').addEventListener('click', login);
       return;
