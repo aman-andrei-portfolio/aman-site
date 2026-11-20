@@ -83,14 +83,13 @@ Fără aceste variabile, pagina Cont spune „în curând”, iar butoanele duc 
 - Clienții pot trimite maximum 30 de mesaje pe oră. Conversațiile se șterg odată cu contul clientului.
 - La comenzile din editor nu mai apar secțiunile de fișiere: clientul își descarcă singur site-ul după „Plătită”.
 
-## Mesaje doar cu cont verificat (anti-boți)
+## Mesaje: întrebări pe Instagram, comenzi pe site
 
-- Toate butoanele „Scrie-mi” de pe site duc la o **conversație pe site**, care cere logare cu Google.
-  Fără comandă, clientul primește o conversație de tip **Întrebare** (una singură, refolosită). În panou apare cu
-  eticheta „Întrebare”, fără preț și statusuri; o poți ascunde sau șterge definitiv.
+- Butoanele „Scrie-mi” de pe site (sus, la Întrebări, la Contact, abonamentul) duc pe **Instagram**: acolo răspunzi la întrebări.
+- Pe site se scrie **doar în conversația unei comenzi**, din cont. Serverul refuză conversațiile fără comandă.
+  (Conversațiile vechi de tip „Întrebare” nu mai apar la client; în panou le poți ascunde sau șterge.)
 - Serverul acceptă doar conturi cu **email verificat** (`email_confirmed_at`). Google verifică emailul la logare,
-  iar logarea cu email/parolă e oprită, deci boții nu își pot face conturi false cu adrese inventate.
-- Instagramul rămâne doar ca profil (subsol și pagina Contact), nu ca loc de comandă.
+  iar logarea cu email/parolă e oprită, deci boții nu pot trimite comenzi sau mesaje cu conturi false.
 
 ## Site-uri plătite și arhiva din panou
 

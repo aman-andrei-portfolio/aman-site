@@ -9,8 +9,8 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const PER_HOUR = 30; // limită anti-spam pentru clienți
 
 async function canSee(user, admin, orderId) {
-  if (admin) { const r = await db(`orders?select=id,status&id=eq.${orderId}`); return r && r[0]; }
-  const r = await db(`orders?select=id,status&id=eq.${orderId}&user_id=eq.${user.id}`);
+  if (admin) { const r = await db(`orders?select=id,status,package&id=eq.${orderId}`); return r && r[0]; }
+  const r = await db(`orders?select=id,status,package&id=eq.${orderId}&user_id=eq.${user.id}`);
   return r && r[0];
 }
 
@@ -61,7 +61,8 @@ module.exports = handle(async (req, res) => {
   if (!o) return send(res, 404, { error: 'Comanda nu există.' });
   const side = admin && b.as !== 'client' ? 'admin' : 'client';
   if (side === 'client') {
-    if (o.status === 'cancelled') return send(res, 409, { error: 'Comanda e anulată. Pentru altceva, folosește butonul „Scrie-mi”.' });
+    if (o.package === 'intrebare') return send(res, 409, { error: 'Pentru întrebări, scrie-mi pe Instagram: @costi1andrei.' });
+    if (o.status === 'cancelled') return send(res, 409, { error: 'Comanda e anulată. Pentru întrebări, scrie-mi pe Instagram: @costi1andrei.' });
     const mine = await db(`orders?select=id&user_id=eq.${user.id}`);
     const since = new Date(Date.now() - 3600 * 1000).toISOString();
     const recent = await db(`messages?select=id&sender=eq.client&created_at=gt.${since}&order_id=in.(${mine.map((x) => x.id).join(',')})`);
