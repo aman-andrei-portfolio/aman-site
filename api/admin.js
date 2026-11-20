@@ -32,9 +32,9 @@ module.exports = handle(async (req, res) => {
 
   // Ștergere definitivă: doar pentru comenzile anulate (cele plătite rămân ca evidență a încasărilor).
   if (b.action === 'delete') {
-    const r = await db(`orders?select=id,status&id=eq.${b.id}`);
+    const r = await db(`orders?select=id,status,package&id=eq.${b.id}`);
     if (!r || !r.length) return send(res, 404, { error: 'Comanda nu mai există.' });
-    if (r[0].status !== 'cancelled') return send(res, 409, { error: 'Poți șterge definitiv doar comenzile anulate. Pe celelalte le poți ascunde.' });
+    if (r[0].status !== 'cancelled' && r[0].package !== 'intrebare') return send(res, 409, { error: 'Poți șterge definitiv doar comenzile anulate. Pe celelalte le poți ascunde.' });
     await removeFiles(b.id);
     await db(`orders?id=eq.${b.id}`, { method: 'DELETE', prefer: 'return=minimal' });
     return send(res, 200, { deleted: true });

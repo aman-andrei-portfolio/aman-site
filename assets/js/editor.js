@@ -5,7 +5,6 @@
   'use strict';
   var d = document, ST = window.SiteTemplates;
   var LOCAL = 'aman.editor.v1', SESSION = 'aman.session';
-  var IG = 'https://www.instagram.com/costi1andrei/';
   var PRICE = { ro: '149 lei', en: '€29' };
   var SWATCHES = ['#c8a24a', '#8a5a3b', '#c56b8a', '#2b59ff', '#1a7f37', '#d9480f', '#6741d9', '#111111'];
 
@@ -178,7 +177,7 @@
     if (o) {
       return '<h2>Comanda e trimisă</h2><p class="code">' + esc(o.code) + '</p>' +
         '<p class="sub">Îți răspund pe site, în conversația comenzii, cu detaliile de plată. După ce confirm plata, aici și în contul tău apare butonul de descărcare.</p>' +
-        '<p><a class="btn" id="tochat" href="/#cont">Deschide conversația</a></p><p class="sub" style="font-size:13px">Preferi Instagram? Trimite-mi codul pe <a href="' + IG + '" target="_blank" rel="noopener">@costi1andrei</a>.</p>' +
+        '<p><a class="btn" id="tochat" href="/#cont">Deschide conversația</a></p>' +
         '<p class="sub" style="margin-top:14px">Poți continua să modifici site-ul până la descărcare.</p>';
     }
     var list = '<ul class="list"><li>Site-ul complet, gata de pus online</li><li>Pozele tale, optimizate</li><li>Arată bine pe telefon și calculator</li><li>Instrucțiuni pas cu pas pentru publicare</li></ul>';
@@ -188,10 +187,6 @@
       '<p class="sub" style="margin-top:12px">Primești un cod și vorbim aici, pe site: îți trimit detaliile de plată, plătești prin transfer, iar eu deblochez descărcarea.</p>' +
       '<p><button type="button" class="btn" id="buy">Vreau site-ul</button></p><p class="err" hidden></p>' +
       '<p class="sub" style="font-size:12px">Site-ul e conținut digital: după ce îl descarci, nu mai poți cere banii înapoi. Detalii în <a href="/termeni.html" target="_blank" rel="noopener">Termeni</a>.</p>';
-  }
-  function igBox(code) {
-    var msg = 'Salut! Vreau site-ul din editor, comanda ' + code + '.';
-    return '<textarea class="msg" id="igmsg" rows="2" readonly>' + esc(msg) + '</textarea><p style="margin-top:10px"><a class="btn" id="igbtn" href="' + IG + '" target="_blank" rel="noopener">Copiază mesajul și deschide Instagram</a></p><p class="sub" id="copied" hidden>Mesaj copiat. Lipește-l în chat.</p>';
   }
 
   // ---------- poze ----------
@@ -279,12 +274,6 @@
     if (t.id === 'buy') return buy();
     if (t.id === 'tochat') { try { sessionStorage.setItem('aman.openchat', S.order && S.order.id || ''); } catch (x) {} return; }
     if (t.id === 'dl') return download();
-    if (t.id === 'igbtn') {
-      var msg = $('igmsg').value;
-      var done = function () { $('copied').hidden = false; };
-      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(msg).then(done, function () { $('igmsg').select(); try { d.execCommand('copy'); done(); } catch (x) {} });
-      return;
-    }
   });
 
   async function duplicate() {

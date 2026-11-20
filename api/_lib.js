@@ -17,6 +17,8 @@ const CATALOG = {
   'video-standard': { name: { ro: 'Video standard',       en: 'Standard video' }, ron: 7900,  eur: 1500,  max: 3 },
   'foto-1':         { name: { ro: '1 fotografie',         en: '1 photo' },        ron: 1900,  eur: 400,   max: 1 },
   'foto-10':        { name: { ro: '10 fotografii',        en: '10 photos' },      ron: 12900, eur: 2500,  max: 10 },
+  // conversație fără comandă (întrebare): cere cont, nu are preț
+  intrebare:        { name: { ro: 'Întrebare', en: 'Question' }, ron: 0, eur: 0, max: 0, question: true },
   // site făcut de client în editor: se comandă doar din editor, nu din lista de servicii
   'site-builder':   { name: { ro: 'Site din editor',      en: 'Site from the editor' }, ron: 14900, eur: 2900, max: 0, editorOnly: true },
 };
@@ -61,8 +63,11 @@ async function getUser(req) {
   });
   if (!r.ok) return null;
   const u = await r.json();
-  const m = (u && u.user_metadata) || {};
-  return u && u.id ? { id: u.id, email: u.email || null, name: m.full_name || m.name || null } : null;
+  if (!u || !u.id) return null;
+  // Anti-boți: doar conturile cu email verificat (Google îl verifică la logare) pot face ceva pe site.
+  if (!u.email || !(u.email_confirmed_at || u.confirmed_at)) return null;
+  const m = u.user_metadata || {};
+  return { id: u.id, email: u.email, name: m.full_name || m.name || null };
 }
 
 // Acces la baza de date cu cheia de server (ocolește RLS; folosită doar aici, pe server).

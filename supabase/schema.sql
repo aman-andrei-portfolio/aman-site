@@ -93,3 +93,7 @@ revoke all on public.messages from anon, authenticated;
 
 -- Comenzi ascunse din panou (arhivă); clientul le vede în continuare.
 alter table public.orders add column if not exists archived_at timestamptz;
+
+-- Întrebările (conversații fără comandă) au suma 0.
+alter table public.orders drop constraint if exists orders_amount_check;
+alter table public.orders add constraint orders_amount_check check (amount >= 0);

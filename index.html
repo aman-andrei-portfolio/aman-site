@@ -9,9 +9,14 @@
 <link rel="canonical" href="https://costi1andrei.site/"/>
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://costi1andrei.site/"/>
-<meta property="og:title" content="Aman · Costi Andrei"/>
-<meta property="og:description" content="Site-uri, editare video și editare foto, din Iași. Prețuri clare, livrare rapidă."/>
-<meta property="og:image" content="https://costi1andrei.site/assets/img/og.jpg"/>
+<meta property="og:site_name" content="Aman"/>
+<meta property="og:title" content="Site-ul tău e aproape gata. Mai lipsește un click."/>
+<meta property="og:description" content="Site-uri, video și foto, de la Aman. Sau fă-ți singur site-ul în 10 minute, de la 149 lei."/>
+<meta property="og:image" content="https://costi1andrei.site/assets/img/og-site.jpg"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta property="og:image:alt" content="O fereastră de browser cu un site 87% gata și textul: Site-ul tău e aproape gata. Mai lipsește un click."/>
+<meta name="twitter:image" content="https://costi1andrei.site/assets/img/og-site.jpg"/>
 <meta property="og:locale" content="ro_RO"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="theme-color" content="#ffffff"/>
@@ -20,7 +25,7 @@
 <link rel="apple-touch-icon" href="/assets/img/logo/apple-touch-icon.png"/>
 <link rel="manifest" href="/site.webmanifest"/>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Person","name":"Costi Andrei","alternateName":"Aman","url":"https://costi1andrei.site","image":"https://costi1andrei.site/assets/img/og.jpg","jobTitle":"Dezvoltator web și editor video","address":{"@type":"PostalAddress","addressLocality":"Iași","addressCountry":"RO"},"sameAs":["https://www.instagram.com/costi1andrei/"]}
+{"@context":"https://schema.org","@type":"Person","name":"Costi Andrei","alternateName":"Aman","url":"https://costi1andrei.site","jobTitle":"Dezvoltator web și editor video","address":{"@type":"PostalAddress","addressLocality":"Iași","addressCountry":"RO"},"sameAs":["https://www.instagram.com/costi1andrei/"]}
 </script>
 <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin/>
 <style>
@@ -407,6 +412,7 @@ a.ccard:hover{text-decoration:none;transform:translateY(-4px);box-shadow:0 20px 
 button.btn{border:0;cursor:pointer;font-family:var(--sans)}
 .banner{background:#fff4e5;color:#7a4100;border-radius:14px;padding:12px 16px;font-size:14px;line-height:1.45}
 .notice{border-radius:14px;padding:12px 16px;font-size:15px}
+.ask-row{display:flex;align-items:center;justify-content:space-between;gap:14px;background:var(--bg-2);border-radius:18px;padding:14px 18px;margin-bottom:14px}.ask-row div{display:flex;flex-direction:column;gap:2px;min-width:0}.ask-row .muted{font-size:14px}.ask-row .btn{flex:none}
 .notice.ok{background:#e9f7ee;color:#0d5c2a}
 .notice.warn{background:#fdecee;color:#8a0a1c}
 .orders{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
@@ -508,7 +514,7 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
     <h1>Aman.</h1>
     <p class="lead" data-en="Websites, video and photo editing. Clean, fast, one message away.">Site-uri, editare video și foto. Curat, rapid, la un mesaj distanță.</p>
     <div class="ctas">
-      <a class="btn" href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" data-en="Message me">Scrie-mi</a>
+      <a class="btn" href="#cont" data-ask data-en="Message me">Scrie-mi</a>
       <a class="more" href="#preturi" data-en="See pricing">Vezi prețurile</a>
     </div>
     <p class="byline">Costi Andrei · <span data-en="Iași, Romania · working remotely with clients anywhere">Iași, România · lucrez remote cu clienți de oriunde</span></p>
@@ -622,9 +628,9 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
       <div class="pc rv">
         <h3>Web</h3>
         <ul class="rows">
-          <li><strong data-en="Landing page">Pagină de prezentare</strong><span class="price" data-en="€85">429 lei</span><small data-en="One page, ready to launch quickly.">O pagină, gata de lansat repede.</small><a class="pick" href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" data-buy="web-landing" data-en="Choose">Aleg</a></li>
-          <li><strong><span data-en="Simple site">Site simplu</span><span class="tag" data-en="Recommended">Recomandat</span></strong><span class="price" data-en="€135">689 lei</span><small data-en="For a portfolio or a small business.">Pentru portofoliu sau afacere mică.</small><a class="pick" href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" data-buy="web-simplu" data-en="Choose">Aleg</a></li>
-          <li><strong data-en="Business site">Site pentru afaceri</strong><span class="price" data-en="€169">859 lei</span><small data-en="A complete presence, ready to grow.">Prezență completă, gata să crească.</small><a class="pick" href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" data-buy="web-business" data-en="Choose">Aleg</a></li>
+          <li><strong data-en="Landing page">Pagină de prezentare</strong><span class="price" data-en="€85">429 lei</span><small data-en="One page, ready to launch quickly.">O pagină, gata de lansat repede.</small><a class="pick" href="#cont" data-buy="web-landing" data-en="Choose">Aleg</a></li>
+          <li><strong><span data-en="Simple site">Site simplu</span><span class="tag" data-en="Recommended">Recomandat</span></strong><span class="price" data-en="€135">689 lei</span><small data-en="For a portfolio or a small business.">Pentru portofoliu sau afacere mică.</small><a class="pick" href="#cont" data-buy="web-simplu" data-en="Choose">Aleg</a></li>
+          <li><strong data-en="Business site">Site pentru afaceri</strong><span class="price" data-en="€169">859 lei</span><small data-en="A complete presence, ready to grow.">Prezență completă, gata să crească.</small><a class="pick" href="#cont" data-buy="web-business" data-en="Choose">Aleg</a></li>
         </ul>
         <p class="incl" data-en="Mobile-first, 1 revision round, delivery in 3–7 days.">Optimizat pentru mobil, 1 rundă de revizii, livrare în 3–7 zile.</p>
         <a class="diy" href="/editor.html"><span data-en="Or make it yourself in the editor">Sau fă-l singur în editor</span><b data-en="€29 ›">149 lei ›</b></a>
@@ -632,16 +638,16 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
       <div class="pc rv">
         <h3>Video</h3>
         <ul class="rows">
-          <li><strong data-en="Short video">Video scurt</strong><span class="price" data-en="€9">45 lei</span><small data-en="Reels, stories, short promos.">Reels, story-uri, promo-uri scurte.</small><a class="pick" href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" data-buy="video-scurt" data-en="Choose">Aleg</a></li>
-          <li><strong data-en="Standard video">Video standard</strong><span class="price" data-en="€15">79 lei</span><small data-en="A stronger edit for more serious content.">Montaj mai solid, pentru conținut mai serios.</small><a class="pick" href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" data-buy="video-standard" data-en="Choose">Aleg</a></li>
+          <li><strong data-en="Short video">Video scurt</strong><span class="price" data-en="€9">45 lei</span><small data-en="Reels, stories, short promos.">Reels, story-uri, promo-uri scurte.</small><a class="pick" href="#cont" data-buy="video-scurt" data-en="Choose">Aleg</a></li>
+          <li><strong data-en="Standard video">Video standard</strong><span class="price" data-en="€15">79 lei</span><small data-en="A stronger edit for more serious content.">Montaj mai solid, pentru conținut mai serios.</small><a class="pick" href="#cont" data-buy="video-standard" data-en="Choose">Aleg</a></li>
         </ul>
         <p class="incl" data-en="Color and audio sync, subtitles on request, 9:16, 16:9 or 1:1, delivery in 24–48 h.">Culoare și sincronizare audio, subtitrări la cerere, 9:16, 16:9 sau 1:1, livrare în 24–48 h.</p>
       </div>
       <div class="pc rv">
         <h3 data-en="Photo">Foto</h3>
         <ul class="rows">
-          <li><strong data-en="1 photo">1 fotografie</strong><span class="price" data-en="€4">19 lei</span><small data-en="A quick fix for a single photo.">Soluție rapidă pentru o singură poză.</small><a class="pick" href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" data-buy="foto-1" data-en="Choose">Aleg</a></li>
-          <li><strong data-en="10 photos">10 fotografii</strong><span class="price" data-en="&lt;s&gt;€40&lt;/s&gt;€25"><s>190</s>129 lei</span><small data-en="Same style across the set. You save €15.">Același stil pe tot setul. Economisești 61 lei.</small><a class="pick" href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" data-buy="foto-10" data-en="Choose">Aleg</a></li>
+          <li><strong data-en="1 photo">1 fotografie</strong><span class="price" data-en="€4">19 lei</span><small data-en="A quick fix for a single photo.">Soluție rapidă pentru o singură poză.</small><a class="pick" href="#cont" data-buy="foto-1" data-en="Choose">Aleg</a></li>
+          <li><strong data-en="10 photos">10 fotografii</strong><span class="price" data-en="&lt;s&gt;€40&lt;/s&gt;€25"><s>190</s>129 lei</span><small data-en="Same style across the set. You save €15.">Același stil pe tot setul. Economisești 61 lei.</small><a class="pick" href="#cont" data-buy="foto-10" data-en="Choose">Aleg</a></li>
         </ul>
         <p class="incl" data-en="Skin retouch, object and background removal, JPG + PNG, same-day delivery.">Retuș de ten, eliminare obiecte și fundal, JPG + PNG, livrare în aceeași zi.</p>
       </div>
@@ -656,7 +662,7 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
           <p class="what" data-en="2 short videos + 3 edited photos">2 videoclipuri scurte + 3 poze editate</p>
           <p class="amount" data-en="&lt;s&gt;€30&lt;/s&gt;€25"><s>147</s>129<small>lei</small></p>
           <p class="save" data-en="You save €5">Economisești 18 lei</p>
-          <a class="btn" href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" data-buy="mini" data-en="Choose Mini">Aleg Mini</a>
+          <a class="btn" href="#cont" data-buy="mini" data-en="Choose Mini">Aleg Mini</a>
         </article>
         <article class="pack best rv">
           <p class="badge" data-en="Best value">Cea mai bună alegere</p>
@@ -664,14 +670,14 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
           <p class="what" data-en="5 short videos + 5 edited photos, one consistent style">5 videoclipuri scurte + 5 poze editate, același stil pe tot</p>
           <p class="amount" data-en="&lt;s&gt;€65&lt;/s&gt;€55"><s>320</s>279<small>lei</small></p>
           <p class="save" data-en="You save €10">Economisești 41 lei</p>
-          <a class="btn" href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" data-buy="starter" data-en="Choose Starter">Aleg Starter</a>
+          <a class="btn" href="#cont" data-buy="starter" data-en="Choose Starter">Aleg Starter</a>
         </article>
         <article class="pack rv">
           <h4>Business Basic</h4>
           <p class="what" data-en="Full website + 3 short videos + 5 edited photos">Site complet + 3 videoclipuri scurte + 5 poze editate</p>
           <p class="amount" data-en="&lt;s&gt;€216&lt;/s&gt;€169"><s>1089</s>859<small>lei</small></p>
           <p class="save" data-en="Videos and photos included free, you save €47">Video și foto incluse gratuit, economisești 230 lei</p>
-          <a class="btn" href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" data-buy="business" data-en="Choose Business">Aleg Business</a>
+          <a class="btn" href="#cont" data-buy="business" data-en="Choose Business">Aleg Business</a>
         </article>
       </div>
       <div class="subscr rv">
@@ -680,7 +686,7 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
           <p class="what" data-en="5 videos + 5 photos every month. Steady content, without starting from zero each time.">5 videoclipuri + 5 poze în fiecare lună. Conținut constant, fără să pornești de la zero de fiecare dată.</p>
         </div>
         <p class="amount" data-en="&lt;s&gt;€65&lt;/s&gt;€49&lt;small&gt;/ month&lt;/small&gt;"><s>320</s>249<small>lei / lună</small></p>
-        <a class="btn" href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" data-en="Subscribe">Mă abonez</a>
+        <a class="btn" href="#cont" data-ask data-en="Subscribe">Mă abonez</a>
       </div>
       </div>
       <div class="dots" id="dots" aria-hidden="true"></div>
@@ -735,7 +741,7 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
     </div>
     <div class="ask rv">
       <div><h3 data-en="Didn't find your answer?">N-ai găsit răspunsul?</h3><p data-en="Ask me directly. I usually reply in under 2 hours.">Întreabă-mă direct. De obicei răspund în mai puțin de 2 ore.</p></div>
-      <a class="btn" href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" data-en="Message me">Scrie-mi</a>
+      <a class="btn" href="#cont" data-ask data-en="Message me">Scrie-mi</a>
     </div>
   </div>
 </section>
@@ -750,20 +756,20 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
     <h2 class="h2" style="margin-top:10px" data-en="Let's talk.">Hai să vorbim.</h2>
     <p class="lead" data-en="Tell me what you need. I reply fast and we sort out the details together.">Spune-mi de ce ai nevoie. Îți răspund repede și stabilim împreună detaliile.</p>
     <div class="ccards">
-      <a class="ccard primary" href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener">
+      <a class="ccard primary" href="#cont" data-ask>
+        <span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h16a1.5 1.5 0 0 1 1.5 1.5v9a1.5 1.5 0 0 1-1.5 1.5H10l-4.5 3.5V17.5H4A1.5 1.5 0 0 1 2.5 16V7A1.5 1.5 0 0 1 4 5.5z"/></svg></span>
+        <span class="ct" data-en="Message on the site">Mesaj pe site</span>
+        <span class="cv" data-en="Sign in with Google">Intră cu Google</span>
+        <span class="cn" data-en="Fastest · usually under 2 hours">Cel mai rapid · de obicei sub 2 ore</span>
+        <span class="btn" data-en="Message me">Scrie-mi</span>
+      </a>
+      <a class="ccard" href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener">
         <span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".9" fill="currentColor" stroke="none"/></svg></span>
         <span class="ct">Instagram</span>
         <span class="cv">@costi1andrei</span>
-        <span class="cn" data-en="Fastest · usually under 2 hours">Cel mai rapid · de obicei sub 2 ore</span>
-        <span class="btn" data-en="Open Instagram">Deschide Instagram</span>
+        <span class="cn" data-en="See my latest work">Vezi ultimele lucrări</span>
+        <span class="btn ghost" data-en="Open Instagram">Deschide Instagram</span>
       </a>
-      <div class="ccard">
-        <span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg></span>
-        <span class="ct">Email</span>
-        <span class="cv mail-addr">anndreiconstantinn@yahoo.com</span>
-        <span class="cn" data-en="For longer briefs or files">Pentru descrieri lungi sau fișiere</span>
-        <button type="button" class="btn ghost" data-copy="anndreiconstantinn@yahoo.com" data-en="Copy address">Copiază adresa</button>
-      </div>
     </div>
     <p class="fine-c" data-en="Iași, Romania · working with clients anywhere">Iași, România · lucrez cu clienți de oriunde</p>
     </div>

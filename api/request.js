@@ -23,7 +23,12 @@ module.exports = handle(async (req, res) => {
   const brief = String(body.brief || '').trim().slice(0, 2000) || null;
   const instagram = cleanInstagram(body.instagram) || null;
 
-  const open = await db(`orders?select=id&user_id=eq.${user.id}&status=eq.requested`);
+  // Întrebare: o singură conversație deschisă per client; o refolosim dacă există.
+  if (pkg.question) {
+    const ex = await db(`orders?select=id,code&user_id=eq.${user.id}&package=eq.intrebare&status=neq.cancelled&archived_at=is.null&order=created_at.desc&limit=1`);
+    if (ex && ex.length) return send(res, 200, { id: ex[0].id, code: ex[0].code, existing: true });
+  }
+  const open = pkg.question ? [] : await db(`orders?select=id&user_id=eq.${user.id}&status=eq.requested&package=neq.intrebare`);
   if (open.length >= MAX_OPEN) return send(res, 429, { error: 'Ai deja 3 comenzi neplătite. Scrie-mi pe Instagram sau anulează una din cont.' });
 
   for (let i = 0; i < 5; i++) {

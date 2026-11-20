@@ -16,7 +16,10 @@
       why: 'Folosesc doar numele și emailul din contul tău Google, ca să-ți arăt comenzile. Detalii în ',
       perks: ['Trimiți comenzi și primești un cod pentru fiecare', 'Vezi statusul: plătită, în lucru, livrată', 'Descarci fișierele finale direct de aici'],
       privacy: 'Politica de confidențialitate', logout: 'Ieși din cont', loading: 'Se încarcă…',
-      empty: 'Încă nu ai nicio comandă. Alege un pachet, scrie-mi pe Instagram și comanda apare aici.',
+      empty: 'Încă nu ai nicio comandă. Alege un pachet sau scrie-mi o întrebare.',
+      askH: 'Ai o întrebare?', askP: 'Scrie-mi aici, fără să comanzi nimic. Îți răspund de obicei în mai puțin de 2 ore.', askBtn: 'Scrie-mi', askGo: 'Deschide conversația',
+      askLogin: 'Ca să-mi scrii, intră în cont cu Google. Durează câteva secunde și ține site-ul departe de boți.',
+      qTitle: 'Conversație cu Aman', qPill: 'Conversație', qEmpty: 'Scrie-mi orice: ce ai nevoie, întrebări, idei. Îți răspund de obicei în mai puțin de 2 ore.',
       seePacks: 'Vezi pachetele', files: 'Deschide fișierele', note: 'Mesaj de la Aman', yourFiles: 'Fișierele tale', dl: 'Descarcă',
       how: 'Plata se face prin transfer bancar. Îți trimit detaliile aici, în mesajele comenzii, iar statusul se actualizează după ce primesc plata.',
       saved: 'Cererea pentru {p} a fost salvată în cont. Continuă discuția pe Instagram.',
@@ -35,7 +38,10 @@
       why: 'I only use the name and email from your Google account to show you your orders. Details in the ',
       perks: ['Send orders and get a code for each one', 'Follow the status: paid, in progress, delivered', 'Download the final files right here'],
       privacy: 'Privacy policy', logout: 'Sign out', loading: 'Loading…',
-      empty: 'You have no orders yet. Pick a package, message me on Instagram and the order shows up here.',
+      empty: 'You have no orders yet. Pick a package or send me a question.',
+      askH: 'Got a question?', askP: 'Write to me here, no order needed. I usually reply in under 2 hours.', askBtn: 'Message me', askGo: 'Open the conversation',
+      askLogin: 'To message me, sign in with Google. It takes a few seconds and keeps bots off the site.',
+      qTitle: 'Chat with Aman', qPill: 'Conversation', qEmpty: 'Ask me anything: what you need, questions, ideas. I usually reply in under 2 hours.',
       seePacks: 'See packages', files: 'Open the files', note: 'Message from Aman', yourFiles: 'Your files', dl: 'Download',
       how: 'Payment is by bank transfer. I send you the details here, in the order messages, and the status updates once I receive it.',
       saved: 'Your request for {p} is saved in your account. Carry on the chat on Instagram.',
@@ -109,6 +115,27 @@
     var v = o.amount / 100, n = v % 1 ? v.toFixed(2) : String(v);
     return o.currency === 'eur' ? '€' + n : n + ' lei';
   }
+  function isQ(o) { return o && o.package === 'intrebare'; }
+  // Conversația fără comandă: o creează serverul (sau o refolosește pe cea existentă) și o deschide.
+  async function startAsk() {
+    var tk = await token(); if (!tk) { sstore('aman.ask', '1'); notice = { kind: 'warn', text: t('askLogin') }; return render(); }
+    busy = true; render();
+    var r = await fetch('/api/request', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + tk }, body: JSON.stringify({ package: 'intrebare', lang: L() }) }).catch(function () { return null; });
+    var j = r ? await r.json().catch(function () { return {}; }) : {};
+    busy = false;
+    if (!r || !r.ok) { notice = { kind: 'warn', text: j.error || 'Eroare.' }; return render(); }
+    openChat = j.id;
+    await loadOrders();
+    var el = box.querySelector('[data-chatbox]'); if (el) setTimeout(function () { el.scrollIntoView({ block: 'center' }); var ta = el.querySelector('textarea'); if (ta) ta.focus(); }, 100);
+  }
+  // Orice buton „Scrie-mi” de pe site (data-ask) duce aici; fără cont, cere logarea.
+  d.addEventListener('click', function (e) {
+    var a = e.target.closest('[data-ask]'); if (!a || !cfg || !cfg.auth) return;
+    e.preventDefault();
+    goCont();
+    if (session) startAsk(); else { sstore('aman.ask', '1'); notice = { kind: 'warn', text: t('askLogin') }; render(); }
+    var s = d.getElementById('s-cont'); if (s) s.scrollIntoView({ block: 'start' });
+  });
   function date(s) { return new Date(s).toLocaleDateString(L() === 'en' ? 'en-GB' : 'ro-RO', { day: 'numeric', month: 'long', year: 'numeric' }); }
 
   // Legătura cu formularul de comandă (assets/js/order.js).
@@ -206,10 +233,15 @@
     h += '<div class="who"><div><strong>' + esc(u.name || u.email) + '</strong>' + (u.name ? '<span>' + esc(u.email) + '</span>' : '') + '</div><button type="button" class="more plain" id="logout">' + t('logout') + '</button></div>';
     if (isAdmin) h += '<a class="btn admin-link" href="/admin.html">Panou comenzi</a>';
     if (orders === null) h += '<p class="muted">' + t('loading') + '</p>';
-    else if (!orders.length) h += '<div class="acct-card center"><p class="muted">' + t('empty') + '</p><div class="ctas"><a class="btn" href="#preturi" id="see-packs">' + t('seePacks') + '</a></div></div>';
+    else if (!orders.length) h += '<div class="acct-card center"><p class="muted">' + t('empty') + '</p><div class="ctas"><a class="btn" href="#preturi" id="see-packs">' + t('seePacks') + '</a><button type="button" class="more plain" id="ask"' + (busy ? ' disabled' : '') + '>' + t('askBtn') + '</button></div></div>';
     else {
-      if (orders.some(function (o) { return o.status === 'requested'; })) h += '<p class="banner">' + t('how') + '</p>';
+      var hasQ = orders.some(function (o) { return isQ(o) && o.status !== 'cancelled'; });
+      if (!hasQ) h += '<div class="ask-row"><div><strong>' + t('askH') + '</strong><span class="muted">' + t('askP') + '</span></div><button type="button" class="btn small" id="ask"' + (busy ? ' disabled' : '') + '>' + t('askBtn') + '</button></div>';
+      if (orders.some(function (o) { return o.status === 'requested' && !isQ(o); })) h += '<p class="banner">' + t('how') + '</p>';
       h += '<ul class="orders">' + orders.map(function (o) {
+        if (isQ(o)) return '<li class="order q"><div class="o-top"><div><h4>' + t('qTitle') + '</h4><span class="muted">' + date(o.created_at) + '</span></div><span class="pill s-paid">' + t('qPill') + '</span></div>' +
+          '<button type="button" class="chat-toggle" data-chat="' + esc(o.id) + '" aria-expanded="' + (openChat === o.id) + '"><span>' + (openChat === o.id ? t('chatHide') : t('chat')) + '</span><b class="badge"' + (unread[o.id] ? '' : ' hidden') + '>' + (unread[o.id] || '') + '</b></button>' +
+          (openChat === o.id ? '<div class="chatbox" data-chatbox="' + esc(o.id) + '" data-q="1"></div>' : '') + '</li>';
         return '<li class="order"><div class="o-top"><div><h4>' + esc(o.title) + '</h4><span class="muted">' + (o.code ? '<b class="ocode">' + esc(o.code) + '</b> · ' : '') + date(o.created_at) + ' · ' + money(o) + '</span></div>' +
           '<span class="pill s-' + esc(o.status) + '">' + esc(t('st')[o.status] || o.status) + '</span></div>' +
           (o.note ? '<p class="o-note"><span>' + t('note') + '</span>' + esc(o.note) + '</p>' : '') +
@@ -244,13 +276,14 @@
     var cb = box.querySelector('[data-chatbox]');
     if (cb && window.AmanChat) {
       var oid = cb.dataset.chatbox;
-      chatInst = window.AmanChat.mount(cb, { order: oid, token: token, as: 'client', empty: t('chatEmpty'), placeholder: t('chatPh'), onSeen: function () { unread[oid] = 0; badges(); } });
+      chatInst = window.AmanChat.mount(cb, { order: oid, token: token, as: 'client', empty: cb.dataset.q ? t('qEmpty') : t('chatEmpty'), placeholder: t('chatPh'), onSeen: function () { unread[oid] = 0; badges(); } });
       if (draft) { var ta = cb.querySelector('textarea'); ta.value = draft; }
     }
     box.querySelectorAll('[data-zip]').forEach(function (b) { b.addEventListener('click', function () { downloadZip(b.dataset.zip, b); }); });
     box.querySelectorAll('[data-cancel]').forEach(function (b) { b.addEventListener('click', function () { confirmCancel = b.dataset.cancel; render(); }); });
     box.querySelectorAll('[data-cancel-no]').forEach(function (b) { b.addEventListener('click', function () { confirmCancel = null; render(); }); });
     box.querySelectorAll('[data-cancel-yes]').forEach(function (b) { b.addEventListener('click', function () { cancelOrder(b.dataset.cancelYes); }); });
+    if ((x = d.getElementById('ask'))) x.addEventListener('click', startAsk);
     if ((x = d.getElementById('see-packs'))) x.addEventListener('click', function () { setTimeout(function () { var p = d.getElementById('tab-pachete'); if (p) p.click(); }, 0); });
   }
   d.addEventListener('langchange', render);
@@ -273,12 +306,13 @@
       notice = { kind: 'warn', text: t('loginErr') }; goCont();
     }
     if (!session) session = load(KEY);
+    if (!session && sload('aman.ask')) { notice = { kind: 'warn', text: t('askLogin') }; goCont(); }
     if (!session && sload('aman.autologin')) { sstore('aman.autologin', null); return login(); }
     if (session && sload('aman.return')) { var b2 = sload('aman.return'); sstore('aman.return', null); if (/^\/[a-z0-9./?=&-]*$/i.test(b2)) { location.replace(b2); return; } }
     render();
     if (session) {
       var oc = sload('aman.openchat'); if (oc) { sstore('aman.openchat', null); openChat = oc; }
-      await loadOrders();
+      if (sload('aman.ask')) { sstore('aman.ask', null); goCont(); await startAsk(); } else await loadOrders();
       loadUnread(); setInterval(function () { if (!d.hidden) loadUnread(); }, 30000);
       if (openChat) { var el = box.querySelector('[data-chatbox]'); if (el) setTimeout(function () { el.scrollIntoView({ block: 'center' }); }, 100); }
       // Doar pentru administrator: serverul răspunde 200 numai dacă emailul e în ADMIN_EMAILS.

@@ -158,7 +158,21 @@
     if (!silent) { badges(); if (fresh) { var ids = Object.keys(next); if (ids.some(function (k) { return !orders.some(function (o) { return o.id === k; }); })) load(); } }
   }
 
+  function chatBtn(o, label) {
+    return '<button type="button" class="chat-toggle" data-chat="' + o.id + '" aria-expanded="' + (openChat === o.id) + '"><span>' + (openChat === o.id ? 'Ascunde conversația' : label) + '</span><b class="badge"' + (unread[o.id] ? '' : ' hidden') + '>' + (unread[o.id] || '') + '</b></button>' +
+      (openChat === o.id ? '<div class="chatbox" data-chatbox="' + o.id + '"></div>' : '');
+  }
+  // Întrebare fără comandă: doar conversația, fără preț, statusuri sau fișiere.
+  function qcard(o) {
+    return '<li class="card" data-id="' + o.id + '">' +
+      '<div class="head"><div>' + (o.code ? '<p class="code">' + esc(o.code) + '</p>' : '') + '<h2>Întrebare</h2><div class="who">' + esc(o.customer_name || 'Fără nume') + (o.email ? ' · ' + esc(o.email) : '') + '</div></div><span class="price meta">fără comandă</span></div>' +
+      chatBtn(o, 'Conversația') +
+      '<div class="row tail"><p class="meta">Începută ' + when(o.created_at) + '</p><span class="tail-acts">' +
+        (o.archived_at ? '<button type="button" class="plain" data-arch="0">Readu în listă</button>' : '<button type="button" class="plain" data-arch="1">Ascunde</button>') +
+        '<button type="button" class="plain danger" data-delo>Șterge definitiv</button></span></div></li>';
+  }
   function card(o) {
+    if (o.package === 'intrebare') return qcard(o);
     return '<li class="card" data-id="' + o.id + '">' +
       '<div class="head"><div>' + (o.code ? '<p class="code">' + esc(o.code) + '</p>' : '') + '<h2>' + esc(o.title) + '</h2><div class="who">' + esc(o.customer_name || 'Fără nume') + (o.email ? ' · ' + esc(o.email) : '') + '</div>' +
         (o.instagram ? '<a class="igh" href="https://www.instagram.com/' + encodeURIComponent(o.instagram) + '/" target="_blank" rel="noopener">@' + esc(o.instagram) + '</a>' : '<span class="meta">Fără Instagram</span>') +
@@ -166,8 +180,7 @@
       (o.brief ? '<div class="brief"><label>Ce vrea clientul</label><p>' + esc(o.brief) + '</p></div>' : '') +
       (o.site_id ? '<div class="brief"><label>Site din editor</label><p>„Plătită” deblochează descărcarea pentru client. <a href="/editor.html?id=' + esc(o.site_id) + '" target="_blank" rel="noopener">Vezi site-ul în editor ›</a></p></div>' : '') +
       (o.site_id ? '' : '<div class="files cl"><label>Materiale de la client</label><ul class="flist" data-clist><li class="meta">Se încarcă…</li></ul></div>') +
-      '<button type="button" class="chat-toggle" data-chat="' + o.id + '" aria-expanded="' + (openChat === o.id) + '"><span>' + (openChat === o.id ? 'Ascunde conversația' : 'Conversația cu clientul') + '</span><b class="badge"' + (unread[o.id] ? '' : ' hidden') + '>' + (unread[o.id] || '') + '</b></button>' +
-      (openChat === o.id ? '<div class="chatbox" data-chatbox="' + o.id + '"></div>' : '') +
+      chatBtn(o, 'Conversația cu clientul') +
       '<div class="st">' + FLOW.map(function (s) { return '<button type="button" data-s="' + s + '" aria-pressed="' + (o.status === s) + '">' + LABEL[s] + '</button>'; }).join('') + '</div>' +
       '<div><label for="n-' + o.id + '">Notă scurtă, afișată la comandă (opțional)</label><textarea id="n-' + o.id + '" maxlength="1000" placeholder="ex: Am primit plata, livrez joi.">' + esc(o.note || '') + '</textarea></div>' +
       '<div><label for="u-' + o.id + '">Link livrare (opțional)</label><input type="url" id="u-' + o.id + '" placeholder="https://drive.google.com/…" value="' + esc(o.delivery_url || '') + '"/></div>' +

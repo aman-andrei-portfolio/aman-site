@@ -4,7 +4,6 @@
 (function () {
   'use strict';
   var d = document, A = function () { return window.AmanAccount; };
-  var IG = 'https://www.instagram.com/costi1andrei/';
   var MAX = 50 * 1024 * 1024;
   var BUY = 'aman.buy';
   var dlg = null, cur = null, picked = [];
@@ -19,7 +18,7 @@
   var T = {
     ro: {
       eyebrow: 'Comandă nouă', login: 'Ca să trimiți comanda și să primești codul ei, intră în cont cu Google. Durează câteva secunde.',
-      google: 'Continuă cu Google', orIg: 'sau scrie-mi direct pe Instagram',
+      google: 'Continuă cu Google', why: 'Contul cu email verificat ține site-ul departe de boți.',
       brief: 'Ce vrei să fac?', briefPh: { foto: 'ex: retuș ten, fundal alb, culori calde', video: 'ex: reel de 30 s pentru salon, muzică energică, subtitrări', web: 'ex: site pentru frizerie, 3 pagini, programări pe WhatsApp', pack: 'Spune-mi pe scurt pentru ce e conținutul și cum îl vrei' },
       ig: 'Username-ul tău de Instagram', igPh: '@numele.tau', igHelp: 'Ca să te recunosc când îmi scrii.',
       files: { foto: 'Pozele pe care le editez', video: 'Clipurile tale', web: 'Logo, poze, texte (opțional)', pack: 'Clipuri și poze (opțional)' },
@@ -32,7 +31,7 @@
     },
     en: {
       eyebrow: 'New order', login: 'To send the order and get its code, sign in with Google. It takes a few seconds.',
-      google: 'Continue with Google', orIg: 'or message me directly on Instagram',
+      google: 'Continue with Google', why: 'An account with a verified email keeps bots off the site.',
       brief: 'What do you need?', briefPh: { foto: 'e.g. skin retouch, white background, warm colours', video: 'e.g. 30 s reel for a salon, upbeat music, subtitles', web: 'e.g. barber shop site, 3 pages, WhatsApp bookings', pack: 'Tell me briefly what the content is for and how you want it' },
       ig: 'Your Instagram username', igPh: '@your.name', igHelp: 'So I recognise you when you message me.',
       files: { foto: 'The photos to edit', video: 'Your clips', web: 'Logo, photos, texts (optional)', pack: 'Clips and photos (optional)' },
@@ -76,7 +75,7 @@
   function stepLogin() {
     shell(head() + '<p class="muted">' + t('login') + '</p>' +
       '<div class="row"><button type="button" class="gbtn" id="o-login">' + t('google') + '</button></div>' +
-      '<p class="fine"><a href="' + IG + '" target="_blank" rel="noopener">' + t('orIg') + '</a> · <button type="button" class="more plain" id="o-x">' + t('cancel') + '</button></p>');
+      '<p class="fine">' + t('why') + ' · <button type="button" class="more plain" id="o-x">' + t('cancel') + '</button></p>');
     dlg.querySelector('#o-login').addEventListener('click', function () { sstore(BUY, cur.key); A().login(); });
     dlg.querySelector('#o-x').addEventListener('click', function () { dlg.close(); });
   }
@@ -162,8 +161,7 @@
   function stepDone(code, failed, orderId) {
     shell('<p class="eyebrow">' + t('doneH') + '</p><p class="code">' + esc(code) + '</p>' +
       '<p class="muted">' + t('doneP') + '</p>' + (failed ? '<p class="banner">' + t('partial') + '</p>' : '') +
-      '<div class="row"><button type="button" class="btn" id="o-chat">' + t('chatGo') + '</button></div>' +
-      '<p class="fine"><a href="' + IG + '" target="_blank" rel="noopener">' + t('igAlt') + '</a></p>');
+      '<div class="row"><button type="button" class="btn" id="o-chat">' + t('chatGo') + '</button></div>');
     dlg.querySelector('#o-chat').addEventListener('click', function () {
       try { sessionStorage.setItem('aman.openchat', orderId); } catch (e) {}
       dlg.close();
@@ -183,7 +181,7 @@
     var b = e.target.closest('[data-buy]');
     if (!b) return;
     var a = A();
-    if (!a || !a.ready() || !a.enabled()) return;     // lasă linkul de Instagram să funcționeze
+    if (!a || !a.ready() || !a.enabled()) return;     // fără conturi active, linkul duce la pagina Cont
     e.preventDefault();
     open(b.dataset.buy);
   });

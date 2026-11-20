@@ -60,6 +60,7 @@ module.exports = handle(async (req, res) => {
     if (!o) return send(res, 404, { error: 'Comanda nu există.' });
     if (o.status !== 'requested') return send(res, 409, { error: 'Comanda e deja în lucru. Trimite-mi fișierele pe Instagram.' });
     if (size > MAX_FILE) return send(res, 400, { error: TOO_BIG });
+    if (CATALOG[o.package] && (CATALOG[o.package].question || CATALOG[o.package].editorOnly)) return send(res, 400, { error: 'Aici nu se pot urca fișiere.' });
     const max = (CATALOG[o.package] && CATALOG[o.package].max) || 10;
     const have = await listFiles(o.id + '/client');
     if (have.length >= max && !have.some((f) => f.name === name)) return send(res, 400, { error: `Poți trimite maximum ${max} ${max === 1 ? 'fișier' : 'fișiere'} pentru opțiunea asta.` });
