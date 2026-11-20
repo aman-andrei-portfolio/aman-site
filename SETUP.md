@@ -111,3 +111,11 @@ Fără aceste variabile, pagina Cont spune „în curând”, iar butoanele duc 
 - În panou: „Ascunde” la fiecare comandă, „Ascunde toate finalizate” în tab-ul Finalizate și tab-ul **Arhivă**
   (de unde le readuci). Comenzile **anulate** se pot șterge definitiv; cele plătite doar se ascund (evidența încasărilor).
   Ascunderea e doar pentru tine; clientul își vede comanda în cont.
+
+## Camera (`/camera.html`)
+
+- Cameră din browser cu 12 stiluri de culoare (LUT 3D calculate în `assets/js/camera.js`, aplicate prin WebGL),
+  intensitate reglabilă, grilă, nivelă, sfat de încadrare pentru fiecare stil și comutare față/spate.
+- Poza se face la rezoluția camerei; „Salvează în galerie” deschide meniul de distribuire al telefonului
+  (iPhone: „Salvează imaginea”), iar pe Android/calculator se descarcă. Nimic nu se urcă pe site.
+- Necesită `camera=(self)` în `Permissions-Policy` (vercel.json). Stilurile noi se adaugă în lista `LOOKS`.
