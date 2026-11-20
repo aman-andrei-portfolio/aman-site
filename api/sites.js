@@ -129,7 +129,7 @@ module.exports = handle(async (req, res) => {
     const existing = await siteOrder(s.id);
     if (existing) return send(res, 200, { id: existing.id, code: existing.code, status: existing.status, existing: true });
     const open = await db(`orders?select=id&user_id=eq.${user.id}&status=eq.requested`);
-    if (open.length >= 3) return send(res, 429, { error: 'Ai deja 3 comenzi neplătite. Scrie-mi pe Instagram sau anulează una din cont.' });
+    if (open.length >= 3) return send(res, 429, { error: 'Ai deja 3 comenzi neplătite. Anulează una din cont sau scrie-mi în conversația unei comenzi.' });
     const lang = b.lang === 'en' ? 'en' : 'ro', currency = lang === 'en' ? 'eur' : 'ron', pkg = CATALOG['site-builder'];
     const name = (s.data && s.data.name) || 'site';
     for (let i = 0; i < 5; i++) {

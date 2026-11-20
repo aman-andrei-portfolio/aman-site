@@ -1,5 +1,5 @@
 /* Editorul de site-uri. Textele se salvează local în browser; după logare, ciorna se salvează și în cont
-   (cu poze). La final, clientul cere site-ul: primește un cod, ți-l trimite pe Instagram, plătește,
+   (cu poze). La final, clientul cere site-ul: primește un cod și o conversație pe site, plătește,
    iar după ce marchezi comanda „Plătită” în panou, apare butonul de descărcare (ZIP). */
 (function () {
   'use strict';
@@ -79,7 +79,7 @@
 
   // ---------- pași ----------
   function renderSteps() {
-    $('steps').innerHTML = steps().map(function (n, i) { return '<button type="button" role="tab" data-step="' + i + '" aria-selected="' + (i === S.step) + '"><b>' + (i + 1) + '</b>' + esc(n) + '</button>'; }).join('');
+    $('steps').innerHTML = steps().map(function (n, i) { return '<button type="button" role="tab" data-step="' + i + '" aria-selected="' + (i === S.step) + '" title="' + esc(n) + '"><b>' + (i + 1) + '</b><span>' + esc(n) + '</span></button>'; }).join('');
     $('prev').style.visibility = S.step ? 'visible' : 'hidden';
     $('next').hidden = S.step === steps().length - 1;
     $('next').textContent = S.step === steps().length - 2 ? 'Gata, vezi prețul' : 'Continuă';
@@ -105,7 +105,12 @@
         h = '<h2>Alege un șablon</h2><p class="sub">Pornești de la un site deja completat. Schimbi doar ce e al tău.</p><div class="tpls">' +
           Object.keys(ST.TEMPLATES).map(function (k) {
             var x = ST.TEMPLATES[k], dk = x.defaults.theme === 'dark';
-            return '<button type="button" class="tpl" data-tpl="' + k + '" aria-pressed="' + (k === S.template) + '"><span class="sw" style="background:' + (dk ? '#111' : '#f3f3f5') + ';color:' + x.defaults.accent + '">' + esc(x.defaults.name) + '</span><strong>' + esc(x.label) + '</strong><small>' + esc(x.itemsHint) + '</small></button>';
+            var A = x.defaults.accent, fg = dk ? '#f2f2f2' : '#151515';
+            // Miniatură: același font, aceleași culori și același buton ca șablonul real.
+            var sw = '<span class="sw" aria-hidden="true" style="background:' + (dk ? '#111' : A + '14') + ';color:' + fg + '">' +
+              '<i class="sw-t" style="font-family:' + esc(x.font) + ';' + (x.upper ? 'text-transform:uppercase;' : '') + (x.italic ? 'font-style:italic;' : '') + '">' + esc(x.defaults.name) + '</i>' +
+              '<i class="sw-l" style="background:' + fg + '"></i><i class="sw-b" style="background:' + A + '"></i></span>';
+            return '<button type="button" class="tpl" data-tpl="' + k + '" aria-pressed="' + (k === S.template) + '">' + sw + '<strong>' + esc(x.label) + '</strong><small>' + esc(x.itemsHint) + '</small></button>';
           }).join('') + '</div>';
         break;
       case 1:
@@ -183,7 +188,7 @@
     var list = '<ul class="list"><li>Site-ul complet, gata de pus online</li><li>Pozele tale, optimizate</li><li>Arată bine pe telefon și calculator</li><li>Instrucțiuni pas cu pas pentru publicare</li></ul>';
     if (!session) return '<h2>Îți place?</h2><p class="price">' + PRICE[lang] + '</p>' + list + '<p class="note" style="margin-top:16px">Intră în cont ca să-ți salvăm site-ul și să primești codul comenzii.</p><p><button type="button" class="btn" id="login">Intră cu Google</button></p>';
     return '<h2>Îți place?</h2><p class="price">' + PRICE[lang] + '</p>' + list +
-      '<label class="f" for="f-ig">Username-ul tău de Instagram</label><input type="text" id="f-ig" maxlength="40" placeholder="@numele.tau" autocapitalize="none" autocomplete="off"/>' +
+      '<label class="f" for="f-ig">Instagram (opțional)</label><input type="text" id="f-ig" maxlength="40" placeholder="@numele.tau sau al afacerii" autocapitalize="none" autocomplete="off"/>' +
       '<p class="sub" style="margin-top:12px">Primești un cod și vorbim aici, pe site: îți trimit detaliile de plată, plătești prin transfer, iar eu deblochez descărcarea.</p>' +
       '<p><button type="button" class="btn" id="buy">Vreau site-ul</button></p><p class="err" hidden></p>' +
       '<p class="sub" style="font-size:12px">Site-ul e conținut digital: după ce îl descarci, nu mai poți cere banii înapoi. Detalii în <a href="/termeni.html" target="_blank" rel="noopener">Termeni</a>.</p>';
@@ -324,7 +329,7 @@
     else if (!S.id) status('');
     if (S.id && session && !S.order) { var g2 = await api('GET', '/api/sites?id=' + S.id); if (g2.ok) { S.order = g2.json.order; S.assets = g2.json.assets || S.assets; } }
     renderSteps(); renderBody(); preview();
-    // Revine din Instagram: verificăm dacă plata a fost confirmată.
+    // Revine pe pagină: verificăm dacă plata a fost confirmată.
     d.addEventListener('visibilitychange', async function () {
       if (d.hidden || !S.id || !session || !S.order || S.order.unlocked) return;
       var g3 = await api('GET', '/api/sites?id=' + S.id);

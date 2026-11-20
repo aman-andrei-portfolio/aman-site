@@ -143,9 +143,9 @@
       'img{max-width:100%;display:block}a{color:inherit}.w{max-width:1040px;margin:0 auto;padding:0 20px}' +
       'h1,h2,h3{font-family:' + T.font + ';font-weight:700;line-height:1.08;margin:0;' + head + it + 'text-wrap:balance}' +
       'header{position:sticky;top:0;z-index:5;background:' + bg + 'e6;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid ' + line + '}' +
-      'header .w{display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px}.brand{display:flex;align-items:center;gap:10px;font-family:' + T.font + ';font-weight:700;font-size:20px;text-decoration:none;' + head + it + '}' +
+      'header .w{display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px}.brand{display:flex;align-items:center;gap:10px;font-family:' + T.font + ';font-weight:700;font-size:20px;text-decoration:none;min-width:0;' + head + it + '}.brand span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}' +
       '.brand img{width:36px;height:36px;border-radius:10px;object-fit:cover}' +
-      '.btn{display:inline-flex;align-items:center;justify-content:center;background:' + A + ';color:' + onAccent(A) + ';text-decoration:none;font-weight:600;border-radius:999px;padding:12px 22px;font-size:16px}.btn.sm{padding:9px 16px;font-size:14px}' +
+      '.btn{display:inline-flex;align-items:center;justify-content:center;background:' + A + ';color:' + onAccent(A) + ';text-decoration:none;font-weight:600;border-radius:999px;padding:12px 22px;font-size:16px}.btn.sm{padding:9px 16px;font-size:14px;white-space:nowrap;flex:none}' +
       '.hero{position:relative;overflow:hidden}.hero .w{padding-top:clamp(56px,10vw,120px);padding-bottom:clamp(56px,10vw,120px)}' +
       (hero ? '.hero{background:#000 url("' + cssUrl(hero) + '") center/cover no-repeat;color:#fff}.hero::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.65))}.hero .w{position:relative}.hero p{color:rgba(255,255,255,.88)}' : '.hero{background:' + bg2 + '}') +
       '.hero h1{font-size:clamp(44px,8vw,88px);max-width:12ch}.hero p{font-size:clamp(18px,2.2vw,22px);max-width:34em;margin:18px 0 28px;color:' + (hero ? 'rgba(255,255,255,.88)' : fg2) + '}' +

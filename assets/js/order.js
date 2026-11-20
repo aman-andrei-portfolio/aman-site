@@ -1,6 +1,5 @@
-/* Formularul de comandă: clientul alege opțiunea, descrie ce vrea, își lasă Instagram-ul
-   și urcă materialele. Primește un cod (ex. AM-K7P2Q) și un mesaj gata scris pentru Instagram,
-   ca tu să știi exact ce comandă e a lui. Plata se stabilește apoi pe Instagram. */
+/* Formularul de comandă: clientul alege opțiunea, descrie ce vrea și urcă materialele.
+   Primește un cod (ex. AM-K7P2Q) și o conversație privată pe site, unde stabiliți plata. */
 (function () {
   'use strict';
   var d = document, A = function () { return window.AmanAccount; };
@@ -20,27 +19,25 @@
       eyebrow: 'Comandă nouă', login: 'Ca să trimiți comanda și să primești codul ei, intră în cont cu Google. Durează câteva secunde.',
       google: 'Continuă cu Google', why: 'Contul cu email verificat ține site-ul departe de boți.',
       brief: 'Ce vrei să fac?', briefPh: { foto: 'ex: retuș ten, fundal alb, culori calde', video: 'ex: reel de 30 s pentru salon, muzică energică, subtitrări', web: 'ex: site pentru frizerie, 3 pagini, programări pe WhatsApp', pack: 'Spune-mi pe scurt pentru ce e conținutul și cum îl vrei' },
-      ig: 'Username-ul tău de Instagram', igPh: '@numele.tau', igHelp: 'Ca să te recunosc când îmi scrii.',
+      ig: 'Instagram (opțional)', igPh: '@numele.tau sau al afacerii', igHelp: 'Dacă vrei să mă uit pe profilul tău sau al afacerii.',
       files: { foto: 'Pozele pe care le editez', video: 'Clipurile tale', web: 'Logo, poze, texte (opțional)', pack: 'Clipuri și poze (opțional)' },
       pick: 'Alege fișiere', max: 'maximum {n} · până la 50 MB fiecare', big: 'Pentru fișiere mai mari, pune un link în descriere (Google Drive, WeTransfer).',
       tooMany: 'Poți trimite maximum {n} fișiere pentru opțiunea asta.', tooBig: '{f} are peste 50 MB. Pune-l ca link în descriere.',
       send: 'Trimite comanda', cancel: 'Renunț', sending: 'Se trimite comanda…', up: 'Se încarcă {f}… {p}%',
-      doneH: 'Comanda a fost trimisă', doneP: 'Îți răspund aici, pe site, în conversația comenzii, cu detaliile de plată. De obicei în mai puțin de 2 ore.', chatGo: 'Deschide conversația', igAlt: 'Preferi Instagram? Trimite-mi codul pe @costi1andrei.',
-      msg: 'Salut! Am trimis comanda {c} ({n}) de pe site.', copyGo: 'Copiază mesajul și deschide Instagram', copied: 'Mesaj copiat. Lipește-l în chat.',
-      seeAcc: 'Vezi comanda în cont', partial: 'Comanda e trimisă, dar unele fișiere nu s-au încărcat. Mi le poți trimite pe Instagram.',
+      doneH: 'Comanda a fost trimisă', doneP: 'Îți răspund aici, pe site, în conversația comenzii, cu detaliile de plată. De obicei în mai puțin de 2 ore.', chatGo: 'Deschide conversația',
+      seeAcc: 'Vezi comanda în cont', partial: 'Comanda e trimisă, dar unele fișiere nu s-au încărcat. Mi le poți trimite ca link în conversație.',
     },
     en: {
       eyebrow: 'New order', login: 'To send the order and get its code, sign in with Google. It takes a few seconds.',
       google: 'Continue with Google', why: 'An account with a verified email keeps bots off the site.',
       brief: 'What do you need?', briefPh: { foto: 'e.g. skin retouch, white background, warm colours', video: 'e.g. 30 s reel for a salon, upbeat music, subtitles', web: 'e.g. barber shop site, 3 pages, WhatsApp bookings', pack: 'Tell me briefly what the content is for and how you want it' },
-      ig: 'Your Instagram username', igPh: '@your.name', igHelp: 'So I recognise you when you message me.',
+      ig: 'Instagram (optional)', igPh: '@you or your business', igHelp: 'If you want me to look at your or your business profile.',
       files: { foto: 'The photos to edit', video: 'Your clips', web: 'Logo, photos, texts (optional)', pack: 'Clips and photos (optional)' },
       pick: 'Choose files', max: 'up to {n} · up to 50 MB each', big: 'For bigger files, add a link in the description (Google Drive, WeTransfer).',
       tooMany: 'You can send up to {n} files for this option.', tooBig: '{f} is over 50 MB. Add it as a link in the description.',
       send: 'Send order', cancel: 'Cancel', sending: 'Sending the order…', up: 'Uploading {f}… {p}%',
-      doneH: 'Order sent', doneP: 'I will reply here on the site, in the order conversation, with the payment details. Usually within 2 hours.', chatGo: 'Open the conversation', igAlt: 'Prefer Instagram? Send me the code at @costi1andrei.',
-      msg: 'Hi! I sent order {c} ({n}) from the website.', copyGo: 'Copy the message and open Instagram', copied: 'Message copied. Paste it in the chat.',
-      seeAcc: 'See the order in your account', partial: 'The order is sent, but some files did not upload. You can send them to me on Instagram.',
+      doneH: 'Order sent', doneP: 'I will reply here on the site, in the order conversation, with the payment details. Usually within 2 hours.', chatGo: 'Open the conversation',
+      seeAcc: 'See the order in your account', partial: 'The order is sent, but some files did not upload. You can send them as a link in the conversation.',
     },
   };
   function L() { return (A() && A().lang()) || (d.documentElement.lang === 'en' ? 'en' : 'ro'); }
@@ -172,7 +169,7 @@
   function open(key) {
     cur = info(key); picked = [];
     var a = A();
-    if (!a || !a.enabled()) return false;            // fără conturi active: linkul merge direct pe Instagram
+    if (!a || !a.enabled()) return false;            // fără conturi active: linkul duce la pagina Cont
     if (!a.user()) stepLogin(); else stepForm();
     return true;
   }

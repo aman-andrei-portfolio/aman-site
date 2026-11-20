@@ -26,7 +26,7 @@ Cel mai simplu mod de a-l pune online (gratuit, 2 minute)
 Alte variante: Vercel, GitHub Pages, Cloudflare Pages sau orice găzduire web
 (urci conținutul folderului în public_html).
 
-Vrei să-l pun eu online sau să-l fac mai bun? Scrie-mi pe Instagram: @costi1andrei
+Vrei să-l pun eu online sau să-l fac mai bun? Scrie-mi pe https://costi1andrei.site (butonul „Scrie-mi”).
 `;
 
 module.exports = handle(async (req, res) => {

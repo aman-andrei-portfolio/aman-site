@@ -61,7 +61,7 @@ module.exports = handle(async (req, res) => {
   if (!o) return send(res, 404, { error: 'Comanda nu există.' });
   const side = admin && b.as !== 'client' ? 'admin' : 'client';
   if (side === 'client') {
-    if (o.status === 'cancelled') return send(res, 409, { error: 'Comanda e anulată. Scrie-mi pe Instagram.' });
+    if (o.status === 'cancelled') return send(res, 409, { error: 'Comanda e anulată. Pentru altceva, folosește butonul „Scrie-mi”.' });
     const mine = await db(`orders?select=id&user_id=eq.${user.id}`);
     const since = new Date(Date.now() - 3600 * 1000).toISOString();
     const recent = await db(`messages?select=id&sender=eq.client&created_at=gt.${since}&order_id=in.(${mine.map((x) => x.id).join(',')})`);

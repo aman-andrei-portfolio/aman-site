@@ -16,7 +16,7 @@ module.exports = handle(async (req, res) => {
   if (!UUID.test(String(id || ''))) return send(res, 400, { error: 'Comandă necunoscută.' });
 
   const gone = await db(`orders?id=eq.${id}&user_id=eq.${user.id}&status=eq.requested`, { method: 'DELETE', prefer: 'return=representation' });
-  if (!gone || !gone.length) return send(res, 409, { error: 'Cererea nu mai poate fi anulată. Scrie-mi pe Instagram.' });
+  if (!gone || !gone.length) return send(res, 409, { error: 'Cererea nu mai poate fi anulată. Scrie-mi în conversația comenzii.' });
   await removeFiles(id); // materialele trimise la comandă se șterg odată cu ea
   send(res, 200, { cancelled: true });
 });

@@ -1,6 +1,5 @@
 /* Zona de client: logare cu Google (prin Supabase, flux PKCE) și statusul comenzilor.
-   Plata nu se face pe site: butoanele de la pachete deschid Instagram, iar dacă ești logat,
-   cererea se salvează și în cont. Sesiunea stă în localStorage doar ca să rămâi logat. */
+   Comenzile, conversațiile și fișierele finale stau aici. Plata se face prin transfer bancar. Sesiunea stă în localStorage doar ca să rămâi logat. */
 (function () {
   'use strict';
   var d = document, box = d.getElementById('acct');
@@ -14,7 +13,7 @@
       soon: 'Contul de client va fi disponibil în curând. Până atunci, scrie-mi pe Instagram și stabilim totul acolo.',
       ig: 'Scrie-mi pe Instagram', google: 'Continuă cu Google',
       why: 'Folosesc doar numele și emailul din contul tău Google, ca să-ți arăt comenzile. Detalii în ',
-      perks: ['Trimiți comenzi și primești un cod pentru fiecare', 'Vezi statusul: plătită, în lucru, livrată', 'Descarci fișierele finale direct de aici'],
+      perks: ['Îmi scrii direct, într-o conversație privată', 'Trimiți comenzi și le urmărești: plătită, în lucru, livrată', 'Descarci fișierele finale direct de aici'],
       privacy: 'Politica de confidențialitate', logout: 'Ieși din cont', loading: 'Se încarcă…',
       empty: 'Încă nu ai nicio comandă. Alege un pachet sau scrie-mi o întrebare.',
       askH: 'Ai o întrebare?', askP: 'Scrie-mi aici, fără să comanzi nimic. Îți răspund de obicei în mai puțin de 2 ore.', askBtn: 'Scrie-mi', askGo: 'Deschide conversația',
@@ -22,7 +21,6 @@
       qTitle: 'Conversație cu Aman', qPill: 'Conversație', qEmpty: 'Scrie-mi orice: ce ai nevoie, întrebări, idei. Îți răspund de obicei în mai puțin de 2 ore.',
       seePacks: 'Vezi pachetele', files: 'Deschide fișierele', note: 'Mesaj de la Aman', yourFiles: 'Fișierele tale', dl: 'Descarcă',
       how: 'Plata se face prin transfer bancar. Îți trimit detaliile aici, în mesajele comenzii, iar statusul se actualizează după ce primesc plata.',
-      saved: 'Cererea pentru {p} a fost salvată în cont. Continuă discuția pe Instagram.',
       data: 'Datele tale', export: 'Descarcă datele mele', del: 'Șterge contul',
       delConfirm: 'Sigur? Contul se șterge definitiv. Comenzile plătite rămân doar anonimizate, pentru evidență.',
       delYes: 'Da, șterge contul', delNo: 'Renunț', deleted: 'Contul a fost șters.',
@@ -36,7 +34,7 @@
       soon: 'The client area is coming soon. Until then, message me on Instagram and we sort everything out there.',
       ig: 'Message me on Instagram', google: 'Continue with Google',
       why: 'I only use the name and email from your Google account to show you your orders. Details in the ',
-      perks: ['Send orders and get a code for each one', 'Follow the status: paid, in progress, delivered', 'Download the final files right here'],
+      perks: ['Message me directly, in a private conversation', 'Send orders and follow them: paid, in progress, delivered', 'Download the final files right here'],
       privacy: 'Privacy policy', logout: 'Sign out', loading: 'Loading…',
       empty: 'You have no orders yet. Pick a package or send me a question.',
       askH: 'Got a question?', askP: 'Write to me here, no order needed. I usually reply in under 2 hours.', askBtn: 'Message me', askGo: 'Open the conversation',
@@ -44,7 +42,6 @@
       qTitle: 'Chat with Aman', qPill: 'Conversation', qEmpty: 'Ask me anything: what you need, questions, ideas. I usually reply in under 2 hours.',
       seePacks: 'See packages', files: 'Open the files', note: 'Message from Aman', yourFiles: 'Your files', dl: 'Download',
       how: 'Payment is by bank transfer. I send you the details here, in the order messages, and the status updates once I receive it.',
-      saved: 'Your request for {p} is saved in your account. Carry on the chat on Instagram.',
       data: 'Your data', export: 'Download my data', del: 'Delete account',
       delConfirm: 'Are you sure? The account is deleted permanently. Paid orders are kept only in anonymised form, for records.',
       delYes: 'Yes, delete it', delNo: 'Cancel', deleted: 'Your account has been deleted.',
@@ -149,7 +146,7 @@
     refresh: function (n) { if (n) notice = n; return loadOrders(); },
   };
 
-  // Când clientul revine din Instagram, reîmprospătăm statusurile.
+  // Când clientul revine pe pagină, reîmprospătăm statusurile.
   d.addEventListener('visibilitychange', function () { if (!d.hidden && session && cfg && cfg.auth) loadOrders(); });
 
   function exportData() {

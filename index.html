@@ -59,6 +59,7 @@ h1,h2,h3,h4{margin:0;font-weight:600;text-wrap:balance}
 p{margin:0}
 .eyebrow{font-size:17px;font-weight:600;color:var(--fg-2);letter-spacing:-.01em}
 .h2{font-size:clamp(40px,6vw,64px);line-height:1.06;letter-spacing:-.035em}
+.fine a,.o-note a{text-decoration:underline;text-underline-offset:2px}
 .lead{font-size:clamp(19px,2.2vw,24px);line-height:1.38;color:var(--fg-2);font-weight:400;max-width:34em}
 .center{text-align:center}
 .center .lead{margin-inline:auto}
@@ -132,7 +133,7 @@ section{padding-block:clamp(48px,7vw,88px)}
   .card .from{grid-column:1;margin:0;padding-top:6px}
   .card .more{grid-column:2;grid-row:3;padding-top:6px}
   .pc,.pack,.subscr{padding:22px 24px}
-  .pc h3{font-size:22px}
+  .pc h2{font-size:22px}
   .amount{font-size:32px;margin-top:6px}
   .pk{gap:12px}
   .pack .btn{margin-top:10px}
@@ -147,6 +148,12 @@ section{padding-block:clamp(48px,7vw,88px)}
 .about p.body{margin-top:20px;color:var(--fg-2);max-width:32em}
 .about p.body:first-of-type{margin-top:24px}
 .about img{object-position:50% 30%}
+.values{list-style:none;margin:clamp(40px,6vw,72px) 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.values li{background:var(--bg-2);border-radius:var(--r);padding:26px 24px;display:flex;flex-direction:column;gap:8px}
+.values b{font-size:19px;letter-spacing:-.02em}
+.values span{color:var(--fg-2);font-size:15px;line-height:1.5}
+.about-cta{margin-top:clamp(32px,5vw,48px)}
+@media(max-width:760px){.values{grid-template-columns:1fr;gap:12px}}
 .band{position:relative;margin:clamp(48px,7vw,88px) 0 0;border-radius:var(--r);overflow:hidden}
 .band img{width:100%;aspect-ratio:16/9;object-fit:cover;object-position:60% 50%;display:block}
 .band figcaption{position:absolute;left:0;right:0;bottom:0;padding:clamp(40px,8vw,96px) clamp(20px,4vw,40px) clamp(20px,3vw,32px);color:#fff;font-size:clamp(19px,2.6vw,30px);font-weight:600;letter-spacing:-.02em;line-height:1.25;background:linear-gradient(to top,rgba(0,0,0,.62),rgba(0,0,0,0));text-wrap:balance}
@@ -161,7 +168,7 @@ section{padding-block:clamp(48px,7vw,88px)}
 /* prețuri */
 .price-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;align-items:start}
 .pc{background:var(--bg);border-radius:var(--r);padding:clamp(28px,3.4vw,40px)}
-.pc h3{font-size:28px;letter-spacing:-.03em}
+.pc h2{font-size:28px;letter-spacing:-.03em}
 .rows{list-style:none;margin:20px 0 0;padding:0}
 .rows li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 16px;align-items:baseline;padding:14px 0;border-top:1px solid var(--line)}
 .rows strong{font-weight:600}
@@ -176,7 +183,7 @@ section{padding-block:clamp(48px,7vw,88px)}
 @media(max-width:860px){.price-cards{grid-template-columns:1fr}}
 
 .packs{margin-top:clamp(56px,8vw,88px)}
-.packs h3.sub{font-size:clamp(28px,4vw,40px);letter-spacing:-.035em;line-height:1.1;text-align:center;margin-bottom:clamp(28px,4vw,40px)}
+.packs h2.sub{font-size:clamp(28px,4vw,40px);letter-spacing:-.035em;line-height:1.1;text-align:center;margin-bottom:clamp(28px,4vw,40px)}
 .pk{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
 .pack{position:relative;background:var(--bg);border-radius:var(--r);padding:clamp(28px,3.4vw,40px);display:flex;flex-direction:column;gap:10px;border:2px solid transparent}
 .pack.best{border-color:var(--blue)}
@@ -305,7 +312,7 @@ a.card:hover .arrow{transform:translateX(4px)}
 
 /* întrebări: card final */
 .ask{max-width:820px;margin:clamp(32px,5vw,48px) auto 0;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;background:var(--bg-2);border-radius:var(--r);padding:24px 28px}
-.ask h3{font-size:21px;letter-spacing:-.02em}
+.ask h2{font-size:21px;letter-spacing:-.02em}
 .ask p{color:var(--fg-2);font-size:15px;margin-top:2px}
 
 /* contact */
@@ -326,7 +333,8 @@ a.card:hover .arrow{transform:translateX(4px)}
 a.ccard{transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s}
 a.ccard:hover{text-decoration:none;transform:translateY(-4px);box-shadow:0 20px 40px -18px rgba(0,0,0,.18)}
 .ccard .ico{margin-bottom:10px}
-.ccard.primary .ico{background:linear-gradient(135deg,#feda75,#fa7e1e 30%,#d62976 60%,#962fbf 85%,#4f5bd5);color:#fff}
+.ccard.primary .ico{background:var(--blue);color:#fff}
+.ccard.primary .ico svg{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round}
 .ct{font-size:13px;font-weight:600;color:var(--fg-2)}
 .cv{font-size:21px;font-weight:600;letter-spacing:-.02em;word-break:break-all}
 .cv.mail-addr{font-size:17px;user-select:all}
@@ -521,7 +529,7 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
     </div>
     <figure class="rv hero-photo">
       <img src="assets/img/portret-720.jpg" srcset="assets/img/portret-720.jpg 720w, assets/img/portret.jpg 1334w" sizes="(min-width: 880px) 460px, 340px" width="1334" height="2000" alt="Costi Andrei, așezat pe o banchetă de catifea în fața unei scări din lemn" fetchpriority="high"/>
-      <figcaption class="badge-float"><b>&lt; 2 h</b><span data-en="reply time on Instagram">timp de răspuns pe Instagram</span></figcaption>
+      <figcaption class="badge-float"><b>&lt; 2 h</b><span data-en="average reply time">timp mediu de răspuns</span></figcaption>
     </figure>
   </div>
 </div>
@@ -585,8 +593,8 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
     </div>
     <ol class="steps">
       <li class="rv"><span class="n">1</span><h3 data-en="Pick and describe">Alegi și descrii</h3><p data-en="Choose a service or package and tell me what you need. You can upload your photos or clips right away.">Alegi serviciul sau pachetul și îmi spui ce vrei. Poți urca direct pozele sau clipurile tale.</p></li>
-      <li class="rv"><span class="n">2</span><h3 data-en="Get a code">Primești un cod</h3><p data-en="Your order gets a code like AM-K7P2Q. Send it to me on Instagram so I know it is you.">Comanda primește un cod, de exemplu AM-K7P2Q. Mi-l trimiți pe Instagram, ca să știu că ești tu.</p></li>
-      <li class="rv"><span class="n">3</span><h3 data-en="Pay by transfer">Plătești prin transfer</h3><p data-en="We agree on the details and I send you the account. You pay nothing before that.">Stabilim detaliile și îți trimit contul. Nu plătești nimic înainte de asta.</p></li>
+      <li class="rv"><span class="n">2</span><h3 data-en="We talk on the site">Vorbim pe site</h3><p data-en="Your order gets a code and a private conversation in your account. That is where we agree on everything.">Comanda primește un cod și o conversație privată în contul tău. Acolo stabilim toate detaliile.</p></li>
+      <li class="rv"><span class="n">3</span><h3 data-en="Pay by transfer">Plătești prin transfer</h3><p data-en="Once we agree, I send the bank details in the conversation. You pay nothing before that.">După ce ne înțelegem, îți trimit datele de plată în conversație. Nu plătești nimic înainte.</p></li>
       <li class="rv"><span class="n">4</span><h3 data-en="Download your files">Descarci fișierele</h3><p data-en="You follow every step in your account and download the final files from there.">Urmărești fiecare pas în contul tău și de acolo descarci fișierele finale.</p></li>
     </ol>
     <div class="ctas rv"><a class="btn" href="#preturi" data-en="Choose a service">Alege un serviciu</a></div>
@@ -599,15 +607,21 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
       <img class="rv" src="assets/img/trabuc-720.jpg" srcset="assets/img/trabuc-720.jpg 720w, assets/img/trabuc.jpg 1125w" sizes="(min-width: 760px) 480px, 100vw" width="1125" height="2000" alt="Portret alb-negru al lui Costi Andrei, cămașă în dungi" loading="lazy"/>
       <div class="rv">
         <p class="eyebrow" data-en="About">Despre</p>
-        <h2 class="h2" data-en="Clean work. Long-term thinking.">Lucrez clar. Gândesc pe termen lung.</h2>
+        <h1 class="h2" data-en="Clean work. Long-term thinking.">Lucrez clar. Gândesc pe termen lung.</h1>
         <p class="body" data-en="I'm Costi, also known as Aman. Self-taught, based in Iași. I started taking this work seriously at 15 and I've kept learning with every project since.">Sunt Costi, cunoscut și ca Aman. Autodidact, din Iași. Am început să iau munca asta în serios la 15 ani și de atunci am învățat cu fiecare proiect.</p>
-        <p class="body" data-en="I care about clean design, good pacing and a result that looks finished. I work fast, but I don't skip the details that matter, and after delivery I stay available for small adjustments.">Țin la design curat, ritm bun și un rezultat care pare cu adevărat terminat. Lucrez repede, dar nu sar peste detaliile importante, iar după livrare rămân disponibil pentru ajustări.</p>
+        <p class="body" data-en="I care about clean design, good pacing and a result that looks finished. And after delivery I stay available for small adjustments.">Țin la design curat, ritm bun și un rezultat care pare cu adevărat terminat. Iar după livrare rămân disponibil pentru ajustări.</p>
       </div>
     </div>
     <figure class="band rv">
       <img src="assets/img/balcon-lat.jpg" width="1079" height="607" alt="Costi Andrei privind în jos peste balustradă, sub o draperie de catifea, alb-negru" loading="lazy"/>
       <figcaption data-en="“I work fast, but I don't skip the details that matter.”">„Lucrez repede, dar nu sar peste detaliile importante.”</figcaption>
     </figure>
+    <ul class="values">
+      <li class="rv"><b data-en="One person, start to finish">Un singur om, de la cap la coadă</b><span data-en="You talk directly to the one doing the work. No agency, no middlemen.">Vorbești direct cu cel care lucrează. Fără agenție, fără intermediari.</span></li>
+      <li class="rv"><b data-en="Fixed prices">Prețuri fixe</b><span data-en="You know the cost from the start. You pay only after we agree on everything.">Știi costul de la început. Plătești doar după ce stabilim tot.</span></li>
+      <li class="rv"><b data-en="Everything in one place">Totul într-un singur loc</b><span data-en="Messages, status and final files, all in your account.">Mesaje, status și fișierele finale, toate în contul tău.</span></li>
+    </ul>
+    <div class="ctas rv about-cta"><a class="btn" href="#cont" data-ask data-en="Let's work together">Hai să lucrăm împreună</a><a class="more" href="#preturi" data-en="See pricing">Vezi prețurile</a></div>
   </div>
 </section>
 
@@ -615,8 +629,8 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
   <div class="wrap">
     <div class="head center rv">
       <p class="eyebrow" data-en="Pricing">Prețuri</p>
-      <h2 class="h2" style="margin-top:10px" data-en="Clear prices.">Prețuri clare.</h2>
-      <p class="lead" data-en="Pick what fits and message me. Once we agree on the details, I send the payment steps.">Alegi varianta potrivită și îmi scrii. După ce stabilim detaliile, îți trimit pașii de plată.</p>
+      <h1 class="h2" style="margin-top:10px" data-en="Clear prices.">Prețuri clare.</h1>
+      <p class="lead" data-en="Fixed prices, no hidden costs. You pick, describe what you need, and pay only after we agree on everything.">Prețuri fixe, fără costuri ascunse. Alegi, îmi spui ce vrei și plătești doar după ce stabilim tot.</p>
     </div>
 
     <div class="seg rv" role="tablist" aria-label="Tip de preț">
@@ -626,7 +640,7 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
 
     <div class="price-cards" data-pane="servicii">
       <div class="pc rv">
-        <h3>Web</h3>
+        <h2>Web</h2>
         <ul class="rows">
           <li><strong data-en="Landing page">Pagină de prezentare</strong><span class="price" data-en="€85">429 lei</span><small data-en="One page, ready to launch quickly.">O pagină, gata de lansat repede.</small><a class="pick" href="#cont" data-buy="web-landing" data-en="Choose">Aleg</a></li>
           <li><strong><span data-en="Simple site">Site simplu</span><span class="tag" data-en="Recommended">Recomandat</span></strong><span class="price" data-en="€135">689 lei</span><small data-en="For a portfolio or a small business.">Pentru portofoliu sau afacere mică.</small><a class="pick" href="#cont" data-buy="web-simplu" data-en="Choose">Aleg</a></li>
@@ -636,7 +650,7 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
         <a class="diy" href="/editor.html"><span data-en="Or make it yourself in the editor">Sau fă-l singur în editor</span><b data-en="€29 ›">149 lei ›</b></a>
       </div>
       <div class="pc rv">
-        <h3>Video</h3>
+        <h2>Video</h2>
         <ul class="rows">
           <li><strong data-en="Short video">Video scurt</strong><span class="price" data-en="€9">45 lei</span><small data-en="Reels, stories, short promos.">Reels, story-uri, promo-uri scurte.</small><a class="pick" href="#cont" data-buy="video-scurt" data-en="Choose">Aleg</a></li>
           <li><strong data-en="Standard video">Video standard</strong><span class="price" data-en="€15">79 lei</span><small data-en="A stronger edit for more serious content.">Montaj mai solid, pentru conținut mai serios.</small><a class="pick" href="#cont" data-buy="video-standard" data-en="Choose">Aleg</a></li>
@@ -644,7 +658,7 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
         <p class="incl" data-en="Color and audio sync, subtitles on request, 9:16, 16:9 or 1:1, delivery in 24–48 h.">Culoare și sincronizare audio, subtitrări la cerere, 9:16, 16:9 sau 1:1, livrare în 24–48 h.</p>
       </div>
       <div class="pc rv">
-        <h3 data-en="Photo">Foto</h3>
+        <h2 data-en="Photo">Foto</h2>
         <ul class="rows">
           <li><strong data-en="1 photo">1 fotografie</strong><span class="price" data-en="€4">19 lei</span><small data-en="A quick fix for a single photo.">Soluție rapidă pentru o singură poză.</small><a class="pick" href="#cont" data-buy="foto-1" data-en="Choose">Aleg</a></li>
           <li><strong data-en="10 photos">10 fotografii</strong><span class="price" data-en="&lt;s&gt;€40&lt;/s&gt;€25"><s>190</s>129 lei</span><small data-en="Same style across the set. You save €15.">Același stil pe tot setul. Economisești 61 lei.</small><a class="pick" href="#cont" data-buy="foto-10" data-en="Choose">Aleg</a></li>
@@ -654,7 +668,7 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
     </div>
 
     <div class="packs" data-pane="pachete">
-      <h3 class="sub rv" data-en="Take more. Pay less.">Iei mai mult. Plătești mai puțin.</h3>
+      <h2 class="sub rv" data-en="Take more. Pay less.">Iei mai mult. Plătești mai puțin.</h2>
       <div class="rail" id="rail">
       <div class="pk">
         <article class="pack rv">
@@ -677,7 +691,7 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
           <p class="what" data-en="Full website + 3 short videos + 5 edited photos">Site complet + 3 videoclipuri scurte + 5 poze editate</p>
           <p class="amount" data-en="&lt;s&gt;€216&lt;/s&gt;€169"><s>1089</s>859<small>lei</small></p>
           <p class="save" data-en="Videos and photos included free, you save €47">Video și foto incluse gratuit, economisești 230 lei</p>
-          <a class="btn" href="#cont" data-buy="business" data-en="Choose Business">Aleg Business</a>
+          <a class="btn" href="#cont" data-buy="business" data-en="Choose Business Basic">Aleg Business Basic</a>
         </article>
       </div>
       <div class="subscr rv">
@@ -705,8 +719,8 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
   <div class="wrap">
     <div class="head center">
       <p class="eyebrow" data-en="Your account">Contul tău</p>
-      <h2 class="h2" style="margin-top:10px" data-en="Your orders.">Comenzile tale.</h2>
-      <p class="lead" data-en="Sign in with Google to follow the status of every order, from payment to delivery.">Intră cu Google ca să vezi statusul fiecărei comenzi, de la plată până la livrare.</p>
+      <h1 class="h2" style="margin-top:10px" data-en="Your orders.">Comenzile tale.</h1>
+      <p class="lead" data-en="Sign in with Google to message me, send orders and follow each one, from payment to delivery.">Intră cu Google ca să-mi scrii, să trimiți comenzi și să le urmărești, de la plată până la livrare.</p>
     </div>
     <div id="acct" class="acct" aria-live="polite"></div>
   </div>
@@ -715,7 +729,7 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
 <section id="s-intrebari" data-view="intrebari">
   <div class="wrap">
     <div class="head center rv">
-      <h2 class="h2" data-en="Questions.">Întrebări.</h2>
+      <h1 class="h2" data-en="Questions.">Întrebări.</h1>
     </div>
     <div class="faq rv">
       <details>
@@ -724,7 +738,7 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
       </details>
       <details>
         <summary data-en="How do we communicate?">Cum comunicăm?</summary>
-        <p data-en="Mainly through Instagram DM. I usually reply in under 2 hours during the day and keep you updated throughout the project.">În principal prin Instagram DM. De obicei răspund în mai puțin de 2 ore în timpul zilei și te țin la curent pe tot parcursul proiectului.</p>
+        <p data-en="Here on the site, in a private conversation in your account. You sign in with Google, no password needed. I usually reply in under 2 hours during the day and keep you updated throughout the project.">Aici, pe site, într-o conversație privată din contul tău. Intri cu Google, fără parolă. De obicei răspund în mai puțin de 2 ore în timpul zilei și te țin la curent pe tot parcursul proiectului.</p>
       </details>
       <details>
         <summary data-en="Do you offer revisions?">Oferi revizii?</summary>
@@ -732,7 +746,23 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
       </details>
       <details>
         <summary data-en="How do I pay?">Cum plătesc?</summary>
-        <p data-en="By bank transfer. Message me on Instagram, we agree on the details and I send you the account to pay into. Usually 50% upfront and 50% on delivery; packages under €35 are paid in full upfront. If you have an account on the site, you can follow the status of the payment and the order there.">Prin transfer bancar. Îmi scrii pe Instagram, stabilim detaliile și îți trimit contul în care plătești. De regulă 50% în avans și 50% la livrare; pachetele sub 175 de lei se plătesc integral în avans. Dacă ai cont pe site, vezi acolo statusul plății și al comenzii.</p>
+        <p data-en="By bank transfer. We agree on the details in your order conversation and I send you the account to pay into there. Usually 50% upfront and 50% on delivery; packages under €35 are paid in full upfront. You can follow the status of the payment and the order in your account at any time.">Prin transfer bancar. Stabilim detaliile în conversația comenzii și tot acolo îți trimit contul în care plătești. De regulă 50% în avans și 50% la livrare; pachetele sub 175 de lei se plătesc integral în avans. Statusul plății și al comenzii îl vezi oricând în cont.</p>
+      </details>
+      <details>
+        <summary data-en="What do I get at the end?">Ce primesc la final?</summary>
+        <p data-en="Websites: the finished site, online or as files, plus the photos and texts used. Video: the edited files at full quality, in the formats you need. Photo: JPG and PNG at full resolution. Everything stays in your account, ready to download.">Site: site-ul gata, pus online sau ca fișiere, plus pozele și textele folosite. Video: fișierele editate la calitate maximă, în formatele de care ai nevoie. Foto: JPG și PNG la rezoluție maximă. Totul rămâne în contul tău, gata de descărcat.</p>
+      </details>
+      <details>
+        <summary data-en="Can I make the website myself?">Pot să-mi fac singur site-ul?</summary>
+        <p data-en="Yes. In the editor you pick a template for a barber shop, café, salon or portfolio, change the text and photos and see it live. Trying it is free; you download it for €29, without the watermark.">Da. În editor alegi un șablon pentru frizerie, cafenea, salon sau portofoliu, schimbi textele și pozele și îl vezi live. Încercarea e gratuită; îl descarci cu 149 lei, fără watermark.</p>
+      </details>
+      <details>
+        <summary data-en="Who owns the work?">Al cui e rezultatul final?</summary>
+        <p data-en="Yours. After full payment, the website, videos and photos are yours to use however you want. The domain is registered in your name.">Al tău. După plata integrală, site-ul, videoclipurile și pozele sunt ale tale și le folosești cum vrei. Domeniul se înregistrează pe numele tău.</p>
+      </details>
+      <details>
+        <summary data-en="What happens to my files and data?">Ce se întâmplă cu fișierele și datele mele?</summary>
+        <p data-en="They are stored privately, in the EU, and only you and I can see them. You can download your data or delete your account from the account page at any time.">Stau privat, în UE, și le vedem doar tu și eu. Îți poți descărca datele sau șterge contul oricând, din pagina Cont.</p>
       </details>
       <details>
         <summary data-en="Do you work with clients outside Romania?">Lucrezi și cu clienți din afara României?</summary>
@@ -740,7 +770,7 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
       </details>
     </div>
     <div class="ask rv">
-      <div><h3 data-en="Didn't find your answer?">N-ai găsit răspunsul?</h3><p data-en="Ask me directly. I usually reply in under 2 hours.">Întreabă-mă direct. De obicei răspund în mai puțin de 2 ore.</p></div>
+      <div><h2 data-en="Didn't find your answer?">N-ai găsit răspunsul?</h2><p data-en="Ask me directly. I usually reply in under 2 hours.">Întreabă-mă direct. De obicei răspund în mai puțin de 2 ore.</p></div>
       <a class="btn" href="#cont" data-ask data-en="Message me">Scrie-mi</a>
     </div>
   </div>
@@ -753,14 +783,14 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
     </figure>
     <div class="rv">
     <p class="eyebrow" data-en="Available for new projects">Disponibil pentru proiecte noi</p>
-    <h2 class="h2" style="margin-top:10px" data-en="Let's talk.">Hai să vorbim.</h2>
+    <h1 class="h2" style="margin-top:10px" data-en="Let's talk.">Hai să vorbim.</h1>
     <p class="lead" data-en="Tell me what you need. I reply fast and we sort out the details together.">Spune-mi de ce ai nevoie. Îți răspund repede și stabilim împreună detaliile.</p>
     <div class="ccards">
       <a class="ccard primary" href="#cont" data-ask>
         <span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h16a1.5 1.5 0 0 1 1.5 1.5v9a1.5 1.5 0 0 1-1.5 1.5H10l-4.5 3.5V17.5H4A1.5 1.5 0 0 1 2.5 16V7A1.5 1.5 0 0 1 4 5.5z"/></svg></span>
         <span class="ct" data-en="Message on the site">Mesaj pe site</span>
-        <span class="cv" data-en="Sign in with Google">Intră cu Google</span>
-        <span class="cn" data-en="Fastest · usually under 2 hours">Cel mai rapid · de obicei sub 2 ore</span>
+        <span class="cv" data-en="Private conversation">Conversație privată</span>
+        <span class="cn" data-en="Sign in with Google, no password · reply usually under 2 hours">Intri cu Google, fără parolă · răspuns de obicei sub 2 ore</span>
         <span class="btn" data-en="Message me">Scrie-mi</span>
       </a>
       <a class="ccard" href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener">

@@ -58,7 +58,7 @@ module.exports = handle(async (req, res) => {
     const rows = await db(`orders?select=id,package,status&id=eq.${b.order}&user_id=eq.${user.id}`);
     const o = rows && rows[0];
     if (!o) return send(res, 404, { error: 'Comanda nu există.' });
-    if (o.status !== 'requested') return send(res, 409, { error: 'Comanda e deja în lucru. Trimite-mi fișierele pe Instagram.' });
+    if (o.status !== 'requested') return send(res, 409, { error: 'Comanda e deja în lucru. Trimite-mi fișierele ca link în conversația comenzii.' });
     if (size > MAX_FILE) return send(res, 400, { error: TOO_BIG });
     if (CATALOG[o.package] && (CATALOG[o.package].question || CATALOG[o.package].editorOnly)) return send(res, 400, { error: 'Aici nu se pot urca fișiere.' });
     const max = (CATALOG[o.package] && CATALOG[o.package].max) || 10;
@@ -66,7 +66,7 @@ module.exports = handle(async (req, res) => {
     if (have.length >= max && !have.some((f) => f.name === name)) return send(res, 400, { error: `Poți trimite maximum ${max} ${max === 1 ? 'fișier' : 'fișiere'} pentru opțiunea asta.` });
     const orderBytes = have.filter((f) => f.name !== name).reduce((a, f) => a + (f.size || 0), 0);
     if (orderBytes + size > ORDER_CAP) return send(res, 400, { error: 'Ai trimis deja 150 MB la comanda asta. Restul trimite-l ca link (Google Drive, WeTransfer).' });
-    if ((await usedBytes()) + size > CLIENT_QUOTA) return send(res, 507, { error: 'Nu mai pot primi fișiere pe site acum. Trimite-mi-le pe Instagram sau ca link.' });
+    if ((await usedBytes()) + size > CLIENT_QUOTA) return send(res, 507, { error: 'Nu mai pot primi fișiere pe site acum. Trimite-mi-le ca link (Google Drive, WeTransfer) în conversație.' });
     return send(res, 200, { url: await signUpload(`${o.id}/client/${encodeURIComponent(name)}`), name });
   }
 
