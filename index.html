@@ -344,8 +344,8 @@ a.ccard:hover{text-decoration:none;transform:translateY(-4px);box-shadow:0 20px 
 
 /* cont */
 #s-cont.in .head .lead{display:none}
-.nav nav a.acct-link{display:inline-flex;align-items:center;gap:6px}
-@media(max-width:700px){.nav nav a.acct-link{display:inline-flex}.nav nav a.acct-link span{display:none}.nav nav a.acct-link.cur{color:var(--blue)}}
+.nav nav a.acct-link,.nav nav a.icon-link{display:inline-flex;align-items:center;gap:6px}
+@media(max-width:700px){.nav nav a.acct-link,.nav nav a.icon-link{display:inline-flex}.nav nav a.acct-link span,.nav nav a.icon-link span{display:none}.nav nav a.acct-link.cur{color:var(--blue)}}
 .acct{max-width:680px;margin-inline:auto;display:flex;flex-direction:column;gap:16px}
 .acct-card{background:var(--bg-2);border-radius:var(--r);padding:clamp(28px,4vw,44px)}
 .perks{list-style:none;margin:0 auto 24px;padding:0;display:flex;flex-direction:column;gap:10px;max-width:380px;text-align:left}
@@ -446,6 +446,7 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
       <a class="tl" href="#preturi" data-en="Pricing">Prețuri</a>
       <a class="tl" href="#intrebari" data-en="FAQ">Întrebări</a>
       <a class="tl" href="#contact">Contact</a>
+      <a class="tl icon-link" href="/camera.html" aria-label="Cameră foto"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 8.5A2 2 0 0 1 6 6.5h1.7l1.3-2h6l1.3 2H18a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="12.6" r="3.3" fill="none" stroke="currentColor" stroke-width="1.6"/></svg><span data-en="Camera">Cameră</span></a>
       <a class="tl acct-link" href="#cont" aria-label="Contul meu"><svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><circle cx="12" cy="8.5" r="3.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M4.8 19.6c1.3-3.3 4-5 7.2-5s5.9 1.7 7.2 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span data-en="Account">Cont</span></a>
       <button class="lang" id="lang" type="button" aria-label="Switch to English">EN</button>
     </nav>
