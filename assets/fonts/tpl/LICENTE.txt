@@ -1,0 +1,8 @@
+Fonturile din acest folder sunt sub licența SIL Open Font License 1.1 (pot fi folosite și distribuite gratuit, inclusiv comercial):
+- condensed-*: Oswald (Vernon Adams, Kalapi Gajjar, Cyreal)
+- serif-*: Playfair Display (Claus Eggers Sørensen)
+- didone-*: Bodoni Moda (Owen Earl / indestructible type*)
+- black-*: Archivo Black (Omnibus-Type)
+- mono-*: JetBrains Mono (JetBrains)
+- sans-*: Inter (Rasmus Andersson)
+Textul licenței: https://openfontlicense.org

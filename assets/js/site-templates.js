@@ -10,16 +10,35 @@
   var DAYS = ['Luni', 'Marți', 'Miercuri', 'Joi', 'Vineri', 'Sâmbătă', 'Duminică'];
 
   // Fonturi de sistem (fără descărcări externe), ca previzualizarea și site-ul final să arate la fel.
+  // Fiecare font are fișiere proprii (assets/fonts/tpl, licență OFL); lista de mai jos e rezerva dacă nu se încarcă.
   var FONTS = {
     condensed: { label: 'Condensat', css: '"Oswald","Bebas Neue","Arial Narrow","Helvetica Neue Condensed","Roboto Condensed","sans-serif-condensed",Impact,sans-serif', upper: true },
-    serif: { label: 'Clasic', css: 'Georgia,"Times New Roman",serif' },
-    didone: { label: 'Elegant', css: '"Didot","Bodoni MT","Bodoni 72",Georgia,serif', italic: true },
-    sans: { label: 'Modern', css: '-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif' },
-    black: { label: 'Puternic', css: '"Arial Black","Helvetica Neue",Arial,sans-serif', upper: true },
-    mono: { label: 'Tehnic', css: 'ui-monospace,"SF Mono",Menlo,Consolas,"Roboto Mono",monospace' },
+    serif: { label: 'Clasic', css: '"Playfair Display",Georgia,"Times New Roman",serif' },
+    didone: { label: 'Elegant', css: '"Bodoni Moda","Didot","Bodoni MT","Bodoni 72",Georgia,serif', italic: true },
+    sans: { label: 'Modern', css: '"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif' },
+    black: { label: 'Puternic', css: '"Archivo Black","Arial Black","Helvetica Neue",Arial,sans-serif', upper: true },
+    mono: { label: 'Tehnic', css: '"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,"Roboto Mono",monospace' },
   };
   var CORNERS = { sharp: { label: 'Drepte', r: '4px', b: '4px' }, soft: { label: 'Rotunjite', r: '14px', b: '10px' }, round: { label: 'Foarte rotunde', r: '26px', b: '999px' } };
-  var LAYOUTS = { split: 'Text + card', center: 'Centrat' };
+  var LAYOUTS = { split: 'Text + card', center: 'Centrat', poster: 'Poster' };
+  var FONT_FAMILY = { condensed: 'Oswald', serif: 'Playfair Display', didone: 'Bodoni Moda', sans: 'Inter', black: 'Archivo Black', mono: 'JetBrains Mono' };
+  var HAS_ITALIC = { serif: true, didone: true };
+  var LATIN = 'U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD';
+  var LATIN_EXT = 'U+0100-02AF,U+0304,U+0308,U+0329,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF';
+  // fișierele de font folosite de un site (pentru arhiva ZIP)
+  function fontFiles(key) {
+    var out = [key + '-latin.woff2', key + '-latin-ext.woff2'];
+    if (HAS_ITALIC[key]) out.push(key + '-latin-italic.woff2', key + '-latin-ext-italic.woff2');
+    return out;
+  }
+  function fontFace(key, base) {
+    var fam = FONT_FAMILY[key], w = key === 'sans' ? '100 900' : key === 'black' ? '400' : '700', css = '';
+    [['latin', LATIN], ['latin-ext', LATIN_EXT]].forEach(function (sub) {
+      css += '@font-face{font-family:"' + fam + '";font-style:normal;font-weight:' + w + ';font-display:swap;src:url("' + base + key + '-' + sub[0] + '.woff2") format("woff2");unicode-range:' + sub[1] + '}';
+      if (HAS_ITALIC[key]) css += '@font-face{font-family:"' + fam + '";font-style:italic;font-weight:' + w + ';font-display:swap;src:url("' + base + key + '-' + sub[0] + '-italic.woff2") format("woff2");unicode-range:' + sub[1] + '}';
+    });
+    return css;
+  }
 
   var TEMPLATES = {
     barber: {
@@ -143,7 +162,18 @@
   // compatibilitate: font, upper, italic din cheia fontului
   Object.keys(TEMPLATES).forEach(function (k) { var t = TEMPLATES[k], f = FONTS[t.fontKey]; t.font = f.css; t.upper = !!f.upper; t.italic = !!f.italic; });
 
-  var LIMITS = { name: 60, tagline: 120, about: 800, cta: 40, phone: 20, whatsapp: 20, instagram: 40, address: 120, email: 80, itemName: 60, itemPrice: 24, itemDesc: 160, hours: 30, items: 20, gallery: 6 };
+  var LIMITS = { name: 60, tagline: 120, about: 800, cta: 40, phone: 20, whatsapp: 20, instagram: 40, address: 120, email: 80, itemName: 60, itemPrice: 24, itemDesc: 160, hours: 30, items: 20, gallery: 6, notice: 120, reviews: 6, reviewName: 40, reviewText: 300, faq: 8, faqQ: 120, faqA: 500 };
+
+  // Întrebări sugerate pe domenii (clientul le adaugă cu un buton și le modifică).
+  var SUGGEST_FAQ = {
+    barber: [['Trebuie să fac programare?', 'Da, lucrăm pe programare, ca să nu aștepți. Ne scrii pe WhatsApp sau ne suni.'], ['Cât durează un tuns?', 'Aproximativ 30–45 de minute, cu tot cu aranjat.'], ['Se poate plăti cu cardul?', 'Da, cu cardul sau cash.']],
+    cafe: [['Pot rezerva o masă?', 'Da, pentru grupuri ne scrii sau ne suni dinainte.'], ['Aveți opțiuni vegane?', 'Da, avem lapte vegetal și câteva deserturi fără produse animale.'], ['Aveți Wi-Fi?', 'Da, parola e la bar.']],
+    salon: [['Cât rezistă manichiura semipermanentă?', 'De obicei 2–3 săptămâni, în funcție de îngrijire.'], ['Cum fac o programare?', 'Ne scrii pe WhatsApp sau ne suni și stabilim ora.'], ['Ce se întâmplă dacă întârzii?', 'Te rugăm să ne anunți. Dacă întârzii mult, s-ar putea să reprogramăm.']],
+    portfolio: [['Cât costă?', 'Prețul depinde de proiect. Îmi scrii ce ai nevoie și îți trimit o ofertă clară.'], ['În cât timp primesc rezultatul?', 'Termenul îl stabilim de la început, în funcție de proiect.'], ['Lucrezi și în alte orașe?', 'Da, scrie-mi unde și când.']],
+    fitness: [['Am nevoie de experiență?', 'Nu. Pornim de la nivelul tău și creștem treptat.'], ['Ce program aveți?', 'Programul complet e mai jos, la Contact.'], ['Pot veni cu un prieten?', 'Da, scrie-ne dinainte și vă așteptăm.']],
+    auto: [['Cât durează un detailing complet?', 'De obicei o zi. Îți spunem exact când programezi.'], ['Trebuie să las mașina?', 'Pentru detailing, da. Spălarea simplă o poți aștepta.'], ['Ce produse folosiți?', 'Doar produse profesionale, sigure pentru vopsea și interior.']],
+    clinic: [['Primesc un plan de tratament?', 'Da, după consultație primești planul și prețurile în scris.'], ['Lucrați cu programare?', 'Da, ca să nu aștepți. Ne suni sau ne scrii pe WhatsApp.'], ['Se poate plăti în rate?', 'Întreabă-ne la consultație și găsim împreună o variantă.']],
+  };
 
   function str(v, max) { return String(v == null ? '' : v).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '').trim().slice(0, max); }
   function asset(v) { v = String(v || ''); return /^[A-Za-z0-9._-]{1,120}$/.test(v) ? v : ''; }
@@ -158,6 +188,9 @@
     return {
       name: str(d.name, LIMITS.name), tagline: str(d.tagline, LIMITS.tagline), about: str(d.about, LIMITS.about),
       cta: str(d.cta, LIMITS.cta),
+      notice: str(d.notice, LIMITS.notice),
+      reviews: (Array.isArray(d.reviews) ? d.reviews.slice(0, LIMITS.reviews) : []).map(function (r) { r = r || {}; return { name: str(r.name, LIMITS.reviewName), text: str(r.text, LIMITS.reviewText) }; }).filter(function (r) { return r.text; }),
+      faq: (Array.isArray(d.faq) ? d.faq.slice(0, LIMITS.faq) : []).map(function (f) { f = f || {}; return { q: str(f.q, LIMITS.faqQ), a: str(f.a, LIMITS.faqA) }; }).filter(function (f) { return f.q && f.a; }),
       font: FONTS[d.font] ? d.font : '', corners: CORNERS[d.corners] ? d.corners : '', layout: LAYOUTS[d.layout] ? d.layout : '',
       accent: color(d.accent, def.accent), theme: d.theme === 'dark' ? 'dark' : d.theme === 'light' ? 'light' : def.theme,
       phone: str(d.phone, LIMITS.phone), whatsapp: str(d.whatsapp, LIMITS.whatsapp),
@@ -211,6 +244,25 @@
   STYLE.auto = { kind: 'Auto detailing', items: 'Servicii și prețuri', side: 'Cele mai cerute', about: 'Despre noi', gal: 'Înainte și după', steps: [['Programezi', 'Alegi serviciul și ora, pe WhatsApp sau la telefon.'], ['Lași mașina', 'Îți spunem dinainte cât durează și cât costă.'], ['O iei ca nouă', 'Predare la ora stabilită, fără întârzieri.']], band: 'Programează mașina.', bandP: 'Locurile din weekend se ocupă primele.', radius: '10px', btnR: '6px', tint: false };
   STYLE.clinic = { kind: 'Cabinet', items: 'Tratamente și prețuri', side: 'Tratamente', about: 'Despre clinică', gal: 'Clinica', steps: [['Programezi', 'Telefonic sau pe WhatsApp, la ora potrivită.'], ['Consultație', 'Îți explicăm tot și primești planul în scris.'], ['Tratament', 'Fără grabă, cu explicații la fiecare pas.']], band: 'Programează o consultație.', bandP: 'Îți răspundem în aceeași zi.', radius: '20px', btnR: '999px', tint: true };
 
+  // Date structurate pentru Google (afacere locală): nume, adresă, telefon, program.
+  var LD_TYPE = { barber: 'HairSalon', cafe: 'CafeOrCoffeeShop', salon: 'BeautySalon', portfolio: 'ProfessionalService', fitness: 'ExerciseGym', auto: 'AutoWash', clinic: 'Dentist' };
+  var LD_DAY = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+  function jsonld(tpl, d, name, hero) {
+    var o = { '@context': 'https://schema.org', '@type': LD_TYPE[tpl] || 'LocalBusiness', name: name };
+    if (d.tagline) o.description = d.tagline;
+    if (d.phone) o.telephone = d.phone;
+    if (d.email) o.email = d.email;
+    if (d.address) o.address = { '@type': 'PostalAddress', streetAddress: d.address, addressCountry: 'RO' };
+    if (hero) o.image = hero;
+    var oh = [];
+    d.hours.forEach(function (h, k) { var m = String(h).match(/(\d{1,2}):(\d{2})\s*[–-]\s*(\d{1,2}):(\d{2})/); if (m) oh.push(LD_DAY[k] + ' ' + m[1].padStart(2, '0') + ':' + m[2] + '-' + m[3].padStart(2, '0') + ':' + m[4]); });
+    if (oh.length) o.openingHours = oh;
+    var pr = d.items.filter(function (i) { return i.price; }).slice(0, 10);
+    if (pr.length) o.makesOffer = pr.map(function (i) { return { '@type': 'Offer', name: i.name, description: i.price }; });
+    if (d.instagram) o.sameAs = ['https://www.instagram.com/' + d.instagram + '/'];
+    return '<script type="application/ld+json">' + JSON.stringify(o).replace(/</g, '\\u003c') + '</script>';
+  }
+
   // Generatorul de design: o combinație aleatoare, dar mereu armonioasă (palete alese de mână).
   var PALETTES = [
     { accent: '#c8a24a', theme: 'dark' }, { accent: '#8a5a3b', theme: 'light' }, { accent: '#c56b8a', theme: 'light' }, { accent: '#2b59ff', theme: 'light' },
@@ -249,7 +301,8 @@
     var F = FONTS[d.font || T.fontKey], CO = d.corners ? CORNERS[d.corners] : { r: X.radius, b: X.btnR };
     T = Object.assign({}, T, { font: F.css, upper: !!F.upper, italic: !!F.italic });
     var head = (T.upper ? 'text-transform:uppercase;letter-spacing:.01em;' : 'letter-spacing:-.02em;') + (T.italic ? 'font-style:italic;' : '');
-    var R = CO.r, BR = CO.b, center = d.layout === 'center';
+    var R = CO.r, BR = CO.b, center = d.layout === 'center', poster = d.layout === 'poster';
+    var fontKey = d.font || TEMPLATES[tpl].fontKey;
 
     // decor de fundal pentru prima secțiune, când nu există poză
     var deco = {
@@ -262,7 +315,7 @@
       clinic: 'background:radial-gradient(50% 60% at 95% 10%,' + A + (dark ? '30' : '24') + ',transparent 70%),radial-gradient(35% 45% at 5% 95%,' + A + '18,transparent 70%),' + bg + ';',
     }[tpl];
 
-    var css = ':root{--a:' + A + ';--on:' + on + ';--bg:' + bg + ';--bg2:' + bg2 + ';--card:' + card + ';--fg:' + fg + ';--fg2:' + fg2 + ';--line:' + line + '}' +
+    var css = fontFace(fontKey, opt.fontBase == null ? 'assets/fonts/' : opt.fontBase) + ':root{--a:' + A + ';--on:' + on + ';--bg:' + bg + ';--bg2:' + bg2 + ';--card:' + card + ';--fg:' + fg + ';--fg2:' + fg2 + ';--line:' + line + '}' +
       '*{box-sizing:border-box}html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--fg);font:400 17px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}' +
       'img{max-width:100%;display:block}a{color:inherit}.w{max-width:1120px;margin:0 auto;padding:0 22px}' +
       'h1,h2,h3,.disp{font-family:' + T.font + ';font-weight:700;line-height:1.04;margin:0;' + head + 'text-wrap:balance}' +
@@ -290,6 +343,16 @@
       '.side li b{font-weight:600}.side li i{flex:1;border-bottom:1px dotted ' + (hero ? 'rgba(255,255,255,.35)' : 'var(--line)') + ';transform:translateY(-4px)}.side li span{font-weight:700;color:var(--a);white-space:nowrap}' +
       '.side .btn{width:100%}' +
       (center ? '.hero .w{grid-template-columns:1fr;text-align:center;justify-items:center}.hero .w>div:first-child{display:flex;flex-direction:column;align-items:center}.hero h1{max-width:14ch}.hero .lead{margin-left:auto;margin-right:auto}.hero .ctas,.hero .chips{justify-content:center}.hero .eyebrow::before{display:none}.side{width:100%;max-width:540px;text-align:left}' : '') +
+      (poster ? '.hero .w{grid-template-columns:1fr;gap:clamp(28px,4vw,48px)}.hero h1{font-size:clamp(60px,13.5vw,190px);max-width:none;line-height:.92}.hero .lead{font-size:clamp(19px,2.4vw,26px)}' +
+        '.side{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 28px;align-items:center}.side h3{grid-column:1/-1;margin:0}.side ul{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0 28px;margin:0}.side li:last-child{border-bottom:1px solid ' + (hero ? 'rgba(255,255,255,.14)' : 'var(--line)') + '}.side .btn{width:auto}@media(max-width:700px){.side{grid-template-columns:1fr}.side .btn{width:100%}}' : '') +
+      // anunț, recenzii, întrebări
+      '.notice{background:var(--a);color:var(--on);text-align:center;font-size:14px;font-weight:600;padding:9px 16px}' +
+      '.revs{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}.rev{margin:0;background:var(--card);border:1px solid var(--line);border-radius:' + R + ';padding:28px;display:flex;flex-direction:column;gap:18px}' +
+      '.rev::before{content:"“";font-family:' + T.font + ';font-size:64px;line-height:.6;color:var(--a);height:24px}.rev blockquote{margin:0;font-size:17px;line-height:1.6}.rev figcaption{margin-top:auto;font-weight:700;font-size:15px;display:flex;align-items:center;gap:10px}.rev figcaption::before{content:"";width:22px;height:2px;background:var(--a)}' +
+      '.faq{max-width:820px}.faq details{border-bottom:1px solid var(--line)}.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:20px;padding:22px 0;font-size:clamp(17px,1.8vw,20px);font-weight:600}.faq summary::-webkit-details-marker{display:none}' +
+      '.faq summary::after{content:"+";font-size:26px;line-height:1;color:var(--a);transition:transform .25s;flex:none}.faq details[open] summary::after{transform:rotate(45deg)}.faq details p{margin:0 0 22px;color:var(--fg2);max-width:40em}' +
+      // apariție la scroll, fără JavaScript (doar unde browserul știe)
+      '@supports (animation-timeline:view()){@media(prefers-reduced-motion:no-preference){section .sh,.items li,.steps li,.rev,.gal img,.band,.contact>*,.faq details{animation:up linear both;animation-timeline:view();animation-range:entry 0% cover 22%}}}' +
       '@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}.hero .w>*{animation:up .8s cubic-bezier(.2,.7,.2,1) both}.hero .w>*+*{animation-delay:.15s}@media(prefers-reduced-motion:reduce){.hero .w>*{animation:none}}' +
       // secțiuni
       'section{padding:clamp(64px,9vw,112px) 0}.alt{background:var(--bg2)}' +
@@ -358,7 +421,7 @@
     var top = d.items.slice(0, 4);
     var side = top.length ? '<aside class="side"><h3>' + X.side + '</h3><ul>' + top.map(function (i) { return '<li><b>' + esc(i.name) + '</b><i></i>' + (i.price ? '<span>' + esc(i.price) + '</span>' : '') + '</li>'; }).join('') + '</ul><a class="btn" href="' + esc(ctaHref) + '"' + ext(ctaHref) + '>' + esc(cta) + '</a></aside>' : '';
 
-    var nav = (d.items.length ? '<a href="#servicii">' + T.itemsLabel + '</a>' : '') + (d.about ? '<a href="#despre">Despre</a>' : '') + (gallery.length ? '<a href="#galerie">' + (tpl === 'portfolio' ? 'Lucrări' : 'Galerie') + '</a>' : '') + '<a href="#contact">Contact</a>';
+    var nav = (d.items.length ? '<a href="#servicii">' + T.itemsLabel + '</a>' : '') + (d.about ? '<a href="#despre">Despre</a>' : '') + (gallery.length ? '<a href="#galerie">' + (tpl === 'portfolio' ? 'Lucrări' : 'Galerie') + '</a>' : '') + (d.reviews.length ? '<a href="#recenzii">Recenzii</a>' : '') + '<a href="#contact">Contact</a>';
     var facts = [];
     if (town) facts.push('<div><b>Unde</b><span>' + esc(town) + '</span></div>');
     if (hs.length) facts.push('<div><b>Program</b><span>' + esc(hs[0]) + '</span></div>');
@@ -366,7 +429,8 @@
     return '<!DOCTYPE html><html lang="ro"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>' +
       '<title>' + esc(name) + (d.tagline ? ' · ' + esc(d.tagline) : '') + '</title><meta name="description" content="' + esc(d.tagline || d.about.slice(0, 150)) + '"/>' +
       '<meta property="og:title" content="' + esc(name) + '"/><meta property="og:description" content="' + esc(d.tagline || d.about.slice(0, 150)) + '"/>' + (hero ? '<meta property="og:image" content="' + esc(hero) + '"/>' : '') +
-      '<meta name="theme-color" content="' + bg + '"/><style>' + css + '</style></head><body>' +
+      '<meta name="theme-color" content="' + bg + '"/>' + (logo ? '<link rel="icon" href="' + esc(logo) + '"/>' : '') + (opt.preview ? '' : jsonld(tpl, d, name, hero)) + '<style>' + css + '</style></head><body>' +
+      (d.notice ? '<div class="notice">' + esc(d.notice) + '</div>' : '') +
       '<header><div class="w"><a class="brand" href="#">' + (logo ? '<img src="' + esc(logo) + '" alt=""/>' : '<i></i>') + '<span>' + esc(name) + '</span></a><nav aria-label="Meniu">' + nav + '</nav><a class="btn sm" href="' + esc(ctaHref) + '"' + ext(ctaHref) + '>' + esc(cta) + '</a></div></header>' +
       '<main><div class="hero"><div class="w"><div><p class="eyebrow">' + X.kind + (town ? ' · ' + esc(town) : '') + '</p><h1>' + h1 + '</h1>' + (d.tagline ? '<p class="lead">' + esc(d.tagline) + '</p>' : '<p class="lead"></p>') +
         '<div class="ctas"><a class="btn" href="' + esc(ctaHref) + '"' + ext(ctaHref) + '>' + esc(cta) + '</a>' + (d.items.length ? '<a class="btn ghost" href="#servicii">Vezi ' + T.itemsLabel.toLowerCase() + '</a>' : '') + '</div>' +
@@ -376,6 +440,10 @@
       '<section class="alt"><div class="w"><div class="sh"><div><p class="eyebrow">Cum funcționează</p><h2>Simplu, în trei pași.</h2></div></div><ol class="steps">' + X.steps.map(function (s) { return '<li><h3>' + s[0] + '</h3><p>' + s[1] + '</p></li>'; }).join('') + '</ol></div></section>' +
       (d.about ? '<section id="despre"><div class="w about"><div><p class="eyebrow">' + X.about + '</p><h2>' + (tpl === 'portfolio' ? 'Câteva cuvinte despre mine.' : 'Cine suntem.') + '</h2>' + (d.tagline ? '<p class="quote">' + esc(d.tagline) + '</p>' : '') + '</div><div class="txt"><p>' + esc(d.about).replace(/\n/g, '</p><p>') + '</p>' + (facts.length ? '<div class="facts">' + facts.join('') + '</div>' : '') + '</div></div></section>' : '') +
       (gallery.length ? '<section id="galerie" class="alt"><div class="w"><div class="sh"><div><p class="eyebrow">Galerie</p><h2>' + X.gal + '</h2></div>' + (d.instagram ? '<p><a href="https://www.instagram.com/' + esc(d.instagram) + '/" target="_blank" rel="noopener">Mai multe pe Instagram @' + esc(d.instagram) + ' →</a></p>' : '') + '</div><div class="gal g' + gallery.length + '">' + gallery.map(function (u) { return '<img src="' + esc(u) + '" alt="" loading="lazy"/>'; }).join('') + '</div></div></section>' : '') +
+      (d.reviews.length ? '<section id="recenzii"' + (gallery.length ? '' : ' class="alt"') + '><div class="w"><div class="sh"><div><p class="eyebrow">Recenzii</p><h2>' + (tpl === 'portfolio' ? 'Ce spun clienții mei.' : 'Ce spun clienții noștri.') + '</h2></div></div><div class="revs">' +
+        d.reviews.map(function (r) { return '<figure class="rev"><blockquote>' + esc(r.text) + '</blockquote>' + (r.name ? '<figcaption>' + esc(r.name) + '</figcaption>' : '') + '</figure>'; }).join('') + '</div></div></section>' : '') +
+      (d.faq.length ? '<section id="intrebari"><div class="w"><div class="sh"><div><p class="eyebrow">Întrebări frecvente</p><h2>Întrebări și răspunsuri.</h2></div></div><div class="faq">' +
+        d.faq.map(function (f, k) { return '<details' + (k ? '' : ' open') + '><summary>' + esc(f.q) + '</summary><p>' + esc(f.a) + '</p></details>'; }).join('') + '</div></div></section>' : '') +
       '<section><div class="w"><div class="band"><div><h2>' + X.band + '</h2><p>' + X.bandP + '</p></div><a class="btn" href="' + esc(ctaHref) + '"' + ext(ctaHref) + '>' + esc(cta) + '</a></div></div></section>' +
       '<section id="contact" class="alt"><div class="w"><div class="sh"><div><p class="eyebrow">Contact</p><h2>' + (tpl === 'portfolio' ? 'Hai să vorbim.' : 'Ne găsești aici.') + '</h2></div></div><div class="contact">' +
         (links.length ? '<div class="card"><h3>' + (tpl === 'portfolio' ? 'Scrie-mi' : 'Scrie-ne sau sună-ne') + '</h3><ul class="links">' + links.join('') + '</ul></div>' : '') + hoursT +
@@ -390,5 +458,6 @@
       '</body></html>';
   }
 
-  return { TEMPLATES: TEMPLATES, DAYS: DAYS, LIMITS: LIMITS, FONTS: FONTS, CORNERS: CORNERS, LAYOUTS: LAYOUTS, normalize: normalize, starter: starter, render: render, randomLook: randomLook };
+  function siteFonts(tpl, data) { var d = normalize(tpl, data); return fontFiles(d.font || (TEMPLATES[tpl] || TEMPLATES.barber).fontKey); }
+  return { TEMPLATES: TEMPLATES, DAYS: DAYS, LIMITS: LIMITS, FONTS: FONTS, CORNERS: CORNERS, LAYOUTS: LAYOUTS, SUGGEST_FAQ: SUGGEST_FAQ, normalize: normalize, starter: starter, render: render, randomLook: randomLook, siteFonts: siteFonts };
 });

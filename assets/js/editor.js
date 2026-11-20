@@ -26,7 +26,8 @@
   // Site plătit = înghețat (descărcarea e exact versiunea plătită). Admin = doar vizualizare.
   function locked() { return !!(S.order && S.order.unlocked); }
   function editable() { return S.own && !locked(); }
-  function steps() { return ['Șablon', 'Identitate', 'Poze', T().itemsLabel, 'Contact', 'Gata']; }
+  function steps() { return ['Șablon', 'Identitate', 'Poze', T().itemsLabel, 'Contact', 'Extra', 'Gata']; }
+  var LAST = 6;
 
   // ---------- cont ----------
   async function token() {
@@ -79,7 +80,7 @@
   function preview() {
     clearTimeout(pvTimer);
     pvTimer = setTimeout(function () {
-      $('pv').srcdoc = ST.render(S.template, S.data, { preview: true, img: function (n) { return S.assets[n] || ''; } });
+      $('pv').srcdoc = ST.render(S.template, S.data, { preview: true, fontBase: location.origin + '/assets/fonts/tpl/', img: function (n) { return S.assets[n] || ''; } });
     }, 120);
   }
 
@@ -173,10 +174,29 @@
           ST.DAYS.map(function (day, i) { return '<span>' + day + '</span><input type="text" data-h="' + i + '" maxlength="30" value="' + esc(S.data.hours[i]) + '" placeholder="ex: 09:00–18:00 sau Închis" aria-label="' + day + '"/>'; }).join('') + '</div>';
         break;
       case 5:
+        var L = ST.LIMITS, rv = S.data.reviews || [], fq = S.data.faq || [];
+        h = '<h2>Extra</h2><p class="sub">Opțional. Secțiunile apar pe site doar dacă le completezi.</p>' +
+          field('notice', 'Bară de anunț, sus pe site', { count: true, ph: 'ex: -20% la prima vizită în ianuarie' }) +
+          '<label class="f">Recenzii de la clienți <span class="count">' + rv.length + '/' + L.reviews + '</span></label>' +
+          '<p class="sub" style="margin:-4px 0 10px;font-size:13px">Pune doar păreri reale, primite de la clienți (de pe Google, Facebook sau în mesaje).</p>' +
+          '<ul class="items" id="revs">' + rv.map(function (r, i) {
+            return '<li><textarea class="d" rows="2" data-l="reviews" data-i="' + i + '" data-f="text" maxlength="' + L.reviewText + '" placeholder="Ce a spus clientul" aria-label="Recenzie">' + esc(r.text) + '</textarea>' +
+              '<input class="d" type="text" data-l="reviews" data-i="' + i + '" data-f="name" maxlength="' + L.reviewName + '" value="' + esc(r.name) + '" placeholder="Numele clientului (ex: Maria P.)" aria-label="Nume"/>' +
+              '<span class="ctl"><button type="button" class="plain danger" data-del-l="reviews:' + i + '">Șterge</button></span></li>';
+          }).join('') + '</ul>' + (rv.length < L.reviews ? '<p><button type="button" class="btn ghost sm" data-add="reviews">＋ Adaugă o recenzie</button></p>' : '') +
+          '<label class="f">Întrebări frecvente <span class="count">' + fq.length + '/' + L.faq + '</span></label>' +
+          '<ul class="items" id="faqs">' + fq.map(function (f, i) {
+            return '<li><input class="d" type="text" data-l="faq" data-i="' + i + '" data-f="q" maxlength="' + L.faqQ + '" value="' + esc(f.q) + '" placeholder="Întrebarea" aria-label="Întrebare"/>' +
+              '<textarea class="d" rows="2" data-l="faq" data-i="' + i + '" data-f="a" maxlength="' + L.faqA + '" placeholder="Răspunsul" aria-label="Răspuns">' + esc(f.a) + '</textarea>' +
+              '<span class="ctl"><button type="button" class="plain danger" data-del-l="faq:' + i + '">Șterge</button></span></li>';
+          }).join('') + '</ul><p class="row-btns">' + (fq.length < L.faq ? '<button type="button" class="btn ghost sm" data-add="faq">＋ Adaugă o întrebare</button>' : '') +
+          (fq.length < L.faq && ST.SUGGEST_FAQ[S.template] ? ' <button type="button" class="btn ghost sm" id="sugg">✨ Întrebări sugerate</button>' : '') + '</p>';
+        break;
+      case 6:
         h = renderFinal();
         break;
     }
-    if (locked() && S.step !== 5) {
+    if (locked() && S.step !== LAST) {
       h = '<div class="note ok lockbar"><strong>Site-ul ăsta e plătit.</strong> Îl poți descărca oricând (pasul Gata sau din cont). Ca să schimbi ceva, fă o versiune nouă: o copie pe care o comanzi separat.' +
         (S.own ? '<p style="margin:10px 0 0"><button type="button" class="btn sm" id="dup">Fă o versiune nouă</button></p>' : '') + '<p class="err" hidden></p></div>' +
         '<fieldset class="lock" disabled>' + h + '</fieldset>';
@@ -256,7 +276,8 @@
       S.data[el.dataset.k] = el.value;
       var c = d.querySelector('[data-count="' + el.dataset.k + '"]'); if (c) c.textContent = el.value.length + '/' + (ST.LIMITS[el.dataset.k] || '');
       changed();
-    } else if (el.dataset.i !== undefined && el.dataset.f) { S.data.items[+el.dataset.i][el.dataset.f] = el.value; changed(); }
+    } else if (el.dataset.i !== undefined && el.dataset.f && !el.dataset.l) { S.data.items[+el.dataset.i][el.dataset.f] = el.value; changed(); }
+    else if (el.dataset.l && el.dataset.i !== undefined) { S.data[el.dataset.l][+el.dataset.i][el.dataset.f] = el.value; changed(); }
     else if (el.dataset.h !== undefined) { S.data.hours[+el.dataset.h] = el.value; changed(); }
     else if (el.id === 'f-accent') { S.data.accent = el.value; changed(); d.querySelectorAll('#sw [data-c]').forEach(function (x) { x.setAttribute('aria-pressed', 'false'); }); }
   });
@@ -282,6 +303,13 @@
       renderSteps(); renderBody(); changed(); return;
     }
     if (t.id === 'surprise') return surprise(t);
+    if (t.dataset.add) { var lst = S.data[t.dataset.add] = S.data[t.dataset.add] || []; lst.push(t.dataset.add === 'faq' ? { q: '', a: '' } : { name: '', text: '' }); renderBody(); var f = d.querySelectorAll('#' + (t.dataset.add === 'faq' ? 'faqs' : 'revs') + ' li:last-child [data-f]'); if (f[0]) f[0].focus(); changed(); return; }
+    if (t.dataset.delL) { var pp = t.dataset.delL.split(':'); S.data[pp[0]].splice(+pp[1], 1); renderBody(); changed(); return; }
+    if (t.id === 'sugg') {
+      var have = (S.data.faq || []).map(function (f) { return f.q; });
+      S.data.faq = (S.data.faq || []).concat(ST.SUGGEST_FAQ[S.template].filter(function (x) { return have.indexOf(x[0]) < 0; }).map(function (x) { return { q: x[0], a: x[1] }; })).slice(0, ST.LIMITS.faq);
+      renderBody(); changed(); return;
+    }
     if (t.id === 'shuffle') { Object.assign(S.data, ST.randomLook(S.data)); renderBody(); changed(); return; }
     if (t.dataset.font || t.dataset.corners || t.dataset.layout) {
       var key = t.dataset.font ? 'font' : t.dataset.corners ? 'corners' : 'layout';
@@ -369,7 +397,7 @@
     d.addEventListener('visibilitychange', async function () {
       if (d.hidden || !S.id || !session || !S.order || S.order.unlocked) return;
       var g3 = await api('GET', '/api/sites?id=' + S.id);
-      if (g3.ok && g3.json.order && g3.json.order.unlocked) { S.order = g3.json.order; if (S.step === 5) renderBody(); }
+      if (g3.ok && g3.json.order && g3.json.order.unlocked) { S.order = g3.json.order; if (S.step === LAST) renderBody(); }
     });
   })();
 })();

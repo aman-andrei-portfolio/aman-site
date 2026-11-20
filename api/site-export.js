@@ -2,6 +2,9 @@
 'use strict';
 const T = require('../assets/js/site-templates.js');
 const { zip } = require('./_zip');
+const fs = require('fs');
+const path = require('path');
+const FONT_DIR = path.join(__dirname, '..', 'assets', 'fonts', 'tpl');
 const { send, configured, getUser, db, handle, isAdmin, storageGet } = require('./_lib');
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -15,7 +18,7 @@ const README = (name) => `${name}: site-ul tău, gata de pus online
 
 Ce e în arhivă
   index.html   pagina site-ului
-  assets/      pozele
+  assets/      pozele și fonturile
 
 Cel mai simplu mod de a-l pune online (gratuit, 2 minute)
   1. Dezarhivează folderul.
@@ -54,6 +57,11 @@ module.exports = handle(async (req, res) => {
   const have = new Set(files.map((f) => f.name.slice(7)));
   const html = T.render(site.template, data, { img: (n) => (have.has(n) ? 'assets/' + n : '') });
   const name = data.name || 'site';
+  // fonturile titlurilor (licență OFL), ca site-ul să arate la fel ca în editor
+  for (const f of T.siteFonts(site.template, data)) {
+    try { files.push({ name: 'assets/fonts/' + f, data: fs.readFileSync(path.join(FONT_DIR, f)) }); } catch (e) { /* fără font: rămâne rezerva din sistem */ }
+  }
+  try { files.push({ name: 'assets/fonts/LICENTE.txt', data: fs.readFileSync(path.join(FONT_DIR, 'LICENTE.txt')) }); } catch (e) {}
   const body = zip([{ name: 'index.html', data: html }, ...files, { name: 'CITESTE-MA.txt', data: README(name) }]);
 
   res.statusCode = 200;

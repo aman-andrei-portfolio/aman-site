@@ -71,6 +71,9 @@ Fără aceste variabile, pagina Cont spune „în curând”, iar butoanele duc 
 - „Vreau site-ul” creează o comandă cu cod (149 lei / €29, din `api/_lib.js` → `site-builder`).
 - În panou, comanda are linkul „Vezi site-ul în editor”. Când pui **Plătită**, clientul vede butonul
   **„Descarcă site-ul (ZIP)”** în editor și în cont. Arhiva conține `index.html`, pozele și instrucțiuni de publicare, fără watermark.
+- Pasul **Extra**: bară de anunț, recenzii (doar reale, pornesc goale) și întrebări frecvente (cu „Întrebări sugerate” pe domeniu).
+- Fonturile titlurilor sunt reale (Oswald, Playfair Display, Bodoni Moda, Archivo Black, JetBrains Mono, Inter; licență OFL),
+  găzduite în `assets/fonts/tpl/` și puse automat în ZIP. Arhiva are și date structurate pentru Google (afacere locală) și iconiță din logo.
 - Șabloanele sunt în `assets/js/site-templates.js` (același cod face previzualizarea și arhiva finală).
   Un șablon nou trebuie adăugat și în regula `sites_template_check` din baza de date (vezi `supabase/schema.sql`).
 - Pozele stau în spațiul privat `livrari`, folderul `sites/{id}/`.
