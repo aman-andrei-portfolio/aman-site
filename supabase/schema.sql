@@ -90,3 +90,6 @@ create table if not exists public.messages (
 create index if not exists messages_order_idx on public.messages (order_id, created_at);
 alter table public.messages enable row level security;
 revoke all on public.messages from anon, authenticated;
+
+-- Comenzi ascunse din panou (arhivă); clientul le vede în continuare.
+alter table public.orders add column if not exists archived_at timestamptz;

@@ -26,6 +26,17 @@ async function signAssets(id, names) {
   names.forEach((n, i) => { const s = signed[i]; if (s && s.signedURL) out[n] = env('SUPABASE_URL') + '/storage/v1' + s.signedURL; });
   return out;
 }
+// Un site plătit e înghețat: nu se mai poate modifica, ca descărcarea să fie exact versiunea plătită.
+async function isPaid(id) {
+  const r = await db(`orders?select=id&site_id=eq.${id}&status=in.(${PAID.join(',')})&limit=1`);
+  return !!(r && r.length);
+}
+const LOCKED = { error: 'Site-ul e plătit și nu mai poate fi modificat. Pentru schimbări, fă o versiune nouă.', locked: true };
+async function unpaidCount(userId) {
+  const mine = await db(`sites?select=id&user_id=eq.${userId}`);
+  let n = 0; for (const s of mine || []) if (!(await isPaid(s.id))) n++;
+  return n;
+}
 async function siteOrder(id) {
   const rows = await db(`orders?select=id,code,status&site_id=eq.${id}&status=neq.cancelled&order=created_at.desc&limit=1`);
   return rows && rows[0] ? { id: rows[0].id, code: rows[0].code, status: rows[0].status, unlocked: PAID.includes(rows[0].status) } : null;
@@ -70,17 +81,18 @@ module.exports = handle(async (req, res) => {
     const data = T.normalize(template, b.data);
     if (b.id) {
       const s = await own(b.id); if (!s) return send(res, 404, { error: 'Site-ul nu există.' });
+      if (await isPaid(s.id)) return send(res, 409, LOCKED);
       await db('sites?id=eq.' + s.id, { method: 'PATCH', prefer: 'return=minimal', body: { template, data } });
       return send(res, 200, { id: s.id });
     }
-    const mine = await db(`sites?select=id&user_id=eq.${user.id}`);
-    if (mine.length >= MAX_SITES) return send(res, 400, { error: 'Poți avea maximum 3 site-uri în cont. Șterge unul ca să faci altul.' });
+    if ((await unpaidCount(user.id)) >= MAX_SITES) return send(res, 400, { error: 'Poți avea maximum 3 ciorne neplătite în cont. Șterge una ca să faci alta.' });
     const rows = await db('sites', { method: 'POST', prefer: 'return=representation', body: { user_id: user.id, template, data } });
     return send(res, 201, { id: rows[0].id });
   }
 
   if (b.action === 'upload') {
     const s = await own(b.id); if (!s) return send(res, 404, { error: 'Salvează mai întâi site-ul.' });
+    if (await isPaid(s.id)) return send(res, 409, LOCKED);
     const ext = TYPES[b.type]; if (!ext) return send(res, 400, { error: 'Folosește poze JPG, PNG sau WEBP.' });
     if ((Number(b.size) || 0) > MAX_IMG) return send(res, 400, { error: 'Poza are peste 5 MB.' });
     const kind = ['logo', 'hero', 'gallery'].includes(b.kind) ? b.kind : 'gallery';
@@ -93,10 +105,23 @@ module.exports = handle(async (req, res) => {
 
   if (b.action === 'delete-asset') {
     const s = await own(b.id); if (!s) return send(res, 404, { error: 'Site-ul nu există.' });
+    if (await isPaid(s.id)) return send(res, 409, LOCKED);
     const file = String(b.file || '');
     if (!/^[A-Za-z0-9._-]{1,120}$/.test(file)) return send(res, 400, { error: 'Fișier necunoscut.' });
     await storage('object/' + BUCKET, { method: 'DELETE', body: { prefixes: [`sites/${s.id}/${file}`] } });
     return send(res, 200, { deleted: true });
+  }
+
+  // Versiune nouă: copie a site-ului (cu poze), ca ciornă nouă, care se comandă separat.
+  if (b.action === 'duplicate') {
+    const s = await own(b.id); if (!s) return send(res, 404, { error: 'Site-ul nu există.' });
+    if ((await unpaidCount(user.id)) >= MAX_SITES) return send(res, 400, { error: 'Poți avea maximum 3 ciorne neplătite în cont. Șterge una ca să faci alta.' });
+    const rows = await db('sites', { method: 'POST', prefer: 'return=representation', body: { user_id: user.id, template: s.template, data: s.data } });
+    const id = rows[0].id;
+    for (const f of await listAssets(s.id)) {
+      await storage('object/copy', { body: { bucketId: BUCKET, sourceKey: `sites/${s.id}/${f.name}`, destinationKey: `sites/${id}/${f.name}` } });
+    }
+    return send(res, 201, { id });
   }
 
   if (b.action === 'order') {

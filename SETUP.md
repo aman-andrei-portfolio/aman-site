@@ -82,3 +82,12 @@ Fără aceste variabile, pagina Cont spune „în curând”, iar butoanele duc 
   În conversație, butonul **Detaliile de plată** completează automat mesajul cu suma, codul și IBAN-ul.
 - Clienții pot trimite maximum 30 de mesaje pe oră. Conversațiile se șterg odată cu contul clientului.
 - La comenzile din editor nu mai apar secțiunile de fișiere: clientul își descarcă singur site-ul după „Plătită”.
+
+## Site-uri plătite și arhiva din panou
+
+- După „Plătită”, site-ul din editor e **înghețat**: nu mai poate fi modificat (nici din editor, nici prin server),
+  deci descărcarea e mereu versiunea plătită. Pentru schimbări, clientul apasă „Fă o versiune nouă”: o copie
+  (cu poze) pe care o comandă separat. Ciornele plătite nu intră în limita de 3.
+- În panou: „Ascunde” la fiecare comandă, „Ascunde toate finalizate” în tab-ul Finalizate și tab-ul **Arhivă**
+  (de unde le readuci). Comenzile **anulate** se pot șterge definitiv; cele plătite doar se ascund (evidența încasărilor).
+  Ascunderea e doar pentru tine; clientul își vede comanda în cont.

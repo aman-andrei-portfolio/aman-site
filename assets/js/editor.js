@@ -18,6 +18,9 @@
   function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
   function ssSet(k, v) { try { sessionStorage.setItem(k, v); } catch (e) {} }
   function T() { return ST.TEMPLATES[S.template]; }
+  // Site plătit = înghețat (descărcarea e exact versiunea plătită). Admin = doar vizualizare.
+  function locked() { return !!(S.order && S.order.unlocked); }
+  function editable() { return S.own && !locked(); }
   function steps() { return ['Șablon', 'Identitate', 'Poze', T().itemsLabel, 'Contact', 'Gata']; }
 
   // ---------- cont ----------
@@ -47,16 +50,16 @@
   // ---------- salvare ----------
   function status(t) { $('saved').textContent = t || ''; }
   function changed() {
+    if (!editable()) return;
     dirty = true;
     lsSet(LOCAL, { id: S.id, template: S.template, data: S.data });
     preview();
-    if (!S.own) return;
     status(session ? 'Se salvează…' : 'Salvat pe acest dispozitiv');
     clearTimeout(saveTimer);
     if (S.id && session) saveTimer = setTimeout(function () { save(false); }, 1200);
   }
   async function save(create) {
-    if (!S.own) return false;
+    if (!editable()) return false;
     if (!(await token())) { status('Salvat pe acest dispozitiv'); return false; }
     if (!S.id && !create) return false;
     var r = await api('POST', '/api/sites', { action: 'save', id: S.id || undefined, template: S.template, data: S.data });
@@ -157,6 +160,11 @@
         h = renderFinal();
         break;
     }
+    if (locked() && S.step !== 5) {
+      h = '<div class="note ok lockbar"><strong>Site-ul ăsta e plătit.</strong> Îl poți descărca oricând (pasul Gata sau din cont). Ca să schimbi ceva, fă o versiune nouă: o copie pe care o comanzi separat.' +
+        (S.own ? '<p style="margin:10px 0 0"><button type="button" class="btn sm" id="dup">Fă o versiune nouă</button></p>' : '') + '<p class="err" hidden></p></div>' +
+        '<fieldset class="lock" disabled>' + h + '</fieldset>';
+    }
     b.innerHTML = h;
   }
 
@@ -165,7 +173,7 @@
     var o = S.order;
     if (o && o.unlocked) {
       return '<h2>Site-ul tău e gata</h2><p class="note ok">Plata e confirmată. Poți descărca site-ul oricând, și din contul tău.</p>' +
-        '<p><button type="button" class="btn" id="dl">Descarcă site-ul (ZIP)</button></p><p class="sub">În arhivă găsești și instrucțiuni simple pentru a-l pune online gratuit. Prin descărcare ești de acord cu livrarea imediată a conținutului digital.</p><p class="err" hidden></p>';
+        '<p><button type="button" class="btn" id="dl">Descarcă site-ul (ZIP)</button></p>' + (S.own ? '<p class="sub">Vrei să schimbi ceva? <button type="button" class="plain" id="dup">Fă o versiune nouă ›</button></p>' : '') + '<p class="sub">În arhivă găsești și instrucțiuni simple pentru a-l pune online gratuit. Prin descărcare ești de acord cu livrarea imediată a conținutului digital.</p><p class="err" hidden></p>';
     }
     if (o) {
       return '<h2>Comanda e trimisă</h2><p class="code">' + esc(o.code) + '</p>' +
@@ -231,7 +239,7 @@
   // ---------- evenimente ----------
   d.addEventListener('input', function (e) {
     var el = e.target;
-    if (!S.own && el.closest('#body')) return;
+    if (!editable() && el.closest('#body')) return;
     if (el.dataset.k) {
       S.data[el.dataset.k] = el.value;
       var c = d.querySelector('[data-count="' + el.dataset.k + '"]'); if (c) c.textContent = el.value.length + '/' + (ST.LIMITS[el.dataset.k] || '');
@@ -252,7 +260,8 @@
     if (t.dataset.mtab) { $('app').dataset.tab = t.dataset.mtab; d.querySelectorAll('[data-mtab]').forEach(function (x) { x.setAttribute('aria-pressed', String(x === t)); }); return; }
     if (t.dataset.dev) { $('frame').className = 'frame' + (t.dataset.dev === 'phone' ? ' phone' : ''); d.querySelectorAll('[data-dev]').forEach(function (x) { x.setAttribute('aria-pressed', String(x === t)); }); return; }
     if (t.id === 'login') return goLogin();
-    if (!S.own && t.closest('#body') && !t.closest('[data-tpl]')) return;
+    if (t.id === 'dup') return duplicate();
+    if (!editable() && t.closest('#body') && t.id !== 'dl' && t.id !== 'tochat' && t.id !== 'login') return;
     if (t.dataset.tpl) {
       var pristine = JSON.stringify(S.data) === JSON.stringify(ST.starter(S.template));
       var keepImgs = { logo: S.data.logo, hero: S.data.hero, gallery: S.data.gallery };
@@ -278,6 +287,13 @@
     }
   });
 
+  async function duplicate() {
+    var btn = $('dup'); if (btn) { btn.disabled = true; btn.textContent = 'Se copiază…'; }
+    var r = await api('POST', '/api/sites', { action: 'duplicate', id: S.id });
+    if (!r.ok) { if (btn) { btn.disabled = false; btn.textContent = 'Fă o versiune nouă'; } return flash(r.json.error || 'Nu am putut face copia.'); }
+    lsSet(LOCAL, { id: r.json.id, template: S.template, data: S.data });
+    location.href = '/editor.html?id=' + r.json.id;
+  }
   async function buy() {
     var btn = $('buy'); btn.disabled = true;
     if (!(await save(true))) { btn.disabled = false; return; }
@@ -308,8 +324,8 @@
       if (g.ok) {
         S.id = g.json.site.id; S.template = g.json.site.template; S.data = ST.normalize(S.template, g.json.site.data);
         S.assets = g.json.assets || {}; S.order = g.json.order; S.own = g.json.site.own;
-        if (local && local.id === S.id && S.own) { S.data = ST.normalize(S.template, Object.assign({}, S.data, local.data, { logo: S.data.logo, hero: S.data.hero, gallery: S.data.gallery })); }
-        status(S.own ? 'Salvat în cont ✓' : 'Doar vizualizare');
+        if (local && local.id === S.id && S.own && !(S.order && S.order.unlocked)) { S.data = ST.normalize(S.template, Object.assign({}, S.data, local.data, { logo: S.data.logo, hero: S.data.hero, gallery: S.data.gallery })); }
+        status(!S.own ? 'Doar vizualizare' : (S.order && S.order.unlocked) ? 'Plătit · blocat' : 'Salvat în cont ✓');
       } else { history.replaceState(null, '', '/editor.html'); if (local && local.id === id) { delete local.id; lsSet(LOCAL, local); } }
     } else if (local && local.template && ST.TEMPLATES[local.template]) {
       S.template = local.template; S.data = ST.normalize(S.template, local.data);

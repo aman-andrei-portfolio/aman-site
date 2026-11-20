@@ -2,7 +2,7 @@
 // sau, opțional, emailurile din ADMIN_EMAILS.
 // GET  → toate comenzile;  POST { id, status, note, delivery_url } → actualizează o comandă.
 'use strict';
-const { send, sameOrigin, readJson, configured, getUser, db, handle, isAdmin } = require('./_lib');
+const { send, sameOrigin, readJson, configured, getUser, db, handle, isAdmin, removeFiles } = require('./_lib');
 
 const STATUSES = ['requested', 'paid', 'in_progress', 'review', 'delivered', 'cancelled', 'refunded'];
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -15,16 +15,33 @@ module.exports = handle(async (req, res) => {
   if (!isAdmin(user)) return send(res, 403, { error: 'Nu ai acces la panou.' });
 
   if (req.method === 'GET') {
-    const rows = await db('orders?select=id,code,instagram,brief,site_id,title,package,amount,currency,status,note,delivery_url,customer_name,email,created_at,paid_at,updated_at&order=created_at.desc&limit=1000');
+    const rows = await db('orders?select=id,code,instagram,brief,site_id,title,package,amount,currency,status,note,delivery_url,customer_name,email,created_at,paid_at,updated_at,archived_at&order=created_at.desc&limit=1000');
     return send(res, 200, { orders: rows });
   }
 
   if (req.method !== 'POST') return send(res, 405, { error: 'Metodă nepermisă.' });
   if (!sameOrigin(req)) return send(res, 403, { error: 'Cerere respinsă.' });
   const b = await readJson(req);
+
+  // Ascunde dintr-un clic toate comenzile finalizate (livrate, anulate, rambursate).
+  if (b.action === 'archive-done') {
+    const rows = await db(`orders?status=in.(delivered,cancelled,refunded)&archived_at=is.null&select=id`, { method: 'PATCH', prefer: 'return=representation', body: { archived_at: new Date().toISOString() } });
+    return send(res, 200, { archived: (rows || []).length });
+  }
   if (!UUID.test(String(b.id || ''))) return send(res, 400, { error: 'Comandă necunoscută.' });
 
+  // Ștergere definitivă: doar pentru comenzile anulate (cele plătite rămân ca evidență a încasărilor).
+  if (b.action === 'delete') {
+    const r = await db(`orders?select=id,status&id=eq.${b.id}`);
+    if (!r || !r.length) return send(res, 404, { error: 'Comanda nu mai există.' });
+    if (r[0].status !== 'cancelled') return send(res, 409, { error: 'Poți șterge definitiv doar comenzile anulate. Pe celelalte le poți ascunde.' });
+    await removeFiles(b.id);
+    await db(`orders?id=eq.${b.id}`, { method: 'DELETE', prefer: 'return=minimal' });
+    return send(res, 200, { deleted: true });
+  }
+
   const patch = {};
+  if (b.archived !== undefined) patch.archived_at = b.archived ? new Date().toISOString() : null;
   if (b.status !== undefined) {
     if (!STATUSES.includes(b.status)) return send(res, 400, { error: 'Status invalid.' });
     patch.status = b.status;
@@ -41,7 +58,7 @@ module.exports = handle(async (req, res) => {
   }
   if (!Object.keys(patch).length) return send(res, 400, { error: 'Nimic de salvat.' });
 
-  const rows = await db('orders?id=eq.' + b.id + '&select=id,status,note,delivery_url,paid_at,updated_at', { method: 'PATCH', prefer: 'return=representation', body: patch });
+  const rows = await db('orders?id=eq.' + b.id + '&select=id,status,note,delivery_url,paid_at,updated_at,archived_at', { method: 'PATCH', prefer: 'return=representation', body: patch });
   if (!rows || !rows.length) return send(res, 404, { error: 'Comanda nu mai există.' });
   send(res, 200, { order: rows[0] });
 });

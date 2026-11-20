@@ -7,10 +7,14 @@
   var KEY = 'aman.session';
   var LABEL = { requested: 'Cerere nouă', paid: 'Plătită', in_progress: 'În lucru', review: 'De verificat', delivered: 'Livrată', cancelled: 'Anulată', refunded: 'Rambursată' };
   var FLOW = ['requested', 'paid', 'in_progress', 'review', 'delivered', 'cancelled'];
-  var TABS = { unread: [], new: ['requested'], active: ['paid', 'in_progress', 'review'], done: ['delivered', 'cancelled', 'refunded'] };
-  var TAB_NAME = { unread: 'Necitite', new: 'Cereri noi', active: 'În lucru', done: 'Finalizate' };
+  var TABS = { unread: [], new: ['requested'], active: ['paid', 'in_progress', 'review'], done: ['delivered', 'cancelled', 'refunded'], archive: [] };
+  var TAB_NAME = { unread: 'Necitite', new: 'Cereri noi', active: 'În lucru', done: 'Finalizate', archive: 'Arhivă' };
   var PAY = 'aman.payinfo';
-  function inTab(o, k) { return k === 'unread' ? (unread[o.id] || 0) > 0 : TABS[k].indexOf(o.status) >= 0; }
+  function inTab(o, k) {
+    if (k === 'archive') return !!o.archived_at;
+    if (k === 'unread') return (unread[o.id] || 0) > 0; // mesajele noi apar chiar dacă e ascunsă
+    return !o.archived_at && TABS[k].indexOf(o.status) >= 0;
+  }
 
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function money(o) { var v = o.amount / 100, n = v % 1 ? v.toFixed(2) : String(v); return o.currency === 'eur' ? '€' + n : n + ' lei'; }
@@ -118,6 +122,7 @@
       ? orders.filter(function (o) { return [o.code, o.instagram, o.customer_name, o.email, o.title].some(function (v) { return v && String(v).toLowerCase().indexOf(q) >= 0; }); })
       : orders.filter(function (o) { return inTab(o, tab); });
     if (q) h = '<p class="meta" style="margin-bottom:12px">' + list.length + (list.length === 1 ? ' rezultat' : ' rezultate') + ' pentru „' + esc(query.trim()) + '”, din toate comenzile</p>';
+    if (!q && tab === 'done' && list.length) h += '<div class="bulk"><span class="meta">Ascunde-le ca să nu te încurce. Le găsești oricând în Arhivă.</span><button type="button" class="btn sm ghost" id="arch-all">Ascunde toate finalizate</button></div>';
     if (!list.length) h += '<p class="empty">' + (q ? 'Nicio comandă găsită. Verifică codul sau username-ul.' : 'Nimic aici deocamdată.') + '</p>';
     else h += '<ul class="list">' + list.map(card).join('') + '</ul>';
     app.innerHTML = h;
@@ -169,7 +174,9 @@
       '<div class="row"><button type="button" class="btn" data-save>Salvează</button><span class="out" aria-live="polite"></span></div>' +
       (o.site_id ? '' : '<div class="files"><label>Fișiere pentru client</label><ul class="flist" data-flist><li class="meta">Se încarcă…</li></ul>' +
       '<label class="up"><input type="file" multiple data-up/> <span>＋ Adaugă fișiere</span></label><span class="meta"> Maximum 50 MB pe fișier. Clientul le vede în contul lui.</span></div>') +
-      '<p class="meta">Cerută ' + when(o.created_at) + (o.paid_at ? ' · plătită ' + when(o.paid_at) : '') + '</p></li>';
+      '<div class="row tail"><p class="meta">Cerută ' + when(o.created_at) + (o.paid_at ? ' · plătită ' + when(o.paid_at) : '') + '</p><span class="tail-acts">' +
+        (o.archived_at ? '<button type="button" class="plain" data-arch="0">Readu în listă</button>' : '<button type="button" class="plain" data-arch="1">Ascunde</button>') +
+        (o.status === 'cancelled' ? '<button type="button" class="plain danger" data-delo>Șterge definitiv</button>' : '') + '</span></div></li>';
   }
 
   async function save(li, patch) {
@@ -185,6 +192,26 @@
     out.className = 'out saved'; out.textContent = 'Salvat ✓';
     updateCounts();
   }
+  async function archive(li, on) {
+    var r = await call('POST', { id: li.dataset.id, archived: on });
+    if (r.status !== 200) { alert(r.json.error || 'Nu s-a putut.'); return; }
+    var o = orders.find(function (x) { return x.id === li.dataset.id; }); o.archived_at = r.json.order.archived_at;
+    li.style.transition = 'opacity .25s'; li.style.opacity = '0'; setTimeout(render, 250);
+  }
+  async function archiveAll() {
+    var r = await call('POST', { action: 'archive-done' });
+    if (r.status !== 200) { alert(r.json.error || 'Nu s-a putut.'); return; }
+    var now = new Date().toISOString();
+    orders.forEach(function (o) { if (TABS.done.indexOf(o.status) >= 0 && !o.archived_at) o.archived_at = now; });
+    render();
+  }
+  async function removeOrder(li) {
+    var o = orders.find(function (x) { return x.id === li.dataset.id; });
+    if (!confirm('Ștergi definitiv comanda ' + (o.code || '') + '? Se șterg și mesajele și fișierele ei. Nu se poate anula.')) return;
+    var r = await call('POST', { id: o.id, action: 'delete' });
+    if (r.status !== 200) { alert(r.json.error || 'Nu s-a putut șterge.'); return; }
+    orders = orders.filter(function (x) { return x.id !== o.id; }); render();
+  }
   function updateCounts() {
     app.querySelectorAll('[data-tab]').forEach(function (b) {
       var n = orders.filter(function (o) { return inTab(o, b.dataset.tab); }).length;
@@ -195,7 +222,11 @@
   app.addEventListener('click', function (e) {
     var t = e.target.closest('[data-tab]');
     if (t) { tab = t.dataset.tab; render(); return; }
+    if (e.target.closest('#arch-all')) { archiveAll(); return; }
     var li = e.target.closest('.card'); if (!li) return;
+    var ar = e.target.closest('[data-arch]');
+    if (ar) { archive(li, ar.dataset.arch === '1'); return; }
+    if (e.target.closest('[data-delo]')) { removeOrder(li); return; }
     var ch = e.target.closest('[data-chat]');
     if (ch) { openChat = openChat === ch.dataset.chat ? null : ch.dataset.chat; render(); var box = app.querySelector('[data-chatbox]'); if (box) box.scrollIntoView({ block: 'nearest' }); return; }
     var del = e.target.closest('[data-del]');
