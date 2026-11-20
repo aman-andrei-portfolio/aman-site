@@ -68,6 +68,27 @@ a{color:#2997ff;text-decoration:none}
 .sheet .row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
 .ghost{border:1px solid #48484a;background:none;border-radius:980px;padding:13px 22px;font-weight:600}
 .sheet p{margin:0;color:#a1a1a6;font-size:13px;text-align:center;max-width:30em}
+.pick{display:inline-flex;margin-top:12px;color:#f5f5f7;cursor:pointer;position:relative}
+.pick input{position:absolute;inset:0;opacity:0;width:100%;cursor:pointer}
+.view{touch-action:none;user-select:none;-webkit-user-select:none}
+.frame{position:absolute;pointer-events:none}
+.frame .grid{position:absolute;inset:0}
+.sugg{position:absolute;top:calc(92px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);z-index:6;border:0;border-radius:980px;padding:7px 14px;font-size:13px;font-weight:600;background:rgba(255,214,10,.92);color:#000;white-space:nowrap}
+.count{position:absolute;inset:0;display:grid;place-items:center;font-size:120px;font-weight:700;color:#fff;text-shadow:0 4px 30px rgba(0,0,0,.5);pointer-events:none;z-index:6}
+.focus{position:absolute;width:70px;height:70px;margin:-35px 0 0 -35px;border:1.5px solid #ffd60a;border-radius:8px;pointer-events:none;z-index:6;animation:fo .7s ease-out forwards}
+@keyframes fo{from{transform:scale(1.4);opacity:1}70%{transform:scale(1);opacity:1}to{opacity:0}}
+.hint{position:absolute;left:0;right:0;top:calc(62px + env(safe-area-inset-top));margin:0;text-align:center;font-size:12px;color:rgba(255,255,255,.75);pointer-events:none;transition:opacity .6s}
+.hint.off{opacity:0}
+.pk{position:relative;overflow:hidden;cursor:pointer}.pk input{position:absolute;inset:0;opacity:0;font-size:0}
+.top{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}.top::-webkit-scrollbar{display:none}
+.top .ic{flex:none}
+.pro{position:absolute;left:0;right:0;bottom:0;z-index:35;background:rgba(18,18,20,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:22px 22px 0 0;padding:14px 20px calc(18px + env(safe-area-inset-bottom));max-width:560px;margin:0 auto}
+.pro-h{display:flex;align-items:center;gap:12px;margin-bottom:6px}.pro-h b{font-size:17px;margin-right:auto}
+.link{border:0;background:none;color:#2997ff;font-size:14px;padding:4px}
+.x{border:0;background:#2c2c2e;width:30px;height:30px;border-radius:50%;font-size:18px;line-height:1}
+.sl{display:grid;grid-template-columns:92px minmax(0,1fr) 40px;align-items:center;gap:10px;padding:7px 0;font-size:14px;color:#d2d2d7}
+.sl input{width:100%;accent-color:#ffd60a}.sl output{text-align:right;font-variant-numeric:tabular-nums;color:#f5f5f7;font-size:13px}
+.tg{display:flex;gap:8px;margin-top:10px}.tg .ic{background:#2c2c2e}.tg .ic[aria-pressed="true"]{background:#ffd60a;color:#000}
 @media(min-width:900px){.app{max-width:none}.tip{left:auto;right:16px;max-width:380px}}
 </style>
 </head>
@@ -79,24 +100,32 @@ a{color:#2997ff;text-decoration:none}
     <p class="sub" data-en="Professional colour styles for every mood, applied live. With framing tips for each one.">Stiluri de culoare profesionale pentru fiecare atmosferă, aplicate live. Cu sfaturi de încadrare pentru fiecare.</p>
     <ul>
       <li data-en="12 looks: golden hour, portrait, cinematic, night, black &amp; white…">12 stiluri: golden hour, portret, cinematic, noapte, alb-negru…</li>
-      <li data-en="Grid and level, so the photo comes out straight">Grilă și nivelă, ca poza să iasă dreaptă</li>
+      <li data-en="Instagram formats: 4:5, 1:1, 9:16">Formate pentru Instagram: 4:5, 1:1, 9:16</li>
+      <li data-en="Pro controls, grid, level and timer">Reglaje Pro, grilă, nivelă și temporizator</li>
       <li data-en="Photos are saved only on your phone">Pozele se salvează doar pe telefonul tău</li>
     </ul>
     <button type="button" class="big" id="go" data-en="Start the camera">Pornește camera</button>
+    <label class="ghost pick" id="pickLbl"><input type="file" id="pick" accept="image/*"/><span data-en="Edit a photo from your gallery">Editează o poză din galerie</span></label>
     <p class="err" id="err" hidden></p>
     <p class="fine" data-en="Nothing is uploaded: the camera and the colour processing run only on your device. A browser camera has no night mode or the phone's own processing, so in very low light the phone's camera app will do better.">Nu se urcă nimic: camera și culorile se procesează doar pe telefonul tău. O cameră din browser nu are modul de noapte sau procesarea telefonului, așa că în lumină foarte slabă aplicația de cameră a telefonului va face poze mai bune.</p>
   </section>
 
   <div class="view" id="view">
     <canvas id="gl" aria-label="Vizor cameră"></canvas>
-    <div class="grid" id="grid" hidden></div>
+    <div class="frame" id="frame"><div class="grid" id="grid" hidden></div></div>
+    <button type="button" class="sugg" id="sugg" hidden></button>
+    <div class="count" id="count" hidden></div>
+    <div class="focus" id="focus" hidden></div>
+    <p class="hint" id="hint" data-en="Swipe to change the look · hold to see the original">Glisează pentru alt stil · ține apăsat pentru original</p>
     <div class="level" id="level" hidden><i id="levelLine"></i><b id="levelTxt">0°</b></div>
     <div class="flash" id="flash"></div>
     <div class="top">
       <a href="/" aria-label="Înapoi la site">‹ Aman</a>
-      <button type="button" class="ic" id="tgrid" aria-pressed="false" data-en="Grid">Grilă</button>
-      <button type="button" class="ic" id="tlevel" aria-pressed="false" data-en="Level">Nivelă</button>
-      <button type="button" class="ic" id="ttip" aria-pressed="true" data-en="Tips">Sfaturi</button>
+      <label class="ic pk" id="tnew" hidden><input type="file" id="pick2" accept="image/*"/><span data-en="Another photo">Altă poză</span></label>
+      <button type="button" class="ic" id="tratio" aria-label="Format">Full</button>
+      <button type="button" class="ic" id="ttimer" aria-label="Temporizator">⏱ Off</button>
+      <button type="button" class="ic" id="ttorch" hidden aria-pressed="false" aria-label="Lanternă">⚡</button>
+      <button type="button" class="ic" id="tpro" aria-pressed="false">Pro</button>
     </div>
     <div class="tip" id="tip"><button type="button" id="tipx" aria-label="Ascunde sfatul">×</button><b id="tipH"></b><span id="tipT"></span></div>
   </div>
@@ -110,6 +139,18 @@ a{color:#2997ff;text-decoration:none}
       <button type="button" class="flip" id="flip" aria-label="Schimbă camera">⟲</button>
     </div>
   </div>
+
+  <section class="pro" id="pro" hidden aria-label="Reglaje Pro">
+    <div class="pro-h"><b>Pro</b><button type="button" class="link" id="reset" data-en="Reset">Resetează</button><button type="button" class="x" id="prox" aria-label="Închide">×</button></div>
+    <label class="sl"><span data-en="Exposure">Expunere</span><input type="range" data-adj="exp" min="-100" max="100" value="0"/><output>0</output></label>
+    <label class="sl"><span data-en="Warmth">Căldură</span><input type="range" data-adj="temp" min="-100" max="100" value="0"/><output>0</output></label>
+    <label class="sl"><span>Contrast</span><input type="range" data-adj="con" min="-100" max="100" value="0"/><output>0</output></label>
+    <label class="sl"><span data-en="Saturation">Saturație</span><input type="range" data-adj="sat" min="-100" max="100" value="0"/><output>0</output></label>
+    <label class="sl"><span data-en="Vignette">Vignetă</span><input type="range" data-adj="vig" min="0" max="100" value="0"/><output>0</output></label>
+    <label class="sl"><span data-en="Grain">Granulație</span><input type="range" data-adj="grain" min="0" max="100" value="0"/><output>0</output></label>
+    <label class="sl" id="zoomRow" hidden><span>Zoom</span><input type="range" id="zoom" min="1" max="1" step="0.1" value="1"/><output id="zoomv">1×</output></label>
+    <div class="tg"><button type="button" class="ic" id="tgrid" aria-pressed="false" data-en="Grid">Grilă</button><button type="button" class="ic" id="tlevel" aria-pressed="false" data-en="Level">Nivelă</button><button type="button" class="ic" id="ttip" aria-pressed="true" data-en="Tips">Sfaturi</button></div>
+  </section>
 
   <section class="sheet" id="sheet" hidden>
     <img id="shot" alt="Poza făcută"/>

@@ -114,8 +114,11 @@ Fără aceste variabile, pagina Cont spune „în curând”, iar butoanele duc 
 
 ## Camera (`/camera.html`)
 
-- Cameră din browser cu 12 stiluri de culoare (LUT 3D calculate în `assets/js/camera.js`, aplicate prin WebGL),
-  intensitate reglabilă, grilă, nivelă, sfat de încadrare pentru fiecare stil și comutare față/spate.
-- Poza se face la rezoluția camerei; „Salvează în galerie” deschide meniul de distribuire al telefonului
-  (iPhone: „Salvează imaginea”), iar pe Android/calculator se descarcă. Nimic nu se urcă pe site.
+- Doar pe telefon: pe calculator linkurile spre cameră nu apar, iar pagina spune că e pentru telefon.
+- 12 stiluri de culoare (LUT 3D calculate în `assets/js/camera.js`, aplicate prin WebGL) cu intensitate reglabilă.
+- **Pro**: expunere, căldură, contrast, saturație, vignetă, granulație; grilă, nivelă, sfaturi; zoom doar dacă telefonul îl oferă.
+- Formate 4:5, 1:1, 9:16, 3:4 sau Full: vizorul arată exact cadrul salvat. Temporizator 3/10 s. Lanternă și focalizare la atingere doar pe telefoanele care le permit.
+- Gesturi: glisare = alt stil, apăsare lungă = original. Sugestie de stil după lumina din cadru (reguli simple; nu schimbă singur).
+- „Editează o poză din galerie”: aceleași stiluri pe o poză existentă (merge și fără cameră, de ex. din browserul Instagram).
+- Salvare: iPhone prin meniul de distribuire („Salvează imaginea”); Android descărcare (apare în Galerie). Nimic nu se urcă pe site.
 - Necesită `camera=(self)` în `Permissions-Policy` (vercel.json). Stilurile noi se adaugă în lista `LOOKS`.

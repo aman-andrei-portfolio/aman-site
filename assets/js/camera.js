@@ -69,11 +69,19 @@
   }
 
   // ---------- WebGL ----------
-  var VS = 'attribute vec2 p;varying vec2 v;uniform vec2 sc;uniform vec2 of;uniform float mir;void main(){vec2 t=p*0.5+0.5;t.y=1.0-t.y;t=(t-0.5)*sc+0.5+of;if(mir>0.5)t.x=1.0-t.x;v=t;gl_Position=vec4(p,0.0,1.0);}';
-  var FS = 'precision mediump float;varying vec2 v;uniform sampler2D img;uniform sampler2D lut;uniform float amt;uniform float n;' +
+  // q = poziția în imaginea finală (0…1), folosită pentru vignetă și granulație, ca să arate la fel în vizor și în poză
+  var VS = 'attribute vec2 p;varying vec2 v;varying vec2 q;uniform vec2 sc;uniform vec2 of;uniform float mir;void main(){vec2 t=p*0.5+0.5;t.y=1.0-t.y;q=t;t=(t-0.5)*sc+0.5+of;if(mir>0.5)t.x=1.0-t.x;v=t;gl_Position=vec4(p,0.0,1.0);}';
+  var FS = 'precision highp float;varying vec2 v;varying vec2 q;uniform sampler2D img;uniform sampler2D lut;uniform float amt;uniform float n;' +
+    'uniform float ex;uniform float tp;uniform float ct;uniform float st;uniform float vg;uniform float gr;uniform float asp;uniform float sd;uniform float orig;' +
     'vec3 look(vec3 c){float b=c.b*(n-1.0);float b0=floor(b);float b1=min(b0+1.0,n-1.0);float x=c.r*(n-1.0)+0.5;float y=(c.g*(n-1.0)+0.5)/n;' +
     'vec3 a=texture2D(lut,vec2((b0*n+x)/(n*n),y)).rgb;vec3 z=texture2D(lut,vec2((b1*n+x)/(n*n),y)).rgb;return mix(a,z,b-b0);}' +
-    'void main(){vec3 c=texture2D(img,v).rgb;gl_FragColor=vec4(mix(c,look(c),amt),1.0);}';
+    'float h(vec2 p){return fract(sin(dot(p,vec2(12.9898,78.233))+sd)*43758.5453);}' +
+    'void main(){vec3 c=texture2D(img,v).rgb;if(orig>0.5){gl_FragColor=vec4(c,1.0);return;}' +
+    'c=mix(c,look(c),amt);c*=exp2(ex);c.r*=1.0+tp*0.12;c.b*=1.0-tp*0.12;' +
+    'c=(c-0.5)*(1.0+ct)+0.5;float l=dot(c,vec3(0.2126,0.7152,0.0722));c=mix(vec3(l),c,1.0+st);' +
+    'vec2 d=(q-0.5)*vec2(asp,1.0);c*=1.0-vg*smoothstep(0.25,0.95,length(d)/max(asp,1.0)*1.25);' +
+    'c+=(h(floor(q*vec2(1100.0*asp,1100.0)))-0.5)*gr*0.16;' +
+    'gl_FragColor=vec4(clamp(c,0.0,1.0),1.0);}';
   var canvas = $('gl'), gl = null, prog, texV, texL, U = {}, video = d.createElement('video');
   video.setAttribute('playsinline', ''); video.setAttribute('muted', ''); video.muted = true; video.autoplay = true;
   // în pagină (invizibil, nu display:none), altfel Safari pe iPhone poate da cadre negre
@@ -90,7 +98,7 @@
     gl.useProgram(prog);
     var buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
     var loc = gl.getAttribLocation(prog, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-    ['sc', 'of', 'mir', 'img', 'lut', 'amt', 'n'].forEach(function (k) { U[k] = gl.getUniformLocation(prog, k); });
+    ['sc', 'of', 'mir', 'img', 'lut', 'amt', 'n', 'ex', 'tp', 'ct', 'st', 'vg', 'gr', 'asp', 'sd', 'orig'].forEach(function (k) { U[k] = gl.getUniformLocation(prog, k); });
     function tex() { var t = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, t); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR); return t; }
     texV = tex(); texL = tex();
     gl.uniform1i(U.img, 0); gl.uniform1i(U.lut, 1); gl.uniform1f(U.n, N);
@@ -107,25 +115,53 @@
     try { localStorage.setItem('cam.look', L.id); } catch (e) {}
   }
   var cur = 0, amt = 1, facing = 'environment', stream = null, raf = 0;
+  var mode = 'camera', photo = null;            // sursa: camera live sau o poză din galerie (canvas)
+  var RATIOS = [['Full', 0], ['4:5', 4 / 5], ['1:1', 1], ['9:16', 9 / 16], ['3:4', 3 / 4]], ri = 0;
+  var ADJ = { exp: 0, temp: 0, con: 0, sat: 0, vig: 0, grain: 0 }, hold = false, seed = Math.random() * 100;
+  function srcW() { return mode === 'photo' ? photo.width : video.videoWidth; }
+  function srcH() { return mode === 'photo' ? photo.height : video.videoHeight; }
+  function ready() { return mode === 'photo' ? !!photo : video.readyState >= 2 && video.videoWidth > 0; }
+  // formatul ales; „Full” = cât se vede pe ecran (camera) sau toată poza (galerie)
+  function aspect() {
+    if (RATIOS[ri][1]) return RATIOS[ri][1];
+    if (mode === 'photo') return srcW() / srcH();
+    var r = canvas.getBoundingClientRect(); return r.width / r.height;
+  }
 
-  // desenează cadrul curent: în vizor decupat ca să umple ecranul („cover”), la poză tot cadrul
-  function draw(w, h, full) {
-    if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
-    gl.viewport(0, 0, w, h);
-    var vw = video.videoWidth || 1, vh = video.videoHeight || 1, sx = 1, sy = 1;
-    if (!full) { var ra = (w / h) / (vw / vh); if (ra > 1) sy = 1 / ra; else sx = ra; }
-    gl.uniform2f(U.sc, sx, sy); gl.uniform2f(U.of, 0, 0); gl.uniform1f(U.mir, facing === 'user' ? 1 : 0); gl.uniform1f(U.amt, amt);
+  // desenează sursa decupată la formatul A într-un dreptunghi (x,y,w,h) al canvasului
+  function draw(W, H, rect) {
+    if (canvas.width !== W || canvas.height !== H) { canvas.width = W; canvas.height = H; }
+    gl.clearColor(0, 0, 0, 1); gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.viewport(rect[0], H - rect[1] - rect[3], rect[2], rect[3]);
+    var A = rect[2] / rect[3], sa = srcW() / srcH(), sx = 1, sy = 1;
+    if (sa > A) sx = A / sa; else sy = sa / A;
+    gl.uniform2f(U.sc, sx, sy); gl.uniform2f(U.of, 0, 0); gl.uniform1f(U.mir, mode === 'camera' && facing === 'user' ? 1 : 0);
+    gl.uniform1f(U.amt, amt); gl.uniform1f(U.orig, hold ? 1 : 0);
+    gl.uniform1f(U.ex, ADJ.exp * 1.2); gl.uniform1f(U.tp, ADJ.temp); gl.uniform1f(U.ct, ADJ.con * 0.6); gl.uniform1f(U.st, ADJ.sat);
+    gl.uniform1f(U.vg, ADJ.vig * 0.75); gl.uniform1f(U.gr, ADJ.grain); gl.uniform1f(U.asp, A); gl.uniform1f(U.sd, seed);
     gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, texV);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, video);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, mode === 'photo' ? photo : video);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+  }
+  // vizorul arată exact cadrul care se salvează (cu benzi negre dacă formatul diferă de ecran)
+  function viewRect(W, H) {
+    var A = aspect(), w = W, h = W / A; if (h > H) { h = H; w = H * A; }
+    return [Math.round((W - w) / 2), Math.round((H - h) / 2), Math.round(w), Math.round(h)];
+  }
+  function placeFrame() {
+    var r = canvas.getBoundingClientRect(), v = viewRect(r.width, r.height), f = $('frame');
+    f.style.left = v[0] + 'px'; f.style.top = v[1] + 'px'; f.style.width = v[2] + 'px'; f.style.height = v[3] + 'px';
   }
   function loop() {
     raf = requestAnimationFrame(loop);
-    if (busy || video.readyState < 2) return;
+    if (busy || !ready()) return;
     var dpr = Math.min(window.devicePixelRatio || 1, 2), r = canvas.getBoundingClientRect();
-    var w = Math.round(r.width * dpr), h = Math.round(r.height * dpr), k = Math.min(1, 1600 / Math.max(w, h));
-    draw(Math.round(w * k), Math.round(h * k), false);
+    var W = Math.round(r.width * dpr), H = Math.round(r.height * dpr), k = Math.min(1, 1600 / Math.max(W, H));
+    W = Math.round(W * k); H = Math.round(H * k);
+    draw(W, H, viewRect(W, H));
+    if (mode === 'photo') { cancelAnimationFrame(raf); raf = 0; } // poză fixă: redesenăm doar la schimbări
   }
+  function redraw() { if (mode === 'photo' && !raf) loop(); }
 
   async function start() {
     $('err').hidden = true;
@@ -135,39 +171,84 @@
       if (stream) stream.getTracks().forEach(function (t) { t.stop(); });
       stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: { ideal: facing }, width: { ideal: 3840 }, height: { ideal: 2160 } } });
     } catch (e) {
-      if (/Instagram|FBAN|FBAV|TikTok/i.test(navigator.userAgent)) return fail(tr('Aplicația din care ai deschis linkul (ex. Instagram) blochează camera. Apasă „⋯” și alege „Deschide în browser” (Safari sau Chrome).', 'The app you opened this link in (e.g. Instagram) blocks the camera. Tap “⋯” and choose “Open in browser” (Safari or Chrome).'));
+      if (/Instagram|FBAN|FBAV|TikTok/i.test(navigator.userAgent)) return fail(tr('Aplicația din care ai deschis linkul (ex. Instagram) blochează camera. Apasă „⋯” și alege „Deschide în browser” (Safari sau Chrome). Sau editează o poză din galerie.', 'The app you opened this link in (e.g. Instagram) blocks the camera. Tap “⋯” and choose “Open in browser” (Safari or Chrome). Or edit a photo from your gallery.'));
       return fail(e && e.name === 'NotAllowedError' ? tr('Ai refuzat accesul la cameră. Permite-l din setările browserului și încearcă din nou. Dacă ai deschis linkul din Instagram, deschide-l în Safari sau Chrome.', 'Camera access was denied. Allow it in the browser settings and try again. If you opened the link from Instagram, open it in Safari or Chrome.') : tr('Camera nu a putut porni. Încearcă în Safari sau Chrome.', 'The camera could not start. Try Safari or Chrome.'));
     }
+    mode = 'camera'; photo = null;
     video.srcObject = stream; await video.play().catch(function () {});
+    enter();
+    hardware();
+  }
+  function enter() {
     $('start').hidden = true;
-    var saved = 0; try { var id = localStorage.getItem('cam.look'); LOOKS.forEach(function (L, i) { if (L.id === id) saved = i; }); } catch (e) {}
-    setLook(saved);
-    cancelAnimationFrame(raf); loop();
+    var cam = mode === 'camera';
+    $('flip').style.visibility = cam ? 'visible' : 'hidden'; $('ttimer').hidden = !cam; $('tnew').hidden = cam; $('hint').classList.remove('off');
+    $('shutter').setAttribute('aria-label', cam ? tr('Fă poza', 'Take the photo') : tr('Salvează poza editată', 'Export the edited photo'));
+    var saved = cur; try { var id = localStorage.getItem('cam.look'); LOOKS.forEach(function (L, i) { if (L.id === id) saved = i; }); } catch (e) {}
+    setLook(saved); placeFrame();
+    cancelAnimationFrame(raf); raf = 0; loop();
+    setTimeout(function () { $('hint').classList.add('off'); }, 4000);
   }
   function fail(m) { var e = $('err'); e.textContent = m; e.hidden = false; $('start').hidden = false; }
 
+  // ---------- poză din galerie ----------
+  // micșorăm prin canvas 2D (pozele de 24–48 MP blochează Safari); <img> aplică singur rotația EXIF
+  function openPhoto(f) {
+    if (!f || !/^image\//.test(f.type)) return;
+    if (!gl && !initGL()) return fail(tr('Telefonul nu suportă procesarea culorilor (WebGL).', 'Your phone does not support colour processing (WebGL).'));
+    var url = URL.createObjectURL(f), im = new Image();
+    im.onload = function () {
+      var cap = Math.min(gl.getParameter(gl.MAX_TEXTURE_SIZE) || 4096, 4096), k = Math.min(1, cap / Math.max(im.naturalWidth, im.naturalHeight));
+      var c = d.createElement('canvas'); c.width = Math.round(im.naturalWidth * k); c.height = Math.round(im.naturalHeight * k);
+      c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); URL.revokeObjectURL(url);
+      if (stream) { stream.getTracks().forEach(function (t) { t.stop(); }); stream = null; }
+      photo = c; mode = 'photo'; srcName = (f.name || 'poza').replace(/\.[^.]+$/, '').replace(/[^\w-]+/g, '-').slice(0, 40);
+      $('ttorch').hidden = true; $('zoomRow').hidden = true; $('sugg').hidden = true;
+      enter();
+    };
+    im.onerror = function () { URL.revokeObjectURL(url); fail(tr('Poza nu a putut fi deschisă. Încearcă alt fișier (JPG, PNG).', 'The photo could not be opened. Try another file (JPG, PNG).')); };
+    im.src = url;
+  }
+  var srcName = '';
+
   // ---------- poza ----------
-  var busy = false, file = null, lastUrl = '';
+  var busy = false, file = null, lastUrl = '', shotAt = 0;
   function stamp() { var t = new Date(), z = function (x) { return String(x).padStart(2, '0'); }; return t.getFullYear() + z(t.getMonth() + 1) + z(t.getDate()) + '-' + z(t.getHours()) + z(t.getMinutes()) + z(t.getSeconds()); }
-  function shoot() {
-    if (!stream || busy || video.readyState < 2) return;
-    busy = true;
-    var f = $('flash'); f.classList.add('on'); setTimeout(function () { f.classList.remove('on'); }, 60);
-    // poza are exact încadrarea din vizor (pentru grilă și sfaturi), la rezoluția maximă a camerei
-    var r = canvas.getBoundingClientRect(), A = r.width / r.height, vw = video.videoWidth, vh = video.videoHeight;
-    var cw = vw / vh > A ? vh * A : vw, ch = vw / vh > A ? vh : vw / A;
-    var max = gl.getParameter(gl.MAX_TEXTURE_SIZE) || 4096, k = Math.min(1, max / Math.max(cw, ch));
-    draw(Math.round(cw * k), Math.round(ch * k), false);
+  function capture() {
+    if (busy || !ready()) return;
+    busy = true; shotAt = Date.now();
+    if (mode === 'camera') { var f = $('flash'); f.classList.add('on'); setTimeout(function () { f.classList.remove('on'); }, 60); if (navigator.vibrate) navigator.vibrate(15); }
+    // cadrul din vizor, la rezoluția maximă a sursei
+    var A = aspect(), sw = srcW(), sh = srcH();
+    var cw = sw / sh > A ? sh * A : sw, ch = sw / sh > A ? sh : sw / A;
+    var max = Math.min(gl.getParameter(gl.MAX_TEXTURE_SIZE) || 4096, 4096), k = Math.min(1, max / Math.max(cw, ch));
+    var W = Math.round(cw * k), H = Math.round(ch * k);
+    draw(W, H, [0, 0, W, H]);
     canvas.toBlob(function (blob) {
-      busy = false;
+      busy = false; raf = 0; loop();
       if (!blob) return;
-      file = new File([blob], 'aman-' + stamp() + '.jpg', { type: 'image/jpeg' });
+      file = new File([blob], 'aman-' + (mode === 'photo' && srcName ? srcName + '-' : '') + stamp() + '.jpg', { type: 'image/jpeg' });
       if (lastUrl) URL.revokeObjectURL(lastUrl);
       lastUrl = URL.createObjectURL(blob);
       $('shot').src = lastUrl; $('thumb').style.backgroundImage = 'url("' + lastUrl + '")'; $('thumb').hidden = false;
       $('saveMsg').textContent = tr('Poza rămâne pe telefonul tău. Nu se urcă nimic pe site.', 'The photo stays on your phone. Nothing is uploaded to the site.');
+      $('again').textContent = mode === 'photo' ? tr('Înapoi la editare', 'Back to editing') : tr('Încă una', 'Another one');
       $('sheet').hidden = false;
     }, 'image/jpeg', 0.95);
+  }
+  // temporizator: 0, 3 sau 10 secunde, cu numărătoare pe ecran
+  var TIMERS = [0, 3, 10], ti = 0, counting = 0;
+  function shoot() {
+    if (counting || busy) return;
+    var n = mode === 'camera' ? TIMERS[ti] : 0;
+    if (!n) return capture();
+    // după ceas (nu după numărul de intervale), ca să nu întârzie când telefonul e ocupat
+    var el = $('count'), end = Date.now() + n * 1000; el.hidden = false; el.textContent = n;
+    counting = setInterval(function () {
+      var left = Math.ceil((end - Date.now()) / 1000);
+      if (left > 0) { el.textContent = left; return; }
+      clearInterval(counting); counting = 0; el.hidden = true; capture();
+    }, 100);
   }
   // „Salvează”: fișierul e deja gata, deci share() pornește direct din atingere (cerință iOS).
   function save() {
@@ -184,6 +265,66 @@
     var a = d.createElement('a'); a.href = lastUrl; a.download = file.name; d.body.appendChild(a); a.click(); a.remove();
     $('saveMsg').textContent = tr('Poza s-a salvat. O găsești în Galerie (sau în Descărcări).', 'The photo was saved. You will find it in your Gallery (or Downloads).');
   }
+
+  // ---------- zoom, lanternă, focalizare: doar dacă telefonul le oferă ----------
+  var caps = {}, torchOn = false, zoomVal = 1;
+  function track() { return stream && stream.getVideoTracks()[0]; }
+  function hardware() {
+    var t = track(); caps = (t && t.getCapabilities) ? t.getCapabilities() : {};
+    var z = caps.zoom, zr = $('zoomRow'), zi = $('zoom');
+    if (z && z.max > z.min) { zr.hidden = false; zi.min = z.min; zi.max = Math.min(z.max, 10); zi.step = z.step || 0.1; zoomVal = Math.max(z.min, Math.min(zoomVal, zi.max)); zi.value = zoomVal; $('zoomv').textContent = (+zoomVal).toFixed(1) + '×'; if (zoomVal !== 1) apply({ zoom: zoomVal }); }
+    else zr.hidden = true;
+    $('ttorch').hidden = !caps.torch; if (caps.torch && torchOn) apply({ torch: true });
+  }
+  function apply(c) { var t = track(); if (t && t.applyConstraints) t.applyConstraints({ advanced: [c] }).catch(function () {}); }
+  function focusAt(x, y) {
+    var fm = caps.focusMode || [];
+    if (!(fm.indexOf('single-shot') >= 0 || fm.indexOf('continuous') >= 0)) return false;
+    var r = canvas.getBoundingClientRect(), px = (x - r.left) / r.width, py = (y - r.top) / r.height;
+    apply({ pointsOfInterest: [{ x: px, y: py }], focusMode: fm.indexOf('single-shot') >= 0 ? 'single-shot' : 'continuous', exposureMode: (caps.exposureMode || []).indexOf('single-shot') >= 0 ? 'single-shot' : undefined });
+    var f = $('focus'); f.hidden = true; void f.offsetWidth; f.style.left = (x - r.left) + 'px'; f.style.top = (y - r.top) + 'px'; f.hidden = false;
+    return true;
+  }
+
+  // ---------- sugestie de stil după lumina din cadru (reguli simple, nu schimbă singur) ----------
+  var probe = d.createElement('canvas'); probe.width = 32; probe.height = 18;
+  function suggest() {
+    var b = $('sugg');
+    if (mode !== 'camera' || !ready() || d.hidden || !$('sheet').hidden) return;
+    var x = probe.getContext('2d', { willReadFrequently: true }); x.drawImage(video, 0, 0, 32, 18);
+    var px = x.getImageData(0, 0, 32, 18).data, r = 0, g = 0, bl = 0, sat = 0, n = px.length / 4;
+    for (var i = 0; i < px.length; i += 4) { r += px[i]; g += px[i + 1]; bl += px[i + 2]; sat += Math.max(px[i], px[i + 1], px[i + 2]) - Math.min(px[i], px[i + 1], px[i + 2]); }
+    r /= n * 255; g /= n * 255; bl /= n * 255; sat /= n * 255;
+    var L = 0.2126 * r + 0.7152 * g + 0.0722 * bl, id = null;
+    if (L < 0.2) id = 'night';
+    else if (g > r + 0.04 && g > bl + 0.04) id = 'nature';
+    else if (r > bl + 0.08 && L > 0.3) id = 'golden';
+    else if (sat < 0.06) id = 'bw';
+    var k = -1; LOOKS.forEach(function (Lk, j) { if (Lk.id === id) k = j; });
+    if (k < 0 || k === cur) { b.hidden = true; return; }
+    b.dataset.k = k; b.textContent = tr('Sugestie: ', 'Suggestion: ') + (EN ? LOOKS[k].en : LOOKS[k].ro) + ' ›'; b.hidden = false;
+  }
+  setInterval(suggest, 2500);
+
+  // ---------- gesturi pe vizor: glisare = alt stil, apăsare lungă = original, atingere = focalizare ----------
+  (function () {
+    var v = $('view'), sx = 0, sy = 0, st = 0, lp = 0, moved = false, active = false;
+    v.addEventListener('pointerdown', function (e) {
+      if (e.target.closest('button,a,input,.tip')) return;
+      active = true; moved = false; sx = e.clientX; sy = e.clientY; st = Date.now();
+      lp = setTimeout(function () { if (!moved) { hold = true; redraw(); } }, 280);
+    });
+    v.addEventListener('pointermove', function (e) { if (active && (Math.abs(e.clientX - sx) > 12 || Math.abs(e.clientY - sy) > 12)) { moved = true; clearTimeout(lp); } });
+    function end(e) {
+      if (!active) return; active = false; clearTimeout(lp);
+      if (hold) { hold = false; redraw(); return; }
+      var dx = e.clientX - sx, dy = e.clientY - sy;
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) { setLook((cur + (dx < 0 ? 1 : -1) + LOOKS.length) % LOOKS.length); redraw(); return; }
+      if (!moved && Date.now() - st < 280 && mode === 'camera') focusAt(e.clientX, e.clientY);
+    }
+    v.addEventListener('pointerup', end); v.addEventListener('pointercancel', end);
+    v.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+  })();
 
   // ---------- nivela ----------
   var levelOn = false;
@@ -207,29 +348,48 @@
   }
 
   // ---------- interfața ----------
+  // pe calculator camera nu e disponibilă: pagina e făcută pentru telefon
+  var PHONE = matchMedia('(pointer: coarse)').matches || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
+  if (!PHONE) {
+    $('go').hidden = true; $('pickLbl').hidden = true; d.querySelector('.start ul').hidden = true;
+    var m = d.createElement('p'); m.className = 'sub'; m.style.color = '#f5f5f7';
+    m.textContent = tr('Camera e făcută pentru telefon. Deschide costi1andrei.site/camera.html pe telefonul tău.', 'The camera is made for phones. Open costi1andrei.site/camera.html on your phone.');
+    $('go').insertAdjacentElement('afterend', m);
+  }
   $('looks').innerHTML = LOOKS.map(function (L, i) { return '<button type="button" role="radio" data-i="' + i + '" aria-pressed="false">' + (EN ? L.en : L.ro) + '</button>'; }).join('');
   d.addEventListener('click', function (e) {
     var t = e.target.closest('button'); if (!t) return;
     if (t.id === 'go') return start();
-    if (t.dataset.i !== undefined && gl) return setLook(+t.dataset.i);
+    if (t.dataset.i !== undefined && gl) { setLook(+t.dataset.i); return redraw(); }
     if (t.id === 'shutter') return shoot();
     if (t.id === 'flip') { facing = facing === 'environment' ? 'user' : 'environment'; return start(); }
     if (t.id === 'save') return save();
-    if (t.id === 'again') { $('sheet').hidden = true; return; }
+    if (t.id === 'again') { $('sheet').hidden = true; return redraw(); }
     if (t.id === 'thumb') { $('sheet').hidden = false; return; }
+    if (t.id === 'tratio') { ri = (ri + 1) % RATIOS.length; t.textContent = RATIOS[ri][0]; placeFrame(); return redraw(); }
+    if (t.id === 'ttimer') { ti = (ti + 1) % TIMERS.length; t.textContent = '⏱ ' + (TIMERS[ti] ? TIMERS[ti] + 's' : 'Off'); t.setAttribute('aria-pressed', String(!!TIMERS[ti])); return; }
+    if (t.id === 'ttorch') { torchOn = !torchOn; t.setAttribute('aria-pressed', String(torchOn)); return apply({ torch: torchOn }); }
+    if (t.id === 'tpro' || t.id === 'prox') { var pr = $('pro'), on = pr.hidden; pr.hidden = !on; $('tpro').setAttribute('aria-pressed', String(on)); return; }
+    if (t.id === 'reset') { Object.keys(ADJ).forEach(function (k) { ADJ[k] = 0; }); d.querySelectorAll('[data-adj]').forEach(function (i) { i.value = 0; i.nextElementSibling.textContent = '0'; }); return redraw(); }
+    if (t.id === 'sugg') { setLook(+t.dataset.k); t.hidden = true; return redraw(); }
     if (t.id === 'tgrid') { var g = $('grid'); g.hidden = !g.hidden; t.setAttribute('aria-pressed', String(!g.hidden)); return; }
     if (t.id === 'tlevel') return toggleLevel(t);
-    if (t.id === 'ttip' || t.id === 'tipx') { var tp = $('tip'), on = tp.hidden; tp.hidden = !on; $('ttip').setAttribute('aria-pressed', String(on)); return; }
+    if (t.id === 'ttip' || t.id === 'tipx') { var tp = $('tip'), on2 = tp.hidden; tp.hidden = !on2; $('ttip').setAttribute('aria-pressed', String(on2)); return; }
   });
-  $('amt').addEventListener('input', function (e) { amt = e.target.value / 100; $('amtv').textContent = e.target.value; });
+  ['pick', 'pick2'].forEach(function (id) { $(id).addEventListener('change', function (e) { openPhoto(e.target.files && e.target.files[0]); e.target.value = ''; }); });
+  $('amt').addEventListener('input', function (e) { amt = e.target.value / 100; $('amtv').textContent = e.target.value; redraw(); });
+  d.querySelectorAll('[data-adj]').forEach(function (i) { i.addEventListener('input', function () { ADJ[i.dataset.adj] = i.value / 100; i.nextElementSibling.textContent = i.value; redraw(); }); });
+  $('zoom').addEventListener('input', function (e) { zoomVal = +e.target.value; $('zoomv').textContent = zoomVal.toFixed(1) + '×'; apply({ zoom: zoomVal }); });
+  addEventListener('resize', function () { placeFrame(); redraw(); });
   d.addEventListener('keydown', function (e) { if ((e.key === ' ' || e.key === 'Enter') && $('start').hidden && $('sheet').hidden && e.target === d.body) { e.preventDefault(); shoot(); } });
-  // camera se oprește când ieși din pagină și repornește când revii
+  // camera se oprește când ieși din pagină și repornește când revii (cu zoom/lanternă reaplicate)
   var wasOn = false;
   d.addEventListener('visibilitychange', function () {
     if (d.hidden) { wasOn = !!stream; if (stream) { stream.getTracks().forEach(function (t) { t.stop(); }); stream = null; } }
-    else if (wasOn && !stream) start();
+    else if (wasOn && !stream && mode === 'camera') start();
   });
 
   // pentru teste: stilurile și calculul culorilor
-  window.AmanCamera = { LOOKS: LOOKS, grade: grade };
+  window.AmanCamera = { LOOKS: LOOKS, grade: grade, caps: function () { return caps; }, adj: ADJ, shotAt: function () { return shotAt; } };
+
 })();
