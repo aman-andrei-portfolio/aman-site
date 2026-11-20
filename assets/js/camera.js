@@ -76,6 +76,10 @@
     'void main(){vec3 c=texture2D(img,v).rgb;gl_FragColor=vec4(mix(c,look(c),amt),1.0);}';
   var canvas = $('gl'), gl = null, prog, texV, texL, U = {}, video = d.createElement('video');
   video.setAttribute('playsinline', ''); video.setAttribute('muted', ''); video.muted = true; video.autoplay = true;
+  // în pagină (invizibil, nu display:none), altfel Safari pe iPhone poate da cadre negre
+  video.style.cssText = 'position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;left:0;top:0';
+  d.body.appendChild(video);
+  var IOS = /iPhone|iPad|iPod/.test(navigator.userAgent) || (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
 
   function initGL() {
     gl = canvas.getContext('webgl', { preserveDrawingBuffer: true, premultipliedAlpha: false }) || canvas.getContext('experimental-webgl', { preserveDrawingBuffer: true });
@@ -131,7 +135,8 @@
       if (stream) stream.getTracks().forEach(function (t) { t.stop(); });
       stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: { ideal: facing }, width: { ideal: 3840 }, height: { ideal: 2160 } } });
     } catch (e) {
-      return fail(e && e.name === 'NotAllowedError' ? tr('Ai refuzat accesul la cameră. Permite-l din setările browserului și încearcă din nou.', 'Camera access was denied. Allow it in the browser settings and try again.') : tr('Camera nu a putut porni.', 'The camera could not start.'));
+      if (/Instagram|FBAN|FBAV|TikTok/i.test(navigator.userAgent)) return fail(tr('Aplicația din care ai deschis linkul (ex. Instagram) blochează camera. Apasă „⋯” și alege „Deschide în browser” (Safari sau Chrome).', 'The app you opened this link in (e.g. Instagram) blocks the camera. Tap “⋯” and choose “Open in browser” (Safari or Chrome).'));
+      return fail(e && e.name === 'NotAllowedError' ? tr('Ai refuzat accesul la cameră. Permite-l din setările browserului și încearcă din nou. Dacă ai deschis linkul din Instagram, deschide-l în Safari sau Chrome.', 'Camera access was denied. Allow it in the browser settings and try again. If you opened the link from Instagram, open it in Safari or Chrome.') : tr('Camera nu a putut porni. Încearcă în Safari sau Chrome.', 'The camera could not start. Try Safari or Chrome.'));
     }
     video.srcObject = stream; await video.play().catch(function () {});
     $('start').hidden = true;
@@ -148,8 +153,11 @@
     if (!stream || busy || video.readyState < 2) return;
     busy = true;
     var f = $('flash'); f.classList.add('on'); setTimeout(function () { f.classList.remove('on'); }, 60);
-    var max = gl.getParameter(gl.MAX_TEXTURE_SIZE) || 4096, vw = video.videoWidth, vh = video.videoHeight, k = Math.min(1, max / Math.max(vw, vh));
-    draw(Math.round(vw * k), Math.round(vh * k), true);
+    // poza are exact încadrarea din vizor (pentru grilă și sfaturi), la rezoluția maximă a camerei
+    var r = canvas.getBoundingClientRect(), A = r.width / r.height, vw = video.videoWidth, vh = video.videoHeight;
+    var cw = vw / vh > A ? vh * A : vw, ch = vw / vh > A ? vh : vw / A;
+    var max = gl.getParameter(gl.MAX_TEXTURE_SIZE) || 4096, k = Math.min(1, max / Math.max(cw, ch));
+    draw(Math.round(cw * k), Math.round(ch * k), false);
     canvas.toBlob(function (blob) {
       busy = false;
       if (!blob) return;
@@ -165,7 +173,8 @@
   function save() {
     if (!file) return;
     var msg = $('saveMsg');
-    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    // iPhone: meniul de distribuire are „Salvează imaginea”. Android/calculator: descărcare (apare în Galerie).
+    if (IOS && navigator.canShare && navigator.canShare({ files: [file] })) {
       navigator.share({ files: [file], title: file.name }).then(function () {
         msg.textContent = tr('Gata. Alege „Salvează imaginea” în meniu, dacă n-ai făcut-o deja.', 'Done. Choose “Save image” in the menu if you have not already.');
       }).catch(function (e) { if (e && e.name !== 'AbortError') download(); });
@@ -173,7 +182,7 @@
   }
   function download() {
     var a = d.createElement('a'); a.href = lastUrl; a.download = file.name; d.body.appendChild(a); a.click(); a.remove();
-    $('saveMsg').textContent = tr('Poza s-a descărcat. O găsești în Galerie (Descărcări).', 'The photo was downloaded. You will find it in your Gallery (Downloads).');
+    $('saveMsg').textContent = tr('Poza s-a salvat. O găsești în Galerie (sau în Descărcări).', 'The photo was saved. You will find it in your Gallery (or Downloads).');
   }
 
   // ---------- nivela ----------
