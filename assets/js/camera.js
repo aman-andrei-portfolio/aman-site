@@ -71,7 +71,7 @@
   // ---------- WebGL ----------
   // q = poziția în imaginea finală (0…1), folosită pentru vignetă și granulație, ca să arate la fel în vizor și în poză
   var VS = 'attribute vec2 p;varying vec2 v;varying vec2 q;uniform vec2 sc;uniform vec2 of;uniform float mir;void main(){vec2 t=p*0.5+0.5;t.y=1.0-t.y;q=t;t=(t-0.5)*sc+0.5+of;if(mir>0.5)t.x=1.0-t.x;v=t;gl_Position=vec4(p,0.0,1.0);}';
-  var FS = 'precision highp float;varying vec2 v;varying vec2 q;uniform sampler2D img;uniform sampler2D lut;uniform float amt;uniform float n;' +
+  var FS = '#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\nvarying vec2 v;varying vec2 q;uniform sampler2D img;uniform sampler2D lut;uniform float amt;uniform float n;' +
     'uniform float ex;uniform float tp;uniform float ct;uniform float st;uniform float vg;uniform float gr;uniform float asp;uniform float sd;uniform float orig;' +
     'vec3 look(vec3 c){float b=c.b*(n-1.0);float b0=floor(b);float b1=min(b0+1.0,n-1.0);float x=c.r*(n-1.0)+0.5;float y=(c.g*(n-1.0)+0.5)/n;' +
     'vec3 a=texture2D(lut,vec2((b0*n+x)/(n*n),y)).rgb;vec3 z=texture2D(lut,vec2((b1*n+x)/(n*n),y)).rgb;return mix(a,z,b-b0);}' +
@@ -367,7 +367,7 @@
     if (t.id === 'again') { $('sheet').hidden = true; return redraw(); }
     if (t.id === 'thumb') { $('sheet').hidden = false; return; }
     if (t.id === 'tratio') { ri = (ri + 1) % RATIOS.length; t.textContent = RATIOS[ri][0]; placeFrame(); return redraw(); }
-    if (t.id === 'ttimer') { ti = (ti + 1) % TIMERS.length; t.textContent = '⏱ ' + (TIMERS[ti] ? TIMERS[ti] + 's' : 'Off'); t.setAttribute('aria-pressed', String(!!TIMERS[ti])); return; }
+    if (t.id === 'ttimer') { ti = (ti + 1) % TIMERS.length; t.textContent = '⏱ ' + (TIMERS[ti] ? TIMERS[ti] + 's' : tr('Fără', 'Off')); t.setAttribute('aria-pressed', String(!!TIMERS[ti])); return; }
     if (t.id === 'ttorch') { torchOn = !torchOn; t.setAttribute('aria-pressed', String(torchOn)); return apply({ torch: torchOn }); }
     if (t.id === 'tpro' || t.id === 'prox') { var pr = $('pro'), on = pr.hidden; pr.hidden = !on; $('tpro').setAttribute('aria-pressed', String(on)); return; }
     if (t.id === 'reset') { Object.keys(ADJ).forEach(function (k) { ADJ[k] = 0; }); d.querySelectorAll('[data-adj]').forEach(function (i) { i.value = 0; i.nextElementSibling.textContent = '0'; }); return redraw(); }
