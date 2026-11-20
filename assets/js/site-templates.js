@@ -9,10 +9,22 @@
 
   var DAYS = ['Luni', 'Marți', 'Miercuri', 'Joi', 'Vineri', 'Sâmbătă', 'Duminică'];
 
+  // Fonturi de sistem (fără descărcări externe), ca previzualizarea și site-ul final să arate la fel.
+  var FONTS = {
+    condensed: { label: 'Condensat', css: '"Oswald","Bebas Neue","Arial Narrow","Helvetica Neue Condensed","Roboto Condensed","sans-serif-condensed",Impact,sans-serif', upper: true },
+    serif: { label: 'Clasic', css: 'Georgia,"Times New Roman",serif' },
+    didone: { label: 'Elegant', css: '"Didot","Bodoni MT","Bodoni 72",Georgia,serif', italic: true },
+    sans: { label: 'Modern', css: '-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif' },
+    black: { label: 'Puternic', css: '"Arial Black","Helvetica Neue",Arial,sans-serif', upper: true },
+    mono: { label: 'Tehnic', css: 'ui-monospace,"SF Mono",Menlo,Consolas,"Roboto Mono",monospace' },
+  };
+  var CORNERS = { sharp: { label: 'Drepte', r: '4px', b: '4px' }, soft: { label: 'Rotunjite', r: '14px', b: '10px' }, round: { label: 'Foarte rotunde', r: '26px', b: '999px' } };
+  var LAYOUTS = { split: 'Text + card', center: 'Centrat' };
+
   var TEMPLATES = {
     barber: {
       label: 'Frizerie', itemsLabel: 'Servicii', itemsHint: 'Tunsori, barbă, pachete', cta: 'Programează-te',
-      font: '"Oswald","Bebas Neue","Arial Narrow","Helvetica Neue Condensed","Roboto Condensed","sans-serif-condensed",Impact,sans-serif', upper: true,
+      fontKey: 'condensed',
       defaults: {
         name: 'Barber Shop Nord', tagline: 'Tunsori precise, fără grabă.',
         about: 'Suntem o frizerie mică din Iași, cu doi frizeri și multă atenție la detalii. Fără cozi: lucrăm pe bază de programare, ca să ai timpul tău.',
@@ -29,7 +41,7 @@
     },
     cafe: {
       label: 'Cafenea / Restaurant', itemsLabel: 'Meniu', itemsHint: 'Băuturi, mâncare, deserturi', cta: 'Rezervă o masă',
-      font: 'Georgia,"Times New Roman",serif', upper: false,
+      fontKey: 'serif',
       defaults: {
         name: 'Cafeneaua Colț', tagline: 'Cafea de specialitate și deserturi făcute în casă.',
         about: 'Prăjim boabele în fiecare săptămână și coacem dimineața. Un loc liniștit pentru o cafea bună, o carte sau o întâlnire.',
@@ -47,7 +59,7 @@
     },
     salon: {
       label: 'Salon / Beauty', itemsLabel: 'Servicii', itemsHint: 'Unghii, gene, sprâncene, coafor', cta: 'Fă o programare',
-      font: '"Didot","Bodoni MT","Bodoni 72",Georgia,serif', upper: false, italic: true,
+      fontKey: 'didone',
       defaults: {
         name: 'Studio Bella', tagline: 'Unghii, gene și sprâncene, cu grijă la detalii.',
         about: 'Un salon mic și luminos, unde lucrăm doar pe programare. Folosim produse profesionale și sterilizăm instrumentele după fiecare clientă.',
@@ -64,7 +76,7 @@
     },
     portfolio: {
       label: 'Portofoliu personal', itemsLabel: 'Servicii', itemsHint: 'Proiecte, servicii sau colaborări', cta: 'Hai să lucrăm împreună',
-      font: '-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif', upper: false,
+      fontKey: 'sans',
       defaults: {
         name: 'Andrei Popescu', tagline: 'Fotograf de evenimente și portrete, din Iași.',
         about: 'Fotografiez nunți, botezuri și portrete de 5 ani. Îmi place lumina naturală și momentele care nu sunt regizate.',
@@ -79,6 +91,57 @@
       },
     },
   };
+
+  TEMPLATES.fitness = {
+    label: 'Sală / Antrenor', itemsLabel: 'Abonamente', itemsHint: 'Abonamente, ședințe, programe', cta: 'Începe azi', fontKey: 'condensed',
+    defaults: {
+      name: 'Forța Gym', tagline: 'Antrenamente cu plan, nu la întâmplare.',
+      about: 'Sală de cartier cu aparatură nouă și antrenori care îți fac un plan pe măsura ta. Contează progresul, nu cât de bine arăți în prima zi.',
+      accent: '#d4ff3a', theme: 'dark',
+      items: [
+        { name: 'Abonament lunar', price: '180 lei', desc: 'Acces nelimitat, 06:00–23:00' },
+        { name: 'Ședință cu antrenor', price: '80 lei', desc: '60 de minute, plan personalizat' },
+        { name: 'Pachet 10 ședințe', price: '650 lei', desc: 'Cu antrenor, valabil 2 luni' },
+        { name: 'Plan alimentar', price: '150 lei', desc: 'Adaptat obiectivului tău' },
+      ],
+      hours: ['06:00–23:00', '06:00–23:00', '06:00–23:00', '06:00–23:00', '06:00–23:00', '08:00–20:00', '09:00–18:00'],
+      phone: '0740 000 000', whatsapp: '0740 000 000', instagram: 'fortagym', address: 'Strada Exemplu 21, Iași',
+    },
+  };
+  TEMPLATES.auto = {
+    label: 'Auto / Detailing', itemsLabel: 'Servicii', itemsHint: 'Spălare, detailing, reparații', cta: 'Programează mașina', fontKey: 'black',
+    defaults: {
+      name: 'Detailing Pro', tagline: 'Mașina ta, ca nouă. Interior și exterior.',
+      about: 'Lucrăm doar pe programare, cu produse profesionale, și îți predăm mașina la ora stabilită. Îți spunem dinainte cât costă, fără surprize.',
+      accent: '#e63946', theme: 'dark',
+      items: [
+        { name: 'Spălare exterior', price: '50 lei', desc: 'Prespălare, spumă activă, uscare' },
+        { name: 'Curățare interior', price: '150 lei', desc: 'Aspirare, plastice, geamuri' },
+        { name: 'Polish faruri', price: '120 lei', desc: 'Faruri clare, ca noi' },
+        { name: 'Detailing complet', price: 'de la 600 lei', desc: 'Polish, protecție ceramică, interior' },
+      ],
+      hours: ['08:00–19:00', '08:00–19:00', '08:00–19:00', '08:00–19:00', '08:00–19:00', '09:00–15:00', 'Închis'],
+      phone: '0740 000 000', whatsapp: '0740 000 000', instagram: 'detailingpro', address: 'Șoseaua Exemplu 40, Iași',
+    },
+  };
+  TEMPLATES.clinic = {
+    label: 'Cabinet / Clinică', itemsLabel: 'Tratamente', itemsHint: 'Consultații, tratamente, pachete', cta: 'Programează o consultație', fontKey: 'sans',
+    defaults: {
+      name: 'Clinica Zâmbet', tagline: 'Stomatologie modernă, cu grijă și răbdare.',
+      about: 'Îți explicăm fiecare pas înainte să începem și primești planul de tratament cu prețuri, în scris. Lucrăm pe programare, ca să nu aștepți.',
+      accent: '#0e8f8a', theme: 'light',
+      items: [
+        { name: 'Consultație', price: '100 lei', desc: 'Examinare și plan de tratament' },
+        { name: 'Igienizare', price: '250 lei', desc: 'Detartraj, periaj profesional, airflow' },
+        { name: 'Obturație', price: 'de la 250 lei', desc: 'Plombă estetică' },
+        { name: 'Albire profesională', price: '900 lei', desc: 'În cabinet, o ședință' },
+      ],
+      hours: ['09:00–19:00', '09:00–19:00', '09:00–19:00', '09:00–19:00', '09:00–17:00', 'Închis', 'Închis'],
+      phone: '0740 000 000', whatsapp: '', instagram: 'clinicazambet', address: 'Strada Exemplu 7, Iași',
+    },
+  };
+  // compatibilitate: font, upper, italic din cheia fontului
+  Object.keys(TEMPLATES).forEach(function (k) { var t = TEMPLATES[k], f = FONTS[t.fontKey]; t.font = f.css; t.upper = !!f.upper; t.italic = !!f.italic; });
 
   var LIMITS = { name: 60, tagline: 120, about: 800, cta: 40, phone: 20, whatsapp: 20, instagram: 40, address: 120, email: 80, itemName: 60, itemPrice: 24, itemDesc: 160, hours: 30, items: 20, gallery: 6 };
 
@@ -95,6 +158,7 @@
     return {
       name: str(d.name, LIMITS.name), tagline: str(d.tagline, LIMITS.tagline), about: str(d.about, LIMITS.about),
       cta: str(d.cta, LIMITS.cta),
+      font: FONTS[d.font] ? d.font : '', corners: CORNERS[d.corners] ? d.corners : '', layout: LAYOUTS[d.layout] ? d.layout : '',
       accent: color(d.accent, def.accent), theme: d.theme === 'dark' ? 'dark' : d.theme === 'light' ? 'light' : def.theme,
       phone: str(d.phone, LIMITS.phone), whatsapp: str(d.whatsapp, LIMITS.whatsapp),
       instagram: str(d.instagram, LIMITS.instagram).replace(/^@/, '').replace(/[^A-Za-z0-9._]/g, ''),
@@ -143,6 +207,28 @@
     portfolio: { kind: 'Portofoliu', items: 'Ce ofer', side: 'Ce fac', about: 'Despre mine', gal: 'Lucrări', steps: [['Îmi scrii', 'Spune-mi pe scurt ce ai nevoie și când.'], ['Stabilim detaliile', 'Preț clar, termen clar, fără surprize.'], ['Primești rezultatul', 'La timp și exact cum am stabilit.']], band: 'Hai să lucrăm împreună.', bandP: 'Spune-mi ce ai în minte. Îți răspund în aceeași zi.', radius: '14px', btnR: '999px', tint: false },
   };
 
+  STYLE.fitness = { kind: 'Sală de fitness', items: 'Abonamente și prețuri', side: 'Abonamente', about: 'Despre noi', gal: 'Sala', steps: [['Ne scrii', 'Spune-ne obiectivul tău: forță, slăbit sau formă generală.'], ['Facem un plan', 'Antrenamente și alimentație, pe ritmul tău.'], ['Te antrenezi', 'Cu progres măsurat, săptămână de săptămână.']], band: 'Începe chiar de azi.', bandP: 'Primul pas e cel mai greu. Restul îl facem împreună.', radius: '4px', btnR: '4px', tint: false };
+  STYLE.auto = { kind: 'Auto detailing', items: 'Servicii și prețuri', side: 'Cele mai cerute', about: 'Despre noi', gal: 'Înainte și după', steps: [['Programezi', 'Alegi serviciul și ora, pe WhatsApp sau la telefon.'], ['Lași mașina', 'Îți spunem dinainte cât durează și cât costă.'], ['O iei ca nouă', 'Predare la ora stabilită, fără întârzieri.']], band: 'Programează mașina.', bandP: 'Locurile din weekend se ocupă primele.', radius: '10px', btnR: '6px', tint: false };
+  STYLE.clinic = { kind: 'Cabinet', items: 'Tratamente și prețuri', side: 'Tratamente', about: 'Despre clinică', gal: 'Clinica', steps: [['Programezi', 'Telefonic sau pe WhatsApp, la ora potrivită.'], ['Consultație', 'Îți explicăm tot și primești planul în scris.'], ['Tratament', 'Fără grabă, cu explicații la fiecare pas.']], band: 'Programează o consultație.', bandP: 'Îți răspundem în aceeași zi.', radius: '20px', btnR: '999px', tint: true };
+
+  // Generatorul de design: o combinație aleatoare, dar mereu armonioasă (palete alese de mână).
+  var PALETTES = [
+    { accent: '#c8a24a', theme: 'dark' }, { accent: '#8a5a3b', theme: 'light' }, { accent: '#c56b8a', theme: 'light' }, { accent: '#2b59ff', theme: 'light' },
+    { accent: '#d4ff3a', theme: 'dark' }, { accent: '#e63946', theme: 'dark' }, { accent: '#0e8f8a', theme: 'light' }, { accent: '#e8590c', theme: 'light' },
+    { accent: '#8b5cf6', theme: 'dark' }, { accent: '#10b981', theme: 'dark' }, { accent: '#1e3a8a', theme: 'light' }, { accent: '#111111', theme: 'light' },
+    { accent: '#ff6b5b', theme: 'light' }, { accent: '#d6b48a', theme: 'dark' }, { accent: '#38bdf8', theme: 'dark' }, { accent: '#b45309', theme: 'light' },
+  ];
+  function pick(a, rnd) { return a[Math.floor((rnd || Math.random)() * a.length)]; }
+  function randomLook(cur, rnd) {
+    cur = cur || {};
+    for (var i = 0; i < 20; i++) {
+      var p = pick(PALETTES, rnd);
+      var look = { accent: p.accent, theme: p.theme, font: pick(Object.keys(FONTS), rnd), corners: pick(Object.keys(CORNERS), rnd), layout: pick(Object.keys(LAYOUTS), rnd) };
+      if (look.accent !== cur.accent || look.font !== cur.font) return look;
+    }
+    return look;
+  }
+
   // opt.img(id) → adresa pozei (în previzualizare: link temporar; la export: assets/fișier)
   // opt.preview → adaugă bandă și watermark „Previzualizare · Creat cu Aman”
   function render(tpl, data, opt) {
@@ -160,8 +246,10 @@
     var ext = function (h) { return /^https/.test(h) ? ' target="_blank" rel="noopener"' : ''; };
     var hero = img(d.hero), logo = img(d.logo), gallery = d.gallery.map(img).filter(Boolean);
     var year = new Date().getFullYear(), town = city(d.address), hs = hoursSummary(d.hours);
+    var F = FONTS[d.font || T.fontKey], CO = d.corners ? CORNERS[d.corners] : { r: X.radius, b: X.btnR };
+    T = Object.assign({}, T, { font: F.css, upper: !!F.upper, italic: !!F.italic });
     var head = (T.upper ? 'text-transform:uppercase;letter-spacing:.01em;' : 'letter-spacing:-.02em;') + (T.italic ? 'font-style:italic;' : '');
-    var R = X.radius, BR = X.btnR;
+    var R = CO.r, BR = CO.b, center = d.layout === 'center';
 
     // decor de fundal pentru prima secțiune, când nu există poză
     var deco = {
@@ -169,6 +257,9 @@
       cafe: 'background:radial-gradient(60% 70% at 100% 0%,' + mix(A, dark ? -0.4 : 0.8) + ',transparent 70%),radial-gradient(50% 60% at 0% 100%,' + mix(A, dark ? -0.6 : 0.88) + ',transparent 70%),' + bg + ';',
       salon: 'background:radial-gradient(45% 55% at 90% 15%,' + A + (dark ? '33' : '40') + ',transparent 70%),radial-gradient(40% 50% at 10% 90%,' + mix(A, dark ? -0.3 : 0.6) + (dark ? '55' : '') + ',transparent 70%),' + bg + ';',
       portfolio: 'background:linear-gradient(' + line + ' 1px,transparent 1px) 0 0/48px 48px,linear-gradient(90deg,' + line + ' 1px,transparent 1px) 0 0/48px 48px,' + bg + ';',
+      fitness: 'background:linear-gradient(115deg,transparent 62%,' + A + '1f 62% 70%,transparent 70% 74%,' + A + '14 74% 78%,transparent 78%),' + bg + ';',
+      auto: 'background:radial-gradient(70% 90% at 100% 0%,' + A + '2e,transparent 60%),repeating-radial-gradient(circle at 0 0,' + (dark ? '#ffffff08' : '#00000008') + ' 0 2px,transparent 2px 6px),' + bg + ';',
+      clinic: 'background:radial-gradient(50% 60% at 95% 10%,' + A + (dark ? '30' : '24') + ',transparent 70%),radial-gradient(35% 45% at 5% 95%,' + A + '18,transparent 70%),' + bg + ';',
     }[tpl];
 
     var css = ':root{--a:' + A + ';--on:' + on + ';--bg:' + bg + ';--bg2:' + bg2 + ';--card:' + card + ';--fg:' + fg + ';--fg2:' + fg2 + ';--line:' + line + '}' +
@@ -198,6 +289,7 @@
       '.side ul{list-style:none;margin:0 0 18px;padding:0}.side li{display:flex;align-items:baseline;gap:10px;padding:11px 0;border-bottom:1px solid ' + (hero ? 'rgba(255,255,255,.14)' : 'var(--line)') + '}.side li:last-child{border-bottom:0}' +
       '.side li b{font-weight:600}.side li i{flex:1;border-bottom:1px dotted ' + (hero ? 'rgba(255,255,255,.35)' : 'var(--line)') + ';transform:translateY(-4px)}.side li span{font-weight:700;color:var(--a);white-space:nowrap}' +
       '.side .btn{width:100%}' +
+      (center ? '.hero .w{grid-template-columns:1fr;text-align:center;justify-items:center}.hero .w>div:first-child{display:flex;flex-direction:column;align-items:center}.hero h1{max-width:14ch}.hero .lead{margin-left:auto;margin-right:auto}.hero .ctas,.hero .chips{justify-content:center}.hero .eyebrow::before{display:none}.side{width:100%;max-width:540px;text-align:left}' : '') +
       '@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}.hero .w>*{animation:up .8s cubic-bezier(.2,.7,.2,1) both}.hero .w>*+*{animation-delay:.15s}@media(prefers-reduced-motion:reduce){.hero .w>*{animation:none}}' +
       // secțiuni
       'section{padding:clamp(64px,9vw,112px) 0}.alt{background:var(--bg2)}' +
@@ -298,5 +390,5 @@
       '</body></html>';
   }
 
-  return { TEMPLATES: TEMPLATES, DAYS: DAYS, LIMITS: LIMITS, normalize: normalize, starter: starter, render: render };
+  return { TEMPLATES: TEMPLATES, DAYS: DAYS, LIMITS: LIMITS, FONTS: FONTS, CORNERS: CORNERS, LAYOUTS: LAYOUTS, normalize: normalize, starter: starter, render: render, randomLook: randomLook };
 });

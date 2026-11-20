@@ -64,7 +64,7 @@ select public.livrari_used_bytes() as used;
 create table if not exists public.sites (
   id          uuid primary key default gen_random_uuid(),
   user_id     uuid not null references auth.users (id) on delete cascade,
-  template    text not null check (template in ('barber', 'cafe', 'salon', 'portfolio')),
+  template    text not null check (template in ('barber', 'cafe', 'salon', 'portfolio', 'fitness', 'auto', 'clinic')),
   data        jsonb not null default '{}'::jsonb,
   created_at  timestamptz not null default now(),
   updated_at  timestamptz not null default now()

@@ -17,6 +17,12 @@
   function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
   function ssSet(k, v) { try { sessionStorage.setItem(k, v); } catch (e) {} }
   function T() { return ST.TEMPLATES[S.template]; }
+  // Textele sunt încă cele de exemplu? (culorile, fontul și aranjarea nu contează)
+  function pristine() {
+    var LOOK = ['accent', 'theme', 'font', 'corners', 'layout', 'logo', 'hero', 'gallery'];
+    var strip = function (o) { var c = Object.assign({}, o); LOOK.forEach(function (k) { delete c[k]; }); return JSON.stringify(c); };
+    return strip(S.data) === strip(ST.starter(S.template));
+  }
   // Site plătit = înghețat (descărcarea e exact versiunea plătită). Admin = doar vizualizare.
   function locked() { return !!(S.order && S.order.unlocked); }
   function editable() { return S.own && !locked(); }
@@ -102,7 +108,9 @@
     var ro = S.own ? '' : '<p class="note warn">Vezi site-ul clientului ca administrator. Modificările nu se salvează.</p>';
     switch (S.step) {
       case 0:
-        h = '<h2>Alege un șablon</h2><p class="sub">Pornești de la un site deja completat. Schimbi doar ce e al tău.</p><div class="tpls">' +
+        h = '<h2>Alege un șablon</h2><p class="sub">Pornești de la un site deja completat. Schimbi doar ce e al tău.</p>' +
+          '<button type="button" class="surprise" id="surprise"><span class="die" aria-hidden="true">🎲</span><span><b>Surprinde-mă</b><small>Un design generat la întâmplare: șablon, culori, font și aranjare. Apasă de câte ori vrei.</small></span></button>' +
+          '<p class="lucky" id="lucky" aria-live="polite"></p><div class="tpls">' +
           Object.keys(ST.TEMPLATES).map(function (k) {
             var x = ST.TEMPLATES[k], dk = x.defaults.theme === 'dark';
             var A = x.defaults.accent, fg = dk ? '#f2f2f2' : '#151515';
@@ -122,7 +130,11 @@
           '<label class="f">Culoarea principală</label><div class="swatches" id="sw">' +
           SWATCHES.map(function (c) { return '<button type="button" data-c="' + c + '" style="background:' + c + '" aria-label="Culoare ' + c + '" aria-pressed="' + (S.data.accent === c) + '"></button>'; }).join('') +
           '<input type="color" id="f-accent" value="' + esc(S.data.accent) + '" aria-label="Altă culoare"/></div>' +
-          '<label class="f">Fundal</label><div class="seg" id="theme"><button type="button" data-th="light" aria-pressed="' + (S.data.theme === 'light') + '">Luminos</button><button type="button" data-th="dark" aria-pressed="' + (S.data.theme === 'dark') + '">Întunecat</button></div>';
+          '<label class="f">Fundal</label><div class="seg" id="theme"><button type="button" data-th="light" aria-pressed="' + (S.data.theme === 'light') + '">Luminos</button><button type="button" data-th="dark" aria-pressed="' + (S.data.theme === 'dark') + '">Întunecat</button></div>' +
+          '<label class="f">Fontul titlurilor</label><div class="opts" id="o-font">' + Object.keys(ST.FONTS).map(function (k) { var f = ST.FONTS[k], cur = S.data.font || t.fontKey; return '<button type="button" data-font="' + k + '" aria-pressed="' + (cur === k) + '" style="font-family:' + esc(f.css) + ';' + (f.upper ? 'text-transform:uppercase;' : '') + (f.italic ? 'font-style:italic;' : '') + 'font-weight:700">' + f.label + '</button>'; }).join('') + '</div>' +
+          '<label class="f">Colțuri</label><div class="opts" id="o-corners">' + Object.keys(ST.CORNERS).map(function (k) { return '<button type="button" data-corners="' + k + '" aria-pressed="' + (S.data.corners === k) + '" style="border-radius:' + ST.CORNERS[k].r + '">' + ST.CORNERS[k].label + '</button>'; }).join('') + '</div>' +
+          '<label class="f">Prima secțiune</label><div class="seg" id="o-layout">' + Object.keys(ST.LAYOUTS).map(function (k) { return '<button type="button" data-layout="' + k + '" aria-pressed="' + ((S.data.layout || 'split') === k) + '">' + ST.LAYOUTS[k] + '</button>'; }).join('') + '</div>' +
+          '<p><button type="button" class="shuffle" id="shuffle">🎲 Amestecă stilul (culori, font, colțuri)</button></p>';
         break;
       case 2:
         if (!session) {
@@ -263,11 +275,19 @@
     if (t.id === 'dup') return duplicate();
     if (!editable() && t.closest('#body') && t.id !== 'dl' && t.id !== 'tochat' && t.id !== 'login') return;
     if (t.dataset.tpl) {
-      var pristine = JSON.stringify(S.data) === JSON.stringify(ST.starter(S.template));
-      var keepImgs = { logo: S.data.logo, hero: S.data.hero, gallery: S.data.gallery };
+      // Ce a scris clientul rămâne; textele de exemplu ale șablonului vechi se înlocuiesc cu ale celui nou.
+      var oldS = ST.starter(S.template), newS = ST.starter(t.dataset.tpl);
+      Object.keys(newS).forEach(function (k) { if (JSON.stringify(S.data[k]) === JSON.stringify(oldS[k])) S.data[k] = newS[k]; });
       S.template = t.dataset.tpl;
-      if (pristine) S.data = Object.assign(ST.starter(S.template), keepImgs);
       renderSteps(); renderBody(); changed(); return;
+    }
+    if (t.id === 'surprise') return surprise(t);
+    if (t.id === 'shuffle') { Object.assign(S.data, ST.randomLook(S.data)); renderBody(); changed(); return; }
+    if (t.dataset.font || t.dataset.corners || t.dataset.layout) {
+      var key = t.dataset.font ? 'font' : t.dataset.corners ? 'corners' : 'layout';
+      S.data[key] = t.dataset[key];
+      t.parentNode.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', String(x === t)); });
+      changed(); return;
     }
     if (t.dataset.c) { S.data.accent = t.dataset.c; d.querySelectorAll('#sw [data-c]').forEach(function (x) { x.setAttribute('aria-pressed', String(x === t)); }); $('f-accent').value = t.dataset.c; changed(); return; }
     if (t.dataset.th) { S.data.theme = t.dataset.th; d.querySelectorAll('#theme [data-th]').forEach(function (x) { x.setAttribute('aria-pressed', String(x === t)); }); changed(); return; }
@@ -280,6 +300,22 @@
     if (t.id === 'tochat') { try { sessionStorage.setItem('aman.openchat', S.order && S.order.id || ''); } catch (x) {} return; }
     if (t.id === 'dl') return download();
   });
+
+  // „Surprinde-mă”: dacă textele sunt încă cele de exemplu, schimbă și șablonul; altfel păstrează conținutul clientului și schimbă doar aspectul.
+  function surprise(btn) {
+    var fresh = pristine();
+    var keepImgs = { logo: S.data.logo, hero: S.data.hero, gallery: S.data.gallery };
+    if (fresh) {
+      var keys = Object.keys(ST.TEMPLATES).filter(function (k) { return k !== S.template; });
+      S.template = keys[Math.floor(Math.random() * keys.length)];
+      S.data = Object.assign(ST.starter(S.template), keepImgs);
+    }
+    Object.assign(S.data, ST.randomLook(S.data));
+    renderSteps(); renderBody(); changed();
+    var b = $('surprise'); if (b) { b.classList.remove('spin'); void b.offsetWidth; b.classList.add('spin'); }
+    var f = ST.FONTS[S.data.font], l = $('lucky');
+    if (l) l.textContent = 'Design nou: ' + T().label + ' · font ' + f.label.toLowerCase() + ' · ' + (S.data.theme === 'dark' ? 'întunecat' : 'luminos') + (fresh ? '' : ' · textele tale au rămas');
+  }
 
   async function duplicate() {
     var btn = $('dup'); if (btn) { btn.disabled = true; btn.textContent = 'Se copiază…'; }

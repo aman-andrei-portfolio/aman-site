@@ -65,12 +65,14 @@ Fără aceste variabile, pagina Cont spune „în curând”, iar butoanele duc 
 
 ## Editorul de site-uri (`/editor.html`)
 
-- Clientul alege un șablon (Frizerie, Cafenea/Restaurant, Salon/Beauty, Portofoliu), își scrie textele,
+- Clientul alege un șablon (Frizerie, Cafenea/Restaurant, Salon/Beauty, Sală/Antrenor, Auto/Detailing, Cabinet/Clinică, Portofoliu)
+  sau apasă **„Surprinde-mă”** (șablon, paletă de culori, font, colțuri și aranjare la întâmplare; dacă și-a scris deja textele, le păstrează și schimbă doar aspectul), își scrie textele,
   urcă poze și vede site-ul live, cu watermark „Creat cu Aman”. Textele se salvează în browser; după logare, și în cont (max. 3 site-uri).
 - „Vreau site-ul” creează o comandă cu cod (149 lei / €29, din `api/_lib.js` → `site-builder`).
 - În panou, comanda are linkul „Vezi site-ul în editor”. Când pui **Plătită**, clientul vede butonul
   **„Descarcă site-ul (ZIP)”** în editor și în cont. Arhiva conține `index.html`, pozele și instrucțiuni de publicare, fără watermark.
 - Șabloanele sunt în `assets/js/site-templates.js` (același cod face previzualizarea și arhiva finală).
+  Un șablon nou trebuie adăugat și în regula `sites_template_check` din baza de date (vezi `supabase/schema.sql`).
 - Pozele stau în spațiul privat `livrari`, folderul `sites/{id}/`.
 
 ## Conversații pe site (în loc de Instagram)
