@@ -11,6 +11,10 @@
 <link rel="icon" href="/assets/img/logo/favicon.svg" type="image/svg+xml"/>
 <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin/>
 <style>
+/* fără zoom la atingere dublă (zoomul cu două degete rămâne); câmpuri de 16px pe telefon, ca iPhone să nu mărească singur */
+html{touch-action:manipulation}
+a,button,input,select,textarea,label,summary,[role="button"],[role="tab"]{touch-action:manipulation}
+@media(max-width:900px){input,textarea,select{font-size:16px!important}}
 @font-face{font-family:Inter;src:url(/assets/fonts/inter-latin.woff2) format("woff2");font-weight:100 900;font-display:swap;unicode-range:U+0000-00FF,U+2000-206F,U+20AC}
 @font-face{font-family:Inter;src:url(/assets/fonts/inter-latin-ext.woff2) format("woff2");font-weight:100 900;font-display:swap;unicode-range:U+0100-024F}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}

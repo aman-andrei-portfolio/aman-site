@@ -357,7 +357,7 @@
     }[tpl];
 
     var css = fontFace(fontKey, opt.fontBase == null ? 'assets/fonts/' : opt.fontBase) + ':root{--a:' + A + ';--on:' + on + ';--bg:' + bg + ';--bg2:' + bg2 + ';--card:' + card + ';--fg:' + fg + ';--fg2:' + fg2 + ';--line:' + line + '}' +
-      '*{box-sizing:border-box}html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--fg);font:400 17px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}' +
+      '*{box-sizing:border-box}html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;touch-action:manipulation}a,button,summary{touch-action:manipulation}body{margin:0;background:var(--bg);color:var(--fg);font:400 17px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}' +
       'img{max-width:100%;display:block}a{color:inherit}.w{max-width:1120px;margin:0 auto;padding:0 22px}' +
       'h1,h2,h3,.disp{font-family:' + T.font + ';font-weight:700;line-height:1.04;margin:0;' + head + 'text-wrap:balance}' +
       '.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--a);color:var(--on);text-decoration:none;font-weight:600;border-radius:' + BR + ';padding:14px 26px;font-size:16px;border:1.5px solid var(--a);transition:transform .2s,box-shadow .2s;white-space:nowrap}' +
