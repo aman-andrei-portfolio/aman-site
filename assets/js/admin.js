@@ -184,7 +184,7 @@
   var AV = {}, avRange = null;
   function wk(iso) { var d0 = new Date(iso + 'T00:00:00Z'), d1 = new Date(d0.getTime() + 6 * 864e5), f = function (x) { return x.getUTCDate() + ' ' + ['ian', 'feb', 'mar', 'apr', 'mai', 'iun', 'iul', 'aug', 'sep', 'oct', 'nov', 'dec'][x.getUTCMonth()]; }; return f(d0) + ' – ' + f(d1); }
   async function loadAvail() {
-    var r = await fetch('/api/availability', { cache: 'no-store' }).catch(function () { return null; }); if (!r || !r.ok) return;
+    var r = await fetch('/api/availability?t=' + Date.now(), { cache: 'no-store' }).catch(function () { return null; }); if (!r || !r.ok) return;
     var j = await r.json(); AV = {}; (j.weeks || []).forEach(function (w) { AV[w.week_start] = w.slots; }); avRange = j.range; renderAvail();
   }
   function renderAvail() {
