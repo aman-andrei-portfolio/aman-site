@@ -94,6 +94,11 @@ p{margin:0}
 .h-hero h1{font-size:clamp(40px,6.6vw,80px);line-height:1.04;letter-spacing:-.045em;font-weight:700;margin-top:12px;text-wrap:balance}
 .h-hero h1 .mute{color:#86868b}
 .h-hero .ctas{justify-content:center;margin-top:26px}
+.av-line[hidden],.av-cal[hidden]{display:none!important}
+.av-line{display:inline-flex;align-items:center;gap:8px;margin:18px 0 0;font-size:14px;color:var(--fg-2)}.av-line::before{content:"";width:8px;height:8px;border-radius:50%;background:#30d158}.av-line.full::before{background:#ff9f0a}.av-line b{color:var(--fg);font-weight:600}
+.av-cal{max-width:760px;margin:0 auto clamp(28px,4vw,40px);text-align:center}.av-h{font-size:13px;font-weight:600;color:var(--fg-2);margin:0 0 10px}
+.av-cal ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px}
+.av-cal li{background:var(--bg);border-radius:14px;padding:10px 8px;display:flex;flex-direction:column;gap:2px}.av-cal li span{font-size:12px;color:var(--fg-2)}.av-cal li b{font-size:15px;font-weight:600}.av-cal li.full b{color:var(--fg-2)}.av-cal li.now{box-shadow:inset 0 0 0 1.5px var(--blue)}
 /* trei servicii: doar text, separate de linii fine */
 .svc{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .svc>div{padding:clamp(28px,4vw,44px) clamp(16px,2.6vw,32px);text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px}
@@ -424,6 +429,12 @@ button.btn{border:0;cursor:pointer;font-family:var(--sans)}
 .order-dlg .muted{color:var(--fg-2);font-size:15px}
 .order-dlg form{display:flex;flex-direction:column;gap:6px}
 .order-dlg .fl{font-size:13px;font-weight:600;color:var(--fg-2);margin-top:10px}
+.opts{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:2px}
+.opts li{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
+.opts .on{display:flex;flex-direction:column;font-size:15px}.opts small{color:var(--fg-2);font-size:13px}
+.opts input[type=checkbox]{width:22px;height:22px;accent-color:var(--blue);flex:none}
+.stp{display:inline-flex;align-items:center;gap:4px;flex:none}.stp button{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:var(--bg);font-size:17px;line-height:1;cursor:pointer}.stp b{min-width:22px;text-align:center;font-variant-numeric:tabular-nums}
+.total{display:flex;justify-content:space-between;align-items:baseline;margin:12px 0 0;font-size:15px}.total b{font-size:22px;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
 .order-dlg textarea,.order-dlg input[type=text]{width:100%;font:400 16px var(--sans);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
 .order-dlg textarea:focus,.order-dlg input[type=text]:focus{outline:2px solid var(--blue);outline-offset:1px;border-color:transparent}
 .fine.tight{margin-top:2px}
@@ -500,6 +511,7 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
     <header class="h-hero">
       <p class="eyebrow">Costi Andrei · <span data-en="Iași, Romania">Iași, România</span></p>
       <h1><span data-en="Websites, video and photo.">Site-uri, video și foto.</span><br/><span class="mute" data-en="Done right. Delivered fast.">Bine făcute. Livrate repede.</span></h1>
+      <p class="av-line" id="avLine" hidden></p>
       <div class="ctas"><button type="button" class="btn" data-need="web" data-go data-en="Start a project">Începe un proiect</button><a class="more" href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" data-en="Ask me on Instagram">Întreabă-mă pe Instagram</a></div>
     </header>
 
@@ -644,6 +656,7 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
       <p class="lead" data-en="Fixed prices, no hidden costs. You pick, describe what you need, and pay only after we agree on everything.">Prețuri fixe, fără costuri ascunse. Alegi, îmi spui ce vrei și plătești doar după ce stabilim tot.</p>
     </div>
 
+    <div class="av-cal" id="avCal" hidden><p class="av-h" data-en="Availability">Disponibilitate</p><ol id="avWeeks"></ol></div>
     <div class="seg rv" role="tablist" aria-label="Tip de preț">
       <button type="button" role="tab" id="tab-servicii" aria-selected="true" data-tab="servicii" data-en="Services">Servicii</button>
       <button type="button" role="tab" id="tab-pachete" aria-selected="false" data-tab="pachete" data-en="Packages">Pachete</button>

@@ -54,6 +54,7 @@ textarea:focus,input:focus{outline:2px solid #0071e3;outline-offset:1px;border-c
 .igh{display:inline-block;margin-top:4px;font-size:14px;font-weight:600}
 .brief{background:#fff;border-radius:12px;padding:10px 12px}
 .brief p{margin:0;font-size:15px;white-space:pre-wrap}
+.optl{list-style:none;margin:0;padding:0;font-size:15px}.optl li{display:flex;justify-content:space-between;gap:12px;padding:3px 0}.optl b{font-weight:600;font-variant-numeric:tabular-nums}
 .files.cl{border-top:0;padding-top:0}
 .x.dl{color:#0066cc}
 .bulk{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:var(--bg-2);border-radius:14px;padding:10px 14px;margin-bottom:12px}
@@ -68,6 +69,8 @@ textarea:focus,input:focus{outline:2px solid #0071e3;outline-offset:1px;border-c
 .payinfo{background:var(--bg-2);border-radius:14px;padding:12px 16px;margin-bottom:16px}
 .payinfo summary{cursor:pointer;font-weight:600;font-size:15px}
 .payinfo textarea{margin-top:8px}
+.avl{list-style:none;margin:8px 0 0;padding:0}.avl li{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--line);font-size:15px}
+.avl .stp{display:flex;align-items:center;gap:8px}.avl button{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:#fff;font-size:17px;cursor:pointer}.avl b{min-width:70px;text-align:center;font-variant-numeric:tabular-nums}.avl .x0{font:500 13px var(--sans);color:#c4001a;border:0;background:none;width:auto}
 .chat-toggle{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;background:#fff;border:0;border-radius:980px;padding:8px 14px;font:500 14px var(--sans);color:#0066cc;cursor:pointer}
 .badge{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;border-radius:980px;background:#ff3b30;color:#fff;font-size:12px;font-weight:600}
 .badge[hidden]{display:none}
@@ -107,6 +110,11 @@ textarea:focus,input:focus{outline:2px solid #0071e3;outline-offset:1px;border-c
     <p class="meta">Le scrii o singură dată. Apar în mesajul „Detaliile de plată” din conversații. Se salvează doar pe acest dispozitiv, nu pe server.</p>
     <textarea rows="4" placeholder="Titular: …&#10;IBAN: RO…&#10;Banca: …&#10;sau Revolut: @…"></textarea>
     <p class="meta" id="paysaved"></p>
+  </details>
+  <details class="payinfo" id="avail">
+    <summary>Locuri libere pe săptămână</summary>
+    <p class="meta">Apar pe site (pe Acasă săptămâna curentă, pe Prețuri toate 6). Săptămânile nesetate nu apar. 0 = complet.</p>
+    <ul class="avl" id="avl"><li class="meta">Se încarcă…</li></ul>
   </details>
   <div id="app"><p class="muted">Se încarcă…</p></div>
 </main>

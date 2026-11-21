@@ -23,6 +23,7 @@
       files: { foto: 'Pozele pe care le editez', video: 'Clipurile tale', web: 'Logo, poze, texte (opțional)', pack: 'Clipuri și poze (opțional)' },
       pick: 'Alege fișiere', max: 'maximum {n} · până la 50 MB fiecare', big: 'Pentru fișiere mai mari, pune un link în descriere (Google Drive, WeTransfer).',
       tooMany: 'Poți trimite maximum {n} fișiere pentru opțiunea asta.', tooBig: '{f} are peste 50 MB. Pune-l ca link în descriere.',
+      opts: 'Adaugă opțiuni', total: 'Total estimat', totalNote: 'Prețul final ți-l confirm în conversație, înainte de plată.',
       send: 'Trimite comanda', cancel: 'Renunț', sending: 'Se trimite comanda…', up: 'Se încarcă {f}… {p}%',
       doneH: 'Comanda a fost trimisă', doneP: 'Îți răspund aici, pe site, în conversația comenzii, cu detaliile de plată. De obicei în mai puțin de 2 ore.', chatGo: 'Deschide conversația',
       seeAcc: 'Vezi comanda în cont', partial: 'Comanda e trimisă, dar unele fișiere nu s-au încărcat. Mi le poți trimite ca link în conversație.',
@@ -35,6 +36,7 @@
       files: { foto: 'The photos to edit', video: 'Your clips', web: 'Logo, photos, texts (optional)', pack: 'Clips and photos (optional)' },
       pick: 'Choose files', max: 'up to {n} · up to 50 MB each', big: 'For bigger files, add a link in the description (Google Drive, WeTransfer).',
       tooMany: 'You can send up to {n} files for this option.', tooBig: '{f} is over 50 MB. Add it as a link in the description.',
+      opts: 'Add options', total: 'Estimated total', totalNote: 'I confirm the final price in the conversation, before payment.',
       send: 'Send order', cancel: 'Cancel', sending: 'Sending the order…', up: 'Uploading {f}… {p}%',
       doneH: 'Order sent', doneP: 'I will reply here on the site, in the order conversation, with the payment details. Usually within 2 hours.', chatGo: 'Open the conversation',
       seeAcc: 'See the order in your account', partial: 'The order is sent, but some files did not upload. You can send them as a link in the conversation.',
@@ -77,11 +79,40 @@
     dlg.querySelector('#o-x').addEventListener('click', function () { dlg.close(); });
   }
 
+  // ---------- calculatorul de preț (opțiunile și prețurile vin de la server) ----------
+  var conf = null, qty = {};
+  fetch('/api/config').then(function (r) { return r.ok ? r.json() : null; }).then(function (j) { conf = j; }).catch(function () {});
+  function extras() {
+    if (!conf || !conf.extras || !cur) return [];
+    var k = cur.key; return /^web/.test(k) ? conf.extras.web : /^video/.test(k) ? conf.extras.video : /^foto/.test(k) ? conf.extras.foto : [];
+  }
+  function cy() { return L() === 'en' ? 'eur' : 'ron'; }
+  function fmt(v) { var n = v / 100, s = n % 1 ? n.toFixed(2) : String(n); return cy() === 'eur' ? '€' + s : s + ' lei'; }
+  function optsHtml() {
+    qty = {}; var list = extras(); if (!list.length) return '';
+    return '<label class="fl">' + t('opts') + '</label><ul class="opts">' + list.map(function (x) {
+      var name = L() === 'en' ? x.en : x.ro, price = '+' + fmt(x[cy()]) + (x.max > 1 ? (L() === 'en' ? ' each' : ' / buc.') : '');
+      return '<li><span class="on">' + esc(name) + '<small>' + price + '</small></span>' + (x.max > 1
+        ? '<span class="stp"><button type="button" data-opt="' + x.id + '" data-d="-1" aria-label="Mai puțin">−</button><b id="q-' + x.id + '">0</b><button type="button" data-opt="' + x.id + '" data-d="1" aria-label="Mai mult">+</button></span>'
+        : '<input type="checkbox" data-chk="' + x.id + '" aria-label="' + esc(name) + '"/>') + '</li>';
+    }).join('') + '</ul><p class="total"><span>' + t('total') + '</span><b id="o-total"></b></p><p class="fine tight">' + t('totalNote') + '</p>';
+  }
+  function step(id, dlt) {
+    var x = extras().filter(function (e) { return e.id === id; })[0]; if (!x) return;
+    qty[id] = Math.max(0, Math.min(x.max, (qty[id] || 0) + dlt)); var el = dlg.querySelector('#q-' + id); if (el) el.textContent = qty[id]; totals();
+  }
+  function totals() {
+    var el = dlg.querySelector('#o-total'); if (!el || !conf || !conf.prices[cur.key]) return;
+    var sum = conf.prices[cur.key][cy()];
+    extras().forEach(function (x) { sum += (qty[x.id] || 0) * x[cy()]; });
+    el.textContent = fmt(sum);
+  }
   function stepForm() {
     var accept = cur.kind === 'foto' ? 'image/*' : cur.kind === 'video' ? 'video/*,image/*' : cur.kind === 'pack' ? 'image/*,video/*' : '';
     shell(head() +
       '<form id="o-form" novalidate>' +
       '<label class="fl" for="o-brief">' + t('brief') + '</label><textarea id="o-brief" maxlength="2000" rows="3" placeholder="' + esc(t('briefPh')[cur.kind]) + '"></textarea>' +
+      optsHtml() +
       '<label class="fl" for="o-ig">' + t('ig') + '</label><input id="o-ig" type="text" inputmode="text" autocomplete="off" autocapitalize="none" spellcheck="false" maxlength="40" placeholder="' + t('igPh') + '"/>' +
       '<p class="fine tight">' + t('igHelp') + '</p>' +
       '<label class="fl">' + t('files')[cur.kind] + '</label>' +
@@ -94,6 +125,9 @@
     inp.addEventListener('change', function () { add(Array.prototype.slice.call(inp.files)); inp.value = ''; });
     dlg.querySelector('#o-x').addEventListener('click', function () { dlg.close(); });
     dlg.querySelector('#o-form').addEventListener('submit', function (e) { e.preventDefault(); submit(); });
+    dlg.querySelectorAll('[data-opt]').forEach(function (el) { el.addEventListener('click', function () { step(el.dataset.opt, +el.dataset.d); }); });
+    dlg.querySelectorAll('[data-chk]').forEach(function (el) { el.addEventListener('change', function () { qty[el.dataset.chk] = el.checked ? 1 : 0; totals(); }); });
+    totals();
     showPicked();
   }
   function err(m) { var e = dlg.querySelector('#o-err'); if (!e) return; e.textContent = m || ''; e.hidden = !m; }
@@ -134,7 +168,7 @@
     try {
       var tk = await A().token();
       if (!tk) { sstore(BUY, cur.key); return stepLogin(); }
-      var r = await fetch('/api/request', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + tk }, body: JSON.stringify({ package: cur.key, lang: L(), brief: brief, instagram: ig }) });
+      var r = await fetch('/api/request', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + tk }, body: JSON.stringify({ package: cur.key, lang: L(), brief: brief, instagram: ig, options: qty }) });
       var j = await r.json().catch(function () { return {}; });
       if (!r.ok) throw new Error(j.error || 'Eroare.');
       var failed = 0;

@@ -180,6 +180,34 @@
         (o.archived_at ? '<button type="button" class="plain" data-arch="0">Readu în listă</button>' : '<button type="button" class="plain" data-arch="1">Ascunde</button>') +
         '<button type="button" class="plain danger" data-delo>Șterge definitiv</button></span></div></li>';
   }
+  // ---------- locuri libere pe săptămână ----------
+  var AV = {}, avRange = null;
+  function wk(iso) { var d0 = new Date(iso + 'T00:00:00Z'), d1 = new Date(d0.getTime() + 6 * 864e5), f = function (x) { return x.getUTCDate() + ' ' + ['ian', 'feb', 'mar', 'apr', 'mai', 'iun', 'iul', 'aug', 'sep', 'oct', 'nov', 'dec'][x.getUTCMonth()]; }; return f(d0) + ' – ' + f(d1); }
+  async function loadAvail() {
+    var r = await fetch('/api/availability', { cache: 'no-store' }).catch(function () { return null; }); if (!r || !r.ok) return;
+    var j = await r.json(); AV = {}; (j.weeks || []).forEach(function (w) { AV[w.week_start] = w.slots; }); avRange = j.range; renderAvail();
+  }
+  function renderAvail() {
+    var ul = d.getElementById('avl'); if (!ul || !avRange) return;
+    var start = new Date(avRange[0] + 'T00:00:00Z'), rows = [];
+    for (var i = 0; i < 6; i++) {
+      var iso = new Date(start.getTime() + i * 7 * 864e5).toISOString().slice(0, 10), v = AV[iso];
+      rows.push('<li><span>' + (i === 0 ? 'Săptămâna asta · ' : '') + wk(iso) + '</span><span class="stp"><button type="button" data-av="' + iso + '" data-d="-1" aria-label="Mai puține locuri">−</button><b>' + (v == null ? 'nesetat' : v === 0 ? 'complet' : v + (v === 1 ? ' loc' : ' locuri')) + '</b><button type="button" data-av="' + iso + '" data-d="1" aria-label="Mai multe locuri">+</button>' + (v == null ? '' : '<button type="button" class="x0" data-av-x="' + iso + '">Ascunde</button>') + '</span></li>');
+    }
+    ul.innerHTML = rows.join('');
+  }
+  async function setAvail(iso, slots) {
+    var tk = await token(); if (!tk) return;
+    var r = await fetch('/api/availability', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + tk }, body: JSON.stringify({ week_start: iso, slots: slots }) });
+    if (r.ok) { if (slots === null) delete AV[iso]; else AV[iso] = slots; renderAvail(); } else { var j = await r.json().catch(function () { return {}; }); alert(j.error || 'Nu s-a salvat.'); }
+  }
+  d.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-av],[data-av-x]'); if (!b) return;
+    if (b.dataset.avX) return setAvail(b.dataset.avX, null);
+    var cur = AV[b.dataset.av]; setAvail(b.dataset.av, Math.max(0, Math.min(50, (cur == null ? (+b.dataset.d > 0 ? 0 : 0) : cur) + +b.dataset.d)));
+  });
+  loadAvail();
+
   function card(o) {
     if (o.package === 'intrebare') return qcard(o);
     return '<li class="card" data-id="' + o.id + '">' +
@@ -187,6 +215,7 @@
         (o.instagram ? '<a class="igh" href="https://www.instagram.com/' + encodeURIComponent(o.instagram) + '/" target="_blank" rel="noopener">@' + esc(o.instagram) + '</a>' : '<span class="meta">Fără Instagram</span>') +
         '</div><span class="price">' + money(o) + '</span></div>' +
       (o.brief ? '<div class="brief"><label>Ce vrea clientul</label><p>' + esc(o.brief) + '</p></div>' : '') +
+      (Array.isArray(o.options) && o.options.length ? '<div class="brief"><label>Opțiuni alese (incluse în preț)</label><ul class="optl">' + o.options.map(function (x) { return '<li><span>' + esc(x.name) + (x.qty > 1 ? ' × ' + x.qty : '') + '</span><b>' + money({ amount: x.total, currency: o.currency }) + '</b></li>'; }).join('') + '</ul></div>' : '') +
       (o.site_id ? '<div class="brief"><label>Site din editor</label><p>„Plătită” deblochează descărcarea pentru client. <a href="/editor.html?id=' + esc(o.site_id) + '" target="_blank" rel="noopener">Vezi site-ul în editor ›</a></p></div>' : '') +
       (o.site_id ? '' : '<div class="files cl"><label>Materiale de la client</label><ul class="flist" data-clist><li class="meta">Se încarcă…</li></ul></div>') +
       chatBtn(o, 'Conversația cu clientul') +

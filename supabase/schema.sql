@@ -97,3 +97,15 @@ alter table public.orders add column if not exists archived_at timestamptz;
 -- Întrebările (conversații fără comandă) au suma 0.
 alter table public.orders drop constraint if exists orders_amount_check;
 alter table public.orders add constraint orders_amount_check check (amount >= 0);
+
+-- Opțiunile alese în calculatorul de preț (lista calculată pe server: id, nume, cantitate, total).
+alter table public.orders add column if not exists options jsonb;
+
+-- Locuri libere pe săptămână (calendarul de disponibilitate). Doar serverul citește și scrie (RLS fără politici).
+create table if not exists public.availability (
+  week_start date primary key check (extract(isodow from week_start) = 1),
+  slots      int not null check (slots between 0 and 50),
+  updated_at timestamptz not null default now()
+);
+alter table public.availability enable row level security;
+revoke all on public.availability from anon, authenticated;

@@ -86,3 +86,27 @@ document.addEventListener('click',function(e){
     if(b.hasAttribute('data-go')){var n=document.getElementById('nevoie');if(n)n.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'})}
   });
 })();
+
+/* Disponibilitate: câte locuri libere am pe săptămână (setate din panou). Fără date, nu apare nimic. */
+(function(){
+  var line=document.getElementById('avLine'),cal=document.getElementById('avCal');if(!line&&!cal)return;
+  var data=null,M={ro:['ian','feb','mar','apr','mai','iun','iul','aug','sep','oct','nov','dec'],en:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']};
+  function en(){return document.documentElement.lang==='en'}
+  function wk(iso){var a=new Date(iso+'T00:00:00Z'),b=new Date(a.getTime()+6*864e5),m=M[en()?'en':'ro'];return a.getUTCDate()+(a.getUTCMonth()!==b.getUTCMonth()?' '+m[a.getUTCMonth()]:'')+'–'+b.getUTCDate()+' '+m[b.getUTCMonth()]}
+  function n(v){return en()?(v===1?'1 spot':v+' spots'):(v===1?'1 loc':v+' locuri')}
+  function render(){
+    if(!data||!data.weeks.length){if(line)line.hidden=true;if(cal)cal.hidden=true;return}
+    var now=data.range[0],cur=data.weeks.filter(function(w){return w.week_start===now})[0],next=data.weeks.filter(function(w){return w.slots>0&&w.week_start!==now})[0];
+    if(line){
+      if(cur&&cur.slots>0){line.className='av-line';line.innerHTML=(en()?'Free spots this week: ':'Locuri libere săptămâna asta: ')+'<b>'+cur.slots+'</b>';line.hidden=false}
+      else if(cur&&next){line.className='av-line full';line.innerHTML=(en()?'This week is full · next free spot: ':'Săptămâna asta e plină · următorul loc liber: ')+'<b>'+wk(next.week_start)+'</b>';line.hidden=false}
+      else line.hidden=true;
+    }
+    if(cal){
+      document.getElementById('avWeeks').innerHTML=data.weeks.map(function(w){return '<li class="'+(w.slots?'':'full ')+(w.week_start===now?'now':'')+'"><span>'+(w.week_start===now?(en()?'This week':'Săptămâna asta'):wk(w.week_start))+'</span><b>'+(w.slots?n(w.slots):(en()?'Full':'Complet'))+'</b></li>'}).join('');
+      cal.hidden=false;
+    }
+  }
+  fetch('/api/availability').then(function(r){return r.ok?r.json():null}).then(function(j){data=j;render()}).catch(function(){});
+  document.addEventListener('langchange',render);
+})();

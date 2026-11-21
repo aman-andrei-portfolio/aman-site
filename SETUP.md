@@ -130,3 +130,12 @@ Fără aceste variabile, pagina Cont spune „în curând”, iar butoanele duc 
 - **Înainte / după**: la comenzile foto, clientul vede un slider care compară originalul lui cu poza livrată.
   Regula: dă pozei livrate **numele originalului**, eventual cu sufix: `IMG_2041.jpg` → `IMG_2041-edit.jpg`
   (merg și `_final`, `-aman`, `-retus`, `-v2`). În panou vezi „Perechi înainte/după pentru client: N”.
+
+## Calculatorul de preț și disponibilitatea
+
+- **Calculator**: în formularul de comandă (Web, Video, Foto) clientul adaugă opțiuni și vede totalul estimat instant.
+  Opțiunile și prețurile sunt în `api/_lib.js` → `EXTRAS` (bani/cenți pe bucată, cu maxim). **Serverul recalculează totalul**;
+  comanda salvează lista în `orders.options`, iar în panou apare la „Opțiuni alese”.
+- **Disponibilitate**: în panou, „Locuri libere pe săptămână” (−/+ pentru următoarele 6 săptămâni; 0 = complet; „Ascunde” = nesetat).
+  Pe Acasă apare o singură linie pentru săptămâna curentă, pe Prețuri toate săptămânile setate. Fără date, nu apare nimic.
+  Tabelul `availability` e accesibil doar prin server (`/api/availability`).

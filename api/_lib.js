@@ -6,6 +6,42 @@ const env = (k) => (process.env[k] || '').trim();
 
 // Pachetele care pot fi cerute din site. Prețul e stabilit aici, pe server.
 // max = câte fișiere poate urca clientul la comandă (poze de editat, clipuri, logo etc.)
+// Opțiuni pentru calculatorul de preț, pe categorii. Prețurile sunt în bani (ron) și cenți (eur), pe bucată.
+// Serverul recalculează totalul: nu se ia niciodată prețul trimis de browser.
+const EXTRAS = {
+  web: [
+    { id: 'pagina', ro: 'Pagină în plus', en: 'Extra page', ron: 9900, eur: 2000, max: 10 },
+    { id: 'texte', ro: 'Scriu eu textele', en: 'I write the copy', ron: 14900, eur: 2900, max: 1 },
+    { id: 'domeniu', ro: 'Te ajut cu domeniul și publicarea', en: 'Help with domain and publishing', ron: 9900, eur: 2000, max: 1 },
+    { id: 'revizie', ro: 'Rundă de revizii în plus', en: 'Extra revision round', ron: 7900, eur: 1500, max: 3 },
+    { id: 'express', ro: 'Livrare express (în 48 h)', en: 'Express delivery (48 h)', ron: 19900, eur: 3900, max: 1 },
+  ],
+  video: [
+    { id: 'clip', ro: 'Video scurt în plus', en: 'Extra short video', ron: 4500, eur: 900, max: 10 },
+    { id: 'subtitrari', ro: 'Subtitrări', en: 'Subtitles', ron: 2500, eur: 500, max: 1 },
+    { id: 'revizie', ro: 'Rundă de revizii în plus', en: 'Extra revision round', ron: 2500, eur: 500, max: 3 },
+    { id: 'express', ro: 'Livrare express (în 24 h)', en: 'Express delivery (24 h)', ron: 2900, eur: 600, max: 1 },
+  ],
+  foto: [
+    { id: 'poza', ro: 'Poză în plus', en: 'Extra photo', ron: 1900, eur: 400, max: 50 },
+    { id: 'fundal', ro: 'Fundal schimbat sau eliminat (pe tot setul)', en: 'Background replaced or removed (whole set)', ron: 2900, eur: 600, max: 1 },
+    { id: 'revizie', ro: 'Rundă de revizii în plus', en: 'Extra revision round', ron: 1500, eur: 300, max: 3 },
+  ],
+};
+function extrasFor(key) { return /^web/.test(key) ? EXTRAS.web : /^video/.test(key) ? EXTRAS.video : /^foto/.test(key) ? EXTRAS.foto : []; }
+// opțiunile valide, cu cantități limitate, și totalul lor în moneda comenzii
+function priceOptions(key, raw, currency, lang) {
+  const list = extrasFor(key), out = []; let total = 0;
+  const src = raw && typeof raw === 'object' ? raw : {};
+  for (const x of list) {
+    const q = Math.max(0, Math.min(x.max, Math.floor(Number(src[x.id]) || 0)));
+    if (!q) continue;
+    const sum = x[currency] * q; total += sum;
+    out.push({ id: x.id, name: lang === 'en' ? x.en : x.ro, qty: q, unit: x[currency], total: sum });
+  }
+  return { options: out, total };
+}
+
 const CATALOG = {
   mini:             { name: { ro: 'Pachet Mini',           en: 'Mini package' },           ron: 12900, eur: 2500,  max: 15 },
   starter:          { name: { ro: 'Pachet Starter',        en: 'Starter package' },        ron: 27900, eur: 5500,  max: 15 },
@@ -180,4 +216,5 @@ function handle(fn) {
   };
 }
 
-module.exports = { storageGet, usedBytes, env, CATALOG, send, sameOrigin, readJson, configured, getUser, db, authAdmin, handle, BUCKET, MAX_FILE, storage, listFiles, removeFiles, safeName, isAdmin, orderCode, cleanInstagram };
+module.exports = {
+  EXTRAS, extrasFor, priceOptions, storageGet, usedBytes, env, CATALOG, send, sameOrigin, readJson, configured, getUser, db, authAdmin, handle, BUCKET, MAX_FILE, storage, listFiles, removeFiles, safeName, isAdmin, orderCode, cleanInstagram };
