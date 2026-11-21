@@ -89,9 +89,22 @@
   function flash(msg) { var e = d.querySelector('#body .err'); if (e) { e.textContent = msg; e.hidden = false; } else alert(msg); }
 
   // ---------- previzualizare ----------
+  // Site-ul se randează la lățimea reală a dispozitivului ales și se micșorează ca să încapă în panou.
+  var DEV = { phone: 390, tablet: 768, desktop: 1280 }, dev = 'phone';
+  function fitFrame() {
+    var f = $('frame'), pv = $('pv'); if (!f || !pv) return;
+    var W = DEV[dev], fw = f.clientWidth, fh = f.clientHeight; if (!fw || !fh) return;
+    var k = Math.min(1, fw / W);
+    f.className = 'frame ' + dev;
+    pv.style.width = W + 'px'; pv.style.height = Math.round(fh / k) + 'px';
+    pv.style.transform = 'translateX(-50%) scale(' + k + ')';
+    var ds = $('devsize'); if (ds) ds.textContent = W + ' px' + (k < 1 ? ' · ' + Math.round(k * 100) + '%' : '');
+  }
+  addEventListener('resize', fitFrame);
   function preview() {
     clearTimeout(pvTimer);
     pvTimer = setTimeout(function () {
+      fitFrame();
       $('pv').srcdoc = ST.render(S.template, S.data, { preview: true, fontBase: location.origin + '/assets/fonts/tpl/', img: function (n) { return S.assets[n] || ''; } });
     }, 120);
   }
@@ -362,8 +375,8 @@
     if (t.dataset.step !== undefined) return go(+t.dataset.step);
     if (t.id === 'next') return go(S.step + 1);
     if (t.id === 'prev') return go(S.step - 1);
-    if (t.dataset.mtab) { $('app').dataset.tab = t.dataset.mtab; d.querySelectorAll('[data-mtab]').forEach(function (x) { x.setAttribute('aria-pressed', String(x === t)); }); return; }
-    if (t.dataset.dev) { $('frame').className = 'frame' + (t.dataset.dev === 'phone' ? ' phone' : ''); d.querySelectorAll('[data-dev]').forEach(function (x) { x.setAttribute('aria-pressed', String(x === t)); }); return; }
+    if (t.dataset.mtab) { setTimeout(fitFrame, 0); $('app').dataset.tab = t.dataset.mtab; d.querySelectorAll('[data-mtab]').forEach(function (x) { x.setAttribute('aria-pressed', String(x === t)); }); return; }
+    if (t.dataset.dev) { dev = t.dataset.dev; d.querySelectorAll('[data-dev]').forEach(function (x) { x.setAttribute('aria-pressed', String(x.dataset.dev === dev)); }); fitFrame(); return; }
     if (t.id === 'login') return goLogin();
     if (t.id === 'dup') return duplicate();
     if (!editable() && t.closest('#body') && t.id !== 'dl' && t.id !== 'tochat' && t.id !== 'login') return;

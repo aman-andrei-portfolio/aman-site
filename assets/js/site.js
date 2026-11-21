@@ -16,19 +16,22 @@
   document.getElementById('yr').textContent=new Date().getFullYear();
 
   /* pagini */
-  var h=document.documentElement,VIEWS=['acasa','despre','preturi','intrebari','contact','cont'];
-  var ALIAS={servicii:'acasa',top:'acasa','':'acasa'};
+  var h=document.documentElement,VIEWS=['acasa','despre','preturi','contact','cont'];
+  // întrebările stau acum jos pe Acasă: linkurile vechi #intrebari duc acolo
+  var ALIAS={servicii:'acasa',top:'acasa','':'acasa',intrebari:'acasa'};
   var blocks=document.querySelectorAll('[data-view]'),links=document.querySelectorAll('.tl,.tabbar a');
   function show(first){
     var id=(location.hash||'').slice(1);id=ALIAS[id]!==undefined?ALIAS[id]:id;
     if(VIEWS.indexOf(id)<0)id='acasa';
     blocks.forEach(function(b){b.classList.toggle('on',b.dataset.view===id)});
     links.forEach(function(a){a.classList.toggle('cur',a.getAttribute('href')==='#'+id);if(a.getAttribute('href')==='#'+id)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
+    var raw=(location.hash||'').slice(1);
+    if(raw==='intrebari'){var f=document.getElementById('s-intrebari');if(f)requestAnimationFrame(function(){f.scrollIntoView({block:'start'})});return}
     if(!first)window.scrollTo(0,0);
   }
   h.classList.add('views');show(true);
   addEventListener('hashchange',function(){show(false)});
-  if(location.hash){requestAnimationFrame(function(){window.scrollTo(0,0)})}
+  if(location.hash&&location.hash!=='#intrebari'){requestAnimationFrame(function(){window.scrollTo(0,0)})}
 
   /* Servicii / Pachete */
   var tabs=document.querySelectorAll('.seg button[data-tab]'),panes=document.querySelectorAll('[data-pane]');

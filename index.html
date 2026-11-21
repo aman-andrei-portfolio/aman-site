@@ -88,7 +88,8 @@ p{margin:0}
 @media(max-width:600px){.nav nav a.opt{display:none}}
 
 /* acasă: minimalistă, doar tipografie: titlu, trei servicii, „De ce ai nevoie?” */
-.home{padding-block:clamp(40px,6vw,72px) clamp(56px,7vw,88px)}
+.home{padding-block:clamp(40px,6vw,72px) clamp(32px,5vw,56px)}
+.faq-sec{border-top:1px solid var(--line);padding-block:clamp(48px,7vw,88px) clamp(56px,8vw,96px)}
 .h-hero{text-align:center;margin-bottom:clamp(32px,4.5vw,52px)}
 .h-hero h1{font-size:clamp(40px,6.6vw,80px);line-height:1.04;letter-spacing:-.045em;font-weight:700;margin-top:12px;text-wrap:balance}
 .h-hero h1 .mute{color:#86868b}
@@ -143,12 +144,21 @@ section{padding-block:clamp(48px,7vw,88px)}
 .about p.body{margin-top:20px;color:var(--fg-2);max-width:32em}
 .about p.body:first-of-type{margin-top:24px}
 .about img{object-position:50% 30%}
-.values{list-style:none;margin:clamp(40px,6vw,72px) 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.story{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(32px,6vw,80px);align-items:center;margin-top:clamp(56px,8vw,104px)}
+.story figure{margin:0}.story img{width:100%;border-radius:var(--r);display:block}.story figcaption{margin-top:10px;font-size:14px;color:var(--fg-2)}
+.story .h2{margin-top:10px}
+.timeline{list-style:none;margin:28px 0 0;padding:0;display:flex;flex-direction:column;gap:0}
+.timeline li{display:grid;grid-template-columns:84px minmax(0,1fr);gap:18px;padding:18px 0;border-top:1px solid var(--line)}
+.timeline b{font-size:20px;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.timeline h3{font-size:19px;letter-spacing:-.02em;margin-bottom:4px}.timeline p{margin:0;color:var(--fg-2);font-size:16px;line-height:1.5}
+.values-h{margin-top:clamp(56px,8vw,96px);font-size:clamp(28px,3.6vw,40px);letter-spacing:-.035em}
+@media(max-width:860px){.story{grid-template-columns:1fr}.story figure{max-width:420px}}
+.values{list-style:none;margin:20px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
 .values li{background:var(--bg-2);border-radius:var(--r);padding:26px 24px;display:flex;flex-direction:column;gap:8px}
 .values b{font-size:19px;letter-spacing:-.02em}
 .values span{color:var(--fg-2);font-size:15px;line-height:1.5}
 .about-cta{margin-top:clamp(32px,5vw,48px)}
-@media(max-width:760px){.values{grid-template-columns:1fr;gap:12px}}
+@media(max-width:960px){.values{grid-template-columns:1fr 1fr}}@media(max-width:560px){.values{grid-template-columns:1fr;gap:12px}}
 .band{position:relative;margin:clamp(48px,7vw,88px) 0 0;border-radius:var(--r);overflow:hidden}
 .band img{width:100%;aspect-ratio:16/9;object-fit:cover;object-position:60% 50%;display:block}
 .band figcaption{position:absolute;left:0;right:0;bottom:0;padding:clamp(40px,8vw,96px) clamp(20px,4vw,40px) clamp(20px,3vw,32px);color:#fff;font-size:clamp(19px,2.6vw,30px);font-weight:600;letter-spacing:-.02em;line-height:1.25;background:linear-gradient(to top,rgba(0,0,0,.62),rgba(0,0,0,0));text-wrap:balance}
@@ -449,7 +459,6 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
     <nav aria-label="Principal">
       <a class="tl" href="#despre" data-en="About">Despre</a>
       <a class="tl" href="#preturi" data-en="Pricing">Prețuri</a>
-      <a class="tl" href="#intrebari" data-en="FAQ">Întrebări</a>
       <a class="tl" href="#contact">Contact</a>
       <a class="tl icon-link" href="/camera.html" aria-label="Cameră foto"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 8.5A2 2 0 0 1 6 6.5h1.7l1.3-2h6l1.3 2H18a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="12.6" r="3.3" fill="none" stroke="currentColor" stroke-width="1.6"/></svg><span data-en="Camera">Cameră</span></a>
       <a class="tl acct-link" href="#cont" aria-label="Contul meu"><svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><circle cx="12" cy="8.5" r="3.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M4.8 19.6c1.3-3.3 4-5 7.2-5s5.9 1.7 7.2 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span data-en="Account">Cont</span></a>
@@ -462,7 +471,6 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
   <a href="#acasa" data-en="Home">Acasă</a>
   <a href="#despre" data-en="About">Despre</a>
   <a href="#preturi" data-en="Pricing">Prețuri</a>
-  <a href="#intrebari" data-en="FAQ">Întrebări</a>
   <a href="#contact">Contact</a>
 </nav>
 
@@ -521,6 +529,56 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
   </div>
 </section>
 
+<section id="s-intrebari" class="faq-sec" data-view="acasa">
+  <div class="wrap">
+    <div class="head center rv">
+      <h2 class="h2" data-en="Frequent questions.">Întrebări frecvente.</h2>
+    </div>
+    <div class="faq rv">
+      <details>
+        <summary data-en="How fast do you deliver?">Cât de repede livrezi?</summary>
+        <p data-en="Websites usually take 3–7 days. Videos are ready in 24–48 hours, and photo edits the same day or the next.">Site-urile durează, de regulă, 3–7 zile. Videoclipurile sunt gata în 24–48 de ore, iar editările foto în aceeași zi sau a doua zi.</p>
+      </details>
+      <details>
+        <summary data-en="How do we communicate?">Cum comunicăm?</summary>
+        <p data-en="For questions, message me on Instagram. Once you order, we talk here on the site, in the order's private conversation in your account. I usually reply in under 2 hours during the day and keep you updated throughout the project.">Pentru întrebări, scrie-mi pe Instagram. După ce comanzi, vorbim aici, pe site, în conversația privată a comenzii, din contul tău. De obicei răspund în mai puțin de 2 ore în timpul zilei și te țin la curent pe tot parcursul proiectului.</p>
+      </details>
+      <details>
+        <summary data-en="Do you offer revisions?">Oferi revizii?</summary>
+        <p data-en="Yes. Every project includes at least one revision round. Reasonable changes are fixed at no extra cost.">Da. Fiecare proiect include cel puțin o rundă de revizii. Modificările rezonabile le corectez fără cost suplimentar.</p>
+      </details>
+      <details>
+        <summary data-en="How do I pay?">Cum plătesc?</summary>
+        <p data-en="By bank transfer. We agree on the details in your order conversation and I send you the account to pay into there. Usually 50% upfront and 50% on delivery; packages under €35 are paid in full upfront. You can follow the status of the payment and the order in your account at any time.">Prin transfer bancar. Stabilim detaliile în conversația comenzii și tot acolo îți trimit contul în care plătești. De regulă 50% în avans și 50% la livrare; pachetele sub 175 de lei se plătesc integral în avans. Statusul plății și al comenzii îl vezi oricând în cont.</p>
+      </details>
+      <details>
+        <summary data-en="What do I get at the end?">Ce primesc la final?</summary>
+        <p data-en="Websites: the finished site, online or as files, plus the photos and texts used. Video: the edited files at full quality, in the formats you need. Photo: JPG and PNG at full resolution. Everything stays in your account, ready to download.">Site: site-ul gata, pus online sau ca fișiere, plus pozele și textele folosite. Video: fișierele editate la calitate maximă, în formatele de care ai nevoie. Foto: JPG și PNG la rezoluție maximă. Totul rămâne în contul tău, gata de descărcat.</p>
+      </details>
+      <details>
+        <summary data-en="Can I make the website myself?">Pot să-mi fac singur site-ul?</summary>
+        <p data-en="Yes. In the editor you pick one of 7 templates (barber shop, café, salon, gym, car detailing, clinic, portfolio) or press “Surprise me” for a random design, then change the text and photos and see it live. Trying it is free; you download it for €29, without the watermark.">Da. În editor alegi unul din 7 șabloane (frizerie, cafenea, salon, sală de fitness, auto detailing, clinică, portofoliu) sau apeși „Surprinde-mă” pentru un design la întâmplare, apoi schimbi textele și pozele și îl vezi live. Încercarea e gratuită; îl descarci cu 149 lei, fără watermark.</p>
+      </details>
+      <details>
+        <summary data-en="Who owns the work?">Al cui e rezultatul final?</summary>
+        <p data-en="Yours. After full payment, the website, videos and photos are yours to use however you want. The domain is registered in your name.">Al tău. După plata integrală, site-ul, videoclipurile și pozele sunt ale tale și le folosești cum vrei. Domeniul se înregistrează pe numele tău.</p>
+      </details>
+      <details>
+        <summary data-en="What happens to my files and data?">Ce se întâmplă cu fișierele și datele mele?</summary>
+        <p data-en="They are stored privately, in the EU, and only you and I can see them. You can download your data or delete your account from the account page at any time.">Stau privat, în UE, și le vedem doar tu și eu. Îți poți descărca datele sau șterge contul oricând, din pagina Cont.</p>
+      </details>
+      <details>
+        <summary data-en="Do you work with clients outside Romania?">Lucrezi și cu clienți din afara României?</summary>
+        <p data-en="Yes. I work remotely with clients from anywhere, in Romanian or English.">Da. Lucrez remote cu clienți de oriunde, în română sau în engleză.</p>
+      </details>
+    </div>
+    <div class="ask rv">
+      <div><h2 data-en="Didn't find your answer?">N-ai găsit răspunsul?</h2><p data-en="Ask me on Instagram. I usually reply in under 2 hours.">Întreabă-mă pe Instagram. De obicei răspund în mai puțin de 2 ore.</p></div>
+      <a class="btn" href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" data-en="Message me">Scrie-mi</a>
+    </div>
+  </div>
+</section>
+
 <section id="s-despre" data-view="despre">
   <div class="wrap">
     <div class="about">
@@ -529,17 +587,31 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
         <p class="eyebrow" data-en="About">Despre</p>
         <h1 class="h2" data-en="Clean work. Long-term thinking.">Lucrez clar. Gândesc pe termen lung.</h1>
         <p class="body" data-en="I'm Costi, also known as Aman. Self-taught, based in Iași. I started taking this work seriously at 15 and I've kept learning with every project since.">Sunt Costi, cunoscut și ca Aman. Autodidact, din Iași. Am început să iau munca asta în serios la 15 ani și de atunci am învățat cu fiecare proiect.</p>
-        <p class="body" data-en="I care about clean design, good pacing and a result that looks finished. And after delivery I stay available for small adjustments.">Țin la design curat, ritm bun și un rezultat care pare cu adevărat terminat. Iar după livrare rămân disponibil pentru ajustări.</p>
+        <p class="body" data-en="Everything started from curiosity, long before it became work. Here is the short version.">Totul a pornit din curiozitate, cu mult înainte să devină muncă. Mai jos e povestea, pe scurt.</p>
       </div>
     </div>
     <figure class="band rv">
       <img src="assets/img/balcon-lat.jpg" width="1079" height="607" alt="Costi Andrei privind în jos peste balustradă, sub o draperie de catifea, alb-negru" loading="lazy"/>
       <figcaption data-en="“I work fast, but I don't skip the details that matter.”">„Lucrez repede, dar nu sar peste detaliile importante.”</figcaption>
     </figure>
+    <div class="story">
+      <figure class="rv"><img src="assets/img/poveste-720.jpg" srcset="assets/img/poveste-720.jpg 720w, assets/img/poveste.jpg 819w" sizes="(min-width: 860px) 400px, 100vw" width="819" height="1190" alt="Costi Andrei în copilărie, așezat pe o bancă, alb-negru" loading="lazy"/><figcaption data-en="The photo that reminds me where it all began.">Poza care îmi amintește de unde a început totul.</figcaption></figure>
+      <div class="rv">
+        <p class="eyebrow" data-en="My story">Povestea mea</p>
+        <h2 class="h2" data-en="Started early. Still learning.">Am început devreme. Încă învăț.</h2>
+        <ol class="timeline">
+          <li><b>2008</b><div><h3 data-en="Curiosity came first">Curiozitatea a venit prima</h3><p data-en="Not the moment the work started, but the moment the story started. That's why this photo still matters to me.">Nu e momentul în care a început munca, ci momentul în care a început povestea. De asta fotografia asta încă înseamnă ceva pentru mine.</p></div></li>
+          <li><b data-en="Age 15">15 ani</b><div><h3 data-en="I started taking it seriously">Am început să o iau în serios</h3><p data-en="That is when websites, editing and visuals stopped being just a curiosity and started becoming real work for me.">Atunci site-urile, editarea și vizualul n-au mai fost doar o curiozitate. Au început să devină muncă reală pentru mine.</p></div></li>
+          <li><b data-en="Today">Azi</b><div><h3 data-en="I work clearer than before">Lucrez mai clar decât înainte</h3><p data-en="Each project teaches me to be more careful with detail, more consistent and more confident in the final result. What matters most now is simple: clear work, calm communication and projects that feel finished from start to end.">Fiecare proiect mă învață să fiu mai atent la detalii, mai coerent și mai sigur pe rezultatul final. Ce contează cel mai mult acum e simplu: muncă clară, comunicare calmă și proiecte bine făcute de la început până la final.</p></div></li>
+        </ol>
+      </div>
+    </div>
+    <h2 class="h3 values-h" data-en="How I work.">Cum lucrez.</h2>
     <ul class="values">
+      <li class="rv"><b data-en="Quality">Calitate</b><span data-en="Clean design, good pacing and a result that looks truly finished.">Design curat, ritm bun și un rezultat care pare cu adevărat terminat.</span></li>
       <li class="rv"><b data-en="One person, start to finish">Un singur om, de la cap la coadă</b><span data-en="You talk directly to the one doing the work. No agency, no middlemen.">Vorbești direct cu cel care lucrează. Fără agenție, fără intermediari.</span></li>
       <li class="rv"><b data-en="Fixed prices">Prețuri fixe</b><span data-en="You know the cost from the start. You pay only after we agree on everything.">Știi costul de la început. Plătești doar după ce stabilim tot.</span></li>
-      <li class="rv"><b data-en="Everything in one place">Totul într-un singur loc</b><span data-en="Once you order: messages, status and final files, all in your account.">După ce comanzi: mesaje, status și fișierele finale, toate în contul tău.</span></li>
+      <li class="rv"><b data-en="After delivery too">Și după livrare</b><span data-en="I stay available for small adjustments and questions.">Rămân disponibil pentru ajustări și întrebări.</span></li>
     </ul>
     <div class="ctas rv about-cta"><a class="btn" href="#preturi" data-en="See pricing">Vezi prețurile</a><a class="more" href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" data-en="Ask me on Instagram">Întreabă-mă pe Instagram</a></div>
   </div>
@@ -646,55 +718,6 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
   </div>
 </section>
 
-<section id="s-intrebari" data-view="intrebari">
-  <div class="wrap">
-    <div class="head center rv">
-      <h1 class="h2" data-en="Questions.">Întrebări.</h1>
-    </div>
-    <div class="faq rv">
-      <details>
-        <summary data-en="How fast do you deliver?">Cât de repede livrezi?</summary>
-        <p data-en="Websites usually take 3–7 days. Videos are ready in 24–48 hours, and photo edits the same day or the next.">Site-urile durează, de regulă, 3–7 zile. Videoclipurile sunt gata în 24–48 de ore, iar editările foto în aceeași zi sau a doua zi.</p>
-      </details>
-      <details>
-        <summary data-en="How do we communicate?">Cum comunicăm?</summary>
-        <p data-en="For questions, message me on Instagram. Once you order, we talk here on the site, in the order's private conversation in your account. I usually reply in under 2 hours during the day and keep you updated throughout the project.">Pentru întrebări, scrie-mi pe Instagram. După ce comanzi, vorbim aici, pe site, în conversația privată a comenzii, din contul tău. De obicei răspund în mai puțin de 2 ore în timpul zilei și te țin la curent pe tot parcursul proiectului.</p>
-      </details>
-      <details>
-        <summary data-en="Do you offer revisions?">Oferi revizii?</summary>
-        <p data-en="Yes. Every project includes at least one revision round. Reasonable changes are fixed at no extra cost.">Da. Fiecare proiect include cel puțin o rundă de revizii. Modificările rezonabile le corectez fără cost suplimentar.</p>
-      </details>
-      <details>
-        <summary data-en="How do I pay?">Cum plătesc?</summary>
-        <p data-en="By bank transfer. We agree on the details in your order conversation and I send you the account to pay into there. Usually 50% upfront and 50% on delivery; packages under €35 are paid in full upfront. You can follow the status of the payment and the order in your account at any time.">Prin transfer bancar. Stabilim detaliile în conversația comenzii și tot acolo îți trimit contul în care plătești. De regulă 50% în avans și 50% la livrare; pachetele sub 175 de lei se plătesc integral în avans. Statusul plății și al comenzii îl vezi oricând în cont.</p>
-      </details>
-      <details>
-        <summary data-en="What do I get at the end?">Ce primesc la final?</summary>
-        <p data-en="Websites: the finished site, online or as files, plus the photos and texts used. Video: the edited files at full quality, in the formats you need. Photo: JPG and PNG at full resolution. Everything stays in your account, ready to download.">Site: site-ul gata, pus online sau ca fișiere, plus pozele și textele folosite. Video: fișierele editate la calitate maximă, în formatele de care ai nevoie. Foto: JPG și PNG la rezoluție maximă. Totul rămâne în contul tău, gata de descărcat.</p>
-      </details>
-      <details>
-        <summary data-en="Can I make the website myself?">Pot să-mi fac singur site-ul?</summary>
-        <p data-en="Yes. In the editor you pick one of 7 templates (barber shop, café, salon, gym, car detailing, clinic, portfolio) or press “Surprise me” for a random design, then change the text and photos and see it live. Trying it is free; you download it for €29, without the watermark.">Da. În editor alegi unul din 7 șabloane (frizerie, cafenea, salon, sală de fitness, auto detailing, clinică, portofoliu) sau apeși „Surprinde-mă” pentru un design la întâmplare, apoi schimbi textele și pozele și îl vezi live. Încercarea e gratuită; îl descarci cu 149 lei, fără watermark.</p>
-      </details>
-      <details>
-        <summary data-en="Who owns the work?">Al cui e rezultatul final?</summary>
-        <p data-en="Yours. After full payment, the website, videos and photos are yours to use however you want. The domain is registered in your name.">Al tău. După plata integrală, site-ul, videoclipurile și pozele sunt ale tale și le folosești cum vrei. Domeniul se înregistrează pe numele tău.</p>
-      </details>
-      <details>
-        <summary data-en="What happens to my files and data?">Ce se întâmplă cu fișierele și datele mele?</summary>
-        <p data-en="They are stored privately, in the EU, and only you and I can see them. You can download your data or delete your account from the account page at any time.">Stau privat, în UE, și le vedem doar tu și eu. Îți poți descărca datele sau șterge contul oricând, din pagina Cont.</p>
-      </details>
-      <details>
-        <summary data-en="Do you work with clients outside Romania?">Lucrezi și cu clienți din afara României?</summary>
-        <p data-en="Yes. I work remotely with clients from anywhere, in Romanian or English.">Da. Lucrez remote cu clienți de oriunde, în română sau în engleză.</p>
-      </details>
-    </div>
-    <div class="ask rv">
-      <div><h2 data-en="Didn't find your answer?">N-ai găsit răspunsul?</h2><p data-en="Ask me on Instagram. I usually reply in under 2 hours.">Întreabă-mă pe Instagram. De obicei răspund în mai puțin de 2 ore.</p></div>
-      <a class="btn" href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" data-en="Message me">Scrie-mi</a>
-    </div>
-  </div>
-</section>
 
 <section id="s-contact" class="alt contact" data-view="contact">
   <div class="wrap contact-grid">
