@@ -4,7 +4,7 @@
   'use strict';
   var d = document, box = d.getElementById('acct');
   if (!box) return;
-  var cfg = null, session = null, orders = null, notice = null, busy = false, confirmDel = false, confirmCancel = null, isAdmin = false, files = {}, sites = [], openChat = null, chatInst = null, unread = {};
+  var originals = {}, cfg = null, session = null, orders = null, notice = null, busy = false, confirmDel = false, confirmCancel = null, isAdmin = false, files = {}, sites = [], openChat = null, chatInst = null, unread = {};
   var KEY = 'aman.session', PKCE = 'aman.pkce';
   var IG = 'https://www.instagram.com/costi1andrei/';
 
@@ -23,6 +23,8 @@
       delYes: 'Da, șterge contul', delNo: 'Renunț', deleted: 'Contul a fost șters.',
       loginErr: 'Logarea nu a reușit. Încearcă din nou.', expired: 'Sesiunea a expirat. Intră din nou în cont.',
       chat: 'Mesaje', chatHide: 'Ascunde mesajele', chatEmpty: 'Scrie-mi aici despre comandă: ce vrei, întrebări, detalii. Îți răspund de obicei în mai puțin de 2 ore.', chatPh: 'Scrie un mesaj…',
+      ba: { title: 'Înainte / după', before: 'Înainte', after: 'După', slider: 'Compară înainte și după' },
+      steps: ['Cerere', 'Plătită', 'În lucru', 'De verificat', 'Livrată'], eta: 'Livrare estimată', etaSame: 'în aceeași zi sau a doua zi',
       zip: 'Descarcă site-ul (ZIP)', openEd: 'Deschide în editor', mySites: 'Site-urile tale din editor', newSite: 'Fă un site nou', edit: 'Continuă editarea', draft: 'Ciornă',
       cancel: 'Anulează cererea', cancelQ: 'Sigur anulezi cererea?', cancelYes: 'Da, anulează', cancelNo: 'Nu', cancelled: 'Cererea a fost anulată.',
       st: { requested: 'Cerere trimisă · aștept plata', paid: 'Plătită · urmează să încep', in_progress: 'În lucru', review: 'Gata de verificare', delivered: 'Livrată', cancelled: 'Anulată', refunded: 'Rambursată' },
@@ -41,6 +43,8 @@
       delYes: 'Yes, delete it', delNo: 'Cancel', deleted: 'Your account has been deleted.',
       loginErr: 'Sign-in failed. Please try again.', expired: 'Your session expired. Please sign in again.',
       chat: 'Messages', chatHide: 'Hide messages', chatEmpty: 'Write to me here about the order: what you need, questions, details. I usually reply in under 2 hours.', chatPh: 'Write a message…',
+      ba: { title: 'Before / after', before: 'Before', after: 'After', slider: 'Compare before and after' },
+      steps: ['Request', 'Paid', 'In progress', 'Review', 'Delivered'], eta: 'Estimated delivery', etaSame: 'same day or the next',
       zip: 'Download the site (ZIP)', openEd: 'Open in the editor', mySites: 'Your sites from the editor', newSite: 'Make a new site', edit: 'Continue editing', draft: 'Draft',
       cancel: 'Cancel request', cancelQ: 'Cancel this request?', cancelYes: 'Yes, cancel', cancelNo: 'No', cancelled: 'The request has been cancelled.',
       st: { requested: 'Request sent · awaiting payment', paid: 'Paid · starting soon', in_progress: 'In progress', review: 'Ready for review', delivered: 'Delivered', cancelled: 'Cancelled', refunded: 'Refunded' },
@@ -99,7 +103,16 @@
     // Fișierele livrate: linkuri temporare, generate de server doar pentru comenzile tale.
     if (orders.some(function (o) { return o.status !== 'requested'; })) {
       var f = await fetch('/api/files', { headers: { Authorization: 'Bearer ' + tk } }).catch(function () { return null; });
-      if (f && f.ok) { files = (await f.json()).files || {}; render(); }
+      if (f && f.ok) {
+        files = (await f.json()).files || {}; render();
+        // originalele trimise de client, doar unde s-au livrat poze (pentru Înainte / după)
+        var ids = Object.keys(files).filter(function (id) { return (files[id] || []).some(function (x) { return /^image\//.test(x.type); }); });
+        for (var i = 0; i < ids.length; i++) {
+          var cr = await fetch('/api/files?kind=client&order=' + ids[i], { headers: { Authorization: 'Bearer ' + tk } }).catch(function () { return null; });
+          if (cr && cr.ok) { var cj = await cr.json().catch(function () { return {}; }); originals[ids[i]] = (cj.files && cj.files[ids[i]]) || []; }
+        }
+        if (ids.length) render();
+      }
     }
   }
   function money(o) {
@@ -170,6 +183,19 @@
     await loadOrders();
   }
 
+  // Progresul comenzii: Cerere → Plătită → În lucru → De verificat → Livrată, cu o estimare de livrare după plată.
+  var FLOW = ['requested', 'paid', 'in_progress', 'review', 'delivered'];
+  function days(pkg) { if (/^web|business/.test(pkg)) return [3, 7]; if (/^video|mini|starter/.test(pkg)) return [1, 2]; if (/^foto/.test(pkg)) return [0, 1]; return null; }
+  function track(o) {
+    var i = FLOW.indexOf(o.status); if (i < 0) return '';
+    var h = '<ol class="track" aria-label="' + esc(t('st')[o.status] || '') + '">' + t('steps').map(function (s, k) { return '<li class="' + (k < i ? 'done' : k === i ? 'now' : '') + '"' + (k === i ? ' aria-current="step"' : '') + '><i></i><span>' + s + '</span></li>'; }).join('') + '</ol>';
+    var dd = days(o.package);
+    if (dd && o.paid_at && (o.status === 'paid' || o.status === 'in_progress')) {
+      var p = new Date(o.paid_at), f = function (n) { var x = new Date(p); x.setDate(x.getDate() + n); return x.toLocaleDateString(L() === 'en' ? 'en-GB' : 'ro-RO', { day: 'numeric', month: 'short' }); };
+      h += '<p class="eta">' + t('eta') + ': <b>' + (dd[1] <= 1 ? t('etaSame') : f(dd[0]) + ' – ' + f(dd[1])) + '</b></p>';
+    }
+    return h;
+  }
   function fsize(n) { return n > 1048576 ? (n / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(n / 1024)) + ' KB'; }
   function fileList(list) {
     if (!list || !list.length) return '';
@@ -210,11 +236,13 @@
       h += '<ul class="orders">' + orders.map(function (o) {
         return '<li class="order"><div class="o-top"><div><h4>' + esc(o.title) + '</h4><span class="muted">' + (o.code ? '<b class="ocode">' + esc(o.code) + '</b> · ' : '') + date(o.created_at) + ' · ' + money(o) + '</span></div>' +
           '<span class="pill s-' + esc(o.status) + '">' + esc(t('st')[o.status] || o.status) + '</span></div>' +
+          track(o) +
           (o.note ? '<p class="o-note"><span>' + t('note') + '</span>' + esc(o.note) + '</p>' : '') +
           (o.status === 'requested' ? (confirmCancel === o.id
             ? '<div class="confirm"><p>' + t('cancelQ') + '</p><div class="row"><button type="button" class="btn danger" data-cancel-yes="' + esc(o.id) + '"' + (busy ? ' disabled' : '') + '>' + t('cancelYes') + '</button><button type="button" class="more plain" data-cancel-no="1">' + t('cancelNo') + '</button></div></div>'
             : '<div class="row o-actions"><button type="button" class="more plain danger" data-cancel="' + esc(o.id) + '">' + t('cancel') + '</button></div>') : '') +
           (o.delivery_url && /^https:\/\//.test(o.delivery_url) ? '<a class="more" href="' + esc(o.delivery_url) + '" target="_blank" rel="noopener">' + t('files') + '</a>' : '') +
+          (window.AmanBA ? window.AmanBA.html(window.AmanBA.pairs(originals[o.id], files[o.id]), t('ba')) : '') +
           fileList(files[o.id]) +
           (o.site_id ? '<div class="row o-actions">' + (['paid', 'in_progress', 'review', 'delivered'].indexOf(o.status) >= 0 ? '<button type="button" class="btn small" data-zip="' + esc(o.site_id) + '">' + t('zip') + '</button>' : '') + '<a class="more" href="/editor.html?id=' + esc(o.site_id) + '">' + t('openEd') + '</a></div>' : '') +
           '<button type="button" class="chat-toggle" data-chat="' + esc(o.id) + '" aria-expanded="' + (openChat === o.id) + '"><span>' + (openChat === o.id ? t('chatHide') : t('chat')) + '</span><b class="badge"' + (unread[o.id] ? '' : ' hidden') + '>' + (unread[o.id] || '') + '</b></button>' +

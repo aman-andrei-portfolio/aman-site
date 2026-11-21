@@ -108,7 +108,7 @@ async function storage(path, { method = 'POST', body, headers = {} } = {}) {
 // folder = orderId (fișierele livrate de tine) sau orderId + '/client' (materialele trimise de client)
 async function listFiles(folder) {
   const items = await storage('object/list/' + BUCKET, { body: { prefix: folder, limit: 100, offset: 0, sortBy: { column: 'created_at', order: 'asc' } } });
-  const files = (items || []).filter((f) => f.id && f.name && !f.name.startsWith('.'));
+  const files = (items || []).filter((f) => f.id && f.name && !f.name.startsWith('.') && !f.name.includes('/')); // fără subfoldere (ex. client/)
   if (!files.length) return [];
   const signed = await storage('object/sign/' + BUCKET, { body: { expiresIn: 3600, paths: files.map((f) => folder + '/' + f.name) } });
   const base = env('SUPABASE_URL') + '/storage/v1';

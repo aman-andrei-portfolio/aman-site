@@ -122,3 +122,11 @@ Fără aceste variabile, pagina Cont spune „în curând”, iar butoanele duc 
 - „Editează o poză din galerie”: aceleași stiluri pe o poză existentă (merge și fără cameră, de ex. din browserul Instagram).
 - Salvare: iPhone prin meniul de distribuire („Salvează imaginea”); Android descărcare (apare în Galerie). Nimic nu se urcă pe site.
 - Necesită `camera=(self)` în `Permissions-Policy` (vercel.json). Stilurile noi se adaugă în lista `LOOKS`.
+
+## Progresul comenzii și Înainte / după
+
+- În Cont, fiecare comandă are o bară de progres (Cerere → Plătită → În lucru → De verificat → Livrată), după statusul din panou.
+  După plată apare și „Livrare estimată” (site 3–7 zile, video 1–2 zile, foto aceeași zi sau a doua zi).
+- **Înainte / după**: la comenzile foto, clientul vede un slider care compară originalul lui cu poza livrată.
+  Regula: dă pozei livrate **numele originalului**, eventual cu sufix: `IMG_2041.jpg` → `IMG_2041-edit.jpg`
+  (merg și `_final`, `-aman`, `-retus`, `-v2`). În panou vezi „Perechi înainte/după pentru client: N”.

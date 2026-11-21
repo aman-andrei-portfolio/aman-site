@@ -57,11 +57,19 @@
   }
 
   function size(n) { return n > 1048576 ? (n / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(n / 1024)) + ' KB'; }
+  // „Înainte / după” la client: livrarea trebuie să aibă numele originalului (ex. IMG_1.jpg → IMG_1-edit.jpg)
+  function baCount(li) {
+    if (!window.AmanBA || !li._client || !li._deliv) return;
+    var n = window.AmanBA.pairs(li._client, li._deliv).length, el = li.querySelector('[data-ba-n]');
+    if (!el) { var box = li.querySelector('[data-flist]'); if (!box) return; el = document.createElement('p'); el.className = 'meta'; el.setAttribute('data-ba-n', ''); box.parentNode.insertBefore(el, box.nextSibling); }
+    el.textContent = 'Perechi înainte/după pentru client: ' + n + (n ? '' : ' · ca să apară, dă pozei livrate numele originalului (ex. IMG_1.jpg → IMG_1-edit.jpg).');
+  }
   async function loadClient(li) {
     var tk = await token(); if (!tk) return;
     var r = await fetch('/api/files?kind=client&order=' + li.dataset.id, { headers: { Authorization: 'Bearer ' + tk } });
     var j = await r.json().catch(function () { return {}; });
     var files = (j.files && j.files[li.dataset.id]) || [];
+    li._client = files; baCount(li);
     li.querySelector('[data-clist]').innerHTML = files.length ? files.map(function (f) {
       return '<li><a href="' + esc(f.download) + '">' + esc(f.name) + '</a><span class="meta">' + size(f.size) + '</span><a class="x dl" href="' + esc(f.download) + '">Descarcă</a></li>';
     }).join('') : '<li class="meta">Clientul nu a trimis fișiere.</li>';
@@ -71,6 +79,7 @@
     var r = await fetch('/api/files?order=' + li.dataset.id, { headers: { Authorization: 'Bearer ' + tk } });
     var j = await r.json().catch(function () { return {}; });
     var files = (j.files && j.files[li.dataset.id]) || [];
+    li._deliv = files; baCount(li);
     var ul = li.querySelector('[data-flist]');
     ul.innerHTML = files.length ? files.map(function (f) {
       return '<li><a href="' + esc(f.download) + '" target="_blank" rel="noopener">' + esc(f.name) + '</a><span class="meta">' + size(f.size) + '</span><button type="button" class="x" data-del="' + esc(f.name) + '" aria-label="Șterge ' + esc(f.name) + '">Șterge</button></li>';
