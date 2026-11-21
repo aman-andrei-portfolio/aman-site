@@ -149,21 +149,12 @@ section{padding-block:clamp(48px,7vw,88px)}
 .about p.body{margin-top:20px;color:var(--fg-2);max-width:32em}
 .about p.body:first-of-type{margin-top:24px}
 .about img{object-position:50% 30%}
-.story{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(32px,6vw,80px);align-items:center;margin-top:clamp(56px,8vw,104px)}
-.story figure{margin:0}.story img{width:100%;border-radius:var(--r);display:block}.story figcaption{margin-top:10px;font-size:14px;color:var(--fg-2)}
-.story .h2{margin-top:10px}
-.timeline{list-style:none;margin:28px 0 0;padding:0;display:flex;flex-direction:column;gap:0}
-.timeline li{display:grid;grid-template-columns:84px minmax(0,1fr);gap:18px;padding:18px 0;border-top:1px solid var(--line)}
-.timeline b{font-size:20px;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
-.timeline h3{font-size:19px;letter-spacing:-.02em;margin-bottom:4px}.timeline p{margin:0;color:var(--fg-2);font-size:16px;line-height:1.5}
-.values-h{margin-top:clamp(56px,8vw,96px);font-size:clamp(28px,3.6vw,40px);letter-spacing:-.035em}
-@media(max-width:860px){.story{grid-template-columns:1fr}.story figure{max-width:420px}}
-.values{list-style:none;margin:20px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.values{list-style:none;margin:clamp(40px,6vw,72px) 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
 .values li{background:var(--bg-2);border-radius:var(--r);padding:26px 24px;display:flex;flex-direction:column;gap:8px}
 .values b{font-size:19px;letter-spacing:-.02em}
 .values span{color:var(--fg-2);font-size:15px;line-height:1.5}
 .about-cta{margin-top:clamp(32px,5vw,48px)}
-@media(max-width:960px){.values{grid-template-columns:1fr 1fr}}@media(max-width:560px){.values{grid-template-columns:1fr;gap:12px}}
+@media(max-width:760px){.values{grid-template-columns:1fr;gap:12px}}
 .band{position:relative;margin:clamp(48px,7vw,88px) 0 0;border-radius:var(--r);overflow:hidden}
 .band img{width:100%;aspect-ratio:16/9;object-fit:cover;object-position:60% 50%;display:block}
 .band figcaption{position:absolute;left:0;right:0;bottom:0;padding:clamp(40px,8vw,96px) clamp(20px,4vw,40px) clamp(20px,3vw,32px);color:#fff;font-size:clamp(19px,2.6vw,30px);font-weight:600;letter-spacing:-.02em;line-height:1.25;background:linear-gradient(to top,rgba(0,0,0,.62),rgba(0,0,0,0));text-wrap:balance}
@@ -618,31 +609,17 @@ footer .legal{display:flex;flex-wrap:wrap;gap:6px 18px}
         <p class="eyebrow" data-en="About">Despre</p>
         <h1 class="h2" data-en="Clean work. Long-term thinking.">Lucrez clar. Gândesc pe termen lung.</h1>
         <p class="body" data-en="I'm Costi, also known as Aman. Self-taught, based in Iași. I started taking this work seriously at 15 and I've kept learning with every project since.">Sunt Costi, cunoscut și ca Aman. Autodidact, din Iași. Am început să iau munca asta în serios la 15 ani și de atunci am învățat cu fiecare proiect.</p>
-        <p class="body" data-en="Everything started from curiosity, long before it became work. Here is the short version.">Totul a pornit din curiozitate, cu mult înainte să devină muncă. Mai jos e povestea, pe scurt.</p>
+        <p class="body" data-en="I care about clean design, good pacing and a result that looks finished. And after delivery I stay available for small adjustments.">Țin la design curat, ritm bun și un rezultat care pare cu adevărat terminat. Iar după livrare rămân disponibil pentru ajustări.</p>
       </div>
     </div>
     <figure class="band rv">
       <img src="assets/img/balcon-lat.jpg" width="1079" height="607" alt="Costi Andrei privind în jos peste balustradă, sub o draperie de catifea, alb-negru" loading="lazy"/>
       <figcaption data-en="“I work fast, but I don't skip the details that matter.”">„Lucrez repede, dar nu sar peste detaliile importante.”</figcaption>
     </figure>
-    <div class="story">
-      <figure class="rv"><img src="assets/img/poveste-720.jpg" srcset="assets/img/poveste-720.jpg 720w, assets/img/poveste.jpg 819w" sizes="(min-width: 860px) 400px, 100vw" width="819" height="1190" alt="Costi Andrei în copilărie, așezat pe o bancă, alb-negru" loading="lazy"/><figcaption data-en="The photo that reminds me where it all began.">Poza care îmi amintește de unde a început totul.</figcaption></figure>
-      <div class="rv">
-        <p class="eyebrow" data-en="My story">Povestea mea</p>
-        <h2 class="h2" data-en="Started early. Still learning.">Am început devreme. Încă învăț.</h2>
-        <ol class="timeline">
-          <li><b>2008</b><div><h3 data-en="Curiosity came first">Curiozitatea a venit prima</h3><p data-en="Not the moment the work started, but the moment the story started. That's why this photo still matters to me.">Nu e momentul în care a început munca, ci momentul în care a început povestea. De asta fotografia asta încă înseamnă ceva pentru mine.</p></div></li>
-          <li><b data-en="Age 15">15 ani</b><div><h3 data-en="I started taking it seriously">Am început să o iau în serios</h3><p data-en="That is when websites, editing and visuals stopped being just a curiosity and started becoming real work for me.">Atunci site-urile, editarea și vizualul n-au mai fost doar o curiozitate. Au început să devină muncă reală pentru mine.</p></div></li>
-          <li><b data-en="Today">Azi</b><div><h3 data-en="I work clearer than before">Lucrez mai clar decât înainte</h3><p data-en="Each project teaches me to be more careful with detail, more consistent and more confident in the final result. What matters most now is simple: clear work, calm communication and projects that feel finished from start to end.">Fiecare proiect mă învață să fiu mai atent la detalii, mai coerent și mai sigur pe rezultatul final. Ce contează cel mai mult acum e simplu: muncă clară, comunicare calmă și proiecte bine făcute de la început până la final.</p></div></li>
-        </ol>
-      </div>
-    </div>
-    <h2 class="h3 values-h" data-en="How I work.">Cum lucrez.</h2>
     <ul class="values">
-      <li class="rv"><b data-en="Quality">Calitate</b><span data-en="Clean design, good pacing and a result that looks truly finished.">Design curat, ritm bun și un rezultat care pare cu adevărat terminat.</span></li>
       <li class="rv"><b data-en="One person, start to finish">Un singur om, de la cap la coadă</b><span data-en="You talk directly to the one doing the work. No agency, no middlemen.">Vorbești direct cu cel care lucrează. Fără agenție, fără intermediari.</span></li>
       <li class="rv"><b data-en="Fixed prices">Prețuri fixe</b><span data-en="You know the cost from the start. You pay only after we agree on everything.">Știi costul de la început. Plătești doar după ce stabilim tot.</span></li>
-      <li class="rv"><b data-en="After delivery too">Și după livrare</b><span data-en="I stay available for small adjustments and questions.">Rămân disponibil pentru ajustări și întrebări.</span></li>
+      <li class="rv"><b data-en="Everything in one place">Totul într-un singur loc</b><span data-en="Once you order: messages, status and final files, all in your account.">După ce comanzi: mesaje, status și fișierele finale, toate în contul tău.</span></li>
     </ul>
     <div class="ctas rv about-cta"><a class="btn" href="#preturi" data-en="See pricing">Vezi prețurile</a><a class="more" href="https://www.instagram.com/costi1andrei/" target="_blank" rel="noopener" data-en="Ask me on Instagram">Întreabă-mă pe Instagram</a></div>
   </div>
